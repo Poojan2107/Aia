@@ -1,6 +1,20 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useSyncExternalStore } from "react";
+
+const STORAGE_KEY = "aia-waitlist-email";
+
+function subscribe() {
+  return () => {};
+}
+
+function getSavedEmail() {
+  return sessionStorage.getItem(STORAGE_KEY);
+}
+
+function getServerSnapshot() {
+  return null;
+}
 
 export function WaitlistForm({
   id,
@@ -9,16 +23,24 @@ export function WaitlistForm({
   id?: string;
   compact?: boolean;
 }) {
+  const savedEmail = useSyncExternalStore(
+    subscribe,
+    getSavedEmail,
+    getServerSnapshot,
+  );
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "done">("idle");
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
+  const shownEmail = submittedEmail ?? savedEmail;
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!email.trim()) return;
-    setStatus("done");
+    const nextEmail = email.trim();
+    if (!nextEmail) return;
+    sessionStorage.setItem(STORAGE_KEY, nextEmail);
+    setSubmittedEmail(nextEmail);
   }
 
-  if (status === "done") {
+  if (shownEmail) {
     return (
       <p
         className={`rounded-full border border-line bg-white/5 px-5 py-3 text-sm text-foreground ${
@@ -26,7 +48,7 @@ export function WaitlistForm({
         }`}
       >
         You&apos;re on the list. We&apos;ll reach out at{" "}
-        <span className="text-accent">{email}</span>.
+        <span className="text-accent">{shownEmail}</span>.
       </p>
     );
   }

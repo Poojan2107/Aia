@@ -1,4 +1,5 @@
 import { WaitlistForm } from "@/components/WaitlistForm";
+import { theme } from "@/lib/theme";
 
 const steps = [
   {
@@ -46,7 +47,7 @@ export default function Home() {
       />
       <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6">
         <a href="#top" className="font-serif text-2xl tracking-tight">
-          Aia
+          {theme.copy.product}
         </a>
         <nav className="hidden items-center gap-8 text-sm text-muted sm:flex">
           <a href="#how" className="hover:text-foreground">
@@ -71,13 +72,12 @@ export default function Home() {
               Figma → live page
             </p>
             <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-              From Figma
+              {theme.copy.headline[0]}
               <br />
-              to a live page.
+              {theme.copy.headline[1]}
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-muted">
-              Have a Figma file? Aia turns it into a production landing page and
-              puts it on the internet. Share the file. We ship the site.
+              {theme.copy.subhead} Share the file. We ship the site.
             </p>
             <div className="mt-10" id="waitlist">
               <WaitlistForm id="hero-waitlist" />
@@ -152,7 +152,7 @@ export default function Home() {
 
       <footer className="relative z-10 border-t border-line">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-8 text-sm text-muted">
-          <span className="font-serif text-foreground">Aia</span>
+          <span className="font-serif text-foreground">{theme.copy.product}</span>
           <span>From design to a URL.</span>
         </div>
       </footer>

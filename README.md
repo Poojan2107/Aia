@@ -27,4 +27,4 @@ After this is merged to `main`, GitHub Pages publishes the site at:
 
 In the repo: **Settings → Pages → Source → GitHub Actions**.
 
-Send a Figma link (or frame exports) and this page can be rebuilt to match the design.
+Drop Figma exports (PNG/SVG) in `public/figma/` when you have them. Swap colors and copy in `src/lib/theme.ts`. The page itself lives in `src/app/page.tsx`.
