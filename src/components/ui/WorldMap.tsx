@@ -22,24 +22,25 @@ export function WorldMap({ className = "", activeRegion = "UAE" }: Props) {
         </g>
 
         {[
-          { x: 280, y: 210, label: "Americas", color: "#2f6fed" },
-          { x: 520, y: 175, label: "Europe", color: "#da702e" },
-          { x: 620, y: 250, label: "India", color: "#2f6fed" },
-          { x: 670, y: 230, label: "UAE", color: "#da702e" },
-          { x: 780, y: 280, label: "APAC", color: "#da702e" },
-          { x: 450, y: 320, label: "Africa", color: "#2f6fed" },
+          { x: 280, y: 210, label: "Americas", accent: false },
+          { x: 520, y: 175, label: "Europe", accent: true },
+          { x: 620, y: 250, label: "India", accent: false },
+          { x: 670, y: 230, label: "UAE", accent: true },
+          { x: 780, y: 280, label: "APAC", accent: true },
+          { x: 450, y: 320, label: "Africa", accent: false },
         ].map((m) => {
           const active = m.label === activeRegion;
+          const fill = m.accent ? "var(--aia-orange)" : "var(--aia-marker)";
           return (
             <g key={m.label}>
-              <circle cx={m.x} cy={m.y} r={active ? 8 : 5} fill={m.color} />
+              <circle cx={m.x} cy={m.y} r={active ? 8 : 5} fill={fill} />
               {active ? (
                 <circle
                   cx={m.x}
                   cy={m.y}
                   r="16"
                   fill="none"
-                  stroke="#da702e"
+                  stroke="var(--aia-orange)"
                   strokeWidth="1.5"
                   opacity="0.5"
                 >

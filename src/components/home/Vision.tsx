@@ -10,7 +10,7 @@ export function Vision() {
         <div className="relative mx-auto w-full max-w-lg overflow-visible px-2 sm:px-0">
           <span
             aria-hidden
-            className="absolute -left-2 top-10 size-0 scale-75 border-y-[28px] border-r-[48px] border-y-transparent border-r-aia-orange/90 sm:-left-6 sm:scale-100"
+            className="absolute -left-3 top-10 size-0 scale-75 border-y-[28px] border-r-[48px] border-y-transparent border-r-aia-orange sm:-left-7 sm:scale-100"
           />
           <span
             aria-hidden
@@ -18,7 +18,7 @@ export function Vision() {
           />
           <span
             aria-hidden
-            className="absolute bottom-24 left-0 size-0 scale-75 border-y-[14px] border-r-[24px] border-y-transparent border-r-aia-orange/70 sm:-left-2 sm:scale-100"
+            className="absolute bottom-28 left-1 size-0 scale-75 border-y-[14px] border-r-[24px] border-y-transparent border-r-aia-orange/75 sm:bottom-24 sm:-left-1 sm:scale-100"
           />
 
           <div className="relative aspect-[4/5] overflow-hidden">
@@ -31,7 +31,7 @@ export function Vision() {
             />
             <div
               aria-hidden
-              className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white via-white/80 to-transparent"
+              className="absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-white via-white/85 to-transparent"
             />
           </div>
         </div>
@@ -39,7 +39,7 @@ export function Vision() {
         <div className="relative">
           <span
             aria-hidden
-            className="pointer-events-none absolute -right-2 -top-6 font-[family-name:var(--font-display)] text-[5rem] leading-none text-aia-orange/25 sm:-top-10 sm:text-[8rem] md:text-[10rem]"
+            className="pointer-events-none absolute -right-1 -top-8 font-[family-name:var(--font-display)] text-[5.5rem] leading-none text-aia-orange/30 sm:-top-12 sm:text-[8.5rem] md:text-[10rem]"
           >
             ”
           </span>
@@ -55,10 +55,11 @@ export function Vision() {
             deliver value through ethical, sustainable, and profitable means.
           </p>
           <div>
-            <p className="ui-caps text-aia-orange">
-              · Mr. Bhadresh Kantilal Shah
+            <p className="ui-caps flex items-center gap-2 text-aia-orange">
+              <span aria-hidden className="inline-block size-1.5 bg-aia-orange" />
+              Mr. Bhadresh Kantilal Shah
             </p>
-            <p className="mt-1 text-sm uppercase tracking-[0.06em] text-aia-muted">
+            <p className="mt-1.5 text-sm uppercase tracking-[0.06em] text-aia-muted">
               (Managing Director — AIA Engineering)
             </p>
           </div>

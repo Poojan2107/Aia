@@ -5,14 +5,14 @@ type Variant = "solid" | "outline" | "ghost" | "cream" | "outline-light";
 
 const variants: Record<Variant, string> = {
   solid:
-    "border border-aia-orange bg-aia-orange text-white hover:bg-[#c86124]",
+    "border border-aia-orange bg-aia-orange text-white hover:bg-aia-orange-deep",
   outline:
     "border border-aia-orange bg-transparent text-aia-orange hover:bg-aia-orange hover:text-white",
   "outline-light":
     "border border-white/80 bg-transparent text-white hover:bg-white hover:text-aia-navy",
   ghost: "border border-transparent bg-transparent text-aia-cream",
   cream:
-    "border border-aia-orange bg-aia-orange text-white hover:bg-[#c86124]",
+    "border border-aia-orange bg-aia-orange text-white hover:bg-aia-orange-deep",
 };
 
 type Props = {

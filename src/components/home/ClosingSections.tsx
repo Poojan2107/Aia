@@ -209,7 +209,7 @@ export function Insights() {
                 <button
                   type="button"
                   aria-label="Next insight"
-                  className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#2f6fed] text-white shadow-lg sm:right-4"
+                  className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-aia-orange text-white shadow-lg sm:right-4"
                 >
                   ›
                 </button>

@@ -21,28 +21,28 @@ export function ModelShowcase({ industry }: Props) {
   const activeHotspot = industry.hotspots.find((h) => h.id === active);
 
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.22fr)] lg:items-center lg:gap-14">
+    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.28fr)] lg:items-center lg:gap-16">
       <div className="order-2 lg:order-1">
-        <div className="mb-4 flex items-baseline gap-4 sm:mb-5 sm:gap-5">
-          <span className="font-[family-name:var(--font-ui)] text-[1.5rem] text-aia-navy/25 sm:text-[1.75rem] md:text-[2rem]">
+        <div className="mb-4 flex items-baseline gap-5 sm:mb-5 sm:gap-6">
+          <span className="font-[family-name:var(--font-ui)] text-[1.65rem] font-medium text-aia-navy/20 sm:text-[1.9rem] md:text-[2.15rem]">
             {industry.index}
           </span>
-          <h3 className="display text-[clamp(2rem,6.5vw,3.25rem)] text-aia-navy">
+          <h3 className="display text-[clamp(2.1rem,6.5vw,3.35rem)] text-aia-navy">
             {industry.name}
           </h3>
         </div>
-        <p className="mb-6 max-w-md whitespace-pre-line text-[clamp(1.15rem,3.8vw,2.35rem)] leading-[1.15] text-aia-navy/50 sm:mb-8">
+        <p className="mb-7 max-w-md whitespace-pre-line text-[clamp(1.2rem,3.8vw,2.35rem)] leading-[1.12] text-aia-navy/45 sm:mb-9">
           {industry.description}
         </p>
 
-        <ul className="mb-6 max-w-md sm:mb-8">
+        <ul className="mb-7 max-w-md sm:mb-9">
           {industry.solutions.map((solution) => {
             const isActive = active === solution.hotspotId;
             return (
               <li key={solution.id} className="border-t border-aia-line">
                 <button
                   type="button"
-                  className="group flex min-h-12 w-full items-center justify-between py-3.5 text-left sm:py-4"
+                  className="group flex min-h-12 w-full items-center justify-between gap-4 py-3.5 text-left sm:py-4"
                   onClick={() => setActive(solution.hotspotId)}
                   onMouseEnter={() => setActive(solution.hotspotId)}
                   onFocus={() => setActive(solution.hotspotId)}
@@ -82,7 +82,7 @@ export function ModelShowcase({ industry }: Props) {
 
         <a
           href={industry.href}
-          className="ui-caps inline-flex min-h-11 items-center gap-2 text-aia-orange transition-opacity hover:opacity-80"
+          className="ui-caps inline-flex min-h-11 items-center gap-2 font-semibold tracking-[0.08em] text-aia-orange transition-opacity hover:opacity-80"
         >
           Explore {industry.name}
           <span aria-hidden>›</span>
@@ -111,7 +111,7 @@ export function ModelShowcase({ industry }: Props) {
             />
           </div>
 
-          {/* Labels are baked into mill posters — interactive dots only (no HTML label ghosting) */}
+          {/* Labels baked into posters — interactive dots only */}
           {industry.hotspots.map((hotspot) => {
             const isActive = active === hotspot.id;
             const isLinked = linkedIds.has(hotspot.id);
@@ -130,7 +130,7 @@ export function ModelShowcase({ industry }: Props) {
               >
                 <span
                   className={`relative block size-3 rounded-full transition-transform duration-300 md:size-2.5 ${
-                    isActive ? "scale-125 bg-aia-orange" : "bg-aia-orange/80"
+                    isActive ? "scale-125 bg-aia-orange" : "bg-aia-orange/85"
                   } ${isActive || isLinked ? "hotspot-ring is-active" : ""}`}
                 />
               </button>

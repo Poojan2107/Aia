@@ -1,7 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Archivo, Manrope, Syne } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { getSiteUrl, site } from "@/data/site";
+
+const themeBootScript = `(function(){try{var k="aia-theme";var q=new URLSearchParams(location.search).get("theme");var t=(q==="blue"||q==="orange")?q:localStorage.getItem(k);if(t==="blue"||t==="orange")document.documentElement.dataset.theme=t;else document.documentElement.dataset.theme="orange";}catch(e){document.documentElement.dataset.theme="orange";}})();`;
 
 const display = Archivo({
   variable: "--font-display",
@@ -117,14 +122,24 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="orange"
+      suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${ui.variable} h-full`}
     >
       <body className="min-h-full bg-aia-surface text-aia-navy antialiased">
+        <Script
+          id="aia-theme-boot"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeBootScript }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <ThemeProvider>
+          {children}
+          <ThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -7,12 +7,12 @@ import { stats } from "@/data/site";
 export function WhatWeSolve() {
   return (
     <section className="bg-aia-surface-soft" aria-labelledby="what-we-solve-heading">
-      <div className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 lg:py-24">
-        <SectionLabel>What we solve</SectionLabel>
+      <div className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16 lg:py-24">
+        <SectionLabel className="lg:pt-2">What we solve</SectionLabel>
         <div>
           <h2
             id="what-we-solve-heading"
-            className="display mb-8 max-w-[20ch] text-[clamp(1.85rem,4.5vw,3.5rem)] text-aia-navy"
+            className="display mb-8 max-w-[22ch] text-[clamp(1.85rem,4.5vw,3.5rem)] leading-[1.05] text-aia-navy"
           >
             For over four decades, AIA been engineering longer life into the
             parts that keep industry moving.
@@ -27,8 +27,8 @@ export function WhatWeSolve() {
         </div>
       </div>
 
-      <div className="page-pad grid gap-10 pb-14 sm:pb-16 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
-        <p className="max-w-xl text-base leading-relaxed text-aia-navy/75 sm:text-lg md:text-[1.35rem]">
+      <div className="page-pad grid gap-10 pb-14 sm:pb-16 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-16">
+        <p className="max-w-xl text-base leading-relaxed text-aia-navy/70 sm:text-lg md:text-[1.35rem] md:leading-relaxed">
           Across mining, cement, quarry and thermal power, we design and
           manufacture wear solutions for grinding and other demanding
           applications. Our expertise in metallurgy, engineering and

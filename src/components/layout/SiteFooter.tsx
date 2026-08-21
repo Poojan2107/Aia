@@ -124,7 +124,7 @@ export function SiteFooter() {
               </p>
               <a
                 href="https://www.linkedin.com"
-                className="mt-5 inline-flex size-9 items-center justify-center rounded-[3px] bg-[#0a66c2] text-sm font-bold"
+                className="mt-5 inline-flex size-9 items-center justify-center rounded-[3px] border border-white/70 bg-white/15 text-sm font-bold text-white transition hover:bg-white/25"
                 aria-label="AIA on LinkedIn"
               >
                 in
@@ -141,12 +141,10 @@ export function SiteFooter() {
             </p>
             <Link
               href="/company/contact"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 font-medium transition hover:bg-aia-cream"
-              style={{ color: "#da702e" }}
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 font-medium text-aia-orange transition hover:bg-aia-cream"
             >
               <span
-                className="size-2 shrink-0 rounded-full"
-                style={{ background: "#da702e" }}
+                className="size-2 shrink-0 rounded-full bg-aia-orange"
                 aria-hidden
               />
               Talk to an expert
@@ -159,12 +157,10 @@ export function SiteFooter() {
             </p>
             <Link
               href="/company/global-presence"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 font-medium transition hover:bg-aia-cream"
-              style={{ color: "#da702e" }}
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 font-medium text-aia-orange transition hover:bg-aia-cream"
             >
               <span
-                className="size-2 shrink-0 rounded-full"
-                style={{ background: "#da702e" }}
+                className="size-2 shrink-0 rounded-full bg-aia-orange"
                 aria-hidden
               />
               Explore global presence

@@ -1,16 +1,35 @@
 @import "tailwindcss";
 
-:root {
+/*
+  Accent token `--aia-orange` is the brand accent for both prototypes.
+  Orange = client AIA preference. Blue = company recommendation (screenshots 2).
+*/
+:root,
+html[data-theme="orange"] {
   --aia-orange: #da702e;
   --aia-orange-deep: #c45a1c;
+  --aia-accent-rgb: 218, 112, 46;
+  --aia-marker: #2f6fed;
+  --aia-cream: #fff7e9;
+  --aia-surface-soft: #f7f7f7;
+}
+
+html[data-theme="blue"] {
+  --aia-orange: #006fff;
+  --aia-orange-deep: #0056d6;
+  --aia-accent-rgb: 0, 111, 255;
+  --aia-marker: #041d2c;
+  --aia-cream: #eef5ff;
+  --aia-surface-soft: #f5f7fa;
+}
+
+:root {
   --aia-navy: #041d2c;
   --aia-ink: #0a0a0a;
-  --aia-cream: #fff7e9;
   --aia-muted: #999999;
   --aia-muted-strong: #6b7280;
   --aia-line: rgba(4, 29, 44, 0.12);
   --aia-surface: #ffffff;
-  --aia-surface-soft: #f7f7f7;
   --header-h: 4.5rem;
   --page-pad: clamp(1.25rem, 5vw, 8.375rem);
   --section-y: clamp(3.5rem, 8vw, 7rem);
@@ -23,6 +42,7 @@
 @theme inline {
   --color-aia-orange: var(--aia-orange);
   --color-aia-orange-deep: var(--aia-orange-deep);
+  --color-aia-marker: var(--aia-marker);
   --color-aia-navy: var(--aia-navy);
   --color-aia-ink: var(--aia-ink);
   --color-aia-cream: var(--aia-cream);
@@ -45,6 +65,21 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+
+html[data-theme] {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bg-aia-orange,
+  .text-aia-orange,
+  .border-aia-orange,
+  .bg-aia-orange-deep {
+    transition-property: background-color, color, border-color, box-shadow;
+    transition-duration: 220ms;
+    transition-timing-function: var(--ease-out);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
