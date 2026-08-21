@@ -41,7 +41,9 @@ export function CtaButton({
       {showDot ? (
         <span
           aria-hidden
-          className="size-2 shrink-0 rounded-full bg-current"
+          className={`size-2 shrink-0 rounded-full ${
+            variant === "solid" || variant === "cream" ? "bg-white" : "bg-current"
+          }`}
         />
       ) : null}
       <span>{children}</span>
@@ -50,14 +52,31 @@ export function CtaButton({
 
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link
+        href={href}
+        className={classes}
+        style={
+          variant === "solid" || variant === "cream"
+            ? { color: "#ffffff" }
+            : undefined
+        }
+      >
         {content}
       </Link>
     );
   }
 
   return (
-    <button type="button" className={classes} {...rest}>
+    <button
+      type="button"
+      className={classes}
+      style={
+        variant === "solid" || variant === "cream"
+          ? { color: "#ffffff" }
+          : undefined
+      }
+      {...rest}
+    >
       {content}
     </button>
   );

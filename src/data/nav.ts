@@ -127,7 +127,6 @@ export const footerNav = {
     { label: "List of Stock Exchanges", href: "/investors/exchanges" },
     { label: "Scheme of Amalgamation", href: "/investors/amalgamation" },
     { label: "Corporate Announcement & Disclosure", href: "/investors/disclosures" },
-    { label: "Reports & Presentations", href: "/investors/reports" },
     { label: "Investor Regulation 46 LODR", href: "/investors/regulation-46" },
     { label: "Investor Contact Us", href: "/investors/contact" },
   ],

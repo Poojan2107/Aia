@@ -171,13 +171,3 @@ video {
     display: none !important;
   }
 }
-
-/* Tablet+: always show footer link lists (accordion only on phones) */
-@media (min-width: 640px) {
-  .footer-accordion-panel {
-    max-height: none !important;
-    opacity: 1 !important;
-    padding-bottom: 0 !important;
-    overflow: visible !important;
-  }
-}

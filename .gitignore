@@ -34,6 +34,10 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local QA / temp
+/public/qa/
+/.tmp/
+
 # vercel
 .vercel
 

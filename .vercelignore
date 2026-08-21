@@ -1,7 +1,10 @@
 # Keep design references out of production deployments
 .cursor
 public/screenshots
+public/qa
 AGENTS.md
 CLAUDE.md
 *.md
 !README.md
+scripts/qa-shots.mjs
+.tmp

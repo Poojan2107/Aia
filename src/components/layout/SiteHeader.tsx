@@ -38,10 +38,10 @@ export function SiteHeader() {
             <BrandLockup tone="light" compact />
           </Link>
 
-          <div className="flex shrink-0 items-center gap-3 text-white md:gap-6">
+          <div className="flex shrink-0 items-center gap-3 text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] md:gap-6">
             <button
               type="button"
-              className="ui-caps hidden items-center gap-2 opacity-90 transition hover:opacity-100 sm:inline-flex"
+              className="ui-caps hidden items-center gap-2 opacity-95 transition hover:opacity-100 sm:inline-flex"
               aria-haspopup="listbox"
             >
               En
@@ -52,7 +52,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/20 bg-black/25 px-3 backdrop-blur-sm transition hover:bg-black/35 md:h-[41px] md:gap-2.5 md:px-3.5"
+              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/40 px-3 backdrop-blur-md transition hover:bg-black/50 md:h-[41px] md:gap-2.5 md:px-3.5"
               aria-expanded={open}
               aria-controls="mega-menu"
             >
@@ -76,7 +76,9 @@ export function SiteHeader() {
         aria-modal="true"
         aria-labelledby={titleId}
         className={`fixed inset-0 z-50 transition-[visibility,opacity] duration-300 ${
-          open ? "visible opacity-100" : "invisible opacity-0"
+          open
+            ? "visible opacity-100"
+            : "invisible pointer-events-none opacity-0"
         }`}
       >
         <button
