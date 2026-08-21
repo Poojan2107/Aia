@@ -1,18 +1,24 @@
 type Props = {
   className?: string;
   tone?: "light" | "dark";
+  /** Smaller lockup for tight mobile headers */
+  compact?: boolean;
 };
 
 /** AIA + Vega lockup matching screenshot header treatment. */
-export function BrandLockup({ className = "", tone = "light" }: Props) {
+export function BrandLockup({
+  className = "",
+  tone = "light",
+  compact = false,
+}: Props) {
   const fill = tone === "light" ? "#FFFFFF" : "#041D2C";
   const muted = tone === "light" ? "rgba(255,255,255,0.7)" : "rgba(4,29,44,0.55)";
 
   return (
-    <span className={`inline-flex items-center gap-3 md:gap-4 ${className}`}>
+    <span className={`inline-flex items-center gap-2 sm:gap-3 md:gap-4 ${className}`}>
       <svg
         viewBox="0 0 248 56"
-        className="h-11 w-auto md:h-[58px]"
+        className={`w-auto ${compact ? "h-9 sm:h-11 md:h-[58px]" : "h-11 md:h-[58px]"}`}
         role="img"
         aria-label="AIA Engineering Limited"
       >
@@ -55,13 +61,13 @@ export function BrandLockup({ className = "", tone = "light" }: Props) {
 
       <span
         aria-hidden
-        className="hidden h-10 w-px sm:block md:h-12"
+        className="hidden h-10 w-px md:block md:h-12"
         style={{ background: muted }}
       />
 
       <svg
         viewBox="0 0 168 56"
-        className="hidden h-11 w-auto sm:block md:h-[58px]"
+        className={`hidden w-auto md:block ${compact ? "md:h-11 lg:h-[58px]" : "md:h-[58px]"}`}
         role="img"
         aria-label="Vega Industries"
       >

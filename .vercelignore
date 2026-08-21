@@ -1,0 +1,7 @@
+# Keep design references out of production deployments
+.cursor
+public/screenshots
+AGENTS.md
+CLAUDE.md
+*.md
+!README.md

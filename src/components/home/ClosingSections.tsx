@@ -26,41 +26,45 @@ export function Sustainability() {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(15,80,55,0.35),rgba(4,29,44,0.45)_55%,rgba(4,29,44,0.65))]"
       />
-      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-24">
+      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-16 sm:py-24">
         <h2
           id="sustain-heading"
-          className="display mb-8 max-w-[12ch] text-[clamp(2.5rem,5vw,4.5rem)]"
+          className="display mb-6 max-w-[12ch] text-[clamp(2rem,8vw,4.5rem)] sm:mb-8"
         >
           Can heavy industry think lighter?
         </h2>
-        <p className="mb-12 max-w-2xl text-lg leading-relaxed text-aia-cream/90 md:text-[1.75rem]">
+        <p className="mb-8 max-w-2xl text-base leading-relaxed text-aia-cream/90 sm:mb-12 sm:text-lg md:text-[1.75rem]">
           YES, We believe it can. By using resources more efficiently, reducing
           waste and embracing reuse and recycling, we&apos;re working to lower
           the environmental impact of our operations while continuing to deliver
           the performance industry depends on.
         </p>
-        <div className="mb-12 grid max-w-3xl gap-10 sm:grid-cols-2">
+        <div className="mb-8 grid max-w-3xl gap-6 sm:mb-12 sm:gap-10 sm:grid-cols-2">
           <div className="border-t border-white/25 pt-4">
-            <p className="display text-[clamp(2.5rem,4vw,4rem)]">1,00,000+</p>
-            <p className="mt-2 text-lg text-aia-cream/85">
+            <p className="display text-[clamp(2.25rem,8vw,4rem)]">1,00,000+</p>
+            <p className="mt-2 text-base text-aia-cream/85 sm:text-lg">
               Tree plantation during the year
             </p>
           </div>
           <div className="border-t border-white/25 pt-4">
-            <p className="display text-[clamp(2.5rem,4vw,4rem)]">30%</p>
-            <p className="mt-2 text-lg text-aia-cream/85">
+            <p className="display text-[clamp(2.25rem,8vw,4rem)]">30%</p>
+            <p className="mt-2 text-base text-aia-cream/85 sm:text-lg">
               Energy comes from the renewable energy resources
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-4">
-          <CtaButton href="/company/sustainability" variant="solid">
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:gap-4">
+          <CtaButton
+            href="/company/sustainability"
+            variant="solid"
+            className="w-full justify-center sm:w-auto"
+          >
             See how we think lighter
           </CtaButton>
           <CtaButton
             href="/company/csr"
             variant="outline"
-            className="border-white text-white hover:bg-white hover:text-aia-navy"
+            className="w-full justify-center border-white text-white hover:bg-white hover:text-aia-navy sm:w-auto"
           >
             Social responsibility
           </CtaButton>
@@ -75,19 +79,19 @@ export function Faq() {
 
   return (
     <section
-      className="page-pad grid gap-12 bg-white py-20 lg:grid-cols-[0.85fr_1.15fr] lg:py-28"
+      className="page-pad grid gap-8 bg-white py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.85fr_1.15fr] lg:py-28"
       aria-labelledby="faq-heading"
     >
       <div>
         <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
         <h2
           id="faq-heading"
-          className="display mb-10 max-w-[14ch] text-[clamp(2rem,4vw,3.875rem)] text-aia-navy"
+          className="display mb-8 max-w-[14ch] text-[clamp(1.75rem,5vw,3.875rem)] text-aia-navy sm:mb-10"
         >
           Here are the essentials about AIA, what we make, and how our solutions
           support your operations.
         </h2>
-        <CtaButton href="/company/contact" variant="solid">
+        <CtaButton href="/company/contact" variant="solid" className="w-full justify-center sm:w-auto">
           Ask an expert
         </CtaButton>
       </div>
@@ -99,14 +103,14 @@ export function Faq() {
             <div key={item.question} className="border-t border-aia-line">
               <button
                 type="button"
-                className="flex w-full items-start justify-between gap-6 py-6 text-left"
+                className="flex w-full items-start justify-between gap-4 py-5 text-left sm:gap-6 sm:py-6"
                 aria-expanded={isOpen}
                 onClick={() => setOpen(isOpen ? -1 : index)}
               >
-                <span className="text-xl text-aia-navy md:text-2xl">
+                <span className="text-lg text-aia-navy sm:text-xl md:text-2xl">
                   {item.question}
                 </span>
-                <span aria-hidden className="mt-1 text-2xl text-aia-orange">
+                <span aria-hidden className="mt-1 shrink-0 text-2xl text-aia-orange">
                   {isOpen ? "−" : "+"}
                 </span>
               </button>
@@ -116,7 +120,7 @@ export function Faq() {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <p className="pb-6 pr-10 text-lg leading-relaxed text-aia-navy/75">
+                  <p className="pb-5 pr-4 text-base leading-relaxed text-aia-navy/75 sm:pb-6 sm:pr-10 sm:text-lg">
                     {item.answer}
                   </p>
                 </div>
@@ -137,58 +141,60 @@ export function Insights() {
 
   return (
     <section
-      className="bg-white py-20 lg:py-28"
+      className="bg-white py-14 sm:py-20 lg:py-28"
       aria-labelledby="insights-heading"
     >
-      <div className="page-pad mb-10 text-center">
+      <div className="page-pad mb-8 text-center sm:mb-10">
         <h2
           id="insights-heading"
-          className="display text-[clamp(2rem,4vw,3.875rem)] text-aia-navy"
+          className="display text-[clamp(1.75rem,5vw,3.875rem)] text-aia-navy"
         >
           Ideas & Insights from AIA
         </h2>
-        <div className="mt-8 flex justify-center gap-8 border-b border-aia-line">
-          {tabs.map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setTab(item)}
-              className={`pb-3 text-lg transition-colors ${
-                item === tab
-                  ? "border-b-2 border-aia-orange text-aia-orange"
-                  : "text-aia-muted"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
+        <div className="-mx-1 mt-6 overflow-x-auto overscroll-x-contain sm:mt-8">
+          <div className="mx-auto flex min-w-min justify-center gap-6 border-b border-aia-line px-1 sm:gap-8">
+            {tabs.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setTab(item)}
+                className={`shrink-0 pb-3 text-base transition-colors sm:text-lg ${
+                  item === tab
+                    ? "border-b-2 border-aia-orange text-aia-orange"
+                    : "text-aia-muted"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="page-pad space-y-10">
+      <div className="page-pad space-y-8 sm:space-y-10">
         {insights.map((item, index) => (
           <article
             key={item.href}
-            className="grid items-center gap-8 border-t border-aia-line pt-10 lg:grid-cols-[1fr_1.05fr]"
+            className="grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
           >
-            <div>
+            <div className="order-2 lg:order-1">
               <time
                 dateTime={item.date}
                 className="mb-4 block text-sm uppercase tracking-[0.06em] text-aia-muted"
               >
                 {item.date}
               </time>
-              <h3 className="display mb-8 max-w-[22ch] text-[clamp(1.5rem,3vw,2.5rem)] text-aia-navy">
+              <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,4.5vw,2.5rem)] text-aia-navy sm:mb-8">
                 {item.title}
               </h3>
               <a
                 href={item.href}
-                className="ui-caps inline-flex items-center gap-2 text-aia-orange hover:opacity-80"
+                className="ui-caps inline-flex min-h-11 items-center gap-2 text-aia-orange hover:opacity-80"
               >
                 Read article <span aria-hidden>›</span>
               </a>
             </div>
-            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-aia-surface-soft">
+            <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-2xl bg-aia-surface-soft lg:order-2">
               <Image
                 src={index === 0 ? "/images/insight-1.jpg" : "/images/mining-mill.png"}
                 alt=""
@@ -200,7 +206,7 @@ export function Insights() {
                 <button
                   type="button"
                   aria-label="Next insight"
-                  className="absolute right-4 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#2f6fed] text-white shadow-lg"
+                  className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-[#2f6fed] text-white shadow-lg sm:right-4"
                 >
                   ›
                 </button>

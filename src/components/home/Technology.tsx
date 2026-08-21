@@ -13,46 +13,50 @@ const posters = [
 export function Technology() {
   return (
     <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <div className="page-pad grid gap-10 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
+      <div className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
         <div>
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
             id="tech-heading"
-            className="display max-w-[12ch] text-[clamp(2rem,4vw,3.875rem)]"
+            className="display max-w-[12ch] text-[clamp(1.75rem,5vw,3.875rem)]"
           >
             Engineered for what wear demands.
           </h2>
         </div>
         <div>
-          <p className="mb-8 max-w-xl text-lg leading-relaxed text-aia-navy/70 md:text-[1.35rem]">
+          <p className="mb-6 max-w-xl text-base leading-relaxed text-aia-navy/70 sm:mb-8 sm:text-lg md:text-[1.35rem]">
             Every operating environment creates a different wear challenge. AIA
             combines application knowledge, metallurgy and research to develop
             materials and wear solutions around the conditions they are expected
             to face.
           </p>
-          <CtaButton href="/company/technology" variant="solid">
+          <CtaButton
+            href="/company/technology"
+            variant="solid"
+            className="w-full justify-center sm:w-auto"
+          >
             Explore our technology
           </CtaButton>
         </div>
       </div>
 
-      <div className="space-y-4 pb-16">
+      <div className="space-y-2 pb-12 sm:space-y-4 sm:pb-16">
         {technologyPillars.map((pillar, index) => {
           const mediaLeft = index !== 1;
           const videoSrc = media.tech[pillar.index as keyof typeof media.tech];
           return (
             <article
               key={pillar.index}
-              className="page-pad grid items-center gap-10 py-10 lg:grid-cols-2 lg:gap-16"
+              className="page-pad grid items-center gap-6 py-8 sm:gap-10 sm:py-10 lg:grid-cols-2 lg:gap-16"
             >
-              <div className={mediaLeft ? "lg:order-2" : undefined}>
-                <p className="mb-4 ui-caps text-aia-muted">
+              <div className={mediaLeft ? "order-2 lg:order-2" : "order-2"}>
+                <p className="mb-3 ui-caps text-aia-muted sm:mb-4">
                   {pillar.index} / {pillar.label}
                 </p>
-                <h3 className="display mb-5 max-w-[16ch] text-[clamp(1.6rem,2.5vw,2rem)]">
+                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.4rem,4vw,2rem)] sm:mb-5">
                   {pillar.title}
                 </h3>
-                <p className="max-w-xl text-lg leading-relaxed text-aia-navy/70">
+                <p className="max-w-xl text-base leading-relaxed text-aia-navy/70 sm:text-lg">
                   {pillar.description}
                 </p>
               </div>
@@ -60,7 +64,7 @@ export function Technology() {
                 poster={posters[index] ?? posters[0]}
                 posterAlt={`${pillar.label} visual`}
                 src={videoSrc}
-                className={`aspect-[16/10] rounded-[1.5rem] bg-aia-surface-soft ${mediaLeft ? "lg:order-1" : ""}`}
+                className={`order-1 aspect-[16/10] rounded-[1.25rem] bg-aia-surface-soft sm:rounded-[1.5rem] ${mediaLeft ? "lg:order-1" : "lg:order-2"}`}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </article>

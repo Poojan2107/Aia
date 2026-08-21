@@ -11,13 +11,13 @@ export function Services() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("For mining");
 
   return (
-    <section className="page-pad bg-aia-surface-soft py-20 lg:py-28" aria-labelledby="services-heading">
+    <section className="page-pad bg-aia-surface-soft py-14 sm:py-20 lg:py-28" aria-labelledby="services-heading">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
           <SectionLabel className="mb-6">Services & support</SectionLabel>
           <h2
             id="services-heading"
-            className="display mb-8 max-w-[12ch] text-[clamp(2rem,4vw,3.875rem)] text-aia-navy"
+            className="display mb-8 max-w-[12ch] text-[clamp(1.75rem,5vw,3.875rem)] text-aia-navy"
           >
             We don&apos;t just supply. We help you perform.
           </h2>
@@ -27,7 +27,7 @@ export function Services() {
         </div>
 
         <div>
-          <div className="mb-2 flex gap-8 border-b border-aia-line">
+          <div className="mb-2 flex flex-wrap gap-x-8 gap-y-2 border-b border-aia-line">
             {tabs.map((item) => {
               const active = item === tab;
               return (

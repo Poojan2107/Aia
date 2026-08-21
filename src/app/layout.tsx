@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Manrope, Syne } from "next/font/google";
 import "./globals.css";
-import { site } from "@/data/site";
+import { getSiteUrl, site } from "@/data/site";
 
 const display = Archivo({
   variable: "--font-display",
@@ -24,8 +24,10 @@ const ui = Syne({
   display: "swap",
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${site.name} | Wear Solutions for Critical Operations`,
     template: `%s | ${site.name}`,
@@ -51,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: site.url,
+    url: siteUrl,
     siteName: site.name,
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
@@ -87,6 +89,7 @@ export const viewport: Viewport = {
   themeColor: "#041d2c",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

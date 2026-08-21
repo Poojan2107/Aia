@@ -1,3 +1,17 @@
+/**
+ * Canonical site URL for metadata / sitemap.
+ * Prefer NEXT_PUBLIC_SITE_URL in production; fall back to Vercel preview URL.
+ */
+export function getSiteUrl() {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+
+  const vercel = process.env.VERCEL_URL;
+  if (vercel) return `https://${vercel.replace(/\/$/, "")}`;
+
+  return "https://www.aiaengineering.com";
+}
+
 export const site = {
   name: "AIA Engineering",
   legalName: "AIA Engineering Limited",

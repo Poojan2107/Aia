@@ -33,12 +33,12 @@ export function SiteHeader() {
   return (
     <>
       <header className="pointer-events-none absolute inset-x-0 top-0 z-40">
-        <div className="page-pad pointer-events-auto flex items-center justify-between py-5 md:py-6">
-          <Link href="/" aria-label="AIA Engineering home">
-            <BrandLockup tone="light" />
+        <div className="page-pad pointer-events-auto flex items-center justify-between gap-3 py-4 md:py-6">
+          <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
+            <BrandLockup tone="light" compact />
           </Link>
 
-          <div className="flex items-center gap-4 text-white md:gap-6">
+          <div className="flex shrink-0 items-center gap-3 text-white md:gap-6">
             <button
               type="button"
               className="ui-caps hidden items-center gap-2 opacity-90 transition hover:opacity-100 sm:inline-flex"
@@ -52,7 +52,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex h-[41px] items-center gap-2.5 rounded-full border border-white/20 bg-black/25 px-3.5 backdrop-blur-sm transition hover:bg-black/35"
+              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/20 bg-black/25 px-3 backdrop-blur-sm transition hover:bg-black/35 md:h-[41px] md:gap-2.5 md:px-3.5"
               aria-expanded={open}
               aria-controls="mega-menu"
             >
@@ -87,11 +87,11 @@ export function SiteHeader() {
         />
 
         <div
-          className={`absolute left-1/2 top-[max(1.25rem,2.5vh)] flex h-[min(783px,93vh)] w-[min(1372px,94vw)] -translate-x-1/2 flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all duration-500 ease-[var(--ease-out)] ${
-            open ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0"
+          className={`absolute inset-0 flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all duration-500 ease-[var(--ease-out)] md:inset-auto md:left-1/2 md:top-[max(1.25rem,2.5vh)] md:h-[min(783px,93vh)] md:w-[min(1372px,94vw)] md:-translate-x-1/2 ${
+            open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0 md:-translate-y-3"
           }`}
         >
-          <div className="flex h-20 shrink-0 items-center justify-between bg-aia-orange px-5 md:px-10">
+          <div className="flex h-16 shrink-0 items-center justify-between bg-aia-orange px-4 sm:h-20 sm:px-5 md:px-10">
             <label className="flex min-w-0 flex-1 items-center gap-3 text-white/70">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
@@ -101,10 +101,10 @@ export function SiteHeader() {
               <input
                 type="search"
                 placeholder="Search here..."
-                className="w-full bg-transparent text-[1.1rem] text-white outline-none placeholder:text-white/40"
+                className="w-full min-w-0 bg-transparent text-base text-white outline-none placeholder:text-white/40 md:text-[1.1rem]"
               />
             </label>
-            <div className="ml-4 flex shrink-0 items-center gap-4 text-white">
+            <div className="ml-3 flex shrink-0 items-center gap-3 text-white sm:ml-4 sm:gap-4">
               <button type="button" className="ui-caps hidden items-center gap-2 sm:inline-flex">
                 English
                 <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
@@ -114,7 +114,7 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex h-[41px] items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4"
+                className="inline-flex h-10 items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 sm:h-[41px] sm:px-4"
               >
                 <span className="ui-caps">Close</span>
                 <span aria-hidden className="text-lg leading-none">
@@ -124,29 +124,30 @@ export function SiteHeader() {
             </div>
           </div>
 
-          <div className="grid min-h-0 flex-1 lg:grid-cols-[0.95fr_0.85fr_0.7fr]">
-            <div className="flex flex-col border-b border-aia-line p-7 md:p-12 lg:border-b-0 lg:border-r">
+          <div className="grid min-h-0 flex-1 overflow-y-auto overscroll-contain lg:grid-cols-[0.95fr_0.85fr_0.7fr] lg:overflow-hidden">
+            <div className="flex flex-col border-b border-aia-line p-5 sm:p-7 md:p-12 lg:border-b-0 lg:border-r">
               <h2 id={titleId} className="sr-only">
                 Site navigation
               </h2>
               <nav aria-label="Primary">
-                <ul className="space-y-5">
+                <ul className="space-y-4 sm:space-y-5">
                   {megaSections.map((section) => {
                     const isActive = section.id === active.id;
                     return (
                       <li key={section.id}>
                         <button
                           type="button"
+                          onClick={() => setActiveId(section.id)}
                           onMouseEnter={() => setActiveId(section.id)}
                           onFocus={() => setActiveId(section.id)}
-                          className="group flex w-full items-center gap-5 text-left"
+                          className="group flex w-full items-center gap-3 text-left sm:gap-5"
                           aria-current={isActive ? "true" : undefined}
                         >
-                          <span className="w-8 font-[family-name:var(--font-ui)] text-[1.2rem] text-aia-orange-deep/40">
+                          <span className="w-7 font-[family-name:var(--font-ui)] text-base text-aia-orange-deep/40 sm:w-8 sm:text-[1.2rem]">
                             {section.index}
                           </span>
                           <span
-                            className={`display text-[clamp(1.75rem,3vw,2.5rem)] transition-colors duration-300 ${
+                            className={`display text-[clamp(1.5rem,5vw,2.5rem)] transition-colors duration-300 ${
                               isActive
                                 ? "text-aia-navy"
                                 : "text-aia-muted/80 group-hover:text-aia-navy/70"
@@ -171,8 +172,8 @@ export function SiteHeader() {
                 </ul>
               </nav>
 
-              <div className="mt-auto hidden border-t border-aia-line pt-8 lg:block">
-                <p className="display mb-5 max-w-sm text-[2rem] leading-tight text-aia-navy">
+              <div className="mt-8 border-t border-aia-line pt-6 lg:mt-auto lg:pt-8">
+                <p className="display mb-5 max-w-sm text-[1.5rem] leading-tight text-aia-navy sm:text-[2rem]">
                   Have a wear or performance challenge?
                 </p>
                 <CtaButton href="/company/contact" variant="outline">
@@ -181,14 +182,14 @@ export function SiteHeader() {
               </div>
             </div>
 
-            <div className="border-b border-aia-line p-7 md:p-12 lg:border-b-0 lg:border-r">
-              <ul className="space-y-4">
+            <div className="border-b border-aia-line p-5 sm:p-7 md:p-12 lg:border-b-0 lg:border-r lg:overflow-y-auto">
+              <ul className="space-y-3 sm:space-y-4">
                 {active.links.map((link, index) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className={`block text-[1.25rem] transition-colors duration-300 hover:text-aia-orange ${
+                      className={`block text-lg transition-colors duration-300 hover:text-aia-orange sm:text-[1.25rem] ${
                         index === 0
                           ? "font-semibold text-aia-navy"
                           : "font-normal text-aia-muted"

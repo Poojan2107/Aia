@@ -30,7 +30,7 @@ export function CtaButton({
   ...rest
 }: Props) {
   const classes = [
-    "inline-flex h-[50px] items-center gap-2.5 rounded-full px-5 transition-colors duration-300",
+    "inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full px-4 transition-colors duration-300 sm:px-5",
     "ui-caps",
     variants[variant],
     className,

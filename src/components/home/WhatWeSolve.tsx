@@ -7,24 +7,24 @@ import { stats } from "@/data/site";
 export function WhatWeSolve() {
   return (
     <section className="bg-aia-surface-soft" aria-labelledby="what-we-solve-heading">
-      <div className="page-pad grid gap-10 py-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 lg:py-24">
+      <div className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16 lg:py-24">
         <SectionLabel>What we solve</SectionLabel>
         <div>
           <h2
             id="what-we-solve-heading"
-            className="display mb-8 max-w-[20ch] text-[clamp(2rem,4vw,3.5rem)] text-aia-navy"
+            className="display mb-8 max-w-[20ch] text-[clamp(1.75rem,5vw,3.5rem)] text-aia-navy"
           >
             For over four decades, AIA been engineering longer life into the
             parts that keep industry moving.
           </h2>
-          <CtaButton href="/solutions/mining" variant="solid">
+          <CtaButton href="/solutions/mining" variant="solid" className="w-full justify-center sm:w-auto">
             See how we solve wear
           </CtaButton>
         </div>
       </div>
 
       <div className="page-pad grid gap-10 pb-16 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
-        <p className="max-w-xl text-lg leading-relaxed text-aia-navy/75 md:text-[1.35rem]">
+        <p className="max-w-xl text-base leading-relaxed text-aia-navy/75 sm:text-lg md:text-[1.35rem]">
           Across mining, cement, quarry and thermal power, we design and
           manufacture wear solutions for grinding and other demanding
           applications. Our expertise in metallurgy, engineering and
@@ -40,7 +40,7 @@ export function WhatWeSolve() {
         />
       </div>
 
-      <div className="relative min-h-[72vh]">
+      <div className="relative min-h-[56vh] sm:min-h-[72vh]">
         <MediaSlot
           poster="/images/plant-aerial.jpg"
           posterAlt="AIA Engineering plant operations"
@@ -49,15 +49,15 @@ export function WhatWeSolve() {
           className="absolute inset-0"
           sizes="100vw"
         />
-        <div className="page-pad relative z-10 flex min-h-[72vh] items-end pb-14 pt-24">
-          <div className="grid w-full gap-8 border-t border-white/35 pt-8 text-white lg:grid-cols-[1fr_repeat(3,minmax(0,1fr))]">
-            <p className="display text-[2rem] md:text-[2.5rem]">AIA Engineering</p>
+        <div className="page-pad relative z-10 flex min-h-[56vh] items-end pb-10 pt-20 sm:min-h-[72vh] sm:pb-14 sm:pt-24">
+          <div className="grid w-full gap-6 border-t border-white/35 pt-6 text-white sm:gap-8 sm:pt-8 lg:grid-cols-[1fr_repeat(3,minmax(0,1fr))]">
+            <p className="display text-[1.5rem] sm:text-[2rem] md:text-[2.5rem]">AIA Engineering</p>
             {stats.map((stat) => (
               <div key={stat.label} className="pt-1">
-                <p className="display text-[clamp(3rem,5.5vw,6.5rem)] leading-none tracking-tight">
+                <p className="display text-[clamp(2.5rem,10vw,6.5rem)] leading-none tracking-tight">
                   {stat.value}
                 </p>
-                <div className="mt-3 border-t border-white/35 pt-3 text-lg">
+                <div className="mt-3 border-t border-white/35 pt-3 text-base sm:text-lg">
                   {stat.label}
                 </div>
               </div>

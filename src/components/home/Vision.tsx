@@ -7,19 +7,19 @@ export function Vision() {
       aria-labelledby="vision-heading"
     >
       <div className="page-pad grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        <div className="relative mx-auto w-full max-w-lg">
-          {/* Orange geometric accents */}
+        <div className="relative mx-auto w-full max-w-lg overflow-visible px-2 sm:px-0">
+          {/* Orange geometric accents — scaled down on small screens */}
           <span
             aria-hidden
-            className="absolute -left-6 top-10 size-0 border-y-[28px] border-r-[48px] border-y-transparent border-r-aia-orange/90"
+            className="absolute -left-2 top-10 size-0 scale-75 border-y-[28px] border-r-[48px] border-y-transparent border-r-aia-orange/90 sm:-left-6 sm:scale-100"
           />
           <span
             aria-hidden
-            className="absolute -right-4 top-24 size-0 border-y-[18px] border-l-[32px] border-y-transparent border-l-aia-orange"
+            className="absolute -right-1 top-24 size-0 scale-75 border-y-[18px] border-l-[32px] border-y-transparent border-l-aia-orange sm:-right-4 sm:scale-100"
           />
           <span
             aria-hidden
-            className="absolute bottom-24 -left-2 size-0 border-y-[14px] border-r-[24px] border-y-transparent border-r-aia-orange/70"
+            className="absolute bottom-24 left-0 size-0 scale-75 border-y-[14px] border-r-[24px] border-y-transparent border-r-aia-orange/70 sm:-left-2 sm:scale-100"
           />
 
           <div className="relative aspect-[4/5] overflow-hidden">
@@ -40,7 +40,7 @@ export function Vision() {
         <div className="relative">
           <span
             aria-hidden
-            className="pointer-events-none absolute -right-2 -top-10 font-[family-name:var(--font-display)] text-[8rem] leading-none text-aia-orange/25 md:text-[10rem]"
+            className="pointer-events-none absolute -right-2 -top-6 font-[family-name:var(--font-display)] text-[5rem] leading-none text-aia-orange/25 sm:-top-10 sm:text-[8rem] md:text-[10rem]"
           >
             ”
           </span>
