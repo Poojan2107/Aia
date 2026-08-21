@@ -1,107 +1,63 @@
+import Image from "next/image";
+
 type Props = {
   className?: string;
   tone?: "light" | "dark";
   compact?: boolean;
+  /** Hide Vega for tight cards / mobile-first lockups */
+  showVega?: boolean;
 };
 
-/** AIA + Vega lockup matching Figma header / footer treatment. */
+/** Official AIA + Vega lockup from brand assets. */
 export function BrandLockup({
   className = "",
   tone = "light",
   compact = false,
+  showVega = true,
 }: Props) {
-  const fill = tone === "light" ? "#FFFFFF" : "#041D2C";
-  const muted =
-    tone === "light" ? "rgba(255,255,255,0.75)" : "rgba(4,29,44,0.55)";
+  const aia = tone === "light" ? "/images/logo-aia.png" : "/images/logo-aia-dark.png";
+  const vega =
+    tone === "light" ? "/images/logo-vega.png" : "/images/logo-vega-dark.png";
+  const divider =
+    tone === "light" ? "rgba(255,255,255,0.45)" : "rgba(4,29,44,0.2)";
 
   return (
-    <span className={`inline-flex items-center gap-2.5 sm:gap-3 md:gap-4 ${className}`}>
-      <svg
-        viewBox="0 0 248 56"
-        className={`w-auto ${compact ? "h-9 sm:h-10 md:h-[52px]" : "h-11 md:h-[56px]"}`}
-        role="img"
-        aria-label="AIA Engineering Limited"
-      >
-        <circle cx="28" cy="28" r="25" fill="none" stroke={fill} strokeWidth="2" />
-        <text
-          x="28"
-          y="34"
-          textAnchor="middle"
-          fill={fill}
-          fontFamily="var(--font-display), Helvetica, sans-serif"
-          fontSize="17"
-          fontWeight="700"
-          letterSpacing="1"
-        >
-          AE
-        </text>
-        <text
-          x="66"
-          y="23"
-          fill={fill}
-          fontFamily="var(--font-display), Helvetica, sans-serif"
-          fontSize="14"
-          fontWeight="700"
-          letterSpacing="0.4"
-        >
-          AIA Engineering
-        </text>
-        <text
-          x="66"
-          y="42"
-          fill={muted}
-          fontFamily="var(--font-ui), Helvetica, sans-serif"
-          fontSize="11"
-          fontWeight="500"
-          letterSpacing="2"
-        >
-          LIMITED
-        </text>
-      </svg>
-
-      <span
-        aria-hidden
-        className="hidden h-9 w-px md:block md:h-11"
-        style={{ background: muted }}
+    <span
+      className={`inline-flex max-w-full items-center gap-2.5 sm:gap-3 md:gap-3.5 ${className}`}
+    >
+      <Image
+        src={aia}
+        alt="AIA Engineering Limited"
+        width={246}
+        height={82}
+        className={`w-auto object-contain object-left ${
+          compact
+            ? "h-9 max-w-[10.5rem] sm:h-10 sm:max-w-[12rem] md:h-12 md:max-w-[14.5rem]"
+            : "h-10 max-w-[12rem] sm:h-11 sm:max-w-[14rem] md:h-[3.35rem] md:max-w-[16rem]"
+        }`}
+        priority={compact}
       />
 
-      <svg
-        viewBox="0 0 168 56"
-        className={`hidden w-auto md:block ${compact ? "md:h-10 lg:h-[52px]" : "md:h-[56px]"}`}
-        role="img"
-        aria-label="Vega Industries"
-      >
-        <path
-          d="M8 44 L26 10 L44 44 Z"
-          fill="none"
-          stroke={fill}
-          strokeWidth="2.4"
-          strokeLinejoin="round"
-        />
-        <path d="M26 18 L26 38" stroke={fill} strokeWidth="2" />
-        <text
-          x="56"
-          y="23"
-          fill={fill}
-          fontFamily="var(--font-display), Helvetica, sans-serif"
-          fontSize="14"
-          fontWeight="700"
-          letterSpacing="1"
-        >
-          VEGA
-        </text>
-        <text
-          x="56"
-          y="42"
-          fill={muted}
-          fontFamily="var(--font-ui), Helvetica, sans-serif"
-          fontSize="10"
-          fontWeight="500"
-          letterSpacing="1.8"
-        >
-          INDUSTRIES
-        </text>
-      </svg>
+      {showVega ? (
+        <>
+          <span
+            aria-hidden
+            className="hidden h-7 w-px shrink-0 md:block md:h-9"
+            style={{ background: divider }}
+          />
+          <Image
+            src={vega}
+            alt="Vega Industries"
+            width={188}
+            height={136}
+            className={`hidden w-auto object-contain object-left md:block ${
+              compact
+                ? "md:h-6 md:max-w-[5.75rem] lg:h-7 lg:max-w-[6.5rem]"
+                : "md:h-7 md:max-w-[6.5rem] lg:h-8 lg:max-w-[7.25rem]"
+            }`}
+          />
+        </>
+      ) : null}
     </span>
   );
 }

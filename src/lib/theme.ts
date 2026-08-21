@@ -6,13 +6,13 @@ export const themes = {
   orange: {
     id: "orange" as const,
     label: "Orange",
-    note: "Client preference",
+    note: "AIA orange accent",
     swatch: "#da702e",
   },
   blue: {
     id: "blue" as const,
     label: "Blue",
-    note: "Company recommendation",
+    note: "AIA blue accent",
     swatch: "#006fff",
   },
 } as const;

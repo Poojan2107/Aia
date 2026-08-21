@@ -58,7 +58,7 @@ export function SiteHeader() {
             >
               <span className="ui-caps tracking-[0.08em]">Menu</span>
               <span
-                className="relative flex size-[22px] items-center justify-center rounded-full bg-aia-orange"
+                className="relative flex size-[22px] items-center justify-center rounded-full bg-aia-orange shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
                 aria-hidden
               >
                 <span className="absolute top-[7px] h-px w-2.5 bg-white" />
@@ -75,7 +75,7 @@ export function SiteHeader() {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`fixed inset-0 z-50 transition-[visibility,opacity] duration-300 ${
+        className={`fixed inset-0 z-[60] transition-[visibility,opacity] duration-300 ${
           open
             ? "visible opacity-100"
             : "invisible pointer-events-none opacity-0"

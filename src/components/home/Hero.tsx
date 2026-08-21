@@ -12,27 +12,27 @@ export function Hero() {
         alt="Industrial grinding operations at an AIA customer site"
         fill
         priority
-        quality={90}
+        quality={92}
         sizes="100vw"
         className="object-cover object-center"
       />
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.42)_0%,rgba(4,29,44,0.1)_36%,rgba(4,29,44,0.58)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.48)_0%,rgba(4,29,44,0.12)_34%,rgba(4,29,44,0.62)_100%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 w-[min(55%,680px)] bg-gradient-to-r from-black/50 via-black/18 to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 w-[min(58%,720px)] bg-gradient-to-r from-black/55 via-black/20 to-transparent"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-black/75 via-black/28 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-black/78 via-black/32 to-transparent"
       />
 
       <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-end pb-24 pt-28 sm:pb-16 sm:pt-36 md:pb-20 lg:pb-24">
         <div className="grid items-end gap-8 sm:gap-10 lg:grid-cols-[1.35fr_0.75fr] lg:gap-16 xl:gap-24">
-          <h1 className="display max-w-[13ch] text-[clamp(2.4rem,7.4vw,5.65rem)] uppercase leading-[0.95] text-white">
+          <h1 className="display max-w-[13ch] text-[clamp(2.45rem,7.5vw,5.75rem)] uppercase leading-[0.94] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]">
             We engineer for
             <br />
             the hours you

@@ -47,11 +47,11 @@ export function SiteFooter() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[#041d2c]/75"
+        className="absolute inset-0 bg-[#041d2c]/82"
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.35)_0%,rgba(4,29,44,0.55)_50%,rgba(4,29,44,0.85)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.45)_0%,rgba(4,29,44,0.62)_45%,rgba(4,29,44,0.9)_100%)]"
       />
 
       <div className="page-pad relative z-10 pb-[max(1rem,env(safe-area-inset-bottom))] pt-14 md:pt-20">
@@ -124,10 +124,17 @@ export function SiteFooter() {
               </p>
               <a
                 href="https://www.linkedin.com"
-                className="mt-5 inline-flex size-9 items-center justify-center rounded-[3px] border border-white/70 bg-white/15 text-sm font-bold text-white transition hover:bg-white/25"
+                className="mt-5 inline-flex size-9 items-center justify-center transition hover:opacity-90"
                 aria-label="AIA on LinkedIn"
               >
-                in
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/icons/linkedin.svg"
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="size-9"
+                />
               </a>
             </div>
           </div>

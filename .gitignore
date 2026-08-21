@@ -37,6 +37,7 @@ yarn-error.log*
 # local QA / temp
 /public/qa/
 /.tmp/
+/AIA Assests/
 
 # vercel
 .vercel

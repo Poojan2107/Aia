@@ -24,7 +24,7 @@ export function AboutBand() {
           posterAlt="AIA Engineering facility"
           src={media.about}
           film
-          className="mx-auto mb-10 aspect-[16/10] max-w-4xl rounded-[1.25rem]"
+          className="mx-auto mb-10 aspect-[16/10] max-w-4xl rounded-[1.5rem] shadow-[0_24px_60px_rgba(4,29,44,0.1)]"
           sizes="(max-width: 1024px) 100vw, 900px"
         />
         <p className="mx-auto mb-8 max-w-3xl text-base leading-relaxed text-aia-navy/75 sm:text-lg">

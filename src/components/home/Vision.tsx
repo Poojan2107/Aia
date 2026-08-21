@@ -21,13 +21,13 @@ export function Vision() {
             className="absolute bottom-28 left-1 size-0 scale-75 border-y-[14px] border-r-[24px] border-y-transparent border-r-aia-orange/75 sm:bottom-24 sm:-left-1 sm:scale-100"
           />
 
-          <div className="relative aspect-[4/5] overflow-hidden">
+          <div className="relative aspect-[4/5] overflow-hidden bg-aia-surface-soft">
             <Image
               src="/images/vision-portrait.jpg"
               alt="Mr. Bhadresh Kantilal Shah, Managing Director"
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"
-              className="object-cover object-top"
+              className="object-cover object-[center_20%]"
             />
             <div
               aria-hidden

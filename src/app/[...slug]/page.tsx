@@ -6,8 +6,8 @@ type Props = {
 };
 
 function titleFromSlug(slug: string[]) {
-  return slug
-    .join(" / ")
+  const last = slug[slug.length - 1] ?? "page";
+  return last
     .replace(/-/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
@@ -30,7 +30,7 @@ export default async function CatchAllPage({ params }: Props) {
     <InteriorPage
       title={title}
       eyebrow={eyebrow}
-      description={`${title} is part of the AIA site map from the Figma system. The homepage experience is complete; this destination is ready for final copy and media.`}
+      description={`Learn more about ${title} at AIA Engineering — wear solutions, application expertise, and global support built around the performance your operations depend on.`}
     />
   );
 }

@@ -42,10 +42,10 @@ export function Services() {
                   key={item}
                   type="button"
                   onClick={() => setTab(item)}
-                  className={`pb-3 text-sm uppercase tracking-[0.08em] transition-colors ${
+                  className={`pb-3 text-sm font-medium uppercase tracking-[0.08em] transition-colors ${
                     active
                       ? "border-b-2 border-aia-orange text-aia-orange"
-                      : "text-aia-muted"
+                      : "text-aia-muted hover:text-aia-navy/70"
                   }`}
                 >
                   {item}

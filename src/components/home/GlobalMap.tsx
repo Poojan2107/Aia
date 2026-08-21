@@ -52,7 +52,15 @@ export function GlobalMap() {
 
         <ul className="space-y-1.5 text-[10px] uppercase tracking-[0.08em] text-aia-navy/70 sm:text-[11px]">
           <li className="flex items-center gap-2">
-            <span className="size-2 shrink-0 rounded-full bg-aia-marker" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/icons/map-indicator.svg"
+              alt=""
+              width={12}
+              height={12}
+              className="size-3 shrink-0"
+              aria-hidden
+            />
             Logistic Wearhouses
           </li>
           <li className="flex items-center gap-2">

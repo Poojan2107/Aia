@@ -13,19 +13,20 @@ export function Sustainability() {
       aria-labelledby="sustain-heading"
     >
       <Image
-        src="/images/sustainability-gear.jpg"
+        src="/images/sustainability-aia.jpg"
         alt="Industrial gear with a growing plant — heavy industry thinking lighter"
         fill
         sizes="100vw"
-        className="object-cover object-center"
+        className="object-cover object-right"
         priority={false}
+        quality={90}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(4,29,44,0.82)_0%,rgba(4,29,44,0.55)_42%,rgba(4,29,44,0.25)_70%,rgba(4,29,44,0.45)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(4,29,44,0.92)_0%,rgba(4,29,44,0.72)_32%,rgba(4,29,44,0.28)_58%,rgba(4,29,44,0.18)_100%)]"
       />
 
-      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-16 sm:py-24 lg:max-w-[55%]">
+      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-20 sm:py-24 lg:max-w-[55%] lg:py-28">
         <h2
           id="sustain-heading"
           className="display mb-6 max-w-[14ch] text-[clamp(2rem,6vw,4.25rem)]"
@@ -38,7 +39,7 @@ export function Sustainability() {
           the environmental impact of our operations while continuing to deliver
           the performance industry depends on.
         </p>
-        <div className="mb-8 grid max-w-xl gap-6 sm:mb-10 sm:grid-cols-2 sm:gap-10">
+        <div className="mb-10 grid max-w-xl gap-6 sm:mb-12 sm:grid-cols-2 sm:gap-10">
           <div className="border-t border-white/30 pt-4">
             <p className="display text-[clamp(2.25rem,6vw,3.5rem)]">1,00,000+</p>
             <p className="mt-2 text-base text-white/85 sm:text-lg">
@@ -52,7 +53,7 @@ export function Sustainability() {
             </p>
           </div>
         </div>
-        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:gap-4">
+        <div className="flex w-full flex-col gap-3 pb-8 sm:w-auto sm:flex-row sm:flex-wrap sm:gap-4 sm:pb-4">
           <CtaButton
             href="/company/sustainability"
             variant="outline-light"
@@ -199,7 +200,11 @@ export function Insights() {
             </div>
             <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-2xl bg-aia-surface-soft lg:order-2">
               <Image
-                src={index === 0 ? "/images/insight-1.jpg" : "/images/mining-mill.png"}
+                src={
+                  index === 0
+                    ? "/images/insight-1.jpg"
+                    : "/images/insight-2.jpg"
+                }
                 alt=""
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"
@@ -209,9 +214,17 @@ export function Insights() {
                 <button
                   type="button"
                   aria-label="Next insight"
-                  className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-aia-orange text-white shadow-lg sm:right-4"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 sm:right-4"
                 >
-                  ›
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/icons/next.svg"
+                    alt=""
+                    width={44}
+                    height={44}
+                    className="size-11"
+                    aria-hidden
+                  />
                 </button>
               ) : null}
             </div>

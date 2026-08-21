@@ -10,7 +10,7 @@ const slides = [
     id: "lining",
     title: "Ball Mill Lining Solutions",
     caption: "Safety | Wear Life | Operations",
-    image: "/images/mining-mill.png",
+    image: "/images/case-1.jpg",
     branded: true,
   },
   {
@@ -24,7 +24,7 @@ const slides = [
     id: "components",
     title: "Wear Component Systems",
     caption: "Precision | Reliability | Life",
-    image: "/images/cement-mill.png",
+    image: "/images/about-still.jpg",
     branded: true,
   },
 ] as const;
@@ -47,14 +47,14 @@ export function Gallery() {
           See what better performance looks like.
         </h2>
         <p className="mx-auto max-w-2xl text-base text-aia-navy/65 sm:text-lg">
-          Explore AIA solutions, applications and engineering through videos
-          that show how our products are designed to perform in demanding
-          operating conditions.
+          Explore AIA solutions, applications and engineering through films that
+          show how our products are designed to perform in demanding operating
+          conditions.
         </p>
       </div>
 
       <div className="relative mx-auto max-w-6xl px-4">
-        <div className="relative aspect-video overflow-hidden rounded-2xl bg-[#e4e7ea] md:hidden">
+        <div className="relative aspect-video overflow-hidden rounded-2xl bg-[#e4e7ea] shadow-[0_20px_50px_rgba(4,29,44,0.08)] md:hidden">
           <Image
             src={active.image}
             alt={active.title}
@@ -62,8 +62,9 @@ export function Gallery() {
             sizes="100vw"
             className="object-cover"
           />
+          <span className="pointer-events-none absolute inset-0 bg-black/15" />
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="flex size-14 items-center justify-center rounded-full border border-white/40 bg-black/25 text-white backdrop-blur-sm">
+            <span className="flex size-14 items-center justify-center rounded-full border border-white/45 bg-black/30 text-white backdrop-blur-sm">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5.5v13l11-6.5L8 5.5z" />
               </svg>
@@ -79,10 +80,10 @@ export function Gallery() {
                 key={slide.id}
                 type="button"
                 onClick={() => setIndex(i)}
-                className={`relative aspect-video shrink-0 overflow-hidden rounded-2xl bg-[#1a1f24] transition-all duration-500 ease-[var(--ease-out)] ${
+                className={`relative aspect-video shrink-0 overflow-hidden rounded-2xl bg-[#1a1f24] shadow-[0_16px_40px_rgba(4,29,44,0.12)] transition-all duration-500 ease-[var(--ease-out)] ${
                   isActive
                     ? "w-[min(100%,720px)] opacity-100"
-                    : "w-[min(28%,220px)] opacity-70 hover:opacity-90"
+                    : "w-[min(28%,220px)] opacity-75 hover:opacity-95"
                 }`}
                 aria-current={isActive}
                 aria-label={slide.title}
@@ -92,10 +93,10 @@ export function Gallery() {
                   alt={slide.title}
                   fill
                   sizes={isActive ? "720px" : "220px"}
-                  className={`object-cover ${slide.branded && !isActive ? "opacity-80" : ""}`}
+                  className="object-cover"
                 />
                 {slide.branded && !isActive ? (
-                  <span className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 px-4 text-center text-white">
+                  <span className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 px-4 text-center text-white">
                     <span className="display text-[clamp(0.85rem,1.4vw,1.15rem)] uppercase leading-tight">
                       {slide.title}
                     </span>
@@ -107,22 +108,36 @@ export function Gallery() {
                   </span>
                 ) : null}
                 {isActive ? (
-                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                    <span className="flex size-16 items-center justify-center rounded-full border border-white/40 bg-black/25 text-white backdrop-blur-sm">
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5.5v13l11-6.5L8 5.5z" />
-                      </svg>
+                  <>
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 bg-black/20"
+                    />
+                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                      <span className="flex size-16 items-center justify-center rounded-full border border-white/45 bg-black/30 text-white backdrop-blur-sm">
+                        <svg
+                          width="22"
+                          height="22"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M8 5.5v13l11-6.5L8 5.5z" />
+                        </svg>
+                      </span>
                     </span>
-                  </span>
+                  </>
                 ) : null}
               </button>
             );
           })}
         </div>
 
-        <div className="mt-6 flex items-center justify-center gap-2 px-2 text-center text-aia-navy/70">
-          <span className="inline-block size-3 shrink-0 rounded-sm bg-[#ff0000]" aria-hidden />
-          <p className="text-base sm:text-lg">{active.title}</p>
+        <div className="mt-6 flex items-center justify-center gap-2.5 px-2 text-center text-aia-navy/75">
+          <span
+            className="inline-block size-3 shrink-0 rounded-[2px] bg-[#ff0000]"
+            aria-hidden
+          />
+          <p className="text-base font-medium sm:text-lg">{active.title}</p>
         </div>
 
         <div className="mx-auto mt-8 flex max-w-[220px] items-center gap-2">
