@@ -3,52 +3,51 @@
 import Image from "next/image";
 import { useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { MediaSlot } from "@/components/ui/MediaSlot";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { faqs, insights } from "@/data/content";
-import { media } from "@/data/media";
 
 export function Sustainability() {
   return (
     <section
-      className="relative min-h-[100svh] text-aia-cream"
+      className="relative min-h-[100svh] overflow-hidden text-white"
       aria-labelledby="sustain-heading"
     >
-      <MediaSlot
-        poster="/images/plant-aerial.jpg"
-        posterAlt="Industrial landscape suggesting lighter, more efficient operations"
-        src={media.sustainability}
-        overlay="heavy"
-        className="absolute inset-0"
+      <Image
+        src="/images/sustainability-gear.jpg"
+        alt="Industrial gear with a growing plant — heavy industry thinking lighter"
+        fill
         sizes="100vw"
+        className="object-cover object-center"
+        priority={false}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,rgba(15,80,55,0.35),rgba(4,29,44,0.45)_55%,rgba(4,29,44,0.65))]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(4,29,44,0.82)_0%,rgba(4,29,44,0.55)_42%,rgba(4,29,44,0.25)_70%,rgba(4,29,44,0.45)_100%)]"
       />
-      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-16 sm:py-24">
+
+      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-16 sm:py-24 lg:max-w-[55%]">
         <h2
           id="sustain-heading"
-          className="display mb-6 max-w-[12ch] text-[clamp(2rem,8vw,4.5rem)] sm:mb-8"
+          className="display mb-6 max-w-[14ch] text-[clamp(2rem,6vw,4.25rem)]"
         >
           Can heavy industry think lighter?
         </h2>
-        <p className="mb-8 max-w-2xl text-base leading-relaxed text-aia-cream/90 sm:mb-12 sm:text-lg md:text-[1.75rem]">
+        <p className="mb-8 max-w-xl text-base leading-relaxed text-white/90 sm:mb-10 sm:text-lg md:text-[1.35rem]">
           YES, We believe it can. By using resources more efficiently, reducing
           waste and embracing reuse and recycling, we&apos;re working to lower
           the environmental impact of our operations while continuing to deliver
           the performance industry depends on.
         </p>
-        <div className="mb-8 grid max-w-3xl gap-6 sm:mb-12 sm:gap-10 sm:grid-cols-2">
-          <div className="border-t border-white/25 pt-4">
-            <p className="display text-[clamp(2.25rem,8vw,4rem)]">1,00,000+</p>
-            <p className="mt-2 text-base text-aia-cream/85 sm:text-lg">
+        <div className="mb-8 grid max-w-xl gap-6 sm:mb-10 sm:grid-cols-2 sm:gap-10">
+          <div className="border-t border-white/30 pt-4">
+            <p className="display text-[clamp(2.25rem,6vw,3.5rem)]">1,00,000+</p>
+            <p className="mt-2 text-base text-white/85 sm:text-lg">
               Tree plantation during the year
             </p>
           </div>
-          <div className="border-t border-white/25 pt-4">
-            <p className="display text-[clamp(2.25rem,8vw,4rem)]">30%</p>
-            <p className="mt-2 text-base text-aia-cream/85 sm:text-lg">
+          <div className="border-t border-white/30 pt-4">
+            <p className="display text-[clamp(2.25rem,6vw,3.5rem)]">30%</p>
+            <p className="mt-2 text-base text-white/85 sm:text-lg">
               Energy comes from the renewable energy resources
             </p>
           </div>
@@ -56,15 +55,15 @@ export function Sustainability() {
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:gap-4">
           <CtaButton
             href="/company/sustainability"
-            variant="solid"
+            variant="outline-light"
             className="w-full justify-center sm:w-auto"
           >
             See how we think lighter
           </CtaButton>
           <CtaButton
             href="/company/csr"
-            variant="outline"
-            className="w-full justify-center border-white text-white hover:bg-white hover:text-aia-navy sm:w-auto"
+            variant="outline-light"
+            className="w-full justify-center sm:w-auto"
           >
             Social responsibility
           </CtaButton>
@@ -86,12 +85,16 @@ export function Faq() {
         <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
         <h2
           id="faq-heading"
-          className="display mb-8 max-w-[14ch] text-[clamp(1.75rem,5vw,3.875rem)] text-aia-navy sm:mb-10"
+          className="display mb-8 max-w-[14ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy sm:mb-10"
         >
           Here are the essentials about AIA, what we make, and how our solutions
           support your operations.
         </h2>
-        <CtaButton href="/company/contact" variant="solid" className="w-full justify-center sm:w-auto">
+        <CtaButton
+          href="/company/contact"
+          variant="solid"
+          className="w-full justify-center sm:w-auto"
+        >
           Ask an expert
         </CtaButton>
       </div>
@@ -147,7 +150,7 @@ export function Insights() {
       <div className="page-pad mb-8 text-center sm:mb-10">
         <h2
           id="insights-heading"
-          className="display text-[clamp(1.75rem,5vw,3.875rem)] text-aia-navy"
+          className="display text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
         >
           Ideas & Insights from AIA
         </h2>
@@ -184,7 +187,7 @@ export function Insights() {
               >
                 {item.date}
               </time>
-              <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,4.5vw,2.5rem)] text-aia-navy sm:mb-8">
+              <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,4.2vw,2.5rem)] text-aia-navy sm:mb-8">
                 {item.title}
               </h3>
               <a

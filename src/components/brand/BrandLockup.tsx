@@ -1,7 +1,6 @@
 type Props = {
   className?: string;
   tone?: "light" | "dark";
-  /** Smaller lockup for tight mobile headers */
   compact?: boolean;
 };
 
@@ -13,28 +12,17 @@ export function BrandLockup({
 }: Props) {
   const fill = tone === "light" ? "#FFFFFF" : "#041D2C";
   const muted =
-    tone === "light" ? "rgba(255,255,255,0.78)" : "rgba(4,29,44,0.55)";
-  const shadow = undefined;
+    tone === "light" ? "rgba(255,255,255,0.75)" : "rgba(4,29,44,0.55)";
 
   return (
-    <span
-      className={`inline-flex items-center gap-2.5 sm:gap-3 md:gap-4 ${className}`}
-      style={shadow ? { filter: shadow } : undefined}
-    >
+    <span className={`inline-flex items-center gap-2.5 sm:gap-3 md:gap-4 ${className}`}>
       <svg
         viewBox="0 0 248 56"
-        className={`w-auto ${compact ? "h-9 sm:h-11 md:h-[52px]" : "h-11 md:h-[56px]"}`}
+        className={`w-auto ${compact ? "h-9 sm:h-10 md:h-[52px]" : "h-11 md:h-[56px]"}`}
         role="img"
         aria-label="AIA Engineering Limited"
       >
-        <circle
-          cx="28"
-          cy="28"
-          r="25"
-          fill="none"
-          stroke={fill}
-          strokeWidth="2"
-        />
+        <circle cx="28" cy="28" r="25" fill="none" stroke={fill} strokeWidth="2" />
         <text
           x="28"
           y="34"
@@ -79,7 +67,7 @@ export function BrandLockup({
 
       <svg
         viewBox="0 0 168 56"
-        className={`hidden w-auto md:block ${compact ? "md:h-11 lg:h-[52px]" : "md:h-[56px]"}`}
+        className={`hidden w-auto md:block ${compact ? "md:h-10 lg:h-[52px]" : "md:h-[56px]"}`}
         role="img"
         aria-label="Vega Industries"
       >

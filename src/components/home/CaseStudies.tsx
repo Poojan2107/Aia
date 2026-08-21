@@ -28,7 +28,7 @@ export function CaseStudies() {
       <div className="mb-8 flex flex-col gap-6 sm:mb-12 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <h2
           id="cases-heading"
-          className="display max-w-[16ch] text-[clamp(1.75rem,5vw,3.875rem)] text-aia-navy"
+          className="display max-w-[16ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
         >
           When the challenge is real, performance has to be proven.
         </h2>

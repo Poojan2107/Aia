@@ -34,7 +34,11 @@ export function AboutBand() {
           manufacturing helps extend component life, improve equipment
           reliability and support better operating performance.
         </p>
-        <CtaButton href="/company/about" variant="solid" className="w-full justify-center sm:w-auto">
+        <CtaButton
+          href="/company/about"
+          variant="solid"
+          className="w-full justify-center sm:w-auto"
+        >
           Discover AIA
         </CtaButton>
       </div>

@@ -22,17 +22,16 @@ export function ModelShowcase({ industry }: Props) {
 
   return (
     <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.22fr)] lg:items-center lg:gap-14">
-      {/* Copy — order 2 on mobile so diagram leads */}
       <div className="order-2 lg:order-1">
         <div className="mb-4 flex items-baseline gap-4 sm:mb-5 sm:gap-5">
           <span className="font-[family-name:var(--font-ui)] text-[1.5rem] text-aia-navy/25 sm:text-[1.75rem] md:text-[2rem]">
             {industry.index}
           </span>
-          <h3 className="display text-[clamp(2rem,7vw,3.25rem)] text-aia-navy">
+          <h3 className="display text-[clamp(2rem,6.5vw,3.25rem)] text-aia-navy">
             {industry.name}
           </h3>
         </div>
-        <p className="mb-6 max-w-md whitespace-pre-line text-[clamp(1.1rem,4.2vw,2.5rem)] leading-[1.2] text-aia-navy/55 sm:mb-8">
+        <p className="mb-6 max-w-md whitespace-pre-line text-[clamp(1.15rem,3.8vw,2.35rem)] leading-[1.15] text-aia-navy/50 sm:mb-8">
           {industry.description}
         </p>
 
@@ -90,7 +89,6 @@ export function ModelShowcase({ industry }: Props) {
         </a>
       </div>
 
-      {/* Diagram */}
       <div className="order-1 lg:order-2">
         <div
           className="relative aspect-[16/10] w-full overflow-hidden bg-white"
@@ -113,30 +111,16 @@ export function ModelShowcase({ industry }: Props) {
             />
           </div>
 
+          {/* Labels are baked into mill posters — interactive dots only (no HTML label ghosting) */}
           {industry.hotspots.map((hotspot) => {
             const isActive = active === hotspot.id;
             const isLinked = linkedIds.has(hotspot.id);
-            const tone = hotspot.tone ?? "yellow";
-            const labelClass =
-              tone === "yellow"
-                ? "bg-[#f5d76e] text-aia-navy"
-                : "bg-[#3a4550] text-white";
-
-            const align = hotspot.align ?? "right";
-            const labelPos =
-              align === "left"
-                ? "right-full top-1/2 mr-3 -translate-y-1/2"
-                : align === "top"
-                  ? "bottom-full left-1/2 mb-3 -translate-x-1/2"
-                  : align === "bottom"
-                    ? "top-full left-1/2 mt-3 -translate-x-1/2"
-                    : "left-full top-1/2 ml-3 -translate-y-1/2";
 
             return (
               <button
                 key={hotspot.id}
                 type="button"
-                className="absolute z-10 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center md:size-auto"
+                className="absolute z-10 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
                 style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}
                 aria-label={hotspot.label}
                 aria-pressed={isActive}
@@ -146,22 +130,14 @@ export function ModelShowcase({ industry }: Props) {
               >
                 <span
                   className={`relative block size-3 rounded-full transition-transform duration-300 md:size-2.5 ${
-                    isActive ? "scale-125 bg-aia-orange" : "bg-[#f5d76e]"
+                    isActive ? "scale-125 bg-aia-orange" : "bg-aia-orange/80"
                   } ${isActive || isLinked ? "hotspot-ring is-active" : ""}`}
                 />
-                <span
-                  className={`hotspot-label pointer-events-none absolute whitespace-nowrap rounded-[2px] px-2 py-1 text-[11px] font-semibold tracking-wide shadow-[0_4px_14px_rgba(0,0,0,0.12)] transition-all duration-300 ${labelClass} ${labelPos} ${
-                    isActive ? "opacity-100" : "opacity-80"
-                  }`}
-                >
-                  {hotspot.label}
-                </span>
               </button>
             );
           })}
         </div>
 
-        {/* Mobile: readable hotspot chips (desktop uses floating labels) */}
         <div className="mt-4 md:hidden">
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.08em] text-aia-muted">
             Tap a part

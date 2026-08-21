@@ -33,12 +33,12 @@ export function SiteHeader() {
   return (
     <>
       <header className="pointer-events-none absolute inset-x-0 top-0 z-40">
-        <div className="page-pad pointer-events-auto flex items-center justify-between gap-3 py-4 md:py-6">
+        <div className="page-pad pointer-events-auto flex items-center justify-between gap-3 py-5 md:py-6">
           <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>
 
-          <div className="flex shrink-0 items-center gap-3 text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] md:gap-6">
+          <div className="flex shrink-0 items-center gap-4 text-white md:gap-6">
             <button
               type="button"
               className="ui-caps hidden items-center gap-2 opacity-95 transition hover:opacity-100 sm:inline-flex"
@@ -52,7 +52,7 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/25 bg-black/40 px-3 backdrop-blur-md transition hover:bg-black/50 md:h-[41px] md:gap-2.5 md:px-3.5"
+              className="inline-flex h-10 items-center gap-2.5 rounded-full border border-white/25 bg-black/35 px-3.5 backdrop-blur-md transition hover:bg-black/45 md:h-[41px]"
               aria-expanded={open}
               aria-controls="mega-menu"
             >
@@ -84,26 +84,33 @@ export function SiteHeader() {
         <button
           type="button"
           aria-label="Close menu"
-          className="absolute inset-0 bg-black/40 backdrop-blur-[28px]"
+          className="absolute inset-0 bg-black/45 backdrop-blur-[28px]"
           onClick={() => setOpen(false)}
         />
 
         <div
           className={`absolute inset-0 flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all duration-500 ease-[var(--ease-out)] md:inset-auto md:left-1/2 md:top-[max(1.25rem,2.5vh)] md:h-[min(783px,93vh)] md:w-[min(1372px,94vw)] md:-translate-x-1/2 ${
-            open ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0 md:-translate-y-3"
+            open
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0 md:-translate-y-3"
           }`}
         >
-          <div className="flex h-16 shrink-0 items-center justify-between bg-aia-orange px-4 sm:h-20 sm:px-5 md:px-10">
-            <label className="flex min-w-0 flex-1 items-center gap-3 text-white/70">
+          <div className="flex h-16 shrink-0 items-center justify-between bg-aia-orange px-4 sm:h-20 sm:px-6 md:px-10">
+            <label className="flex min-w-0 flex-1 items-center gap-3 text-white/75">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
-                <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                <path
+                  d="M20 20l-3.5-3.5"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
               </svg>
               <span className="sr-only">Search</span>
               <input
                 type="search"
                 placeholder="Search here..."
-                className="w-full min-w-0 bg-transparent text-base text-white outline-none placeholder:text-white/40 md:text-[1.1rem]"
+                className="w-full min-w-0 bg-transparent text-base text-white outline-none placeholder:text-white/45 md:text-[1.1rem]"
               />
             </label>
             <div className="ml-3 flex shrink-0 items-center gap-3 text-white sm:ml-4 sm:gap-4">
@@ -116,7 +123,7 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex h-10 items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 sm:h-[41px] sm:px-4"
+                className="inline-flex h-10 items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3.5 sm:h-[41px] sm:px-4"
               >
                 <span className="ui-caps">Close</span>
                 <span aria-hidden className="text-lg leading-none">
@@ -127,7 +134,7 @@ export function SiteHeader() {
           </div>
 
           <div className="grid min-h-0 flex-1 overflow-y-auto overscroll-contain lg:grid-cols-[0.95fr_0.85fr_0.7fr] lg:overflow-hidden">
-            <div className="flex flex-col border-b border-aia-line p-5 sm:p-7 md:p-12 lg:border-b-0 lg:border-r">
+            <div className="flex flex-col border-b border-aia-line p-5 sm:p-8 md:p-12 lg:border-b-0 lg:border-r">
               <h2 id={titleId} className="sr-only">
                 Site navigation
               </h2>
@@ -145,14 +152,14 @@ export function SiteHeader() {
                           className="group flex w-full items-center gap-3 text-left sm:gap-5"
                           aria-current={isActive ? "true" : undefined}
                         >
-                          <span className="w-7 font-[family-name:var(--font-ui)] text-base text-aia-orange-deep/40 sm:w-8 sm:text-[1.2rem]">
+                          <span className="w-7 font-[family-name:var(--font-ui)] text-base text-aia-orange/45 sm:w-8 sm:text-[1.15rem]">
                             {section.index}
                           </span>
                           <span
-                            className={`display text-[clamp(1.5rem,5vw,2.5rem)] transition-colors duration-300 ${
+                            className={`display text-[clamp(1.5rem,4.5vw,2.5rem)] transition-colors duration-300 ${
                               isActive
                                 ? "text-aia-navy"
-                                : "text-aia-muted/80 group-hover:text-aia-navy/70"
+                                : "text-aia-muted group-hover:text-aia-navy/70"
                             }`}
                           >
                             {section.label}
@@ -184,8 +191,8 @@ export function SiteHeader() {
               </div>
             </div>
 
-            <div className="border-b border-aia-line p-5 sm:p-7 md:p-12 lg:border-b-0 lg:border-r lg:overflow-y-auto">
-              <ul className="space-y-3 sm:space-y-4">
+            <div className="border-b border-aia-line p-5 sm:p-8 md:p-12 lg:border-b-0 lg:border-r lg:overflow-y-auto">
+              <ul className="space-y-3.5 sm:space-y-4">
                 {active.links.map((link, index) => (
                   <li key={link.href}>
                     <Link
@@ -215,7 +222,7 @@ export function SiteHeader() {
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"
               />
             </div>
           </div>

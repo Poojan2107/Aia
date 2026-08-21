@@ -7,37 +7,42 @@ import { media } from "@/data/media";
 
 const slides = [
   {
+    id: "lining",
+    title: "Ball Mill Lining Solutions",
+    caption: "Safety | Wear Life | Operations",
+    image: "/images/mining-mill.png",
+    branded: true,
+  },
+  {
     id: "corporate",
     title: "AIA Engineering Corporate Film",
     image: "/images/gallery-center.jpg",
     video: media.galleryCorporate,
-  },
-  {
-    id: "lining",
-    title: "Ball Mill Lining Solutions",
-    image: "/images/mining-mill.png",
+    branded: false,
   },
   {
     id: "components",
     title: "Wear Component Systems",
+    caption: "Precision | Reliability | Life",
     image: "/images/cement-mill.png",
+    branded: true,
   },
 ] as const;
 
 export function Gallery() {
-  const [index, setIndex] = useState(0);
-  const active = slides[index] ?? slides[0];
+  const [index, setIndex] = useState(1);
+  const active = slides[index] ?? slides[1];
 
   return (
     <section
-      className="bg-aia-surface-soft py-16 sm:py-20 lg:py-28"
+      className="bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
       aria-labelledby="gallery-heading"
     >
       <div className="page-pad mb-10 text-center sm:mb-12">
         <SectionLabel className="mb-6">Gallery</SectionLabel>
         <h2
           id="gallery-heading"
-          className="display mx-auto mb-6 max-w-[16ch] text-[clamp(1.85rem,5vw,4.5rem)] text-aia-navy"
+          className="display mx-auto mb-6 max-w-[16ch] text-[clamp(1.85rem,4.8vw,4.5rem)] text-aia-navy"
         >
           See what better performance looks like.
         </h2>
@@ -49,7 +54,6 @@ export function Gallery() {
       </div>
 
       <div className="relative mx-auto max-w-6xl px-4">
-        {/* Mobile: single slide */}
         <div className="relative aspect-video overflow-hidden rounded-2xl bg-[#e4e7ea] md:hidden">
           <Image
             src={active.image}
@@ -57,7 +61,6 @@ export function Gallery() {
             fill
             sizes="100vw"
             className="object-cover"
-            priority={false}
           />
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
             <span className="flex size-14 items-center justify-center rounded-full border border-white/40 bg-black/25 text-white backdrop-blur-sm">
@@ -68,7 +71,6 @@ export function Gallery() {
           </span>
         </div>
 
-        {/* Desktop: peeking carousel */}
         <div className="hidden items-center justify-center gap-4 overflow-hidden md:flex">
           {slides.map((slide, i) => {
             const isActive = i === index;
@@ -77,10 +79,10 @@ export function Gallery() {
                 key={slide.id}
                 type="button"
                 onClick={() => setIndex(i)}
-                className={`relative aspect-video shrink-0 overflow-hidden rounded-2xl bg-[#e4e7ea] transition-all duration-500 ease-[var(--ease-out)] ${
+                className={`relative aspect-video shrink-0 overflow-hidden rounded-2xl bg-[#1a1f24] transition-all duration-500 ease-[var(--ease-out)] ${
                   isActive
                     ? "w-[min(100%,720px)] opacity-100"
-                    : "w-[min(28%,220px)] opacity-55 hover:opacity-80"
+                    : "w-[min(28%,220px)] opacity-70 hover:opacity-90"
                 }`}
                 aria-current={isActive}
                 aria-label={slide.title}
@@ -90,8 +92,20 @@ export function Gallery() {
                   alt={slide.title}
                   fill
                   sizes={isActive ? "720px" : "220px"}
-                  className="object-cover"
+                  className={`object-cover ${slide.branded && !isActive ? "opacity-80" : ""}`}
                 />
+                {slide.branded && !isActive ? (
+                  <span className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 px-4 text-center text-white">
+                    <span className="display text-[clamp(0.85rem,1.4vw,1.15rem)] uppercase leading-tight">
+                      {slide.title}
+                    </span>
+                    {"caption" in slide && slide.caption ? (
+                      <span className="mt-2 text-[10px] uppercase tracking-[0.12em] text-white/80">
+                        {slide.caption}
+                      </span>
+                    ) : null}
+                  </span>
+                ) : null}
                 {isActive ? (
                   <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
                     <span className="flex size-16 items-center justify-center rounded-full border border-white/40 bg-black/25 text-white backdrop-blur-sm">

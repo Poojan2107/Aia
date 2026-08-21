@@ -42,7 +42,6 @@ export function GlobalMap() {
           </div>
         </div>
 
-        {/* Mobile contact card — avoids overlapping tiny map */}
         <aside className="rounded-md bg-aia-orange p-4 text-white sm:hidden">
           <p className="mb-1 text-sm font-semibold">UAE</p>
           <p className="text-sm text-white/90">Tel. +253 998 6542 336</p>

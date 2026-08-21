@@ -18,7 +18,7 @@ export function Technology() {
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
             id="tech-heading"
-            className="display max-w-[12ch] text-[clamp(1.75rem,5vw,3.875rem)]"
+            className="display max-w-[12ch] text-[clamp(1.85rem,4.8vw,3.875rem)]"
           >
             Engineered for what wear demands.
           </h2>
@@ -53,7 +53,7 @@ export function Technology() {
                 <p className="mb-3 ui-caps text-aia-muted sm:mb-4">
                   {pillar.index} / {pillar.label}
                 </p>
-                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.4rem,4vw,2rem)] sm:mb-5">
+                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.45rem,3.5vw,2rem)] sm:mb-5">
                   {pillar.title}
                 </h3>
                 <p className="max-w-xl text-base leading-relaxed text-aia-navy/70 sm:text-lg">

@@ -3,12 +3,11 @@ import Image from "next/image";
 export function Vision() {
   return (
     <section
-      className="relative overflow-hidden bg-white py-20 lg:py-28"
+      className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-28"
       aria-labelledby="vision-heading"
     >
-      <div className="page-pad grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="page-pad grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <div className="relative mx-auto w-full max-w-lg overflow-visible px-2 sm:px-0">
-          {/* Orange geometric accents — scaled down on small screens */}
           <span
             aria-hidden
             className="absolute -left-2 top-10 size-0 scale-75 border-y-[28px] border-r-[48px] border-y-transparent border-r-aia-orange/90 sm:-left-6 sm:scale-100"
@@ -46,7 +45,7 @@ export function Vision() {
           </span>
           <h2
             id="vision-heading"
-            className="display relative mb-8 max-w-[14ch] text-[clamp(2rem,4vw,3.875rem)] text-aia-navy"
+            className="display relative mb-8 max-w-[14ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
           >
             A vision that continues to guide us.
           </h2>

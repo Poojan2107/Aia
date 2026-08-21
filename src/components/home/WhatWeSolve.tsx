@@ -12,18 +12,22 @@ export function WhatWeSolve() {
         <div>
           <h2
             id="what-we-solve-heading"
-            className="display mb-8 max-w-[20ch] text-[clamp(1.75rem,5vw,3.5rem)] text-aia-navy"
+            className="display mb-8 max-w-[20ch] text-[clamp(1.85rem,4.5vw,3.5rem)] text-aia-navy"
           >
             For over four decades, AIA been engineering longer life into the
             parts that keep industry moving.
           </h2>
-          <CtaButton href="/solutions/mining" variant="solid" className="w-full justify-center sm:w-auto">
+          <CtaButton
+            href="/solutions/mining"
+            variant="solid"
+            className="w-full justify-center sm:w-auto"
+          >
             See how we solve wear
           </CtaButton>
         </div>
       </div>
 
-      <div className="page-pad grid gap-10 pb-16 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+      <div className="page-pad grid gap-10 pb-14 sm:pb-16 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
         <p className="max-w-xl text-base leading-relaxed text-aia-navy/75 sm:text-lg md:text-[1.35rem]">
           Across mining, cement, quarry and thermal power, we design and
           manufacture wear solutions for grinding and other demanding
@@ -51,10 +55,12 @@ export function WhatWeSolve() {
         />
         <div className="page-pad relative z-10 flex min-h-[56vh] items-end pb-10 pt-20 sm:min-h-[72vh] sm:pb-14 sm:pt-24">
           <div className="grid w-full gap-6 border-t border-white/35 pt-6 text-white sm:gap-8 sm:pt-8 lg:grid-cols-[1fr_repeat(3,minmax(0,1fr))]">
-            <p className="display text-[1.5rem] sm:text-[2rem] md:text-[2.5rem]">AIA Engineering</p>
+            <p className="display text-[1.5rem] sm:text-[2rem] md:text-[2.5rem]">
+              AIA Engineering
+            </p>
             {stats.map((stat) => (
               <div key={stat.label} className="pt-1">
-                <p className="display text-[clamp(2.5rem,10vw,6.5rem)] leading-none tracking-tight">
+                <p className="display text-[clamp(2.5rem,9vw,6.5rem)] leading-none tracking-tight">
                   {stat.value}
                 </p>
                 <div className="mt-3 border-t border-white/35 pt-3 text-base sm:text-lg">

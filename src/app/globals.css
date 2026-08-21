@@ -2,16 +2,18 @@
 
 :root {
   --aia-orange: #da702e;
-  --aia-orange-deep: #ac4200;
+  --aia-orange-deep: #c45a1c;
   --aia-navy: #041d2c;
   --aia-ink: #0a0a0a;
   --aia-cream: #fff7e9;
   --aia-muted: #999999;
+  --aia-muted-strong: #6b7280;
   --aia-line: rgba(4, 29, 44, 0.12);
   --aia-surface: #ffffff;
   --aia-surface-soft: #f7f7f7;
   --header-h: 4.5rem;
-  --page-pad: clamp(1rem, 4.5vw, 8.375rem);
+  --page-pad: clamp(1.25rem, 5vw, 8.375rem);
+  --section-y: clamp(3.5rem, 8vw, 7rem);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
@@ -25,6 +27,7 @@
   --color-aia-ink: var(--aia-ink);
   --color-aia-cream: var(--aia-cream);
   --color-aia-muted: var(--aia-muted);
+  --color-aia-muted-strong: var(--aia-muted-strong);
   --color-aia-line: var(--aia-line);
   --color-aia-surface: var(--aia-surface);
   --color-aia-surface-soft: var(--aia-surface-soft);
@@ -88,10 +91,15 @@ video {
   padding-inline: max(var(--page-pad), var(--safe-left), var(--safe-right));
 }
 
+.section-y {
+  padding-block: var(--section-y);
+}
+
 .section-label {
   font-family: var(--font-ui), sans-serif;
   font-size: 0.95rem;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--aia-orange);
 }
@@ -105,16 +113,16 @@ video {
 .display {
   font-family: var(--font-display), "Helvetica Neue", sans-serif;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.02;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
 .ui-caps {
   font-family: var(--font-ui), sans-serif;
   font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -165,7 +173,6 @@ video {
   border-color: var(--aia-orange);
 }
 
-/* Floating hotspot labels spill on phones — chips below diagram instead */
 @media (max-width: 767px) {
   .hotspot-label {
     display: none !important;
