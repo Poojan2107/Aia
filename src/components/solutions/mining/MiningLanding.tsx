@@ -73,13 +73,27 @@ export function MiningLanding() {
           </h2>
 
           <Reveal>
-            <ul className="flex flex-wrap items-center justify-center gap-2.5">
-              {intro.pressures.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-full border border-aia-line bg-aia-surface-soft px-4 py-2 text-[0.8rem] text-aia-navy/70 transition duration-300 hover:border-aia-orange/50 hover:text-aia-navy sm:text-[0.88rem]"
-                >
-                  {item}
+            <ul className="grid gap-3 sm:grid-cols-3 sm:gap-4">
+              {intro.pressures.map((item, i) => (
+                <li key={item}>
+                  <p className="group relative flex min-h-[8.5rem] flex-col justify-end overflow-hidden rounded-2xl border border-aia-line bg-aia-surface-soft px-5 py-5 transition duration-500 ease-[var(--ease-out)] hover:-translate-y-1 hover:border-aia-orange hover:bg-aia-orange hover:shadow-[0_22px_50px_color-mix(in_srgb,var(--aia-orange)_28%,transparent)] sm:min-h-[10rem] sm:px-6 sm:py-6">
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -right-2 -top-3 display text-[4.5rem] font-extrabold leading-none text-aia-navy/[0.06] transition-colors duration-500 group-hover:text-white/15 sm:text-[5.5rem]"
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="relative font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tabular-nums tracking-[0.16em] text-aia-orange transition-colors duration-500 group-hover:text-white">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="relative mt-3 text-[1.05rem] font-semibold leading-snug text-aia-navy transition-colors duration-500 group-hover:text-white sm:text-[1.15rem]">
+                      {item}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="relative mt-4 block h-[2px] w-8 bg-aia-orange transition-all duration-500 group-hover:w-14 group-hover:bg-white"
+                    />
+                  </p>
                 </li>
               ))}
             </ul>
@@ -135,8 +149,8 @@ export function MiningLanding() {
 
           <Reveal delay={180}>
             <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <CtaButton href="#products">Explore Mining Products</CtaButton>
-              <CtaButton href="#services" variant="outline">
+              <CtaButton href="/solutions/mining/products">Explore Mining Products</CtaButton>
+              <CtaButton href="/solutions/mining/services" variant="outline">
                 Explore Mining Services
               </CtaButton>
             </div>

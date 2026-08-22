@@ -1,0 +1,156 @@
+export const miningProductsPage = {
+  hero: {
+    line1: "Engineered Mining Solutions",
+    line2: "for enhanced Mill Reliability and Performance",
+    image: "/images/mining-hero.jpg",
+    imageAlt:
+      "Interior view through an industrial grinding mill with lined shell and grinding media",
+  },
+  groups: [
+    {
+      id: "sag",
+      mill: "SAG Mill",
+      note: "Lining and discharge",
+      products: [
+        {
+          id: "sag-liners",
+          title: "Advanced Lining System",
+          subtitle: "Feed End liners and Shell Liners",
+          body: "SAG mills operate in a harsh environment of high impact and abrasion. Our feed-end and shell lining systems protect the mill while optimizing material flow through the charge.",
+          image: "/images/funnel/funnel-sag-lining.png",
+          imageAlt: "3D cutaway of a SAG mill with advanced lining systems",
+          variants: [
+            "AIS: Steel Bolting — Through",
+            "AIS: Steel Bolting — Headless",
+            "AIS: Steel Bolting — Channel",
+            "AIS: Composite Bolted Bolting",
+          ],
+        },
+        {
+          id: "sag-discharge",
+          title: "Discharge End Assembly",
+          subtitle: "Next Gen PL for SAG mills",
+          body: "The Next Gen PL discharge system is designed for efficient evacuation — increasing throughput and reducing energy consumed on slurry that should already have left the mill.",
+          image: "/images/funnel/funnel-sag-de.png",
+          imageAlt: "3D view of a SAG mill next-generation discharge-end system",
+          variants: [
+            "Next Gen PL",
+            "PDC — Core Composite Plates with Ceramic",
+            "PL",
+            "EL",
+          ],
+        },
+      ],
+    },
+    {
+      id: "ball",
+      mill: "Ball Mill",
+      note: "Liners, shell, and discharge",
+      products: [
+        {
+          id: "ball-end",
+          title: "Advanced Lining System",
+          subtitle: "End Liners (Feed & Discharge)",
+          body: "Ball mill end liners are designed for fine grinding — supporting optimized charge motion and improved mill performance at both the feed and discharge ends.",
+          image: "/images/funnel/funnel-ball-lining.png",
+          imageAlt: "3D cutaway of a ball mill with wave liners and grinding media",
+          variants: [
+            "AIS: Steel Bolting — Channel Type",
+            "AIS: Steel Bolting — Through Type",
+            "AIS: Composite Bolting",
+            "AIS: Composite Headless Bolting",
+          ],
+        },
+        {
+          id: "ball-shell",
+          title: "Shell Liners",
+          subtitle: "Designed with advanced simulation",
+          body: "We use advanced simulation to design shell liners that deliver efficient grinding, easier installation, and longer wear life in ball mill duty.",
+          image: "/images/mining-lining.png",
+          imageAlt: "Interior of a mill shell with installed lining",
+          variants: [
+            "AIS: Steel Bolting — Channel Type",
+            "AIS: Steel Bolting — Headless",
+            "AIS: Steel Bolting — Headless Through",
+            "AIS: Headless Steel Bolting",
+          ],
+        },
+        {
+          id: "grate-conversion",
+          title: "Overflow to Grate Discharge Conversion",
+          subtitle: "Tighter grind, less wasted energy",
+          body: "Converting overflow mills to grate discharge reduces over-grinding and lifts throughput and energy efficiency — with a discharge assembly engineered for the conversion.",
+          image: "/images/funnel/funnel-ball-de.png",
+          imageAlt: "3D view of a ball mill grate discharge assembly",
+          variants: ["Grate Liner", "Next Gen DE System"],
+        },
+      ],
+    },
+    {
+      id: "verti-media",
+      mill: "Verti Mill & Media",
+      note: "Vertical liners and grinding media",
+      products: [
+        {
+          id: "verti",
+          title: "Verti Mill Liners",
+          subtitle: "High-chrome liners for vertical mills",
+          body: "High-chrome liners specified for Verti Mills, built for superior wear resistance and durability in fine-grinding service.",
+          image: "/images/funnel/funnel-verti.png",
+          imageAlt: "3D cutaway of a vertical mill with ceramic composite linings",
+          variants: [],
+        },
+        {
+          id: "media",
+          title: "High Chrome Grinding Media",
+          subtitle: "12.5 mm to 100 mm",
+          body: "High-chrome grinding media designed for maximum grinding performance and longevity — available from 12.5 mm to 100 mm.",
+          image: "/images/funnel/funnel-media.png",
+          imageAlt: "3D product render of high-chrome grinding media",
+          variants: [],
+        },
+      ],
+    },
+    {
+      id: "fastening",
+      mill: "Mill Fastening Systems",
+      note: "SAG and ball mills",
+      products: [
+        {
+          id: "fastening-systems",
+          title: "Mill Fastening Systems",
+          subtitle: "Reliability under demanding conditions",
+          body: "Fastening options for SAG and ball mills — through-bolting, channel-type, T-bolt and headless — specified for reliability under demanding mill conditions.",
+          image: "/images/mining-lining.png",
+          imageAlt: "Mill lining and fastening in an industrial grinding mill",
+          variants: [
+            "Through Bolting",
+            "Channel Type Bolting",
+            "T-bolt Bolting",
+            "Headless Bolting",
+          ],
+        },
+      ],
+    },
+  ],
+  cases: [
+    {
+      title: "40ft SAG Mill in Latin America",
+      body: "Improving the life of inlet liners for a customer who was facing short life issues.",
+      href: "/resources/case-studies/sag-latin-america",
+      image: "/images/case-1.png",
+    },
+    {
+      title: "24ft SAG Mill in West Africa",
+      body: "Optimizing SAG mill performance for our customers through our innovative mill solutions and expertise.",
+      href: "/resources/case-studies/sag-west-africa",
+      image: "/images/case-2.png",
+    },
+    {
+      title: "28ft SAG Mill in Asia",
+      body: "Optimizing SAG mill performance with new fastening systems for mill internals and their support.",
+      href: "/resources/case-studies/sag-asia",
+      image: "/images/case-3.png",
+    },
+  ],
+} as const;

@@ -29,6 +29,8 @@ export const megaSections: MegaSection[] = [
         title: "By industry",
         links: [
           { label: "Mining", href: "/solutions/mining" },
+          { label: "Mining Products", href: "/solutions/mining/products" },
+          { label: "Mining Services", href: "/solutions/mining/services" },
           { label: "Cement", href: "/solutions/cement" },
           { label: "Quarry", href: "/solutions/quarry" },
           { label: "Thermal Power", href: "/solutions/thermal" },
@@ -127,6 +129,8 @@ export const megaSections: MegaSection[] = [
 export const footerNav = {
   solutions: [
     { label: "Mining", href: "/solutions/mining" },
+    { label: "Mining Products", href: "/solutions/mining/products" },
+    { label: "Mining Services", href: "/solutions/mining/services" },
     { label: "Cement", href: "/solutions/cement" },
     { label: "Quarry", href: "/solutions/quarry" },
     { label: "Thermal Power", href: "/solutions/thermal" },

@@ -130,9 +130,11 @@ a {
   color: var(--aia-navy);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 img,
@@ -378,6 +380,21 @@ video.film-cover {
   transform: translate3d(0, 0, 0);
 }
 
+.metric-arc {
+  stroke-dashoffset: var(--metric-len);
+}
+
+.reveal.is-in .metric-arc {
+  stroke-dashoffset: var(--metric-off);
+  transition: stroke-dashoffset 1.2s var(--ease-out) 0.12s;
+}
+
+@media (min-width: 1024px) {
+  .chapter-sheet + .chapter-sheet {
+    box-shadow: 0 -32px 90px rgba(4, 29, 44, 0.1);
+  }
+}
+
 .outcome-track-fill {
   transform: scaleX(0);
 }
@@ -464,6 +481,19 @@ video.film-cover {
     transform: none;
     animation: none;
     transition: none;
+  }
+
+  .metric-arc,
+  .reveal.is-in .metric-arc {
+    stroke-dashoffset: var(--metric-off);
+    transition: none;
+  }
+
+  .chapter-sheet {
+    position: static;
+    height: auto;
+    min-height: 0;
+    box-shadow: none;
   }
 }
 

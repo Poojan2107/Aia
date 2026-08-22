@@ -6,6 +6,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
     "/solutions/mining",
+    "/solutions/mining/products",
+    "/solutions/mining/services",
     "/solutions/cement",
     "/solutions/quarry",
     "/solutions/thermal",
