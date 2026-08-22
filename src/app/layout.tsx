@@ -134,7 +134,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${ui.variable} ${serif.variable} h-full`}
     >
-      <body className="min-h-full bg-aia-surface text-aia-navy antialiased">
+      <body
+        className="min-h-full bg-aia-surface text-aia-navy antialiased"
+        suppressHydrationWarning
+      >
         <Script
           id="aia-theme-boot"
           strategy="beforeInteractive"

@@ -6,6 +6,7 @@ import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { faqs, insights } from "@/data/content";
 import { CountUp } from "@/components/ui/CountUp";
+import { Reveal } from "@/components/ui/Reveal";
 
 export function Sustainability() {
   return (
@@ -93,7 +94,7 @@ export function Faq() {
       aria-labelledby="faq-heading"
     >
       <div className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-16 xl:gap-24">
-        <div>
+        <Reveal>
           <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
           <h2
             id="faq-heading"
@@ -105,7 +106,7 @@ export function Faq() {
           <CtaButton href="/company/contact" variant="solid">
             Ask an expert
           </CtaButton>
-        </div>
+        </Reveal>
 
         <div>
           {faqs.map((item, index) => {

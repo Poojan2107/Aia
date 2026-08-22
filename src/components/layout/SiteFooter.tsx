@@ -62,7 +62,7 @@ function FooterSearch({
 
 export function SiteFooter() {
   return (
-    <footer className="relative isolate overflow-hidden bg-[#041d2c] text-white">
+    <footer className="relative isolate w-full overflow-hidden bg-[#041d2c] text-white">
       {/* Clean photographic plate — no baked-in UI */}
       <Image
         src="/images/footer-bg.jpg"

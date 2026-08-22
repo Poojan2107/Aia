@@ -47,10 +47,7 @@ export function Technology() {
           const textLeft = index === 1;
           const videoSrc = media.tech[pillar.index as keyof typeof media.tech];
           return (
-            <article
-              key={pillar.index}
-              className="page-pad mx-auto grid max-w-[1440px] items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16"
-            >
+            <Reveal key={pillar.index} as="article" delay={index * 80} className="page-pad mx-auto grid max-w-[1440px] items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16">
               <div
                 className={
                   textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
@@ -77,7 +74,7 @@ export function Technology() {
                 }`}
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
-            </article>
+            </Reveal>
           );
         })}
       </div>

@@ -1,16 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
   className?: string;
   delay?: number;
+  as?: "div" | "li" | "article" | "p" | "section" | "aside" | "figure";
 };
 
 /** Quiet fade/rise used once a block enters view. */
-export function Reveal({ children, className = "", delay = 0 }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  as: Tag = "div",
+}: Props) {
+  const ref = useRef<HTMLElement | null>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
@@ -28,19 +34,21 @@ export function Reveal({ children, className = "", delay = 0 }: Props) {
           io.disconnect();
         }
       },
-      { threshold: 0.16, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
+  const Comp = Tag as ElementType;
+
   return (
-    <div
+    <Comp
       ref={ref}
       className={`reveal ${inView ? "is-in" : ""} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}
-    </div>
+    </Comp>
   );
 }

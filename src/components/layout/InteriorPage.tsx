@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { AssistChip } from "@/components/ui/AssistChip";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { Reveal } from "@/components/ui/Reveal";
 
 type Props = {
   title: string;
@@ -35,10 +36,12 @@ export function InteriorPage({
         />
         <SiteHeader />
         <div className="page-pad relative z-10 mx-auto flex min-h-[56vh] max-w-[1440px] flex-col justify-end pb-16 pt-36">
-          <p className="mb-4 ui-caps tracking-[0.12em] text-white/60">{eyebrow}</p>
-          <h1 className="display max-w-[16ch] text-[clamp(2.5rem,5.5vw,4.75rem)]">
-            {title}
-          </h1>
+          <Reveal>
+            <p className="mb-4 ui-caps tracking-[0.12em] text-white/60">{eyebrow}</p>
+            <h1 className="display max-w-[16ch] text-[clamp(2.5rem,5.5vw,4.75rem)]">
+              {title}
+            </h1>
+          </Reveal>
         </div>
       </div>
       <main className="page-pad py-[var(--section-y)]">

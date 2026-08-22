@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Reveal } from "@/components/ui/Reveal";
 
 /** Final Bhadresh plate: keyed portrait, theme shards, smoke in front of the chair. */
 export function Vision() {
@@ -38,7 +39,7 @@ export function Vision() {
           </div>
         </div>
 
-        <div className="relative lg:pl-1">
+        <Reveal delay={120} className="relative lg:pl-1">
           <QuoteMark />
           <h2
             id="vision-heading"
@@ -65,7 +66,7 @@ export function Vision() {
               </p>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

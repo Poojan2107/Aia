@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { Reveal } from "@/components/ui/Reveal";
 import { caseStudies } from "@/data/content";
 
 export function CaseStudies() {
@@ -18,12 +19,14 @@ export function CaseStudies() {
       aria-labelledby="cases-heading"
     >
       <div className="mx-auto mb-10 flex max-w-[1440px] flex-col gap-6 sm:mb-14 lg:flex-row lg:items-start lg:justify-between">
+        <Reveal>
         <h2
           id="cases-heading"
           className="display max-w-[16ch] text-[clamp(1.9rem,5vw,3.875rem)] leading-[1.02] text-aia-navy"
         >
           When the challenge is real, performance has to be proven.
         </h2>
+        </Reveal>
         <div className="flex shrink-0 flex-col gap-4 sm:items-end">
           <CtaButton href="/resources/case-studies" variant="solid">
             View case study
@@ -48,8 +51,9 @@ export function CaseStudies() {
       </div>
 
       <div className="mx-auto grid max-w-[1440px] gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-        {ordered.map((item) => (
-          <a key={item.href} href={item.href} className="group block">
+        {ordered.map((item, i) => (
+          <Reveal key={item.href} delay={i * 100}>
+          <a href={item.href} className="group block">
             <div className="relative mb-5 aspect-[16/10] overflow-hidden rounded-[22px] bg-[#e8eaec]">
               <Image
                 src={item.image}
@@ -70,6 +74,7 @@ export function CaseStudies() {
             </h3>
             <p className="text-sm text-aia-muted sm:text-[0.98rem]">{item.meta}</p>
           </a>
+          </Reveal>
         ))}
       </div>
     </section>

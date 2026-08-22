@@ -7,6 +7,7 @@ import { CountUp } from "@/components/ui/CountUp";
 import { AmbientFilm } from "@/components/ui/AmbientFilm";
 import { media } from "@/data/media";
 import { prefersReducedMotion, useScrollProgress } from "@/lib/motion";
+import { Reveal } from "@/components/ui/Reveal";
 
 /**
  * Figma About: grey stage, pinned aerial plate that scales up on scroll,
@@ -94,9 +95,10 @@ export function AboutBand() {
 
       <div className="bg-white">
         <div className="page-pad mx-auto grid max-w-[1440px] grid-cols-2 divide-x divide-aia-line border-y border-aia-line md:grid-cols-3 lg:grid-cols-6">
-          {footprint.map((item) => (
-            <div
+          {footprint.map((item, i) => (
+            <Reveal
               key={item.label}
+              delay={i * 70}
               className="flex flex-col items-center justify-center px-3 py-10 text-center sm:py-14 lg:py-16"
             >
               <p className="display text-[clamp(1.85rem,3.6vw,2.75rem)] font-bold text-aia-orange">
@@ -105,7 +107,7 @@ export function AboutBand() {
               <p className="mt-2 max-w-[14ch] text-[0.9rem] leading-snug text-aia-navy/55 sm:text-[1rem]">
                 {item.label}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

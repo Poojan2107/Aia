@@ -12,6 +12,7 @@ html[data-theme="orange"] {
   --aia-marker: #006fff;
   --aia-cream: #fff7e9;
   --aia-surface-soft: #f7f7f7;
+  --aia-mining-alt: #7fb3d5;
 }
 
 html[data-theme="blue"] {
@@ -21,6 +22,7 @@ html[data-theme="blue"] {
   --aia-marker: #041d2c;
   --aia-cream: #eef5ff;
   --aia-surface-soft: #f5f7fa;
+  --aia-mining-alt: #7dd3fc;
 }
 
 :root {
@@ -43,6 +45,7 @@ html[data-theme="blue"] {
   --color-aia-orange: var(--aia-orange);
   --color-aia-orange-deep: var(--aia-orange-deep);
   --color-aia-marker: var(--aia-marker);
+  --color-aia-mining-alt: var(--aia-mining-alt);
   --color-aia-navy: var(--aia-navy);
   --color-aia-ink: var(--aia-ink);
   --color-aia-cream: var(--aia-cream);
@@ -77,7 +80,9 @@ html[data-theme] {
   .bg-aia-orange,
   .text-aia-orange,
   .border-aia-orange,
-  .bg-aia-orange-deep {
+  .bg-aia-orange-deep,
+  .text-aia-mining-alt,
+  .border-aia-mining-alt {
     transition-property: background-color, color, border-color, box-shadow;
     transition-duration: 220ms;
     transition-timing-function: var(--ease-out);
@@ -254,21 +259,124 @@ video {
   }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.7s var(--ease-out) both;
+@keyframes funnel-scan {
+  0% {
+    top: 10%;
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.55;
+  }
+  100% {
+    top: 86%;
+    opacity: 0;
+  }
+}
+
+.funnel-scan {
+  animation: funnel-scan 2.6s var(--ease-out) infinite;
 }
 
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(24px);
   transition:
-    opacity 0.7s var(--ease-out),
-    transform 0.7s var(--ease-out);
+    opacity 0.75s var(--ease-out),
+    transform 0.75s var(--ease-out);
 }
 
 .reveal.is-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+.outcome-track-fill {
+  transform: scaleX(0);
+}
+
+.outcome-bead {
+  opacity: 0;
+}
+
+.outcome-node,
+.outcome-copy {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.reveal.is-in .outcome-track-fill {
+  transform: scaleX(1);
+  transition: transform 1.35s var(--ease-out) 0.15s;
+}
+
+.reveal.is-in .outcome-bead {
+  animation: outcome-bead 1.35s var(--ease-out) 0.15s forwards;
+}
+
+.reveal.is-in .outcome-step .outcome-node,
+.reveal.is-in .outcome-step .outcome-copy {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.55s var(--ease-out),
+    transform 0.55s var(--ease-out),
+    background-color 0.3s var(--ease-out),
+    border-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+  transition-delay: calc(220ms + (var(--step, 0) * 180ms));
+}
+
+.reveal.is-in .outcome-step .outcome-node {
+  animation: outcome-node-in 0.55s var(--ease-out) calc(220ms + (var(--step, 0) * 180ms)) both;
+}
+
+@keyframes outcome-bead {
+  0% {
+    left: 8%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    left: 92%;
+    opacity: 1;
+  }
+}
+
+@keyframes outcome-node-in {
+  0% {
+    transform: scale(0.72);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .outcome-track-fill,
+  .outcome-bead,
+  .outcome-node,
+  .outcome-copy,
+  .reveal.is-in .outcome-step .outcome-node,
+  .reveal.is-in .outcome-step .outcome-copy {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
 }
 
 @keyframes hotspot-pulse {
@@ -427,3 +535,4 @@ video {
     animation: none;
   }
 }
+
