@@ -75,7 +75,7 @@ export function Hero() {
 
       <div className="page-pad relative z-10 flex h-full flex-col justify-end pb-[clamp(3.25rem,8.1vh,5.5rem)] pt-28">
         <div className="mx-auto grid w-full max-w-[1440px] items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.5fr)] lg:gap-12 xl:gap-16">
-          <h1 className="display text-[clamp(2.15rem,4.9vw,5.75rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.04em] text-white">
+          <h1 className="display text-[clamp(2.05rem,4.55vw,4.6rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.04em] text-white">
             We engineer for
             <br />
             the hours you can&apos;t

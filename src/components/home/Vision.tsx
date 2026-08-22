@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 
-/** Leadership plate — shard silhouettes lifted from the Figma Bhadresh art. */
+/** Final Bhadresh plate: keyed portrait, theme shards, smoke in front of the chair. */
 export function Vision() {
   return (
     <section
       className="relative overflow-hidden bg-white py-[var(--section-y)]"
       aria-labelledby="vision-heading"
     >
-      <div className="page-pad mx-auto grid max-w-[1440px] items-center gap-10 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:gap-8 xl:gap-12">
-        <div className="relative mx-auto w-full max-w-[52rem]">
+      <div className="page-pad mx-auto grid max-w-[1440px] items-center gap-8 lg:grid-cols-[minmax(0,1.18fr)_minmax(0,0.82fr)] lg:gap-4 xl:gap-8">
+        <div className="relative mx-auto w-full max-w-[56rem]">
           <div className="relative aspect-[3624/2288]">
             <div
               aria-hidden
@@ -21,32 +21,32 @@ export function Vision() {
                 WebkitMaskSize: "100% 100%",
                 maskSize: "100% 100%",
                 WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
               }}
             />
-            <div className="absolute bottom-0 right-0 z-10 h-[96%] w-[72%]">
+            <div className="absolute inset-y-0 right-0 z-10 w-[80%]">
               <Image
-                src="/images/vision-portrait-cutout.png"
+                src="/images/vision-portrait-alpha.png"
                 alt="Mr. Bhadresh Kantilal Shah, Managing Director"
                 fill
-                sizes="(max-width: 1024px) 100vw, 52vw"
-                className="object-contain object-bottom"
+                sizes="(max-width: 1024px) 100vw, 56vw"
+                className="object-contain object-[center_bottom]"
                 quality={92}
+                priority
               />
             </div>
             <SmokeVeil />
           </div>
         </div>
 
-        <div className="relative lg:pl-2">
+        <div className="relative lg:pl-1">
           <QuoteMark />
           <h2
             id="vision-heading"
-            className="display relative mb-8 max-w-[11ch] text-[clamp(2rem,5vw,4.25rem)] leading-[0.98] text-aia-navy"
+            className="display relative mb-7 max-w-[12ch] text-[clamp(2rem,4.7vw,3.9rem)] leading-[0.98] text-aia-navy"
           >
             A vision that continues to guide us.
           </h2>
-          <p className="mb-10 max-w-[34rem] text-[1.05rem] italic leading-[1.7] text-aia-navy/55 sm:text-[1.2rem] md:text-[1.28rem] md:leading-[1.72]">
+          <p className="mb-9 max-w-[32rem] text-[1.05rem] italic leading-[1.7] text-aia-navy/55 sm:text-[1.18rem] md:text-[1.22rem] md:leading-[1.72]">
             Customer Excellence is our philosophy. Our focus remains on
             improving productivity while reducing environmental impact. We promise
             to deliver value through ethical, sustainable, and profitable means.
@@ -54,7 +54,7 @@ export function Vision() {
           <div className="flex items-start gap-3">
             <span
               aria-hidden
-              className="mt-[0.45em] size-[7px] shrink-0 bg-aia-orange"
+              className="mt-[0.48em] size-[7px] shrink-0 bg-aia-orange"
             />
             <div>
               <p className="text-[0.82rem] font-semibold uppercase tracking-[0.12em] text-aia-orange sm:text-[0.95rem]">
@@ -76,7 +76,7 @@ function QuoteMark() {
     <svg
       aria-hidden
       viewBox="0 0 120 72"
-      className="pointer-events-none absolute -right-1 -top-4 h-[4.5rem] w-[7.5rem] text-aia-orange/35 sm:-top-8 sm:h-[5.75rem] sm:w-[9.5rem]"
+      className="pointer-events-none absolute -right-1 -top-5 h-[4.25rem] w-[7.25rem] text-aia-orange/35 sm:-top-8 sm:h-[5.5rem] sm:w-[9.25rem]"
       fill="none"
     >
       <path
@@ -91,7 +91,7 @@ function QuoteMark() {
 
 function SmokeVeil() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-[-6%] bottom-0 z-20 h-[46%]">
+    <div aria-hidden className="pointer-events-none absolute inset-x-[-4%] bottom-0 z-20 h-[40%]">
       <span className="vision-smoke-cloud vision-smoke-a" />
       <span className="vision-smoke-cloud vision-smoke-b" />
       <span className="vision-smoke-cloud vision-smoke-c" />

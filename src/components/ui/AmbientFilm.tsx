@@ -1,24 +1,25 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
   src?: string;
   poster: string;
   className?: string;
-  /** object-position, e.g. "center 40%" */
   position?: string;
+  sizes?: string;
 };
 
 /**
- * Muted looping cover film. Poster holds the frame until playback starts.
- * Pauses off-screen so three plant loops don't decode at once.
+ * Poster always fills the frame. Film fades in only after real playback.
  */
 export function AmbientFilm({
   src,
   poster,
   className = "",
   position = "center center",
+  sizes = "100vw",
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -36,42 +37,46 @@ export function AmbientFilm({
 
     const tryPlay = () => {
       video.muted = true;
-      void video.play().then(() => setReady(true)).catch(() => undefined);
+      void video
+        .play()
+        .then(() => {
+          if (video.videoWidth > 0) setReady(true);
+        })
+        .catch(() => undefined);
     };
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          tryPlay();
-        } else {
-          video.pause();
-        }
+        if (entry.isIntersecting) tryPlay();
+        else video.pause();
       },
-      { threshold: 0.12, rootMargin: "120px" },
+      { threshold: 0.08, rootMargin: "160px" },
     );
     io.observe(wrap);
     video.addEventListener("canplay", tryPlay);
+    video.addEventListener("loadeddata", tryPlay);
     return () => {
       io.disconnect();
       video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("loadeddata", tryPlay);
     };
   }, [src]);
 
   return (
-    <div ref={wrapRef} className={`relative overflow-hidden bg-black ${className}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+    <div ref={wrapRef} className={`absolute inset-0 overflow-hidden bg-[#1a242c] ${className}`}>
+      <Image
         src={poster}
         alt=""
-        className={`film-cover transition-opacity duration-700 ${
-          ready ? "opacity-0" : "opacity-100"
-        }`}
+        fill
+        sizes={sizes}
+        className="object-cover"
         style={{ objectPosition: position }}
+        quality={90}
       />
       {src ? (
         <video
           ref={videoRef}
-          className={`film-cover film-drift transition-opacity duration-700 ${
+          className={`absolute inset-0 h-full w-full max-w-none object-cover transition-opacity duration-700 ${
             ready ? "opacity-100" : "opacity-0"
           }`}
           style={{ objectPosition: position }}

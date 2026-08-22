@@ -31,8 +31,10 @@ export function BrandLockup({
         width={820}
         height={272}
         className={`w-auto object-contain object-left ${
+          tone === "light" ? "mix-blend-screen" : ""
+        } ${
           compact
-            ? "h-[clamp(2.5rem,3.55vw,4.25rem)]"
+            ? "h-[clamp(2.1rem,3.05vw,3.35rem)]"
             : "h-10 sm:h-11 md:h-[3.35rem]"
         }`}
         priority={compact}
@@ -51,8 +53,10 @@ export function BrandLockup({
             width={376}
             height={272}
             className={`hidden w-auto object-contain object-left md:block ${
+              tone === "light" ? "mix-blend-screen" : ""
+            } ${
               compact
-                ? "md:h-[clamp(2.5rem,3.55vw,4.25rem)]"
+                ? "md:h-[clamp(1.35rem,2.1vw,2.15rem)]"
                 : "md:h-6 lg:h-[1.65rem]"
             }`}
           />

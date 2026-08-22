@@ -15,35 +15,38 @@ export function Sustainability() {
     >
       <Image
         src="/images/sustainability-gear.jpg"
-        alt=""
+        alt="Industrial gear framing a growing plant"
         fill
         sizes="100vw"
-        className="object-cover object-[70%_center]"
-        quality={90}
+        className="object-cover object-[62%_center]"
+        quality={92}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(8,14,18,0.88)_0%,rgba(8,14,18,0.55)_38%,rgba(8,14,18,0.18)_68%,rgba(8,14,18,0.12)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,12,16,0.88)_0%,rgba(8,12,16,0.42)_42%,rgba(8,12,16,0.08)_68%,rgba(8,12,16,0.2)_100%)]"
       />
-      <div aria-hidden className="sustain-haze pointer-events-none absolute inset-0" />
+      <div
+        aria-hidden
+        className="sustain-haze pointer-events-none absolute inset-y-[18%] right-[8%] w-[46%]"
+      />
 
-      <div className="page-pad relative z-10 mx-auto grid min-h-[100svh] max-w-[1440px] items-center py-20 sm:py-24 lg:grid-cols-[minmax(0,0.55fr)_minmax(0,0.45fr)] lg:py-28">
-        <div className="max-w-xl">
+      <div className="page-pad relative z-10 mx-auto flex min-h-[100svh] max-w-[1440px] items-center py-20 sm:py-24 lg:py-28">
+        <div className="max-w-[36rem]">
           <h2
             id="sustain-heading"
-            className="display mb-6 text-[clamp(2.1rem,6vw,4.4rem)] leading-[0.98]"
+            className="display mb-6 text-[clamp(2.1rem,5.6vw,4.35rem)] leading-[0.98]"
           >
             Can heavy industry think lighter?
           </h2>
-          <p className="mb-10 max-w-[36rem] text-base leading-relaxed text-white/90 sm:text-lg md:text-[1.28rem] md:leading-[1.65]">
+          <p className="mb-10 text-base leading-relaxed text-white/90 sm:text-lg md:text-[1.22rem] md:leading-[1.65]">
             YES. We believe it can. By using resources more efficiently, reducing
             waste and embracing reuse and recycling, we&apos;re working to lower
             the environmental impact of our operations while continuing to deliver
             the performance industry depends on.
           </p>
-          <div className="mb-10 grid gap-8 sm:mb-12 sm:grid-cols-2 sm:gap-12">
+          <div className="mb-10 grid gap-8 sm:mb-12 sm:grid-cols-2 sm:gap-10">
             <div>
-              <p className="display text-[clamp(2.4rem,5.5vw,3.6rem)] font-bold leading-none">
+              <p className="display text-[clamp(2.4rem,5.2vw,3.5rem)] font-bold leading-none">
                 <CountUp value="1,00,000+" duration={1600} />
               </p>
               <p className="mt-3 text-base text-white/85 sm:text-lg">
@@ -51,7 +54,7 @@ export function Sustainability() {
               </p>
             </div>
             <div>
-              <p className="display text-[clamp(2.4rem,5.5vw,3.6rem)] font-bold leading-none">
+              <p className="display text-[clamp(2.4rem,5.2vw,3.5rem)] font-bold leading-none">
                 <CountUp value="30%" duration={1400} />
               </p>
               <p className="mt-3 text-base text-white/85 sm:text-lg">
@@ -125,9 +128,7 @@ export function Faq() {
                   <span
                     aria-hidden
                     className={`mt-1 shrink-0 text-lg leading-none transition-transform duration-300 ${
-                      isOpen
-                        ? "rotate-90 text-aia-orange"
-                        : "text-aia-navy/70"
+                      isOpen ? "rotate-90 text-aia-orange" : "text-aia-navy/70"
                     }`}
                   >
                     ›
@@ -223,7 +224,7 @@ export function Insights() {
                   Read article <span aria-hidden>›</span>
                 </a>
               </div>
-              <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-2xl bg-aia-surface-soft lg:order-2">
+              <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-[22px] bg-aia-surface-soft lg:order-2">
                 <Image
                   src={item.image}
                   alt=""

@@ -145,9 +145,9 @@ video {
 .film-cover {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
   object-fit: cover;
 }
 
@@ -329,6 +329,32 @@ video {
 
 .hotspot-pulse {
   animation: hotspot-pulse 2.2s var(--ease-out) infinite;
+}
+
+.map-glow {
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--aia-orange) 55%, transparent) 0%,
+    transparent 68%
+  );
+  animation: smoke-drift 8s ease-in-out infinite;
+}
+
+.gallery-ribbon {
+  transform: rotate(-38deg);
+  transform-origin: left center;
+  margin-left: -1.5rem;
+}
+
+.sustain-haze {
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    rgba(255, 186, 92, 0.22) 0%,
+    rgba(255, 255, 255, 0.05) 42%,
+    transparent 72%
+  );
+  filter: blur(18px);
+  animation: smoke-drift 20s ease-in-out infinite;
 }
 
 .sustain-haze {

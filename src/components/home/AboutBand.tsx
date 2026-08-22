@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { footprint } from "@/data/site";
 import { CountUp } from "@/components/ui/CountUp";
 import { AmbientFilm } from "@/components/ui/AmbientFilm";
-import { assets } from "@/data/assets";
 import { media } from "@/data/media";
 import { prefersReducedMotion, useScrollProgress } from "@/lib/motion";
 
@@ -60,13 +59,13 @@ export function AboutBand() {
             <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#8a949c] shadow-[0_28px_90px_rgba(4,29,44,0.32)]">
               <AmbientFilm
                 src={media.about}
-                poster={assets.plantAerial}
-                className="absolute inset-0"
+                poster="/images/plant-aerial-clean.jpg"
+                sizes="(max-width: 1100px) 100vw, 1120px"
                 position="center 40%"
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.08)_0%,rgba(4,29,44,0.2)_52%,rgba(4,29,44,0.58)_100%)]"
+                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.04)_0%,rgba(4,29,44,0.12)_55%,rgba(4,29,44,0.42)_100%)]"
               />
               <p
                 className="absolute inset-x-[8%] bottom-[8%] z-10 text-center text-[0.8rem] leading-[1.55] text-white/95 sm:text-[0.92rem] md:text-[1.05rem] md:leading-[1.6]"

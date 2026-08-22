@@ -33,7 +33,7 @@ export function ModelShowcase({
           <span className="font-[family-name:var(--font-ui)] text-[1.75rem] font-normal text-aia-navy/18 sm:text-[2.15rem] md:text-[2.5rem]">
             {industry.index}
           </span>
-          <h3 className="display text-[clamp(2.25rem,5.5vw,3.5rem)] text-aia-navy">
+          <h3 className="display text-[clamp(2.1rem,4.8vw,3.25rem)] text-aia-navy">
             {industry.name}
           </h3>
         </div>

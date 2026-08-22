@@ -3,7 +3,6 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { AmbientFilm } from "@/components/ui/AmbientFilm";
 import { CountUp } from "@/components/ui/CountUp";
-import { assets } from "@/data/assets";
 import { media } from "@/data/media";
 import { stats } from "@/data/site";
 
@@ -44,8 +43,8 @@ export function WhatWeSolve() {
         <Reveal delay={140} className="relative aspect-[16/10] w-full overflow-hidden bg-[#d8dee2]">
           <AmbientFilm
             src={media.whatWeSolve}
-            poster={assets.whatWeSolve}
-            className="absolute inset-0"
+            poster="/images/plant-aerial-clean.jpg"
+            sizes="(max-width: 1024px) 100vw, 62vw"
             position="center 40%"
           />
         </Reveal>
@@ -54,7 +53,7 @@ export function WhatWeSolve() {
       <div className="relative h-[100svh] min-h-[640px] overflow-hidden bg-[#041d2c]">
         <AmbientFilm
           src={media.whatWeSolveBand}
-          poster={assets.plantAerial}
+          poster="/images/plant-aerial-clean.jpg"
           className="absolute inset-0"
           position="center 35%"
         />

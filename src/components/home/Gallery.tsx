@@ -15,14 +15,16 @@ const films = [
     poster: assets.millPoster,
     src: media.gallery.lining,
     branded: true,
+    ribbon: "Through Bolting",
   },
   {
     id: "corporate",
     title: "AIA Engineering Corporate Film",
     caption: undefined,
-    poster: assets.corporatePoster,
+    poster: "/images/gallery-center.jpg",
     src: media.gallery.corporate,
     branded: false,
+    overlay: "6 manufacturing clusters",
   },
   {
     id: "components",
@@ -59,7 +61,7 @@ export function Gallery() {
 
   return (
     <section
-      className="overflow-hidden bg-[#f6f6f6] py-[var(--section-y)]"
+      className="overflow-x-hidden bg-[#f4f4f4] py-[var(--section-y)]"
       aria-labelledby="gallery-heading"
     >
       <Reveal className="page-pad mb-12 text-center sm:mb-16">
@@ -77,12 +79,19 @@ export function Gallery() {
         </p>
       </Reveal>
 
-      <div className="page-pad mx-auto grid max-w-[1440px] items-center gap-4 md:grid-cols-[0.78fr_1.44fr_0.78fr] md:gap-5 lg:gap-7">
+      <div className="flex items-end justify-center gap-3 px-[4vw] md:gap-4 lg:gap-5">
         {ordered.map((card, position) => {
           const featured = position === 1;
           const playing = playingId === card.id;
           return (
-            <figure key={card.id} className="relative">
+            <figure
+              key={card.id}
+              className={`relative shrink-0 transition-transform duration-500 ${
+                featured
+                  ? "z-[1] w-[min(52rem,56vw)]"
+                  : "hidden w-[min(20rem,24vw)] md:block"
+              }`}
+            >
               <div
                 role={!featured ? "button" : undefined}
                 tabIndex={!featured ? 0 : undefined}
@@ -114,19 +123,27 @@ export function Gallery() {
                     setPlayingId(next ? card.id : null)
                   }
                   className={`bg-[#1a1f24] ${
-                    featured
-                      ? "aspect-[16/10]"
-                      : "aspect-[4/5] md:aspect-[4/5]"
+                    featured ? "aspect-[16/10]" : "aspect-[4/5]"
                   }`}
-                  sizes={featured ? "50vw" : "28vw"}
+                  sizes={featured ? "56vw" : "24vw"}
                 >
                   {card.branded && !playing ? <BrandMarks /> : null}
+                  {"ribbon" in card && card.ribbon && !playing ? (
+                    <span className="gallery-ribbon pointer-events-none absolute left-0 top-8 z-10 bg-aia-navy px-8 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white sm:top-10">
+                      {card.ribbon}
+                    </span>
+                  ) : null}
                   {!playing ? (
                     <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
                   ) : null}
+                  {!playing && "overlay" in card && card.overlay ? (
+                    <p className="pointer-events-none absolute bottom-5 left-5 z-10 display max-w-[11ch] text-[clamp(1.15rem,2.1vw,1.9rem)] uppercase leading-[0.94] text-white">
+                      {card.overlay}
+                    </p>
+                  ) : null}
                   {!featured && !playing ? (
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-4 text-left sm:p-5">
-                      <p className="display text-[clamp(1rem,1.7vw,1.45rem)] uppercase leading-[0.95] text-white">
+                      <p className="display text-[clamp(0.95rem,1.5vw,1.3rem)] uppercase leading-[0.95] text-white">
                         {card.title}
                       </p>
                       {card.caption ? (

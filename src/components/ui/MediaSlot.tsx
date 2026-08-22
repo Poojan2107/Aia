@@ -188,7 +188,7 @@ export function MediaSlot({
           aria-label={`Play ${posterAlt}`}
           onClick={() => setPlaying(true)}
         >
-          <span className="flex size-16 items-center justify-center rounded-full border border-white/50 bg-black/35 text-white backdrop-blur-sm transition hover:scale-[1.04] md:size-[72px]">
+          <span className="flex size-[4.5rem] items-center justify-center rounded-full border border-white/55 bg-black/40 text-white backdrop-blur-sm transition hover:scale-[1.04] md:size-20">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
               <path d="M8 5.5v13l11-6.5L8 5.5z" />
             </svg>

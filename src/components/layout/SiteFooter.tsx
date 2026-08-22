@@ -32,6 +32,34 @@ function FooterCol({
   );
 }
 
+function FooterSearch({
+  label,
+  href,
+  placeholder,
+}: {
+  label: string;
+  href: string;
+  placeholder: string;
+}) {
+  return (
+    <form action={href} method="get">
+      <p className="display mb-6 max-w-[20ch] text-[clamp(1.15rem,2.5vw,1.5rem)] leading-tight text-white">
+        {label}
+      </p>
+      <label className="flex h-[52px] items-center gap-3 rounded-full bg-white px-5">
+        <span className="size-2 shrink-0 rounded-full bg-aia-orange" aria-hidden />
+        <span className="sr-only">{placeholder}</span>
+        <input
+          type="search"
+          name="q"
+          placeholder={placeholder}
+          className="h-full w-full bg-transparent text-sm text-aia-navy outline-none placeholder:text-aia-navy/40"
+        />
+      </label>
+    </form>
+  );
+}
+
 export function SiteFooter() {
   return (
     <footer className="relative isolate overflow-hidden bg-[#041d2c] text-white">
@@ -140,39 +168,17 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Dual CTA band */}
         <div className="mt-8 grid gap-8 border-t border-white/20 pt-10 md:grid-cols-2 md:gap-16">
-          <div>
-            <p className="display mb-6 max-w-[16ch] text-[clamp(1.15rem,2.5vw,1.5rem)] leading-tight text-white">
-              Have a wear or performance challenge?
-            </p>
-            <Link
-              href="/company/contact"
-              className="ui-caps inline-flex h-[50px] min-w-[12rem] items-center justify-center gap-2.5 rounded-full bg-white px-6 font-medium text-aia-orange transition hover:bg-aia-cream"
-            >
-              <span
-                className="size-2 shrink-0 rounded-full bg-aia-orange"
-                aria-hidden
-              />
-              Talk to an expert
-            </Link>
-          </div>
-          <div>
-            <p className="display mb-6 max-w-[20ch] text-[clamp(1.15rem,2.5vw,1.5rem)] leading-tight text-white">
-              Find AIA offices, representatives and support across global
-              markets.
-            </p>
-            <Link
-              href="/company/global-presence"
-              className="ui-caps inline-flex h-[50px] min-w-[14rem] items-center justify-center gap-2.5 rounded-full bg-white px-6 font-medium text-aia-orange transition hover:bg-aia-cream"
-            >
-              <span
-                className="size-2 shrink-0 rounded-full bg-aia-orange"
-                aria-hidden
-              />
-              Explore global presence
-            </Link>
-          </div>
+          <FooterSearch
+            label="Have a wear or performance challenge?"
+            href="/company/contact"
+            placeholder="Tell us about your mill or wear challenge"
+          />
+          <FooterSearch
+            label="Find AIA offices, representatives and support across global markets."
+            href="/company/global-presence"
+            placeholder="Search a city, country or region"
+          />
         </div>
 
         {/* Legal bar */}
