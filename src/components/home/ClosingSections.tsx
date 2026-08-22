@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { faqs, insights } from "@/data/content";
+import { CountUp } from "@/components/ui/CountUp";
 
 export function Sustainability() {
   return (
@@ -42,13 +43,17 @@ export function Sustainability() {
           </p>
           <div className="mb-10 grid gap-6 sm:mb-12 sm:grid-cols-2 sm:gap-10">
             <div className="border-t border-white/30 pt-4">
-              <p className="display text-[clamp(2.25rem,6vw,3.5rem)] font-bold">1,00,000+</p>
+              <p className="display text-[clamp(2.25rem,6vw,3.5rem)] font-bold">
+                <CountUp value="1,00,000+" />
+              </p>
               <p className="mt-2 text-base text-white/85 sm:text-lg">
                 Tree plantation during the year
               </p>
             </div>
             <div className="border-t border-white/30 pt-4">
-              <p className="display text-[clamp(2.25rem,6vw,3.5rem)] font-bold">30%</p>
+              <p className="display text-[clamp(2.25rem,6vw,3.5rem)] font-bold">
+                <CountUp value="30%" />
+              </p>
               <p className="mt-2 text-base text-white/85 sm:text-lg">
                 Energy comes from the renewable energy resources
               </p>
@@ -81,10 +86,11 @@ export function Faq() {
 
   return (
     <section
-      className="page-pad bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
+      className="bg-aia-surface-soft py-[var(--section-y)]"
       aria-labelledby="faq-heading"
     >
-      <div className="mx-auto grid max-w-[1440px] gap-8 sm:gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:divide-x lg:divide-aia-line">
+      <div className="page-pad mx-auto max-w-[1440px]">
+      <div className="grid gap-10 border border-aia-line px-6 py-10 sm:gap-12 sm:px-10 sm:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-14 lg:py-16 lg:divide-x lg:divide-aia-line">
         <div>
           <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
           <h2
@@ -103,7 +109,7 @@ export function Faq() {
           </CtaButton>
         </div>
 
-      <div>
+      <div className="lg:pl-10">
         {faqs.map((item, index) => {
           const isOpen = open === index;
           return (
@@ -123,7 +129,7 @@ export function Faq() {
                 </span>
                 <span
                   aria-hidden
-                  className={`mt-1.5 shrink-0 text-lg transition-transform duration-300 ${
+                  className={`mt-1.5 shrink-0 text-lg leading-none transition-transform duration-300 ${
                     isOpen ? "rotate-90 text-aia-orange" : "text-aia-navy"
                   }`}
                 >
@@ -147,6 +153,7 @@ export function Faq() {
         <div className="border-t border-aia-line" />
       </div>
       </div>
+      </div>
     </section>
   );
 }
@@ -162,18 +169,18 @@ export function Insights() {
 
   return (
     <section
-      className="page-pad bg-white py-14 sm:py-20 lg:py-28"
+      className="page-pad bg-white py-[var(--section-y)]"
       aria-labelledby="insights-heading"
     >
-      <div className="mx-auto mb-8 max-w-[1440px] text-center sm:mb-10">
+      <div className="mx-auto mb-8 max-w-[1440px] sm:mb-10">
         <h2
           id="insights-heading"
-          className="display text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
+          className="display text-center text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
         >
           Ideas & Insights from AIA
         </h2>
-        <div className="-mx-1 mt-6 overflow-x-auto overscroll-x-contain sm:mt-8">
-          <div className="mx-auto flex min-w-min justify-center gap-6 border-b border-aia-line px-1 sm:gap-8">
+        <div className="-mx-1 mt-8 overflow-x-auto overscroll-x-contain">
+          <div className="flex min-w-min gap-8 border-b border-aia-line px-1 sm:gap-10">
             {tabs.map((item) => (
               <button
                 key={item}

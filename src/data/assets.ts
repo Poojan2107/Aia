@@ -1,12 +1,14 @@
 /**
- * Figma-exported posters & plates from /AIA Assests.
- * Videos stay undefined until later.
+ * Figma-exported posters & plates, plus stills pulled from the real films.
  */
 export const assets = {
   hero: {
     plate: "/images/hero-plate.jpg",
     dusk: "/images/hero-dusk.png",
+    videoPoster: "/images/hero-video-poster.jpg",
   },
+  millPoster: "/images/mill-poster.jpg",
+  corporatePoster: "/images/corporate-poster.jpg",
   whatWeSolve: "/images/what-we-solve.png",
   plantAerial: "/images/plant-aerial.png",
   aboutFacility: "/images/about-facility.jpg",

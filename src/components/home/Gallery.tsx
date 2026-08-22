@@ -1,28 +1,38 @@
 "use client";
 
-import Image from "next/image";
+import { useState } from "react";
+import { MediaSlot } from "@/components/ui/MediaSlot";
 import { Reveal } from "@/components/ui/Reveal";
+import { assets } from "@/data/assets";
+import { media } from "@/data/media";
 
-const cards = [
+const films = [
   {
     id: "lining",
     title: "Ball Mill Lining Solutions",
     caption: "Safety | Wear Life | Operations",
-    image: "/images/mining-mill.png",
+    poster: assets.millPoster,
+    src: media.gallery.lining,
     branded: true,
+    featured: false,
   },
   {
     id: "corporate",
     title: "AIA Engineering Corporate Film",
-    image: "/images/plant-aerial.png",
+    caption: undefined,
+    poster: assets.corporatePoster,
+    src: media.gallery.corporate,
+    branded: false,
     featured: true,
   },
   {
     id: "components",
     title: "Wear Component Systems",
     caption: "Precision | Reliability | Life",
-    image: "/images/cement-mill.png",
+    poster: "/images/cement-mill.png",
+    src: media.gallery.components,
     branded: true,
+    featured: false,
   },
 ] as const;
 
@@ -39,9 +49,18 @@ function BrandMarks() {
 }
 
 export function Gallery() {
+  const [offset, setOffset] = useState(0);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+
+  const ordered = [...films.slice(offset), ...films.slice(0, offset)];
+  const go = (dir: number) => {
+    setPlayingId(null);
+    setOffset((v) => (v + dir + films.length) % films.length);
+  };
+
   return (
     <section
-      className="bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
+      className="bg-aia-surface-soft py-[var(--section-y)]"
       aria-labelledby="gallery-heading"
     >
       <Reveal className="page-pad mb-10 text-center sm:mb-14">
@@ -60,45 +79,41 @@ export function Gallery() {
       </Reveal>
 
       <div className="page-pad mx-auto grid max-w-[1440px] items-end gap-5 md:grid-cols-[0.9fr_1.35fr_0.9fr] md:gap-6">
-        {cards.map((card) => {
-          const featured = "featured" in card && card.featured;
+        {ordered.map((card, position) => {
+          const featured = position === 1;
+          const playing = playingId === card.id;
           return (
             <figure key={card.id} className="group relative">
-              <div
-                className={`relative overflow-hidden bg-[#1a1f24] rounded-lg ${
+              <MediaSlot
+                poster={card.poster}
+                posterAlt={card.title}
+                src={card.src}
+                playback="click"
+                film
+                active={playing}
+                onActiveChange={(next) => setPlayingId(next ? card.id : null)}
+                className={`rounded-lg bg-[#1a1f24] ${
                   featured ? "aspect-[16/10]" : "aspect-[4/5] md:aspect-[3/4]"
                 }`}
+                sizes={featured ? "50vw" : "30vw"}
               >
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  sizes={featured ? "50vw" : "30vw"}
-                  className="object-cover transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
-                />
-                {"branded" in card && card.branded ? <BrandMarks /> : null}
-                <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                {featured ? (
-                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                    <span className="flex size-16 items-center justify-center rounded-full border border-white/50 bg-black/35 text-white backdrop-blur-sm">
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5.5v13l11-6.5L8 5.5z" />
-                      </svg>
-                    </span>
-                  </span>
-                ) : (
-                  <figcaption className="absolute inset-x-0 bottom-0 p-4 text-left">
+                {card.branded && !playing ? <BrandMarks /> : null}
+                {!playing ? (
+                  <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                ) : null}
+                {!featured && !playing ? (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-4 text-left">
                     <p className="display text-[clamp(0.95rem,1.6vw,1.35rem)] uppercase leading-tight text-white">
                       {card.title}
                     </p>
-                    {"caption" in card && card.caption ? (
+                    {card.caption ? (
                       <p className="mt-1.5 text-[10px] uppercase tracking-[0.12em] text-white/75">
                         {card.caption}
                       </p>
                     ) : null}
-                  </figcaption>
-                )}
-              </div>
+                  </div>
+                ) : null}
+              </MediaSlot>
               {featured ? (
                 <p className="mt-3 flex items-center justify-center gap-2 text-sm text-aia-navy/70 sm:text-base">
                   <span className="inline-block size-3 rounded-[2px] bg-[#ff0000]" aria-hidden />
@@ -113,22 +128,33 @@ export function Gallery() {
       <div className="mt-8 flex items-center justify-center gap-4">
         <button
           type="button"
-          aria-label="Previous slide"
+          aria-label="Previous film"
+          onClick={() => go(-1)}
           className="flex size-9 items-center justify-center rounded-full border border-aia-navy/30 text-aia-navy transition hover:border-aia-navy hover:bg-aia-navy/5"
         >
           ‹
         </button>
         <div className="flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-aia-orange" />
-          <span className="size-2 rounded-full bg-[#006fff]/40" />
-          <span className="size-2 rounded-full bg-aia-navy/20" />
-          <span className="size-2 rounded-full bg-aia-navy/20" />
-          <span className="size-2 rounded-full bg-aia-navy/20" />
-          <span className="size-2 rounded-full bg-aia-navy/20" />
+          {films.map((film, i) => (
+            <button
+              key={film.id}
+              type="button"
+              aria-label={`Show ${film.title}`}
+              aria-current={offset === i}
+              onClick={() => {
+                setPlayingId(null);
+                setOffset(i);
+              }}
+              className={`size-2 rounded-full transition ${
+                offset === i ? "bg-aia-orange" : "bg-aia-navy/20 hover:bg-aia-navy/40"
+              }`}
+            />
+          ))}
         </div>
         <button
           type="button"
-          aria-label="Next slide"
+          aria-label="Next film"
+          onClick={() => go(1)}
           className="flex size-9 items-center justify-center rounded-full border border-aia-navy/30 text-aia-navy transition hover:border-aia-navy hover:bg-aia-navy/5"
         >
           ›

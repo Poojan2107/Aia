@@ -66,7 +66,7 @@ export function SiteFooter() {
         </div>
 
         {/* Accent link panel — inset card matching Figma */}
-        <div className="rounded-md bg-aia-orange px-5 py-8 text-white sm:px-8 sm:py-10 md:px-10 md:py-12">
+        <div className="rounded-none bg-aia-orange px-5 py-8 text-white sm:px-8 sm:py-10 md:px-10 md:py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
             <div className="lg:col-span-2">
               <FooterCol title="Solutions" links={footerNav.solutions} />

@@ -1,6 +1,9 @@
 # Videos
-Place hero and section videos here when ready.
-- hero.mp4 — homepage hero background
-- what-we-solve.mp4 — WHAT WE SOLVE band
-- gallery/*.mp4 — gallery carousel
-Use MediaSlot poster images until files are available.
+
+Production films (wired in `src/data/media.ts`):
+
+- `hero.mp4` — homepage hero loop (AIA plant / mill floor)
+- `mill.mp4` — mill lining film (What we solve band + gallery)
+- `corporate.mp4` — AIA Engineering corporate film (gallery, click to play)
+
+Reference recordings of the Figma prototype stay in this folder for visual QA and are not served on the site.

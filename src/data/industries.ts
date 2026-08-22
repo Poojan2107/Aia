@@ -36,7 +36,7 @@ export const industries: Industry[] = [
       { id: "verti", label: "Verti Mill Solutions", hotspotId: "feed" },
     ],
     model: {
-      poster: "/images/mining-mill.png",
+      poster: "/images/mining-mill-clean.png",
       src: "/models/mining.glb",
       alt: "3D cutaway of a mining grinding mill with AIA wear components",
     },
@@ -73,7 +73,7 @@ export const industries: Industry[] = [
       { id: "vrm", label: "Vertical Roller Mill (VRM)", hotspotId: "media" },
     ],
     model: {
-      poster: "/images/cement-mill.png",
+      poster: "/images/cement-mill-clean.png",
       src: "/models/cement.glb",
       alt: "3D cement tube mill with AIA wear solutions",
     },
@@ -97,7 +97,7 @@ export const industries: Industry[] = [
       { id: "crusher", label: "Crusher Components", hotspotId: "frame" },
     ],
     model: {
-      poster: "/images/quarry-mill.png",
+      poster: "/images/quarry-mill-clean.png",
       src: "/models/quarry.glb",
       alt: "3D quarry crusher with AIA wear protection",
     },
@@ -122,7 +122,7 @@ export const industries: Industry[] = [
       { id: "vrm", label: "VRM", hotspotId: "classifier" },
     ],
     model: {
-      poster: "/images/thermal-mill.png",
+      poster: "/images/thermal-mill-clean.png",
       src: "/models/thermal.glb",
       alt: "3D thermal power vertical roller mill",
     },

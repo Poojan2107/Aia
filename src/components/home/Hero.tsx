@@ -1,69 +1,27 @@
 "use client";
 
-import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { MediaSlot } from "@/components/ui/MediaSlot";
 import { assets } from "@/data/assets";
+import { media } from "@/data/media";
 
-const SLIDES = [
-  {
-    src: assets.hero.plate,
-    alt: "Industrial grinding operations at an AIA customer site",
-  },
-  {
-    src: assets.hero.dusk,
-    alt: "AIA mining plant at dusk",
-  },
-  {
-    src: "/images/hero-bg.png",
-    alt: "AIA wear components in heavy industrial service",
-  },
-] as const;
-
-/** Locked to Figma Present hero + exported plates from AIA Assests */
+/** Full-bleed mill-floor film, locked to Figma Present hero. */
 export function Hero() {
-  const [index, setIndex] = useState(0);
-  const total = SLIDES.length;
-
-  const go = useCallback(
-    (next: number) => {
-      setIndex(((next % total) + total) % total);
-    },
-    [total],
-  );
-
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const id = window.setInterval(() => go(index + 1), 10000);
-    return () => window.clearInterval(id);
-  }, [go, index]);
-
   return (
     <section
       className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-[#0a1218]"
       aria-label="Hero"
-      aria-roledescription="carousel"
     >
-      {SLIDES.map((slide, i) => (
-        <div
-          key={slide.src}
-          className={`absolute inset-0 transition-opacity duration-[900ms] ease-[var(--ease-out)] ${
-            i === index ? "opacity-100" : "opacity-0"
-          }`}
-          aria-hidden={i !== index}
-        >
-          <Image
-            src={slide.src}
-            alt={slide.alt}
-            fill
-            priority={i === 0}
-            quality={98}
-            sizes="100vw"
-            className="object-cover object-[center_42%] brightness-[1.06] contrast-[1.02]"
-          />
-        </div>
-      ))}
+      <MediaSlot
+        poster={assets.hero.videoPoster}
+        posterAlt="Industrial grinding operations at an AIA customer site"
+        src={media.hero}
+        playback="ambient"
+        overlay="soft"
+        priority
+        className="absolute inset-0"
+        sizes="100vw"
+      />
 
       <div
         aria-hidden
@@ -88,7 +46,7 @@ export function Hero() {
             afford to lose.
           </h1>
 
-          <div className="w-full max-w-[24rem] rounded-2xl border border-white/15 bg-black/40 p-6 backdrop-blur-md lg:mb-1.5 lg:justify-self-end sm:p-7">
+          <div className="w-full max-w-[24rem] lg:mb-1.5 lg:justify-self-end">
             <p className="mb-6 text-[0.95rem] leading-[1.58] text-white/90 md:text-[1.05rem]">
               Advanced wear solutions engineered to extend component life,
               improve equipment availability and keep critical operations
@@ -98,34 +56,6 @@ export function Hero() {
               Explore wear solutions
             </CtaButton>
           </div>
-        </div>
-      </div>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-7 z-20 flex justify-center md:bottom-8">
-        <div
-          className="pointer-events-auto inline-flex h-8 items-center gap-2.5 text-white/90"
-          role="group"
-          aria-label="Hero slides"
-        >
-          <button
-            type="button"
-            className="flex size-7 items-center justify-center opacity-80 transition hover:opacity-100"
-            aria-label="Previous slide"
-            onClick={() => go(index - 1)}
-          >
-            ‹
-          </button>
-          <span className="min-w-[3rem] text-center font-[family-name:var(--font-ui)] text-[0.75rem] font-semibold tracking-[0.16em] tabular-nums">
-            {index + 1} / {total}
-          </span>
-          <button
-            type="button"
-            className="flex size-7 items-center justify-center opacity-80 transition hover:opacity-100"
-            aria-label="Next slide"
-            onClick={() => go(index + 1)}
-          >
-            ›
-          </button>
         </div>
       </div>
     </section>

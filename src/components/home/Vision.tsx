@@ -8,7 +8,7 @@ export function Vision() {
 
   return (
     <section
-      className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-28"
+      className="relative overflow-hidden bg-white py-[var(--section-y)]"
       aria-labelledby="vision-heading"
     >
       <div className="page-pad mx-auto grid max-w-[1440px] items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16 xl:gap-20">
@@ -48,7 +48,8 @@ export function Vision() {
         <div className="relative">
           <span
             aria-hidden
-            className={`pointer-events-none absolute -right-1 -top-8 select-none font-[family-name:var(--font-serif)] text-[5.5rem] leading-none sm:-top-12 sm:text-[8rem] ${quote}`}
+            className={`pointer-events-none absolute -right-1 -top-4 select-none font-[family-name:var(--font-serif)] text-[6.5rem] font-light leading-none sm:-top-8 sm:text-[9rem] ${quote}`}
+            style={{ WebkitTextStroke: "1.5px currentColor", color: "transparent" }}
           >
             ”
           </span>

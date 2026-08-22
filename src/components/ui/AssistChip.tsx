@@ -8,7 +8,7 @@ export function AssistChip() {
       className="group fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-40"
       aria-label="Open AIA assistant"
     >
-      <span className="relative flex size-12 items-center justify-center rounded-full bg-aia-orange text-white shadow-[0_10px_30px_rgba(var(--aia-accent-rgb),0.35)] transition duration-300 group-hover:scale-[1.04] sm:size-[60px]">
+      <span className="assist-pulse relative flex size-12 items-center justify-center rounded-full bg-aia-orange text-white shadow-[0_10px_30px_rgba(var(--aia-accent-rgb),0.35)] transition duration-300 group-hover:scale-[1.04] sm:size-[60px]">
         <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden className="size-6 sm:size-7">
           <rect x="7" y="8" width="18" height="14" rx="4" stroke="currentColor" strokeWidth="1.8" />
           <circle cx="13" cy="15" r="1.4" fill="currentColor" />

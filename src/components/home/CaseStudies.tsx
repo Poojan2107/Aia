@@ -14,7 +14,7 @@ export function CaseStudies() {
 
   return (
     <section
-      className="page-pad bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
+      className="page-pad bg-aia-surface-soft py-[var(--section-y)]"
       aria-labelledby="cases-heading"
     >
       <div className="mx-auto mb-8 flex max-w-[1440px] flex-col gap-6 sm:mb-12 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
@@ -39,17 +39,17 @@ export function CaseStudies() {
               onClick={() =>
                 setOffset((v) => (v - 1 + caseStudies.length) % caseStudies.length)
               }
-              className="flex size-11 items-center justify-center rounded-full bg-aia-orange text-white transition hover:bg-aia-orange-deep"
+              className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
             >
-              ←
+              ‹
             </button>
             <button
               type="button"
               aria-label="Next case studies"
               onClick={() => setOffset((v) => (v + 1) % caseStudies.length)}
-              className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
+              className="flex size-11 items-center justify-center rounded-full border border-aia-navy/25 text-aia-navy/45 transition hover:border-aia-orange hover:text-aia-orange"
             >
-              →
+              ›
             </button>
           </div>
         </div>
@@ -58,15 +58,15 @@ export function CaseStudies() {
       <div className="mx-auto grid max-w-[1440px] gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {ordered.map((item) => (
           <a key={item.href} href={item.href} className="group block">
-            <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-2xl bg-[#e8eaec] sm:mb-5">
+            <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-[20px] bg-[#e8eaec] sm:mb-5 sm:rounded-[24px]">
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                className="object-cover transition duration-500 group-hover:scale-[1.04] group-hover:blur-[1.5px]"
               />
-              <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/35 text-sm uppercase tracking-[0.12em] text-white opacity-100 transition duration-300 md:bg-black/0 md:opacity-0 md:group-hover:bg-black/40 md:group-hover:opacity-100">
+              <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.8rem] uppercase tracking-[0.14em] text-white opacity-0 transition duration-300 group-hover:bg-black/40 group-hover:opacity-100">
                 Know more
                 <span className="flex size-8 items-center justify-center rounded-full bg-aia-orange text-white">
                   →

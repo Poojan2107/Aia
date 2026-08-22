@@ -9,8 +9,8 @@ type Props = {
 };
 
 /**
- * Poster PNGs already contain Figma callout labels.
- * Interactive layer = accent dots only (no duplicate live tags).
+ * Figma mill plates already include yellow callouts + leader lines.
+ * Live layer = pulsing dots tied to the solution list.
  */
 export function ModelShowcase({ industry }: Props) {
   const [active, setActive] = useState<string | null>(
@@ -20,35 +20,35 @@ export function ModelShowcase({ industry }: Props) {
   const activeHotspot = industry.hotspots.find((h) => h.id === active);
 
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.28fr)] lg:items-center lg:gap-16 xl:gap-20">
+    <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16 xl:gap-20">
       <div className="order-2 lg:order-1">
-        <div className="mb-4 flex items-baseline gap-5 sm:mb-5 sm:gap-6">
-          <span className="font-[family-name:var(--font-ui)] text-[1.65rem] font-medium text-aia-navy/20 sm:text-[1.9rem] md:text-[2.15rem]">
+        <div className="mb-5 flex items-baseline gap-4 sm:mb-6 sm:gap-5">
+          <span className="font-[family-name:var(--font-ui)] text-[1.75rem] font-normal text-aia-navy/18 sm:text-[2.15rem] md:text-[2.5rem]">
             {industry.index}
           </span>
-          <h3 className="display text-[clamp(2.1rem,6.5vw,3.35rem)] text-aia-navy">
+          <h3 className="display text-[clamp(2.25rem,5.5vw,3.5rem)] text-aia-navy">
             {industry.name}
           </h3>
         </div>
-        <p className="mb-7 max-w-md whitespace-pre-line text-[clamp(1.2rem,3.8vw,2.35rem)] leading-[1.12] text-aia-navy/45 sm:mb-9">
+        <p className="mb-8 max-w-[18ch] whitespace-pre-line text-[clamp(1.15rem,2.1vw,1.65rem)] leading-[1.25] text-aia-navy/40 sm:mb-10">
           {industry.description}
         </p>
 
-        <ul className="mb-7 max-w-md sm:mb-9">
+        <ul className="mb-8 max-w-md sm:mb-10">
           {industry.solutions.map((solution) => {
             const isActive = active === solution.hotspotId;
             return (
               <li key={solution.id} className="border-t border-aia-line">
                 <button
                   type="button"
-                  className="group flex min-h-12 w-full items-center justify-between gap-4 py-3.5 text-left sm:py-4"
+                  className="group flex min-h-[3.25rem] w-full items-center justify-between gap-4 py-3.5 text-left sm:min-h-14 sm:py-4"
                   onClick={() => setActive(solution.hotspotId)}
                   onMouseEnter={() => setActive(solution.hotspotId)}
                   onFocus={() => setActive(solution.hotspotId)}
                   aria-pressed={isActive}
                 >
                   <span
-                    className={`text-base transition-colors duration-300 sm:text-lg ${
+                    className={`text-[1.05rem] transition-colors duration-300 sm:text-[1.15rem] ${
                       isActive ? "font-semibold text-aia-navy" : "text-aia-muted"
                     }`}
                   >
@@ -56,7 +56,7 @@ export function ModelShowcase({ industry }: Props) {
                   </span>
                   <span
                     aria-hidden
-                    className={`flex size-[25px] shrink-0 items-center justify-center rounded-full bg-aia-orange text-white transition-all duration-300 ${
+                    className={`flex size-[26px] shrink-0 items-center justify-center rounded-full bg-aia-orange text-white transition-all duration-300 ${
                       isActive
                         ? "scale-100 opacity-100"
                         : "scale-90 opacity-0 md:group-hover:opacity-100"
@@ -81,7 +81,7 @@ export function ModelShowcase({ industry }: Props) {
 
         <a
           href={industry.href}
-          className="ui-caps inline-flex min-h-11 items-center gap-2 font-semibold tracking-[0.08em] text-aia-orange transition-opacity hover:opacity-80"
+          className="ui-caps inline-flex min-h-11 items-center gap-2 font-semibold tracking-[0.1em] text-aia-orange transition-opacity hover:opacity-80"
         >
           Explore {industry.name}
           <span aria-hidden>›</span>
@@ -90,7 +90,7 @@ export function ModelShowcase({ industry }: Props) {
 
       <div className="order-1 lg:order-2">
         <div
-          className="relative aspect-[16/10] w-full overflow-hidden bg-white"
+          className="relative aspect-[16/10] w-full bg-white"
           onMouseLeave={() =>
             setActive(
               industry.solutions[0]?.hotspotId ??
@@ -105,7 +105,7 @@ export function ModelShowcase({ industry }: Props) {
             fill
             sizes="(max-width: 1024px) 100vw, 55vw"
             className="object-contain object-center transition-transform duration-700 ease-[var(--ease-out)]"
-            style={{ transform: active ? "scale(1.015)" : "scale(1)" }}
+            style={{ transform: active ? "scale(1.02)" : "scale(1)" }}
           />
 
           {industry.hotspots.map((hotspot) => {
@@ -114,7 +114,7 @@ export function ModelShowcase({ industry }: Props) {
               <button
                 key={hotspot.id}
                 type="button"
-                className="absolute z-10 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+                className="absolute z-10 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
                 style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}
                 aria-label={hotspot.label}
                 aria-pressed={isActive}
@@ -123,23 +123,10 @@ export function ModelShowcase({ industry }: Props) {
                 onFocus={() => setActive(hotspot.id)}
               >
                 <span
-                  className={`relative block size-2.5 rounded-full transition-transform duration-300 ${
-                    isActive ? "scale-125 bg-[#f0c84a]" : "bg-[#f0c84a]/80"
-                  } ${isActive ? "hotspot-ring is-active" : ""}`}
+                  className={`relative block size-2 rounded-full bg-[#f0c84a] transition-transform duration-300 ${
+                    isActive ? "scale-125 hotspot-ring is-active" : ""
+                  }`}
                 />
-                <span
-                  className={`pointer-events-none absolute z-20 whitespace-nowrap rounded-[3px] bg-[#FFC72C] px-2.5 py-1 text-[11px] font-bold tracking-[0.04em] text-[#0A192F] shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-all duration-200 ${
-                    hotspot.align === "left"
-                      ? "right-[calc(100%+10px)] top-1/2 -translate-y-1/2"
-                      : hotspot.align === "right"
-                        ? "left-[calc(100%+10px)] top-1/2 -translate-y-1/2"
-                        : hotspot.align === "bottom"
-                          ? "left-1/2 top-[calc(100%+10px)] -translate-x-1/2"
-                          : "bottom-[calc(100%+10px)] left-1/2 -translate-x-1/2"
-                  } ${isActive ? "scale-100 opacity-100" : "scale-95 opacity-0 md:group-hover:opacity-100"}`}
-                >
-                  {hotspot.label}
-                </span>
               </button>
             );
           })}

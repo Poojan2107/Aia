@@ -20,15 +20,15 @@ export function Services() {
 
   return (
     <section
-      className="bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
+      className="bg-white py-[var(--section-y)]"
       aria-labelledby="services-heading"
     >
-      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
+      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-20">
         <div>
-          <SectionLabel className="mb-6">Services & support</SectionLabel>
+          <SectionLabel className="mb-7">Services & support</SectionLabel>
           <h2
             id="services-heading"
-            className="display mb-8 max-w-[12ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
+            className="display mb-10 max-w-[11ch] text-[clamp(1.85rem,4.6vw,3.75rem)] text-aia-navy"
           >
             We don&apos;t just supply. We help you perform.
           </h2>
@@ -42,7 +42,7 @@ export function Services() {
         </div>
 
         <div>
-          <div className="mb-1 flex flex-wrap gap-x-8 gap-y-2 border-b border-aia-line">
+          <div className="mb-1 flex gap-10 border-b border-aia-line">
             {tabs.map((item) => {
               const active = item.id === tab;
               return (
@@ -50,13 +50,14 @@ export function Services() {
                   key={item.id}
                   type="button"
                   onClick={() => setTab(item.id)}
-                  className={`pb-3 text-sm font-semibold tracking-[0.04em] transition-colors ${
-                    active
-                      ? "border-b-2 border-aia-orange text-aia-orange"
-                      : "text-aia-navy/70 hover:text-aia-navy"
+                  className={`relative pb-3 text-[1.05rem] font-medium transition-colors ${
+                    active ? "text-aia-orange" : "text-aia-navy hover:text-aia-navy/70"
                   }`}
                 >
                   {item.label}
+                  {active ? (
+                    <span className="absolute inset-x-0 -bottom-px h-[2px] bg-aia-orange" />
+                  ) : null}
                 </button>
               );
             })}
@@ -66,12 +67,12 @@ export function Services() {
             {filtered.map((service) => (
               <li
                 key={`${tab}-${service.title}`}
-                className="grid gap-3 border-t border-aia-line py-5 md:grid-cols-[0.7fr_1.1fr] md:gap-8"
+                className="grid gap-2 border-t border-aia-line py-5 md:grid-cols-[0.42fr_0.58fr] md:gap-10 md:py-6"
               >
-                <h3 className="text-lg font-semibold text-aia-navy md:text-xl">
+                <h3 className="text-[1.05rem] font-semibold text-aia-navy md:text-[1.2rem]">
                   {service.title}
                 </h3>
-                <p className="text-base leading-relaxed text-aia-navy/65 md:text-lg">
+                <p className="text-[0.98rem] leading-relaxed text-aia-navy/50 md:text-[1.05rem]">
                   {service.description}
                 </p>
               </li>

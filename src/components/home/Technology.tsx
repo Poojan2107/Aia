@@ -3,10 +3,11 @@ import { MediaSlot } from "@/components/ui/MediaSlot";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { technologyPillars } from "@/data/content";
+import { assets } from "@/data/assets";
 import { media } from "@/data/media";
 
 const posters = [
-  "/images/tech-material.png",
+  assets.millPoster,
   "/images/tech-research.png",
   "/images/tech-performance.png",
 ];
@@ -14,7 +15,7 @@ const posters = [
 export function Technology() {
   return (
     <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
+      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-8 py-[var(--section-y)] sm:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
@@ -41,7 +42,7 @@ export function Technology() {
         </div>
       </Reveal>
 
-      <div className="space-y-2 pb-12 sm:space-y-6 sm:pb-16">
+      <div className="space-y-4 pb-[var(--section-y)] sm:space-y-8">
         {technologyPillars.map((pillar, index) => {
           const textLeft = index === 1;
           const videoSrc = media.tech[pillar.index as keyof typeof media.tech];
@@ -55,10 +56,10 @@ export function Technology() {
                   textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
                 }
               >
-                <p className="mb-3 font-[family-name:var(--font-ui)] text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-aia-muted sm:mb-4 sm:text-[0.85rem]">
-                  {pillar.index}/ {pillar.label.toUpperCase()}
+                <p className="mb-3 font-[family-name:var(--font-ui)] text-[0.78rem] font-medium uppercase tracking-[0.16em] text-[#b0b0b0] sm:mb-4 sm:text-[0.82rem]">
+                  {pillar.index} / {pillar.label.toUpperCase()}
                 </p>
-                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.45rem,3.5vw,2.15rem)] sm:mb-5">
+                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.55rem,3.4vw,2.35rem)] sm:mb-5">
                   {pillar.title}
                 </h3>
                 <p className="max-w-xl text-base leading-relaxed text-aia-navy/65 sm:text-lg">
@@ -69,7 +70,9 @@ export function Technology() {
                 poster={posters[index] ?? posters[0]}
                 posterAlt={`${pillar.label} visual`}
                 src={videoSrc}
-                className={`order-1 aspect-[16/10] rounded-[1.75rem] bg-aia-surface-soft sm:rounded-[2rem] ${
+                playback={videoSrc ? "click" : "ambient"}
+                film={Boolean(videoSrc)}
+                className={`order-1 aspect-[16/10] rounded-[28px] bg-aia-surface-soft sm:rounded-[32px] ${
                   textLeft ? "lg:order-2" : "lg:order-1"
                 }`}
                 sizes="(max-width: 1024px) 100vw, 50vw"

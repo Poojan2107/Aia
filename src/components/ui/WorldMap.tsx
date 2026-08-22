@@ -24,7 +24,7 @@ const MARKERS: Marker[] = [
     y: 46,
     kind: "office",
     label: "UAE",
-    detail: "Representative office",
+    detail: "Tel. +253 998 6542 336",
   },
   { id: "in", x: 68, y: 48, kind: "office", label: "India" },
   { id: "inw", x: 70, y: 52, kind: "warehouse", label: "India" },
