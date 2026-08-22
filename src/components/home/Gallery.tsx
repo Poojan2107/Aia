@@ -128,18 +128,8 @@ export function Gallery() {
                   sizes={featured ? "56vw" : "24vw"}
                 >
                   {card.branded && !playing ? <BrandMarks /> : null}
-                  {"ribbon" in card && card.ribbon && !playing ? (
-                    <span className="gallery-ribbon pointer-events-none absolute left-0 top-8 z-10 bg-aia-navy px-8 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white sm:top-10">
-                      {card.ribbon}
-                    </span>
-                  ) : null}
                   {!playing ? (
                     <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                  ) : null}
-                  {!playing && "overlay" in card && card.overlay ? (
-                    <p className="pointer-events-none absolute bottom-5 left-5 z-10 display max-w-[11ch] text-[clamp(1.15rem,2.1vw,1.9rem)] uppercase leading-[0.94] text-white">
-                      {card.overlay}
-                    </p>
                   ) : null}
                   {!featured && !playing ? (
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-4 text-left sm:p-5">
