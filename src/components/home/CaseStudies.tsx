@@ -3,30 +3,13 @@
 import Image from "next/image";
 import { useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
-
-const cases = [
-  {
-    title: "40ft SAG mill in Latin America",
-    meta: "Life improvement · Throughput increase · Power reduction",
-    image: "/images/case-1.jpg",
-  },
-  {
-    title: "15ft Ball mill in India",
-    meta: "Throughput increase · Power consumption",
-    image: "/images/case-2.jpg",
-  },
-  {
-    title: "34ft SAG mill in West Africa",
-    meta: "Life improvement · Throughput increase",
-    image: "/images/case-3.jpg",
-  },
-] as const;
+import { caseStudies } from "@/data/content";
 
 export function CaseStudies() {
   const [offset, setOffset] = useState(0);
   const ordered = [
-    ...cases.slice(offset),
-    ...cases.slice(0, offset),
+    ...caseStudies.slice(offset),
+    ...caseStudies.slice(0, offset),
   ];
 
   return (
@@ -47,23 +30,23 @@ export function CaseStudies() {
             variant="solid"
             className="w-full justify-center sm:w-auto"
           >
-            View case studies
+            View case study
           </CtaButton>
           <div className="flex gap-3">
             <button
               type="button"
               aria-label="Previous case studies"
               onClick={() =>
-                setOffset((v) => (v - 1 + cases.length) % cases.length)
+                setOffset((v) => (v - 1 + caseStudies.length) % caseStudies.length)
               }
-              className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
+              className="flex size-11 items-center justify-center rounded-full bg-aia-orange text-white transition hover:bg-aia-orange-deep"
             >
               ←
             </button>
             <button
               type="button"
               aria-label="Next case studies"
-              onClick={() => setOffset((v) => (v + 1) % cases.length)}
+              onClick={() => setOffset((v) => (v + 1) % caseStudies.length)}
               className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
             >
               →
@@ -74,11 +57,7 @@ export function CaseStudies() {
 
       <div className="grid gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {ordered.map((item) => (
-          <a
-            key={item.title}
-            href="/resources/case-studies"
-            className="group block"
-          >
+          <a key={item.href} href={item.href} className="group block">
             <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-2xl bg-[#e8eaec] sm:mb-5">
               <Image
                 src={item.image}

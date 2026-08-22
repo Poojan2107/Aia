@@ -4,6 +4,7 @@ export function AssistChip() {
   return (
     <button
       type="button"
+      data-aia-assist
       className="group fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-40"
       aria-label="Open AIA assistant"
     >

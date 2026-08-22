@@ -1,46 +1,66 @@
-import { CtaButton } from "@/components/ui/CtaButton";
-import { MediaSlot } from "@/components/ui/MediaSlot";
+import Image from "next/image";
+import Link from "next/link";
 import { footprint } from "@/data/site";
-import { media } from "@/data/media";
 
+/**
+ * Locked to public/screenshots/Screenshot 2026-08-21 171236.png
+ * Soft plate · centered aerial · "About" | "AIA Engineering" flanking · outline CTA
+ */
 export function AboutBand() {
   return (
-    <section className="bg-white" aria-labelledby="about-heading">
-      <div className="page-pad flex flex-col gap-2 py-12 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-6 sm:py-16 lg:py-20">
-        <h2
-          id="about-heading"
-          className="display text-[clamp(2rem,8vw,4.5rem)] text-aia-navy"
-        >
-          About
-        </h2>
-        <p className="display text-[clamp(1.75rem,7vw,4.5rem)] text-aia-navy">
-          AIA Engineering
-        </p>
-      </div>
+    <section aria-labelledby="about-heading">
+      <div className="bg-[#bfcad0] py-16 sm:py-20 lg:py-24">
+        <div className="page-pad relative mx-auto max-w-[1100px]">
+          <div className="relative mx-auto aspect-[16/9] w-full max-w-[820px] overflow-hidden">
+            <Image
+              src="/images/plant-aerial.png"
+              alt="AIA Engineering industrial facility"
+              fill
+              sizes="(max-width: 1024px) 100vw, 820px"
+              className="object-cover object-center"
+              quality={92}
+            />
+          </div>
 
-      <div className="page-pad mx-auto max-w-5xl pb-12 text-center">
-        <MediaSlot
-          poster="/images/about-still.jpg"
-          posterAlt="AIA Engineering facility"
-          src={media.about}
-          film
-          className="mx-auto mb-10 aspect-[16/10] max-w-4xl rounded-[1.5rem] shadow-[0_24px_60px_rgba(4,29,44,0.1)]"
-          sizes="(max-width: 1024px) 100vw, 900px"
-        />
-        <p className="mx-auto mb-8 max-w-3xl text-base leading-relaxed text-aia-navy/75 sm:text-lg">
-          Across mining, cement, quarry and thermal power, we design and
-          manufacture wear solutions for grinding and other demanding
-          applications. Our expertise in metallurgy, engineering and
-          manufacturing helps extend component life, improve equipment
-          reliability and support better operating performance.
-        </p>
-        <CtaButton
-          href="/company/about"
-          variant="solid"
-          className="w-full justify-center sm:w-auto"
-        >
-          Discover AIA
-        </CtaButton>
+          <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-between gap-4 lg:flex xl:-mx-8">
+            <p
+              className="display text-[clamp(2.5rem,6vw,4.75rem)] leading-none text-white drop-shadow-[0_2px_16px_rgba(4,29,44,0.35)]"
+              aria-hidden
+            >
+              About
+            </p>
+            <p
+              className="display text-right text-[clamp(2.5rem,6vw,4.75rem)] leading-none text-white drop-shadow-[0_2px_16px_rgba(4,29,44,0.35)]"
+              aria-hidden
+            >
+              AIA Engineering
+            </p>
+          </div>
+
+          <h2
+            id="about-heading"
+            className="display mt-8 text-center text-[clamp(2rem,8vw,3rem)] text-white lg:sr-only"
+          >
+            About AIA Engineering
+          </h2>
+
+          <div className="relative z-10 mx-auto mt-10 max-w-[46rem] text-center sm:mt-12">
+            <p className="mb-8 text-base leading-relaxed text-white sm:text-lg md:text-[1.15rem] md:leading-[1.65]">
+              Across mining, cement, quarry and thermal power, we design and
+              manufacture wear solutions for grinding and other demanding
+              applications. Our expertise in metallurgy, engineering and
+              manufacturing helps extend component life, improve equipment
+              reliability and support better operating performance.
+            </p>
+            <Link
+              href="/company/about"
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full border border-white/85 bg-transparent px-5 text-white transition hover:bg-white hover:text-aia-navy"
+            >
+              <span className="size-2 rounded-full bg-white" aria-hidden />
+              Discover AIA
+            </Link>
+          </div>
+        </div>
       </div>
 
       <div className="bg-aia-surface-soft">

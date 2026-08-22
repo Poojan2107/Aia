@@ -1,27 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { Industry } from "@/data/industries";
 
 type Props = {
   industry: Industry;
 };
 
+/**
+ * Poster PNGs already contain Figma callout labels.
+ * Interactive layer = accent dots only (no duplicate live tags).
+ */
 export function ModelShowcase({ industry }: Props) {
   const [active, setActive] = useState<string | null>(
     industry.solutions[0]?.hotspotId ?? industry.hotspots[0]?.id ?? null,
   );
 
-  const linkedIds = useMemo(
-    () => new Set(industry.solutions.map((s) => s.hotspotId)),
-    [industry.solutions],
-  );
-
   const activeHotspot = industry.hotspots.find((h) => h.id === active);
 
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.28fr)] lg:items-center lg:gap-16">
+    <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.28fr)] lg:items-center lg:gap-16 xl:gap-20">
       <div className="order-2 lg:order-1">
         <div className="mb-4 flex items-baseline gap-5 sm:mb-5 sm:gap-6">
           <span className="font-[family-name:var(--font-ui)] text-[1.65rem] font-medium text-aia-navy/20 sm:text-[1.9rem] md:text-[2.15rem]">
@@ -100,22 +99,17 @@ export function ModelShowcase({ industry }: Props) {
             )
           }
         >
-          <div className="absolute inset-0">
-            <Image
-              src={industry.model.poster}
-              alt={industry.model.alt}
-              fill
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-contain object-center transition-transform duration-700 ease-[var(--ease-out)]"
-              style={{ transform: active ? "scale(1.02)" : "scale(1)" }}
-            />
-          </div>
+          <Image
+            src={industry.model.poster}
+            alt={industry.model.alt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 55vw"
+            className="object-contain object-center transition-transform duration-700 ease-[var(--ease-out)]"
+            style={{ transform: active ? "scale(1.015)" : "scale(1)" }}
+          />
 
-          {/* Labels baked into posters — interactive dots only */}
           {industry.hotspots.map((hotspot) => {
             const isActive = active === hotspot.id;
-            const isLinked = linkedIds.has(hotspot.id);
-
             return (
               <button
                 key={hotspot.id}
@@ -129,9 +123,9 @@ export function ModelShowcase({ industry }: Props) {
                 onFocus={() => setActive(hotspot.id)}
               >
                 <span
-                  className={`relative block size-3 rounded-full transition-transform duration-300 md:size-2.5 ${
-                    isActive ? "scale-125 bg-aia-orange" : "bg-aia-orange/85"
-                  } ${isActive || isLinked ? "hotspot-ring is-active" : ""}`}
+                  className={`relative block size-2.5 rounded-full transition-transform duration-300 ${
+                    isActive ? "scale-125 bg-aia-orange" : "bg-aia-orange/80"
+                  } ${isActive ? "hotspot-ring is-active" : ""}`}
                 />
               </button>
             );

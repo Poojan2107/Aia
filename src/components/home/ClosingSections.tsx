@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { faqs, insights } from "@/data/content";
@@ -13,7 +13,7 @@ export function Sustainability() {
       aria-labelledby="sustain-heading"
     >
       <Image
-        src="/images/sustainability-aia.jpg"
+        src="/images/sustainability-gear.jpg"
         alt="Industrial gear with a growing plant — heavy industry thinking lighter"
         fill
         sizes="100vw"
@@ -26,7 +26,7 @@ export function Sustainability() {
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(4,29,44,0.92)_0%,rgba(4,29,44,0.72)_32%,rgba(4,29,44,0.28)_58%,rgba(4,29,44,0.18)_100%)]"
       />
 
-      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-20 sm:py-24 lg:max-w-[55%] lg:py-28">
+      <div className="page-pad relative z-10 flex min-h-[100svh] flex-col justify-center py-20 sm:py-24 lg:max-w-[52%] lg:py-28">
         <h2
           id="sustain-heading"
           className="display mb-6 max-w-[14ch] text-[clamp(2rem,6vw,4.25rem)]"
@@ -79,7 +79,7 @@ export function Faq() {
 
   return (
     <section
-      className="page-pad grid gap-8 bg-white py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.85fr_1.15fr] lg:py-28"
+      className="page-pad grid gap-8 bg-aia-surface-soft py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:divide-x lg:divide-aia-line lg:py-28"
       aria-labelledby="faq-heading"
     >
       <div>
@@ -111,11 +111,20 @@ export function Faq() {
                 aria-expanded={isOpen}
                 onClick={() => setOpen(isOpen ? -1 : index)}
               >
-                <span className="text-lg text-aia-navy sm:text-xl md:text-2xl">
+                <span
+                  className={`text-lg sm:text-xl md:text-2xl ${
+                    isOpen ? "text-aia-orange" : "text-aia-navy"
+                  }`}
+                >
                   {item.question}
                 </span>
-                <span aria-hidden className="mt-1 shrink-0 text-2xl text-aia-orange">
-                  {isOpen ? "−" : "+"}
+                <span
+                  aria-hidden
+                  className={`mt-1.5 shrink-0 text-lg transition-transform duration-300 ${
+                    isOpen ? "rotate-90 text-aia-orange" : "text-aia-navy"
+                  }`}
+                >
+                  ›
                 </span>
               </button>
               <div
@@ -142,6 +151,10 @@ const tabs = ["Blogs", "News", "Press Release"] as const;
 
 export function Insights() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("Blogs");
+  const filtered = useMemo(
+    () => insights.filter((item) => item.type === tab),
+    [tab],
+  );
 
   return (
     <section
@@ -176,60 +189,62 @@ export function Insights() {
       </div>
 
       <div className="page-pad space-y-8 sm:space-y-10">
-        {insights.map((item, index) => (
-          <article
-            key={item.href}
-            className="grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
-          >
-            <div className="order-2 lg:order-1">
-              <time
-                dateTime={item.date}
-                className="mb-4 block text-sm uppercase tracking-[0.06em] text-aia-muted"
-              >
-                {item.date}
-              </time>
-              <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,4.2vw,2.5rem)] text-aia-navy sm:mb-8">
-                {item.title}
-              </h3>
-              <a
-                href={item.href}
-                className="ui-caps inline-flex min-h-11 items-center gap-2 text-aia-orange hover:opacity-80"
-              >
-                Read article <span aria-hidden>›</span>
-              </a>
-            </div>
-            <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-2xl bg-aia-surface-soft lg:order-2">
-              <Image
-                src={
-                  index === 0
-                    ? "/images/insight-1.jpg"
-                    : "/images/insight-2.jpg"
-                }
-                alt=""
-                fill
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover"
-              />
-              {index === 0 ? (
-                <button
-                  type="button"
-                  aria-label="Next insight"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 sm:right-4"
+        {filtered.length === 0 ? (
+          <p className="border-t border-aia-line py-10 text-center text-aia-muted">
+            More {tab.toLowerCase()} coming soon.
+          </p>
+        ) : (
+          filtered.map((item, index) => (
+            <article
+              key={item.href}
+              className="grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
+            >
+              <div className="order-2 lg:order-1">
+                <time
+                  dateTime={item.date}
+                  className="mb-4 block text-sm uppercase tracking-[0.06em] text-aia-muted"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/icons/next.svg"
-                    alt=""
-                    width={44}
-                    height={44}
-                    className="size-11"
-                    aria-hidden
-                  />
-                </button>
-              ) : null}
-            </div>
-          </article>
-        ))}
+                  {item.date}
+                </time>
+                <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,4.2vw,2.5rem)] text-aia-navy sm:mb-8">
+                  {item.title}
+                </h3>
+                <a
+                  href={item.href}
+                  className="ui-caps inline-flex min-h-11 items-center gap-2 text-aia-orange hover:opacity-80"
+                >
+                  Read article <span aria-hidden>›</span>
+                </a>
+              </div>
+              <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-2xl bg-aia-surface-soft lg:order-2">
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+                {index === 0 ? (
+                  <button
+                    type="button"
+                    aria-label="Next insight"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 sm:right-4"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/icons/next.svg"
+                      alt=""
+                      width={44}
+                      height={44}
+                      className="size-11"
+                      aria-hidden
+                    />
+                  </button>
+                ) : null}
+              </div>
+            </article>
+          ))
+        )}
       </div>
     </section>
   );

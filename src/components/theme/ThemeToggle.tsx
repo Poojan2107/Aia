@@ -1,15 +1,34 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { themes, type ThemeId } from "@/lib/theme";
 import { useTheme } from "@/components/theme/ThemeProvider";
 
-/** Compact accent switcher for dual-palette client review. */
+/**
+ * Dual-palette switcher for client review.
+ * Hidden while the hero fills the viewport so Present frames match Figma.
+ */
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setVisible(window.scrollY > window.innerHeight * 0.55);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div
-      className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50"
+      data-aia-theme-toggle
+      className={`fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50 transition-[opacity,visibility,transform] duration-300 ${
+        visible
+          ? "visible translate-y-0 opacity-100"
+          : "invisible translate-y-2 opacity-0 pointer-events-none"
+      }`}
       role="group"
       aria-label="Accent colour"
     >

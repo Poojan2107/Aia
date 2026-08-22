@@ -1,69 +1,78 @@
+import Image from "next/image";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { MediaSlot } from "@/components/ui/MediaSlot";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { media } from "@/data/media";
 import { stats } from "@/data/site";
 
+/** Locked to screenshots 171058 + 171108 */
 export function WhatWeSolve() {
   return (
-    <section className="bg-aia-surface-soft" aria-labelledby="what-we-solve-heading">
-      <div className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:gap-16 lg:py-24">
-        <SectionLabel className="lg:pt-2">What we solve</SectionLabel>
+    <section
+      className="bg-white"
+      aria-labelledby="what-we-solve-heading"
+      id="what-we-solve"
+    >
+      <div className="page-pad grid gap-x-12 gap-y-12 py-[4.5rem] sm:py-20 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-x-[4.5rem] lg:gap-y-16 lg:py-24 xl:gap-x-24">
+        <SectionLabel className="lg:pt-1">What we solve</SectionLabel>
+
         <div>
           <h2
             id="what-we-solve-heading"
-            className="display mb-8 max-w-[22ch] text-[clamp(1.85rem,4.5vw,3.5rem)] leading-[1.05] text-aia-navy"
+            className="display mb-8 max-w-[22ch] text-[clamp(1.9rem,4.4vw,3.5rem)] leading-[1.08] tracking-[-0.03em] text-aia-navy"
           >
-            For over four decades, AIA been engineering longer life into the
+            For over four decades, AIA has been engineering longer life into the
             parts that keep industry moving.
           </h2>
-          <CtaButton
-            href="/solutions/mining"
-            variant="solid"
-            className="w-full justify-center sm:w-auto"
-          >
+          <CtaButton href="/solutions/mining" variant="solid">
             See how we solve wear
           </CtaButton>
         </div>
-      </div>
 
-      <div className="page-pad grid gap-10 pb-14 sm:pb-16 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-16">
-        <p className="max-w-xl text-base leading-relaxed text-aia-navy/70 sm:text-lg md:text-[1.35rem] md:leading-relaxed">
+        <p className="max-w-[32rem] self-center text-[1.05rem] leading-[1.7] text-aia-navy/65 sm:text-[1.125rem] md:text-[1.2rem] md:leading-[1.7]">
           Across mining, cement, quarry and thermal power, we design and
           manufacture wear solutions for grinding and other demanding
           applications. Our expertise in metallurgy, engineering and
           manufacturing helps extend component life, improve equipment
           reliability and support better operating performance.
         </p>
-        <MediaSlot
-          poster="/images/what-we-solve.jpg"
-          posterAlt="Aerial view of an industrial processing facility"
-          src={media.whatWeSolve}
-          className="aspect-[16/10] w-full bg-[#e8eaec]"
-          sizes="(max-width: 1024px) 100vw, 55vw"
-        />
+
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#e8eaec]">
+          <Image
+            src="/images/what-we-solve.png"
+            alt="Aerial view of an industrial processing facility"
+            fill
+            sizes="(max-width: 1024px) 100vw, 55vw"
+            className="object-cover object-center"
+            quality={92}
+          />
+        </div>
       </div>
 
-      <div className="relative min-h-[56vh] sm:min-h-[72vh]">
-        <MediaSlot
-          poster="/images/plant-aerial.jpg"
-          posterAlt="AIA Engineering plant operations"
-          src={media.whatWeSolveBand}
-          overlay="soft"
-          className="absolute inset-0"
+      <div className="relative min-h-[62vh] sm:min-h-[72vh] lg:min-h-[80vh]">
+        <Image
+          src="/images/plant-aerial.png"
+          alt=""
+          fill
           sizes="100vw"
+          className="object-cover object-center"
+          aria-hidden
+          quality={92}
         />
-        <div className="page-pad relative z-10 flex min-h-[56vh] items-end pb-10 pt-20 sm:min-h-[72vh] sm:pb-14 sm:pt-24">
-          <div className="grid w-full gap-6 border-t border-white/35 pt-6 text-white sm:gap-8 sm:pt-8 lg:grid-cols-[1fr_repeat(3,minmax(0,1fr))]">
-            <p className="display text-[1.5rem] sm:text-[2rem] md:text-[2.5rem]">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.12)_0%,rgba(4,29,44,0.28)_50%,rgba(4,29,44,0.68)_100%)]"
+        />
+
+        <div className="page-pad relative z-10 flex min-h-[62vh] items-end pb-12 pt-24 sm:min-h-[72vh] sm:pb-14 lg:min-h-[80vh] lg:pb-16">
+          <div className="grid w-full gap-8 border-t border-white/45 pt-7 text-white sm:gap-10 sm:pt-8 lg:grid-cols-[minmax(11rem,0.85fr)_repeat(3,minmax(0,1fr))] lg:items-start">
+            <p className="display text-[clamp(1.35rem,2.4vw,2rem)] leading-tight">
               AIA Engineering
             </p>
             {stats.map((stat) => (
-              <div key={stat.label} className="pt-1">
-                <p className="display text-[clamp(2.5rem,9vw,6.5rem)] leading-none tracking-tight">
+              <div key={stat.label}>
+                <p className="display text-[clamp(2.75rem,7.5vw,5.5rem)] leading-none tracking-[-0.03em]">
                   {stat.value}
                 </p>
-                <div className="mt-3 border-t border-white/35 pt-3 text-base sm:text-lg">
+                <div className="mt-3 border-t border-white/40 pt-3 text-[0.95rem] sm:text-[1.05rem]">
                   {stat.label}
                 </div>
               </div>

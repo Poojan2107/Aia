@@ -65,8 +65,8 @@ export function SiteFooter() {
           <BrandLockup tone="light" className="shrink-0 self-start sm:self-end" />
         </div>
 
-        {/* Orange link panel — solid, opaque, contained */}
-        <div className="bg-aia-orange px-5 py-8 text-white sm:px-8 sm:py-10 md:px-10 md:py-12">
+        {/* Accent link panel — inset card matching Figma */}
+        <div className="rounded-md bg-aia-orange px-5 py-8 text-white sm:px-8 sm:py-10 md:px-10 md:py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
             <div className="lg:col-span-2">
               <FooterCol title="Solutions" links={footerNav.solutions} />
@@ -141,14 +141,14 @@ export function SiteFooter() {
         </div>
 
         {/* Dual CTA band */}
-        <div className="mt-0 grid border border-white/25 border-t-0 md:grid-cols-2">
-          <div className="border-b border-white/25 px-5 py-8 sm:px-8 md:border-b-0 md:border-r md:px-10 md:py-10">
+        <div className="mt-8 grid gap-8 border-t border-white/20 pt-10 md:grid-cols-2 md:gap-16">
+          <div>
             <p className="display mb-6 max-w-[16ch] text-[clamp(1.15rem,2.5vw,1.5rem)] leading-tight text-white">
               Have a wear or performance challenge?
             </p>
             <Link
               href="/company/contact"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 font-medium text-aia-orange transition hover:bg-aia-cream"
+              className="ui-caps inline-flex h-[50px] min-w-[12rem] items-center justify-center gap-2.5 rounded-full bg-white px-6 font-medium text-aia-orange transition hover:bg-aia-cream"
             >
               <span
                 className="size-2 shrink-0 rounded-full bg-aia-orange"
@@ -157,14 +157,14 @@ export function SiteFooter() {
               Talk to an expert
             </Link>
           </div>
-          <div className="px-5 py-8 sm:px-8 md:px-10 md:py-10">
+          <div>
             <p className="display mb-6 max-w-[20ch] text-[clamp(1.15rem,2.5vw,1.5rem)] leading-tight text-white">
               Find AIA offices, representatives and support across global
               markets.
             </p>
             <Link
               href="/company/global-presence"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 font-medium text-aia-orange transition hover:bg-aia-cream"
+              className="ui-caps inline-flex h-[50px] min-w-[14rem] items-center justify-center gap-2.5 rounded-full bg-white px-6 font-medium text-aia-orange transition hover:bg-aia-cream"
             >
               <span
                 className="size-2 shrink-0 rounded-full bg-aia-orange"

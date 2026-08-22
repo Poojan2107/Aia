@@ -22,23 +22,29 @@ async function captureTheme(theme, viewport) {
   const base =
     theme === "blue"
       ? "http://127.0.0.1:3000/?theme=blue"
-      : "http://127.0.0.1:3000/";
+      : "http://127.0.0.1:3000/?theme=orange";
   const tag = `${theme}-${viewport.width}`;
 
   await page.goto(base, { waitUntil: "networkidle" });
   await page.waitForTimeout(800);
   await shot(page, `hero-${tag}`);
 
-  for (const sel of [
+  const sections = [
     ["#solutions", "industries"],
+    ['[aria-labelledby="vision-heading"]', "vision"],
+    ['[aria-labelledby="gallery-heading"]', "gallery"],
     ["footer", "footer"],
-  ]) {
-    await page.locator(sel[0]).first().scrollIntoViewIfNeeded();
-    await shot(page, `${sel[1]}-${tag}`);
+  ];
+
+  for (const [sel, name] of sections) {
+    const loc = page.locator(sel).first();
+    if (await loc.count()) {
+      await loc.scrollIntoViewIfNeeded();
+      await shot(page, `${name}-${tag}`);
+    }
   }
 
-  // Mid-page: about heading
-  const about = page.getByRole("heading", { name: "About", exact: true });
+  const about = page.getByRole("heading", { name: "About AIA Engineering" });
   if (await about.count()) {
     await about.first().scrollIntoViewIfNeeded();
     await shot(page, `about-${tag}`);
@@ -66,7 +72,6 @@ for (const theme of ["orange", "blue"]) {
   await captureTheme(theme, { width: 390, height: 844 });
 }
 
-// Smoke: interior route
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   const res = await page.goto("http://127.0.0.1:3000/company/about", {

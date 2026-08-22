@@ -6,9 +6,9 @@
 */
 :root,
 html[data-theme="orange"] {
-  --aia-orange: #da702e;
-  --aia-orange-deep: #c45a1c;
-  --aia-accent-rgb: 218, 112, 46;
+  --aia-orange: #d6723c;
+  --aia-orange-deep: #c45f2e;
+  --aia-accent-rgb: 214, 114, 60;
   --aia-marker: #2f6fed;
   --aia-cream: #fff7e9;
   --aia-surface-soft: #f7f7f7;
@@ -54,6 +54,7 @@ html[data-theme="blue"] {
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-ui: var(--font-ui);
+  --font-serif: var(--font-serif);
 }
 
 *,
@@ -161,7 +162,6 @@ video {
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 0.98;
-  text-wrap: balance;
 }
 
 .ui-caps {
@@ -223,4 +223,25 @@ video {
   .hotspot-label {
     display: none !important;
   }
+}
+
+.font-serif-quote {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+}
+
+.vision-smoke {
+  background:
+    radial-gradient(
+      120% 80% at 50% 100%,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0.92) 28%,
+      rgba(255, 255, 255, 0.45) 58%,
+      transparent 78%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.55) 55%,
+      rgba(255, 255, 255, 0.96) 100%
+    );
 }

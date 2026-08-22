@@ -47,7 +47,7 @@ export const megaSections: MegaSection[] = [
       { label: "Contact Us", href: "/company/contact" },
     ],
     image: {
-      src: "/images/mega-building.png",
+      src: "/images/about-facility.jpg",
       alt: "AIA corporate facility",
     },
   },
@@ -64,7 +64,7 @@ export const megaSections: MegaSection[] = [
       { label: "Downloads", href: "/resources/downloads" },
     ],
     image: {
-      src: "/images/hero-bg.jpg",
+      src: "/images/hero-dusk.png",
       alt: "AIA engineering in the field",
     },
   },

@@ -4,8 +4,12 @@ import { ModelShowcase } from "@/components/home/ModelShowcase";
 
 export function Industries() {
   return (
-    <section id="solutions" className="bg-white" aria-labelledby="industries-heading">
-      <div className="page-pad grid gap-6 py-14 sm:gap-8 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:py-24">
+    <section
+      id="solutions"
+      className="bg-aia-surface-soft"
+      aria-labelledby="industries-heading"
+    >
+      <div className="page-pad grid gap-6 py-14 sm:gap-8 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-16 lg:py-24">
         <SectionLabel>Solutions by industry</SectionLabel>
         <h2
           id="industries-heading"

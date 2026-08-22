@@ -52,18 +52,18 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex h-10 items-center gap-2.5 rounded-full border border-white/25 bg-black/35 px-3.5 backdrop-blur-md transition hover:bg-black/45 md:h-[41px]"
+              className="inline-flex h-[42px] items-center gap-2.5 rounded-full border border-white/25 bg-[rgba(8,14,20,0.45)] py-1.5 pl-4 pr-1.5 text-white backdrop-blur-[10px] transition hover:bg-[rgba(8,14,20,0.58)]"
               aria-expanded={open}
               aria-controls="mega-menu"
             >
-              <span className="ui-caps tracking-[0.08em]">Menu</span>
+              <span className="ui-caps tracking-[0.1em]">Menu</span>
               <span
-                className="relative flex size-[22px] items-center justify-center rounded-full bg-aia-orange shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
+                className="relative flex size-[28px] items-center justify-center rounded-full bg-aia-orange"
                 aria-hidden
               >
-                <span className="absolute top-[7px] h-px w-2.5 bg-white" />
-                <span className="absolute top-[11px] h-px w-2.5 bg-white" />
-                <span className="absolute top-[15px] h-px w-2.5 bg-white" />
+                <span className="absolute top-[8px] h-[1.5px] w-[12px] rounded-full bg-white" />
+                <span className="absolute top-[12.5px] h-[1.5px] w-[12px] rounded-full bg-white" />
+                <span className="absolute top-[17px] h-[1.5px] w-[12px] rounded-full bg-white" />
               </span>
             </button>
           </div>

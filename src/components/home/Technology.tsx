@@ -5,9 +5,9 @@ import { technologyPillars } from "@/data/content";
 import { media } from "@/data/media";
 
 const posters = [
-  "/images/tech-material.jpg",
-  "/images/tech-research.jpg",
-  "/images/tech-performance.jpg",
+  "/images/tech-material.png",
+  "/images/tech-research.png",
+  "/images/tech-performance.png",
 ];
 
 export function Technology() {
@@ -54,10 +54,10 @@ export function Technology() {
                   textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
                 }
               >
-                <p className="mb-3 ui-caps tracking-[0.1em] text-aia-muted sm:mb-4">
-                  {pillar.index} / {pillar.label}
+                <p className="mb-3 font-[family-name:var(--font-ui)] text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-aia-muted sm:mb-4 sm:text-[0.85rem]">
+                  {pillar.index} / {pillar.label.toUpperCase()}
                 </p>
-                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.45rem,3.5vw,2.05rem)] sm:mb-5">
+                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.45rem,3.5vw,2.15rem)] sm:mb-5">
                   {pillar.title}
                 </h3>
                 <p className="max-w-xl text-base leading-relaxed text-aia-navy/65 sm:text-lg">
@@ -68,7 +68,7 @@ export function Technology() {
                 poster={posters[index] ?? posters[0]}
                 posterAlt={`${pillar.label} visual`}
                 src={videoSrc}
-                className={`order-1 aspect-[16/10] rounded-[1.5rem] bg-aia-surface-soft sm:rounded-[1.75rem] ${
+                className={`order-1 aspect-[16/10] rounded-[1.75rem] bg-aia-surface-soft sm:rounded-[2rem] ${
                   textLeft ? "lg:order-2" : "lg:order-1"
                 }`}
                 sizes="(max-width: 1024px) 100vw, 50vw"

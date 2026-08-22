@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Archivo, Manrope, Syne } from "next/font/google";
+import { Archivo, Instrument_Serif, Manrope, Syne } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -26,6 +26,14 @@ const ui = Syne({
   variable: "--font-ui",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const serif = Instrument_Serif({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -64,9 +72,9 @@ export const metadata: Metadata = {
     description: site.description,
     images: [
       {
-        url: "/images/hero-bg.jpg",
-        width: 1920,
-        height: 1280,
+        url: "/images/hero-plate.jpg",
+        width: 2560,
+        height: 1707,
         alt: "AIA Engineering industrial operations",
       },
     ],
@@ -75,7 +83,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
-    images: ["/images/hero-bg.jpg"],
+    images: ["/images/hero-plate.jpg"],
   },
   robots: {
     index: true,
@@ -124,7 +132,7 @@ export default function RootLayout({
       lang="en"
       data-theme="orange"
       suppressHydrationWarning
-      className={`${display.variable} ${sans.variable} ${ui.variable} h-full`}
+      className={`${display.variable} ${sans.variable} ${ui.variable} ${serif.variable} h-full`}
     >
       <body className="min-h-full bg-aia-surface text-aia-navy antialiased">
         <Script
