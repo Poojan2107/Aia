@@ -33,7 +33,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="pointer-events-none absolute inset-x-0 top-0 z-40">
-        <div className="page-pad mx-auto pointer-events-auto flex max-w-[1440px] items-center justify-between gap-3 py-5 md:py-6">
+        <div className="page-pad mx-auto pointer-events-auto flex max-w-[1440px] items-center justify-between gap-3 py-[clamp(1.5rem,2.24vw,2.7rem)]">
           <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>
@@ -41,7 +41,7 @@ export function SiteHeader() {
           <div className="flex shrink-0 items-center gap-4 text-white md:gap-6">
             <button
               type="button"
-              className="ui-caps hidden items-center gap-2 opacity-95 transition hover:opacity-100 sm:inline-flex"
+              className="hidden items-center gap-2 text-[0.95rem] font-medium tracking-wide opacity-95 transition hover:opacity-100 sm:inline-flex"
               aria-haspopup="listbox"
             >
               En

@@ -50,7 +50,7 @@ export function MediaSlot({
   const videoRef = useRef<HTMLVideoElement>(null);
   const clickMode = playback === "click";
   const shouldLoop = loop ?? !clickMode;
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(Boolean(priority));
   const [videoReady, setVideoReady] = useState(false);
   const [internalActive, setInternalActive] = useState(false);
   const [started, setStarted] = useState(false);
@@ -149,16 +149,17 @@ export function MediaSlot({
       {src && shouldLoad ? (
         <video
           ref={videoRef}
-          className={`absolute inset-0 size-full ${
+          className={`absolute inset-0 h-full w-full max-w-none ${
             fit === "cover" ? "object-cover" : "object-contain"
           } ${videoReady ? "opacity-100" : "opacity-0"} transition-opacity duration-700`}
           muted={!clickMode}
           playsInline
           loop={shouldLoop}
           controls={clickMode && isActive}
-          preload={clickMode ? "none" : "metadata"}
+          preload={clickMode ? "none" : "auto"}
           poster={poster}
-          onCanPlay={() => setVideoReady(true)}
+          src={src}
+          onPlaying={() => setVideoReady(true)}
           onPlay={() => setPlaying(true)}
           onPause={() => {
             if (clickMode && active !== false) setPlaying(false);

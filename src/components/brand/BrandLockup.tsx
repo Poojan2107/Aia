@@ -23,17 +23,17 @@ export function BrandLockup({
 
   return (
     <span
-      className={`inline-flex max-w-full items-center gap-2.5 sm:gap-3 md:gap-3.5 ${className}`}
+      className={`inline-flex max-w-full items-center gap-3 md:gap-[0.9rem] ${className}`}
     >
       <Image
         src={aia}
         alt="AIA Engineering Limited"
-        width={246}
-        height={82}
+        width={820}
+        height={272}
         className={`w-auto object-contain object-left ${
           compact
-            ? "h-9 max-w-[10.5rem] sm:h-10 sm:max-w-[12rem] md:h-12 md:max-w-[14.5rem]"
-            : "h-10 max-w-[12rem] sm:h-11 sm:max-w-[14rem] md:h-[3.35rem] md:max-w-[16rem]"
+            ? "h-[clamp(2.5rem,3.55vw,4.25rem)]"
+            : "h-10 sm:h-11 md:h-[3.35rem]"
         }`}
         priority={compact}
       />
@@ -42,18 +42,18 @@ export function BrandLockup({
         <>
           <span
             aria-hidden
-            className="hidden h-7 w-px shrink-0 md:block md:h-9"
+            className="hidden h-[clamp(1.35rem,2.4vw,2.75rem)] w-px shrink-0 self-center md:block"
             style={{ background: divider }}
           />
           <Image
             src={vega}
             alt="Vega Industries"
-            width={188}
-            height={136}
+            width={376}
+            height={272}
             className={`hidden w-auto object-contain object-left md:block ${
               compact
-                ? "md:h-[1.15rem] md:max-w-[4.6rem] lg:h-5 lg:max-w-[5.25rem]"
-                : "md:h-6 md:max-w-[5.5rem] lg:h-[1.65rem] lg:max-w-[6rem]"
+                ? "md:h-[clamp(2.5rem,3.55vw,4.25rem)]"
+                : "md:h-6 lg:h-[1.65rem]"
             }`}
           />
         </>
