@@ -6,13 +6,20 @@ import type { Industry } from "@/data/industries";
 
 type Props = {
   industry: Industry;
+  priority?: boolean;
+  /** Tighter stage for the sticky 100svh plates. */
+  compact?: boolean;
 };
 
 /**
  * Figma mill plates already include yellow callouts + leader lines.
  * Live layer = pulsing dots tied to the solution list.
  */
-export function ModelShowcase({ industry }: Props) {
+export function ModelShowcase({
+  industry,
+  priority = false,
+  compact = false,
+}: Props) {
   const [active, setActive] = useState<string | null>(
     industry.solutions[0]?.hotspotId ?? industry.hotspots[0]?.id ?? null,
   );
@@ -20,7 +27,7 @@ export function ModelShowcase({ industry }: Props) {
   const activeHotspot = industry.hotspots.find((h) => h.id === active);
 
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16 xl:gap-20">
+    <div className="grid w-full items-center gap-8 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16 xl:gap-20">
       <div className="order-2 lg:order-1">
         <div className="mb-5 flex items-baseline gap-4 sm:mb-6 sm:gap-5">
           <span className="font-[family-name:var(--font-ui)] text-[1.75rem] font-normal text-aia-navy/18 sm:text-[2.15rem] md:text-[2.5rem]">
@@ -90,7 +97,11 @@ export function ModelShowcase({ industry }: Props) {
 
       <div className="order-1 lg:order-2">
         <div
-          className="relative aspect-[16/10] w-full bg-white"
+          className={`relative w-full bg-white ${
+            compact
+              ? "h-[min(42vh,22rem)] sm:h-[min(52vh,28rem)]"
+              : "aspect-[16/10]"
+          }`}
           onMouseLeave={() =>
             setActive(
               industry.solutions[0]?.hotspotId ??
@@ -99,13 +110,18 @@ export function ModelShowcase({ industry }: Props) {
             )
           }
         >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(var(--aia-accent-rgb),0.12),transparent_68%)]"
+          />
           <Image
             src={industry.model.poster}
             alt={industry.model.alt}
             fill
+            priority={priority}
             sizes="(max-width: 1024px) 100vw, 55vw"
             className="object-contain object-center transition-transform duration-700 ease-[var(--ease-out)]"
-            style={{ transform: active ? "scale(1.02)" : "scale(1)" }}
+            style={{ transform: active ? "scale(1.025)" : "scale(1)" }}
           />
 
           {industry.hotspots.map((hotspot) => {
@@ -132,7 +148,7 @@ export function ModelShowcase({ industry }: Props) {
           })}
         </div>
 
-        <div className="mt-4 md:hidden">
+        <div className={`mt-4 md:hidden ${compact ? "hidden" : ""}`}>
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.08em] text-aia-muted">
             Tap a part
           </p>

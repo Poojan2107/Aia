@@ -4,10 +4,10 @@
  */
 export const media = {
   hero: "/videos/hero.mp4",
-  whatWeSolve: undefined as string | undefined,
-  whatWeSolveBand: undefined as string | undefined,
-  about: undefined as string | undefined,
-  sustainability: undefined as string | undefined,
+  whatWeSolve: "/videos/corporate.mp4",
+  whatWeSolveBand: "/videos/corporate.mp4",
+  about: "/videos/corporate.mp4",
+  sustainability: "/videos/mill.mp4",
   tech: {
     "01": "/videos/mill.mp4",
     "02": undefined as string | undefined,

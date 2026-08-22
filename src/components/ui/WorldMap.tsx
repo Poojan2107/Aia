@@ -1,100 +1,139 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-
-type Marker = {
-  id: string;
-  x: number;
-  y: number;
-  kind: "office" | "warehouse";
-  label: string;
-  detail?: string;
-};
-
-const MARKERS: Marker[] = [
-  { id: "usa", x: 22, y: 42, kind: "office", label: "Americas" },
-  { id: "br", x: 32, y: 68, kind: "warehouse", label: "South America" },
-  { id: "uk", x: 47, y: 32, kind: "office", label: "Europe" },
-  { id: "eu", x: 51, y: 36, kind: "warehouse", label: "Europe" },
-  { id: "za", x: 54, y: 72, kind: "warehouse", label: "Africa" },
-  {
-    id: "uae",
-    x: 61.5,
-    y: 46,
-    kind: "office",
-    label: "UAE",
-    detail: "Tel. +253 998 6542 336",
-  },
-  { id: "in", x: 68, y: 48, kind: "office", label: "India" },
-  { id: "inw", x: 70, y: 52, kind: "warehouse", label: "India" },
-  { id: "sg", x: 78, y: 56, kind: "office", label: "APAC" },
-  { id: "au", x: 86, y: 72, kind: "warehouse", label: "APAC" },
-];
+import { useMemo, useState } from "react";
+import { sites, type Site } from "@/data/locations";
 
 type Props = {
   className?: string;
-  activeRegion?: string;
+  defaultId?: string;
 };
 
-export function WorldMap({ className = "", activeRegion = "UAE" }: Props) {
-  const [active, setActive] = useState(activeRegion);
-  const current =
-    MARKERS.find((m) => m.label === active) ??
-    MARKERS.find((m) => m.id === "uae");
+export function WorldMap({ className = "", defaultId = "uae" }: Props) {
+  const [activeId, setActiveId] = useState(defaultId);
+  const active = useMemo(
+    () => sites.find((site) => site.id === activeId) ?? sites[5],
+    [activeId],
+  );
 
   return (
     <div className={`relative ${className}`}>
-      <Image
-        src="/images/world-map.jpg"
-        alt={`AIA global presence map, focused on ${activeRegion}`}
-        width={1800}
-        height={880}
-        className="h-auto w-full"
-        quality={90}
-        priority={false}
-      />
+      <div
+        className="relative overflow-hidden bg-white shadow-[0_18px_60px_rgba(4,29,44,0.08)]"
+        onMouseLeave={() => setActiveId(defaultId)}
+      >
+        <Image
+          src="/images/world-map.jpg"
+          alt="AIA global presence map"
+          width={1800}
+          height={880}
+          className="h-auto w-full"
+          quality={90}
+        />
 
-      {MARKERS.map((m) => {
-        const isOn = m.label === active || (active === "UAE" && m.id === "uae");
-        return (
-          <button
-            key={m.id}
-            type="button"
-            className="absolute z-[1] -translate-x-1/2 -translate-y-1/2"
-            style={{ left: `${m.x}%`, top: `${m.y}%` }}
-            onMouseEnter={() => setActive(m.label)}
-            onFocus={() => setActive(m.label)}
-            aria-label={m.label}
-          >
-            <span
-              className={`block rounded-full ring-2 ring-white transition-transform duration-300 ${
-                m.kind === "office" ? "bg-aia-orange" : "bg-aia-marker"
-              } ${isOn ? "size-3.5 scale-110" : "size-2.5"}`}
-            />
-            {isOn ? (
-              <span
-                aria-hidden
-                className="hotspot-pulse absolute left-1/2 top-1/2 size-7 -translate-x-1/2 -translate-y-1/2 rounded-full border border-aia-orange/50"
-              />
-            ) : null}
-          </button>
-        );
-      })}
+        <p
+          aria-live="polite"
+          className="pointer-events-none absolute left-4 top-4 z-[3] max-w-[16rem] sm:left-6 sm:top-5"
+        >
+          <span className="display block text-[clamp(1.35rem,3.2vw,2.35rem)] leading-none tracking-[-0.04em] text-aia-navy/18">
+            {active.continent}
+          </span>
+          <span className="mt-1.5 block text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-aia-navy/55">
+            {active.city}, {active.country}
+          </span>
+        </p>
 
-      {current ? (
-        <aside className="absolute left-[58%] top-[16%] z-[2] max-w-[15.5rem] -translate-x-1/2 rounded-md bg-aia-orange p-4 text-white shadow-[0_12px_30px_rgba(var(--aia-accent-rgb),0.35)] sm:left-[61%]">
-          <p className="mb-1 text-sm font-semibold">{current.label}</p>
-          <p className="text-sm text-white/90">
-            {current.detail ?? "AIA location"}
-          </p>
-          {current.id === "uae" ? (
-            <p className="mt-1 break-all text-sm text-white/90">
-              Inquiry. global@aiaengineering.com
-            </p>
-          ) : null}
-        </aside>
-      ) : null}
+        {sites.map((site) => (
+          <MarkerButton
+            key={site.id}
+            site={site}
+            active={site.id === active.id}
+            onSelect={() => setActiveId(site.id)}
+          />
+        ))}
+
+        <Tooltip site={active} />
+      </div>
+      <p className="mt-3 text-sm text-aia-navy/55">
+        <span className="font-semibold text-aia-navy">{active.continent}</span>
+        {" · "}
+        {active.city}, {active.country}
+      </p>
     </div>
+  );
+}
+
+function MarkerButton({
+  site,
+  active,
+  onSelect,
+}: {
+  site: Site;
+  active: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="absolute z-[2] -translate-x-1/2 -translate-y-1/2"
+      style={{ left: `${site.x}%`, top: `${site.y}%` }}
+      onMouseEnter={onSelect}
+      onFocus={onSelect}
+      aria-pressed={active}
+      aria-label={`${site.city}, ${site.country}, ${site.continent}`}
+    >
+      <span
+        className={`block rounded-full ring-2 ring-white transition-transform duration-300 ${
+          site.kind === "office" ? "bg-aia-orange" : "bg-aia-navy"
+        } ${active ? "size-3.5 scale-110" : "size-2.5"}`}
+      />
+      {active ? (
+        <span
+          aria-hidden
+          className="hotspot-pulse absolute left-1/2 top-1/2 size-8 rounded-full border border-aia-orange/55"
+        />
+      ) : null}
+    </button>
+  );
+}
+
+function Tooltip({ site }: { site: Site }) {
+  const flipDown = site.y < 28;
+  const shift =
+    site.x > 82 ? "-80%" : site.x < 18 ? "-20%" : "-50%";
+
+  return (
+    <aside
+      className="pointer-events-none absolute z-[4] w-[min(16.5rem,70vw)] transition-[left,top] duration-300"
+      style={{
+        left: `${site.x}%`,
+        top: `${site.y}%`,
+        transform: flipDown
+          ? `translate(${shift}, 18px)`
+          : `translate(${shift}, calc(-100% - 18px))`,
+      }}
+    >
+      <div className="rounded-md bg-aia-orange px-4 py-3.5 text-white shadow-[0_16px_36px_rgba(var(--aia-accent-rgb),0.38)]">
+        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/70">
+          {site.continent}
+        </p>
+        <p className="mt-1 text-[1.05rem] font-semibold leading-tight">
+          {site.country}
+        </p>
+        <p className="mt-2 text-sm text-white/92">Tel. {site.phone}</p>
+        <p className="mt-0.5 break-all text-sm text-white/92">
+          Inquiry. {site.email}
+        </p>
+      </div>
+      <span
+        aria-hidden
+        className={`mx-auto block w-px bg-aia-orange ${
+          flipDown ? "order-first h-4" : "h-4"
+        }`}
+        style={{
+          marginLeft: site.x > 82 ? "80%" : site.x < 18 ? "20%" : "50%",
+        }}
+      />
+    </aside>
   );
 }

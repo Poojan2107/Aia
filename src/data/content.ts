@@ -140,7 +140,7 @@ export const faqs = [
   {
     question: "Can AIA solutions be used with our existing mill?",
     answer:
-      "Yes. AIA wear solutions are engineered for specific mill types and operating conditions, and can be designed to integrate with existing equipment.",
+      "Yes. AIA wear solutions are engineered for specific mill types and operating conditions, and can be designed to work with existing equipment.",
   },
   {
     question: "What exactly does AIA Engineering provide?",

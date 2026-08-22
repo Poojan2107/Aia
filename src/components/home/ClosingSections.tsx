@@ -15,51 +15,51 @@ export function Sustainability() {
     >
       <Image
         src="/images/sustainability-gear.jpg"
-        alt="Industrial gear with a growing plant — heavy industry thinking lighter"
+        alt=""
         fill
         sizes="100vw"
-        className="object-cover object-right"
-        priority={false}
+        className="object-cover object-[70%_center]"
         quality={90}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(4,29,44,0.92)_0%,rgba(4,29,44,0.72)_32%,rgba(4,29,44,0.28)_58%,rgba(4,29,44,0.18)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(8,14,18,0.88)_0%,rgba(8,14,18,0.55)_38%,rgba(8,14,18,0.18)_68%,rgba(8,14,18,0.12)_100%)]"
       />
+      <div aria-hidden className="sustain-haze pointer-events-none absolute inset-0" />
 
-      <div className="page-pad mx-auto relative z-10 flex min-h-[100svh] max-w-[1440px] flex-col justify-center py-20 sm:py-24 lg:py-28">
-        <div className="max-w-2xl">
+      <div className="page-pad relative z-10 mx-auto grid min-h-[100svh] max-w-[1440px] items-center py-20 sm:py-24 lg:grid-cols-[minmax(0,0.55fr)_minmax(0,0.45fr)] lg:py-28">
+        <div className="max-w-xl">
           <h2
             id="sustain-heading"
-            className="display mb-6 text-[clamp(2rem,6vw,4.25rem)]"
+            className="display mb-6 text-[clamp(2.1rem,6vw,4.4rem)] leading-[0.98]"
           >
             Can heavy industry think lighter?
           </h2>
-          <p className="mb-8 text-base leading-relaxed text-white/90 sm:mb-10 sm:text-lg md:text-[1.35rem]">
-            YES, We believe it can. By using resources more efficiently, reducing
+          <p className="mb-10 max-w-[36rem] text-base leading-relaxed text-white/90 sm:text-lg md:text-[1.28rem] md:leading-[1.65]">
+            YES. We believe it can. By using resources more efficiently, reducing
             waste and embracing reuse and recycling, we&apos;re working to lower
             the environmental impact of our operations while continuing to deliver
             the performance industry depends on.
           </p>
-          <div className="mb-10 grid gap-6 sm:mb-12 sm:grid-cols-2 sm:gap-10">
-            <div className="border-t border-white/30 pt-4">
-              <p className="display text-[clamp(2.25rem,6vw,3.5rem)] font-bold">
-                <CountUp value="1,00,000+" />
+          <div className="mb-10 grid gap-8 sm:mb-12 sm:grid-cols-2 sm:gap-12">
+            <div>
+              <p className="display text-[clamp(2.4rem,5.5vw,3.6rem)] font-bold leading-none">
+                <CountUp value="1,00,000+" duration={1600} />
               </p>
-              <p className="mt-2 text-base text-white/85 sm:text-lg">
+              <p className="mt-3 text-base text-white/85 sm:text-lg">
                 Tree plantation during the year
               </p>
             </div>
-            <div className="border-t border-white/30 pt-4">
-              <p className="display text-[clamp(2.25rem,6vw,3.5rem)] font-bold">
-                <CountUp value="30%" />
+            <div>
+              <p className="display text-[clamp(2.4rem,5.5vw,3.6rem)] font-bold leading-none">
+                <CountUp value="30%" duration={1400} />
               </p>
-              <p className="mt-2 text-base text-white/85 sm:text-lg">
+              <p className="mt-3 text-base text-white/85 sm:text-lg">
                 Energy comes from the renewable energy resources
               </p>
             </div>
           </div>
-          <div className="flex w-full flex-col gap-3 pb-8 sm:w-auto sm:flex-row sm:flex-wrap sm:gap-4 sm:pb-4">
+          <div className="flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
             <CtaButton
               href="/company/sustainability"
               variant="outline-light"
@@ -86,73 +86,69 @@ export function Faq() {
 
   return (
     <section
-      className="bg-aia-surface-soft py-[var(--section-y)]"
+      className="bg-[#f4f4f4] py-[var(--section-y)]"
       aria-labelledby="faq-heading"
     >
-      <div className="page-pad mx-auto max-w-[1440px]">
-      <div className="grid gap-10 border border-aia-line px-6 py-10 sm:gap-12 sm:px-10 sm:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-14 lg:py-16 lg:divide-x lg:divide-aia-line">
+      <div className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-16 xl:gap-24">
         <div>
           <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
           <h2
             id="faq-heading"
-            className="display mb-8 max-w-[14ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy sm:mb-10"
+            className="display mb-8 max-w-[13ch] text-[clamp(1.9rem,4.8vw,3.75rem)] leading-[1.02] text-aia-navy sm:mb-10"
           >
             Here are the essentials about AIA, what we make, and how our solutions
             support your operations.
           </h2>
-          <CtaButton
-            href="/company/contact"
-            variant="solid"
-            className="w-full justify-center sm:w-auto"
-          >
+          <CtaButton href="/company/contact" variant="solid">
             Ask an expert
           </CtaButton>
         </div>
 
-      <div className="lg:pl-10">
-        {faqs.map((item, index) => {
-          const isOpen = open === index;
-          return (
-            <div key={item.question} className="border-t border-aia-line">
-              <button
-                type="button"
-                className="flex w-full items-start justify-between gap-4 py-5 text-left sm:gap-6 sm:py-6"
-                aria-expanded={isOpen}
-                onClick={() => setOpen(isOpen ? -1 : index)}
-              >
-                <span
-                  className={`text-lg sm:text-xl md:text-2xl ${
-                    isOpen ? "text-aia-orange" : "text-aia-navy"
+        <div>
+          {faqs.map((item, index) => {
+            const isOpen = open === index;
+            return (
+              <div key={item.question} className="border-t border-aia-navy/15">
+                <button
+                  type="button"
+                  className="flex w-full items-start justify-between gap-4 py-5 text-left sm:py-6"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpen(isOpen ? -1 : index)}
+                >
+                  <span
+                    className={`pr-4 text-[1.05rem] leading-snug sm:text-[1.25rem] md:text-[1.4rem] ${
+                      isOpen ? "text-aia-orange" : "text-aia-navy"
+                    }`}
+                  >
+                    {item.question}
+                  </span>
+                  <span
+                    aria-hidden
+                    className={`mt-1 shrink-0 text-lg leading-none transition-transform duration-300 ${
+                      isOpen
+                        ? "rotate-90 text-aia-orange"
+                        : "text-aia-navy/70"
+                    }`}
+                  >
+                    ›
+                  </span>
+                </button>
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out)] ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                   }`}
                 >
-                  {item.question}
-                </span>
-                <span
-                  aria-hidden
-                  className={`mt-1.5 shrink-0 text-lg leading-none transition-transform duration-300 ${
-                    isOpen ? "rotate-90 text-aia-orange" : "text-aia-navy"
-                  }`}
-                >
-                  ›
-                </span>
-              </button>
-              <div
-                className={`grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out)] ${
-                  isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <p className="pb-5 pr-4 text-base leading-relaxed text-aia-navy/75 sm:pb-6 sm:pr-10 sm:text-lg">
-                    {item.answer}
-                  </p>
+                  <div className="overflow-hidden">
+                    <p className="max-w-[42rem] pb-6 pr-8 text-[0.98rem] leading-relaxed text-aia-navy/70 sm:text-[1.05rem]">
+                      {item.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-        <div className="border-t border-aia-line" />
-      </div>
-      </div>
+            );
+          })}
+          <div className="border-t border-aia-navy/15" />
+        </div>
       </div>
     </section>
   );
@@ -205,7 +201,7 @@ export function Insights() {
             More {tab.toLowerCase()} coming soon.
           </p>
         ) : (
-          filtered.map((item, index) => (
+          filtered.map((item) => (
             <article
               key={item.href}
               className="grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
@@ -235,23 +231,6 @@ export function Insights() {
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="object-cover"
                 />
-                {index === 0 ? (
-                  <button
-                    type="button"
-                    aria-label="Next insight"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 sm:right-4"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/icons/next.svg"
-                      alt=""
-                      width={44}
-                      height={44}
-                      className="size-11"
-                      aria-hidden
-                    />
-                  </button>
-                ) : null}
               </div>
             </article>
           ))

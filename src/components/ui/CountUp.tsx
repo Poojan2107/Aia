@@ -5,12 +5,34 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   value: string;
   className?: string;
+  duration?: number;
 };
 
-/** Animates the numeric part of strings like "120+", "+32 %", "1,00,000+". */
-export function CountUp({ value, className = "" }: Props) {
+function split(value: string) {
+  const match = value.match(/^([^\d]*)([\d,]+)(.*)$/);
+  if (!match) return null;
+  const [, prefix, digits, suffix] = match;
+  return {
+    prefix,
+    digits,
+    suffix,
+    target: Number(digits.replace(/,/g, "")),
+    indian: digits.includes(","),
+  };
+}
+
+function format(value: string, amount: number) {
+  const parts = split(value);
+  if (!parts || !Number.isFinite(parts.target)) return value;
+  const current = Math.round(parts.target * amount);
+  const number = parts.indian ? current.toLocaleString("en-IN") : String(current);
+  return `${parts.prefix}${number}${parts.suffix}`;
+}
+
+/** Counts the numeric part of "120+", "+32 %", "1,00,000+" once in view. */
+export function CountUp({ value, className = "", duration = 1400 }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [shown, setShown] = useState(value);
+  const [shown, setShown] = useState(() => format(value, 0));
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
@@ -28,7 +50,7 @@ export function CountUp({ value, className = "" }: Props) {
           io.disconnect();
         }
       },
-      { threshold: 0.4 },
+      { threshold: 0.35, rootMargin: "0px 0px -8% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -36,37 +58,25 @@ export function CountUp({ value, className = "" }: Props) {
 
   useEffect(() => {
     if (!started) return;
-    const match = value.match(/^([^\d]*)([\d,]+)(.*)$/);
-    if (!match) {
+    const parts = split(value);
+    if (!parts || !Number.isFinite(parts.target)) {
       setShown(value);
       return;
     }
-    const [, prefix, digits, suffix] = match;
-    const compact = digits.replace(/,/g, "");
-    const target = Number(compact);
-    if (!Number.isFinite(target)) {
-      setShown(value);
-      return;
-    }
-    const duration = 1100;
     const start = performance.now();
     let frame = 0;
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
       const eased = 1 - (1 - t) ** 3;
-      const current = Math.round(target * eased);
-      const formatted = digits.includes(",")
-        ? current.toLocaleString("en-IN")
-        : String(current);
-      setShown(`${prefix}${formatted}${suffix}`);
+      setShown(format(value, eased));
       if (t < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [started, value]);
+  }, [started, value, duration]);
 
   return (
-    <span ref={ref} className={className}>
+    <span ref={ref} className={`tabular-nums ${className}`}>
       {shown}
     </span>
   );

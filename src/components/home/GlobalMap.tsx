@@ -32,13 +32,13 @@ export function GlobalMap() {
 
         <Reveal delay={80} className="space-y-5">
           <div className="relative w-full">
-            <WorldMap className="w-full" activeRegion="UAE" />
+            <WorldMap className="w-full" />
           </div>
 
           <ul className="flex flex-wrap gap-x-8 gap-y-2 text-[11px] uppercase tracking-[0.08em] text-aia-navy/55">
             <li className="flex items-center gap-2">
               <span
-                className="size-2.5 shrink-0 rounded-full bg-aia-marker"
+                className="size-2.5 shrink-0 rounded-full bg-aia-navy"
                 aria-hidden
               />
               Logistic Warehouses

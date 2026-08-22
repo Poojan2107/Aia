@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { caseStudies } from "@/data/content";
 
@@ -14,72 +14,85 @@ export function CaseStudies() {
 
   return (
     <section
-      className="page-pad bg-aia-surface-soft py-[var(--section-y)]"
+      className="page-pad bg-[#f6f6f6] py-[var(--section-y)]"
       aria-labelledby="cases-heading"
     >
-      <div className="mx-auto mb-8 flex max-w-[1440px] flex-col gap-6 sm:mb-12 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+      <div className="mx-auto mb-10 flex max-w-[1440px] flex-col gap-6 sm:mb-14 lg:flex-row lg:items-start lg:justify-between">
         <h2
           id="cases-heading"
-          className="display max-w-[16ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
+          className="display max-w-[16ch] text-[clamp(1.9rem,5vw,3.875rem)] leading-[1.02] text-aia-navy"
         >
           When the challenge is real, performance has to be proven.
         </h2>
-        <div className="flex w-full flex-col gap-4 sm:w-auto sm:items-end">
-          <CtaButton
-            href="/resources/case-studies"
-            variant="solid"
-            className="w-full justify-center sm:w-auto"
-          >
+        <div className="flex shrink-0 flex-col gap-4 sm:items-end">
+          <CtaButton href="/resources/case-studies" variant="solid">
             View case study
           </CtaButton>
           <div className="flex gap-3">
-            <button
-              type="button"
-              aria-label="Previous case studies"
+            <NavArrow
+              label="Previous case studies"
               onClick={() =>
                 setOffset((v) => (v - 1 + caseStudies.length) % caseStudies.length)
               }
-              className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
             >
               ‹
-            </button>
-            <button
-              type="button"
-              aria-label="Next case studies"
+            </NavArrow>
+            <NavArrow
+              label="Next case studies"
               onClick={() => setOffset((v) => (v + 1) % caseStudies.length)}
-              className="flex size-11 items-center justify-center rounded-full border border-aia-navy/25 text-aia-navy/45 transition hover:border-aia-orange hover:text-aia-orange"
             >
               ›
-            </button>
+            </NavArrow>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-[1440px] gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-[1440px] gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
         {ordered.map((item) => (
           <a key={item.href} href={item.href} className="group block">
-            <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-[20px] bg-[#e8eaec] sm:mb-5 sm:rounded-[24px]">
+            <div className="relative mb-5 aspect-[16/10] overflow-hidden rounded-[22px] bg-[#e8eaec]">
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition duration-500 group-hover:scale-[1.04] group-hover:blur-[1.5px]"
+                className="object-cover transition duration-500 group-hover:scale-[1.03] group-hover:blur-[2px]"
               />
-              <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.8rem] uppercase tracking-[0.14em] text-white opacity-0 transition duration-300 group-hover:bg-black/40 group-hover:opacity-100">
+              <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.78rem] uppercase tracking-[0.16em] text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
                 Know more
-                <span className="flex size-8 items-center justify-center rounded-full bg-aia-orange text-white">
+                <span className="flex size-8 items-center justify-center rounded-full bg-aia-orange text-base text-white">
                   →
                 </span>
               </span>
             </div>
-            <h3 className="mb-2 text-[1.2rem] leading-snug text-aia-navy sm:text-[1.35rem]">
+            <h3 className="mb-2 text-[1.2rem] font-semibold leading-snug text-aia-navy sm:text-[1.35rem]">
               {item.title}
             </h3>
-            <p className="text-sm text-aia-muted sm:text-base">{item.meta}</p>
+            <p className="text-sm text-aia-muted sm:text-[0.98rem]">{item.meta}</p>
           </a>
         ))}
       </div>
     </section>
+  );
+}
+
+function NavArrow({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
+    >
+      {children}
+    </button>
   );
 }

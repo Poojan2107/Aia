@@ -1,7 +1,6 @@
-import { industries } from "@/data/industries";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { ModelShowcase } from "@/components/home/ModelShowcase";
 import { Reveal } from "@/components/ui/Reveal";
+import { IndustryStack } from "@/components/home/IndustryStack";
 
 export function Industries() {
   return (
@@ -10,7 +9,7 @@ export function Industries() {
       className="bg-aia-surface-soft"
       aria-labelledby="industries-heading"
     >
-      <Reveal className="page-pad mx-auto grid max-w-[1440px] items-end gap-6 py-[var(--section-y)] lg:grid-cols-[0.38fr_0.62fr] lg:gap-16">
+      <Reveal className="page-pad mx-auto grid max-w-[1440px] items-end gap-6 pb-10 pt-[var(--section-y)] lg:grid-cols-[0.38fr_0.62fr] lg:gap-16 lg:pb-14">
         <SectionLabel>Solutions by industry</SectionLabel>
         <h2
           id="industries-heading"
@@ -21,13 +20,7 @@ export function Industries() {
         </h2>
       </Reveal>
 
-      <div className="divide-y divide-aia-line border-y border-aia-line bg-white">
-        {industries.map((industry) => (
-          <article key={industry.id} className="page-pad mx-auto max-w-[1440px] py-14 sm:py-20 lg:py-24">
-            <ModelShowcase industry={industry} />
-          </article>
-        ))}
-      </div>
+      <IndustryStack />
     </section>
   );
 }
