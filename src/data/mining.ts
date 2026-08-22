@@ -157,7 +157,7 @@ export const miningPage = {
     line2: "Uptime",
     productsHeading: "How Our Products Contribute",
     productsBody:
-      "Our advanced mill lining systems are engineered to maximize liner life and structural integrity under the extreme impact and abrasion conditions inside SAG and Ball mills. By combining optimized alloy selection with design modelling, these lining systems are designed keeping in mind your specific ore and operating parameters. Using advanced simulation technology, we simulate charge motion and discharge fluid dynamics to ensure the liner designs complement existing grinding conditions. Our service engineers provide onsite support during relining tasks to supervise positioning and proper lining arrangement in compliance with design specifications. Our wear monitoring service focuses on providing liner wear data throughout the wear cycle, thus reducing the chances of unplanned shutdowns and help maintenance teams schedule activities in advance. All of these activities allow for longer intervals between relines — directly translating into longer up time for your mill.",
+      "Our advanced mill lining systems are engineered to maximize liner life and structural integrity under the extreme impact and abrasion conditions inside SAG and Ball mills. Combined with optimized alloy selection and design modelling for your ore and operating parameters, they allow longer intervals between relines — directly translating into longer up time for your mill.",
     metrics: [
       { label: "Liner Life Improvement", value: "Upto 40%", percent: 80 },
       { label: "Installation Time Reduction", value: "Upto 20%", percent: 40 },
@@ -167,17 +167,17 @@ export const miningPage = {
       {
         title: "Design Modelling",
         description:
-          "Using advanced DEM simulation, we model liner profiles, lifter designs and charge motion specific to your mill and ore characteristics — ensuring every lining system is optimized for maximum wear life and shell protection before a single component is manufactured.",
+          "Using advanced DEM simulation, we model liner profiles, lifter designs and charge motion specific to your mill and ore characteristics.",
       },
       {
         title: "Wear Monitoring",
         description:
-          "We track liner wear progression systematically throughout each cycle — giving you accurate, data-driven insights allowing accurate scheduling of maintenance activities and extracts the maximum output from every lining system.",
+          "We track liner wear progression throughout each cycle — giving maintenance teams data to schedule activities in advance.",
       },
       {
         title: "Reline Supervision",
         description:
-          "Our engineers supervise every reline activity on-site, overseeing installation sequence, bolt torquing and quality assurance — ensuring liners are fitted correctly first time and your mill returns to operation quickly.",
+          "Our engineers supervise every reline on-site, overseeing installation sequence, bolt torquing and quality assurance.",
       },
     ],
   },
@@ -186,7 +186,7 @@ export const miningPage = {
     line2: "Improvement",
     productsHeading: "How Our Products Contribute",
     productsBody:
-      "The discharge end is where grinding efficiency is won or lost. Our RPL, CPL and NGDS solutions for SAG mills eliminate pulp lifter carry-over and slurry backflow — recovering throughput and reducing energy wasted on unnecessary re-grinding. For Ball mills, our discharge assembly conversion from overflow to grate discharge delivers tighter product size control, lower energy draw and improved feed quality to downstream circuits. Backed by our process services, these products consistently deliver measurable gains in throughput, recovery and cost per tonne.",
+      "The discharge end is where grinding efficiency is won or lost. Our RPL, CPL and NGDS solutions for SAG mills eliminate pulp lifter carry-over and slurry backflow, while Ball mill overflow-to-grate conversions deliver tighter product size control, lower energy draw and measurable gains in throughput, recovery and cost per tonne.",
     metrics: [
       { label: "Increase Throughput", value: "Upto 20%", percent: 40 },
       { label: "Energy Savings", value: "Upto 20%", percent: 40 },
@@ -196,17 +196,17 @@ export const miningPage = {
       {
         title: "Grinding Circuit Survey",
         description:
-          "We conduct comprehensive circuit sampling and size distribution analysis across your full grinding circuit — establishing a rigorous performance baseline that identifies exactly where efficiency losses are occurring and identifies the opportunity for improvement.",
+          "We sample and analyse size distribution across your grinding circuit — establishing a baseline that shows where efficiency is being lost.",
       },
       {
         title: "Process Modelling (JKSimMet)",
         description:
-          "Using industry-standard JKSimMet simulation, we model the throughput, power draw and product size response of your circuit to proposed changes — allowing operational and design decisions to be validated and optimized.",
+          "Using JKSimMet, we model throughput, power draw and product size response before a change is made on the mill.",
       },
       {
         title: "Mill Operation Support",
         description:
-          "We work alongside your operations team on a regular basis, translating survey findings and model outputs into practical recommendations on charge mass, media sizing, fill level and operating speed — ensuring efficiency gains are implemented effectively and sustained over time.",
+          "We work with your operations team on charge mass, media sizing, fill level and operating speed so efficiency gains hold.",
       },
     ],
   },

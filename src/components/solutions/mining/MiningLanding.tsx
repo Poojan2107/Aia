@@ -3,64 +3,11 @@ import Link from "next/link";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { miningPage } from "@/data/mining";
-import { MetricGauge } from "@/components/solutions/mining/MetricGauge";
 import { ValueFunnel } from "@/components/solutions/mining/ValueFunnel";
-
-function PillarTitle({
-  id,
-  line1,
-  line2,
-  accentClass,
-  accentVar,
-}: {
-  id: string;
-  line1: string;
-  line2: string;
-  accentClass: string;
-  accentVar: string;
-}) {
-  return (
-    <h2
-      id={id}
-      className="display scroll-mt-24 text-[clamp(1.85rem,4vw,3rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.03em]"
-    >
-      <span className="block text-aia-navy">{line1}</span>
-      <span className={`block ${accentClass}`}>{line2}</span>
-      <span
-        aria-hidden
-        className="mt-2.5 block h-[3px] w-14"
-        style={{ background: accentVar }}
-      />
-    </h2>
-  );
-}
-
-function FadeHeading({
-  children,
-  accentVar,
-}: {
-  children: React.ReactNode;
-  accentVar: string;
-}) {
-  return (
-    <div>
-      <h3 className="text-[1.05rem] font-semibold text-aia-navy md:text-[1.15rem]">
-        {children}
-      </h3>
-      <div
-        aria-hidden
-        className="mt-2 h-[3px] w-full max-w-[18rem]"
-        style={{
-          background: `linear-gradient(90deg, ${accentVar} 0%, transparent 100%)`,
-        }}
-      />
-    </div>
-  );
-}
+import { PerformanceScroll } from "@/components/solutions/mining/PerformanceScroll";
 
 export function MiningLanding() {
-  const { hero, intro, uptime, efficiency, cases } = miningPage;
-  const primary = "var(--aia-orange)";
+  const { hero, intro, cases } = miningPage;
   const metrics = hero.metrics.split("|").map((item) => item.trim());
 
   return (
@@ -200,111 +147,7 @@ export function MiningLanding() {
           </Reveal>
         </section>
 
-        <section className="page-pad mx-auto max-w-[1440px] pb-14 sm:pb-20 lg:pb-24" aria-labelledby="uptime">
-          <div className="grid gap-10 lg:grid-cols-2 lg:grid-rows-[auto_auto_1fr_auto_auto_1fr_auto] lg:gap-x-16 lg:gap-y-8">
-            <article className="grid grid-rows-[auto_auto_auto_auto_auto_auto_auto] gap-8 lg:row-span-7 lg:grid-rows-subgrid">
-              <Reveal>
-                <PillarTitle
-                  id="uptime"
-                  line1={uptime.line1}
-                  line2={uptime.line2}
-                  accentClass="text-aia-orange"
-                  accentVar={primary}
-                />
-              </Reveal>
-              <Reveal delay={70}>
-                <FadeHeading accentVar={primary}>{uptime.productsHeading}</FadeHeading>
-              </Reveal>
-              <Reveal delay={110}>
-                <p className="text-[0.92rem] leading-[1.75] text-aia-navy/65 md:text-[0.98rem]">
-                  {uptime.productsBody}
-                </p>
-              </Reveal>
-              <div className="grid grid-cols-2 items-stretch gap-4">
-                {uptime.metrics.map((metric, i) => (
-                  <Reveal key={metric.label} className="h-full" delay={140 + i * 90}>
-                    <MetricGauge
-                      label={metric.label}
-                      value={metric.value}
-                      percent={metric.percent}
-                      tone="primary"
-                    />
-                  </Reveal>
-                ))}
-              </div>
-              <Reveal delay={180}>
-                <div id="services" className="scroll-mt-24">
-                  <FadeHeading accentVar={primary}>{uptime.servicesHeading}</FadeHeading>
-                </div>
-              </Reveal>
-              <ul className="space-y-6">
-                {uptime.services.map((service, i) => (
-                  <Reveal key={service.title} as="li" delay={200 + i * 90}>
-                    <h4 className="text-[1.02rem] font-semibold text-aia-orange">
-                      {service.title}
-                    </h4>
-                    <p className="mt-2 text-[0.92rem] leading-[1.7] text-aia-navy/65 md:text-[0.98rem]">
-                      {service.description}
-                    </p>
-                  </Reveal>
-                ))}
-              </ul>
-              <Reveal delay={280}>
-                <div className="flex items-start">
-                  <CtaButton href="/services">Explore Mining Services</CtaButton>
-                </div>
-              </Reveal>
-            </article>
-
-            <article className="grid grid-rows-[auto_auto_auto_auto_auto_auto_auto] gap-8 lg:row-span-7 lg:grid-rows-subgrid">
-              <Reveal delay={40}>
-                <PillarTitle
-                  id="efficiency"
-                  line1={efficiency.line1}
-                  line2={efficiency.line2}
-                  accentClass="text-aia-orange"
-                  accentVar={primary}
-                />
-              </Reveal>
-              <Reveal delay={110}>
-                <FadeHeading accentVar={primary}>{efficiency.productsHeading}</FadeHeading>
-              </Reveal>
-              <Reveal delay={150}>
-                <p className="text-[0.92rem] leading-[1.75] text-aia-navy/65 md:text-[0.98rem]">
-                  {efficiency.productsBody}
-                </p>
-              </Reveal>
-              <div className="grid grid-cols-2 items-stretch gap-4">
-                {efficiency.metrics.map((metric, i) => (
-                  <Reveal key={metric.label} className="h-full" delay={180 + i * 90}>
-                    <MetricGauge
-                      label={metric.label}
-                      value={metric.value}
-                      percent={metric.percent}
-                      tone="primary"
-                    />
-                  </Reveal>
-                ))}
-              </div>
-              <Reveal delay={220}>
-                <FadeHeading accentVar={primary}>{efficiency.servicesHeading}</FadeHeading>
-              </Reveal>
-              <ul className="space-y-6">
-                {efficiency.services.map((service, i) => (
-                  <Reveal key={service.title} as="li" delay={240 + i * 90}>
-                    <h4 className="text-[1.02rem] font-semibold text-aia-orange">
-                      {service.title}
-                    </h4>
-                    <p className="mt-2 text-[0.92rem] leading-[1.7] text-aia-navy/65 md:text-[0.98rem]">
-                      {service.description}
-                    </p>
-                  </Reveal>
-                ))}
-              </ul>
-              <div aria-hidden className="hidden lg:block" />
-            </article>
-          </div>
-        </section>
+        <PerformanceScroll />
 
         <section
           className="bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
