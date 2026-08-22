@@ -1,50 +1,98 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { footprint } from "@/data/site";
+import { prefersReducedMotion, useScrollProgress } from "@/lib/motion";
 
 /**
- * Locked to public/screenshots/Screenshot 2026-08-21 171236.png
- * Soft plate · centered aerial · "About" | "AIA Engineering" flanking · outline CTA
+ * Figma About plate with a pinned scroll:
+ * the aerial grows to the viewport while the title gathers on the right.
  */
 export function AboutBand() {
+  const track = useRef<HTMLDivElement>(null);
+  const progress = useScrollProgress(track);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    setReduced(prefersReducedMotion());
+  }, []);
+
+  const ease = reduced ? 0 : progress * progress * (3 - 2 * progress);
+  const scale = 0.58 + ease * 0.42;
+  const titleShift = ease * 18;
+  const copyFade = Math.max(0, 1 - ease * 1.35);
+  const overlay = 0.08 + ease * 0.28;
+
   return (
     <section aria-labelledby="about-heading">
-      <div className="bg-[#bfcad0] py-16 sm:py-20 lg:py-24">
-        <div className="page-pad relative mx-auto max-w-[1100px]">
-          <div className="relative mx-auto aspect-[16/9] w-full max-w-[820px] overflow-hidden">
+      <div
+        ref={track}
+        className="relative bg-[#bfc8cf]"
+        style={{ height: reduced ? "100svh" : "210vh" }}
+      >
+        <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
+          <div
+            className="absolute left-1/2 top-1/2 z-[1] overflow-hidden"
+            style={{
+              width: `${scale * 100}vw`,
+              height: `${scale * 100}svh`,
+              transform: "translate(-50%, -50%)",
+              maxWidth: ease > 0.02 ? "100vw" : "820px",
+            }}
+          >
             <Image
               src="/images/plant-aerial.png"
               alt="AIA Engineering industrial facility"
               fill
-              sizes="(max-width: 1024px) 100vw, 820px"
+              sizes="100vw"
               className="object-cover object-center"
               quality={92}
+              priority={false}
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ background: `rgba(4,29,44,${overlay})` }}
             />
           </div>
 
-          <div className="pointer-events-none absolute inset-x-0 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-between gap-4 lg:flex xl:-mx-8">
+          <div
+            className="page-pad relative z-[2] flex w-full items-center justify-between gap-4"
+            style={{
+              transform: `translateX(${titleShift}%)`,
+              mixBlendMode: "normal",
+            }}
+          >
             <p
-              className="display text-[clamp(2.5rem,6vw,4.75rem)] leading-none text-white drop-shadow-[0_2px_16px_rgba(4,29,44,0.35)]"
-              aria-hidden
+              className="display whitespace-nowrap text-[clamp(2.4rem,6vw,4.75rem)] leading-none text-white drop-shadow-[0_2px_16px_rgba(4,29,44,0.35)]"
+              style={{
+                opacity: 1 - ease * 0.15,
+                transform: `translateX(${ease * -8}%)`,
+              }}
             >
               About
             </p>
             <p
-              className="display text-right text-[clamp(2.5rem,6vw,4.75rem)] leading-none text-white drop-shadow-[0_2px_16px_rgba(4,29,44,0.35)]"
-              aria-hidden
+              id="about-heading"
+              className="display text-right text-[clamp(2.4rem,6vw,4.75rem)] leading-none text-white drop-shadow-[0_2px_16px_rgba(4,29,44,0.35)]"
+              style={{
+                transform: `translateX(${ease * 4}%)`,
+              }}
             >
               AIA Engineering
             </p>
           </div>
 
-          <h2
-            id="about-heading"
-            className="display mt-8 text-center text-[clamp(2rem,8vw,3rem)] text-white lg:sr-only"
+          <div
+            className="page-pad absolute inset-x-0 bottom-[8%] z-[3] mx-auto max-w-[46rem] text-center"
+            style={{
+              opacity: copyFade,
+              transform: `translateY(${ease * 24}px)`,
+              pointerEvents: copyFade < 0.2 ? "none" : "auto",
+            }}
           >
-            About AIA Engineering
-          </h2>
-
-          <div className="relative z-10 mx-auto mt-10 max-w-[46rem] text-center sm:mt-12">
             <p className="mb-8 text-base leading-relaxed text-white sm:text-lg md:text-[1.15rem] md:leading-[1.65]">
               Across mining, cement, quarry and thermal power, we design and
               manufacture wear solutions for grinding and other demanding
@@ -64,13 +112,16 @@ export function AboutBand() {
       </div>
 
       <div className="bg-aia-surface-soft">
-        <div className="page-pad grid grid-cols-2 gap-y-8 border-y border-aia-line py-10 sm:py-12 md:grid-cols-3 lg:grid-cols-6 lg:gap-y-0 lg:divide-x lg:divide-aia-line">
+        <div className="page-pad grid grid-cols-2 gap-3 py-10 sm:gap-4 sm:py-12 md:grid-cols-3 lg:grid-cols-6">
           {footprint.map((item) => (
-            <div key={item.label} className="px-3 text-center sm:px-4 md:px-6">
-              <p className="display text-[clamp(1.75rem,6vw,3.5rem)] text-aia-orange">
+            <div
+              key={item.label}
+              className="flex aspect-square flex-col items-center justify-center border-t-2 border-[#006fff] border-x border-b border-aia-line bg-white px-3 text-center transition-shadow hover:shadow-sm"
+            >
+              <p className="display text-[clamp(1.85rem,4.5vw,2.95rem)] font-bold text-[#006fff]">
                 {item.value}
               </p>
-              <p className="mt-2 text-sm leading-snug whitespace-pre-line text-aia-navy/60 sm:text-base md:text-lg">
+              <p className="mt-2.5 max-w-[14ch] text-sm font-medium leading-snug text-aia-navy/80 sm:text-base">
                 {item.label}
               </p>
             </div>

@@ -124,9 +124,22 @@ export function ModelShowcase({ industry }: Props) {
               >
                 <span
                   className={`relative block size-2.5 rounded-full transition-transform duration-300 ${
-                    isActive ? "scale-125 bg-aia-orange" : "bg-aia-orange/80"
+                    isActive ? "scale-125 bg-[#f0c84a]" : "bg-[#f0c84a]/80"
                   } ${isActive ? "hotspot-ring is-active" : ""}`}
                 />
+                <span
+                  className={`pointer-events-none absolute z-20 whitespace-nowrap rounded-[3px] bg-[#FFC72C] px-2.5 py-1 text-[11px] font-bold tracking-[0.04em] text-[#0A192F] shadow-[0_2px_10px_rgba(0,0,0,0.22)] transition-all duration-200 ${
+                    hotspot.align === "left"
+                      ? "right-[calc(100%+10px)] top-1/2 -translate-y-1/2"
+                      : hotspot.align === "right"
+                        ? "left-[calc(100%+10px)] top-1/2 -translate-y-1/2"
+                        : hotspot.align === "bottom"
+                          ? "left-1/2 top-[calc(100%+10px)] -translate-x-1/2"
+                          : "bottom-[calc(100%+10px)] left-1/2 -translate-x-1/2"
+                  } ${isActive ? "scale-100 opacity-100" : "scale-95 opacity-0 md:group-hover:opacity-100"}`}
+                >
+                  {hotspot.label}
+                </span>
               </button>
             );
           })}

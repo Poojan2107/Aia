@@ -40,9 +40,9 @@ export const stats = [
 
 export const footprint = [
   { value: "120+", label: "Countries" },
-  { value: "6+", label: "Manufacturing\nClusters" },
+  { value: "6+", label: "Manufacturing Clusters" },
   { value: "50+", label: "Basic Alloys" },
   { value: "2000+", label: "Employees" },
-  { value: "10+", label: "Global\nService Centers" },
+  { value: "10+", label: "Global Service Centers" },
   { value: "4000+", label: "Customers" },
 ] as const;

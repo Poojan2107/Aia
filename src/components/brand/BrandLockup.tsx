@@ -52,8 +52,8 @@ export function BrandLockup({
             height={136}
             className={`hidden w-auto object-contain object-left md:block ${
               compact
-                ? "md:h-6 md:max-w-[5.75rem] lg:h-7 lg:max-w-[6.5rem]"
-                : "md:h-7 md:max-w-[6.5rem] lg:h-8 lg:max-w-[7.25rem]"
+                ? "md:h-[1.15rem] md:max-w-[4.6rem] lg:h-5 lg:max-w-[5.25rem]"
+                : "md:h-6 md:max-w-[5.5rem] lg:h-[1.65rem] lg:max-w-[6rem]"
             }`}
           />
         </>

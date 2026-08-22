@@ -89,6 +89,24 @@ export const services = [
     description:
       "Technical support for vertical roller mill wear parts, rollers and table performance.",
   },
+  {
+    audience: "cement" as const,
+    title: "Grinding Media Support",
+    description:
+      "Support for media selection and charge management to improve cement mill grinding efficiency.",
+  },
+  {
+    audience: "cement" as const,
+    title: "Mill Internals Optimisation",
+    description:
+      "Review of diaphragms, liners and internals to improve grinding performance and energy use.",
+  },
+  {
+    audience: "cement" as const,
+    title: "Shutdown Planning Support",
+    description:
+      "Technical planning for liner replacement windows to reduce downtime during planned shutdowns.",
+  },
 ] as const;
 
 export const technologyPillars = [

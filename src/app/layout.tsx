@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Archivo, Instrument_Serif, Manrope, Syne } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -8,24 +8,24 @@ import { getSiteUrl, site } from "@/data/site";
 
 const themeBootScript = `(function(){try{var k="aia-theme";var q=new URLSearchParams(location.search).get("theme");var t=(q==="blue"||q==="orange")?q:localStorage.getItem(k);if(t==="blue"||t==="orange")document.documentElement.dataset.theme=t;else document.documentElement.dataset.theme="orange";}catch(e){document.documentElement.dataset.theme="orange";}})();`;
 
-const display = Archivo({
+const display = Plus_Jakarta_Sans({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
-const sans = Manrope({
+const sans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
-const ui = Syne({
+const ui = Inter({
   variable: "--font-ui",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 

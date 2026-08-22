@@ -1,6 +1,7 @@
 import { CtaButton } from "@/components/ui/CtaButton";
 import { MediaSlot } from "@/components/ui/MediaSlot";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Reveal } from "@/components/ui/Reveal";
 import { technologyPillars } from "@/data/content";
 import { media } from "@/data/media";
 
@@ -13,7 +14,7 @@ const posters = [
 export function Technology() {
   return (
     <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <div className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
+      <Reveal className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
         <div>
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
@@ -38,7 +39,7 @@ export function Technology() {
             Explore our technology
           </CtaButton>
         </div>
-      </div>
+      </Reveal>
 
       <div className="space-y-2 pb-12 sm:space-y-6 sm:pb-16">
         {technologyPillars.map((pillar, index) => {
@@ -55,7 +56,7 @@ export function Technology() {
                 }
               >
                 <p className="mb-3 font-[family-name:var(--font-ui)] text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-aia-muted sm:mb-4 sm:text-[0.85rem]">
-                  {pillar.index} / {pillar.label.toUpperCase()}
+                  {pillar.index}/ {pillar.label.toUpperCase()}
                 </p>
                 <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.45rem,3.5vw,2.15rem)] sm:mb-5">
                   {pillar.title}

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Reveal } from "@/components/ui/Reveal";
 import { services } from "@/data/content";
 
 const tabs = [
@@ -22,7 +23,7 @@ export function Services() {
       className="page-pad bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
       aria-labelledby="services-heading"
     >
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+      <Reveal className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
         <div>
           <SectionLabel className="mb-6">Services & support</SectionLabel>
           <h2
@@ -77,7 +78,7 @@ export function Services() {
             ))}
           </ul>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

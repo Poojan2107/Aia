@@ -56,7 +56,7 @@ export function SiteHeader() {
               aria-expanded={open}
               aria-controls="mega-menu"
             >
-              <span className="ui-caps tracking-[0.1em]">Menu</span>
+              <span className="ui-caps tracking-[0.1em]">MENU</span>
               <span
                 className="relative flex size-[28px] items-center justify-center rounded-full bg-aia-orange"
                 aria-hidden
@@ -115,7 +115,7 @@ export function SiteHeader() {
             </label>
             <div className="ml-3 flex shrink-0 items-center gap-3 text-white sm:ml-4 sm:gap-4">
               <button type="button" className="ui-caps hidden items-center gap-2 sm:inline-flex">
-                English
+                ENGLISH
                 <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
                   <path d="M0 0l4 4 4-4" fill="currentColor" />
                 </svg>
@@ -123,11 +123,11 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex h-10 items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3.5 sm:h-[41px] sm:px-4"
+                className="inline-flex h-9 items-center gap-2 rounded-full border border-white/40 bg-white/10 px-4 transition hover:bg-white/20 sm:h-10"
               >
-                <span className="ui-caps">Close</span>
-                <span aria-hidden className="text-lg leading-none">
-                  ×
+                <span className="ui-caps font-semibold">CLOSE</span>
+                <span aria-hidden className="text-base leading-none">
+                  ✕
                 </span>
               </button>
             </div>
@@ -192,23 +192,28 @@ export function SiteHeader() {
             </div>
 
             <div className="border-b border-aia-line p-5 sm:p-8 md:p-12 lg:border-b-0 lg:border-r lg:overflow-y-auto">
-              <ul className="space-y-3.5 sm:space-y-4">
-                {active.links.map((link, index) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      className={`block text-lg transition-colors duration-300 hover:text-aia-orange sm:text-[1.25rem] ${
-                        index === 0
-                          ? "font-semibold text-aia-navy"
-                          : "font-normal text-aia-muted"
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
+              <div className="space-y-8">
+                {active.groups.map((group) => (
+                  <div key={group.title}>
+                    <p className="mb-3 text-lg font-semibold text-aia-navy sm:text-[1.25rem]">
+                      {group.title}
+                    </p>
+                    <ul className="space-y-3">
+                      {group.links.map((link) => (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            onClick={() => setOpen(false)}
+                            className="block text-base text-aia-muted transition-colors duration-300 hover:text-aia-orange sm:text-lg"
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
             <div className="relative hidden min-h-[280px] bg-aia-surface-soft lg:block">
@@ -218,11 +223,11 @@ export function SiteHeader() {
                 alt={active.image.alt}
                 fill
                 sizes="387px"
-                className="object-cover animate-fade-up"
+                className="object-cover object-center animate-fade-up"
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"
+                className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"
               />
             </div>
           </div>

@@ -6,10 +6,10 @@
 */
 :root,
 html[data-theme="orange"] {
-  --aia-orange: #d6723c;
-  --aia-orange-deep: #c45f2e;
-  --aia-accent-rgb: 214, 114, 60;
-  --aia-marker: #2f6fed;
+  --aia-orange: #f15a24;
+  --aia-orange-deep: #d94814;
+  --aia-accent-rgb: 241, 90, 36;
+  --aia-marker: #006fff;
   --aia-cream: #fff7e9;
   --aia-surface-soft: #f7f7f7;
 }
@@ -26,8 +26,8 @@ html[data-theme="blue"] {
 :root {
   --aia-navy: #041d2c;
   --aia-ink: #0a0a0a;
-  --aia-muted: #999999;
-  --aia-muted-strong: #6b7280;
+  --aia-muted: #888888;
+  --aia-muted-strong: #555555;
   --aia-line: rgba(4, 29, 44, 0.12);
   --aia-surface: #ffffff;
   --header-h: 4.5rem;
@@ -144,16 +144,16 @@ video {
 
 .section-label {
   font-family: var(--font-ui), sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--aia-orange);
+  color: #006fff;
 }
 
 @media (min-width: 768px) {
   .section-label {
-    font-size: 1.05rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -203,6 +203,34 @@ video {
 
 .animate-fade-up {
   animation: fade-up 0.7s var(--ease-out) both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes hotspot-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+}
+
+.hotspot-pulse {
+  animation: hotspot-pulse 2.2s var(--ease-out) infinite;
 }
 
 .hotspot-ring::before {

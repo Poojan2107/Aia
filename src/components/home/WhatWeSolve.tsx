@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Reveal } from "@/components/ui/Reveal";
 import { stats } from "@/data/site";
 
 /** Locked to screenshots 171058 + 171108 */
@@ -62,17 +63,41 @@ export function WhatWeSolve() {
           className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.12)_0%,rgba(4,29,44,0.28)_50%,rgba(4,29,44,0.68)_100%)]"
         />
 
-        <div className="page-pad relative z-10 flex min-h-[62vh] items-end pb-12 pt-24 sm:min-h-[72vh] sm:pb-14 lg:min-h-[80vh] lg:pb-16">
-          <div className="grid w-full gap-8 border-t border-white/45 pt-7 text-white sm:gap-10 sm:pt-8 lg:grid-cols-[minmax(11rem,0.85fr)_repeat(3,minmax(0,1fr))] lg:items-start">
-            <p className="display text-[clamp(1.35rem,2.4vw,2rem)] leading-tight">
-              AIA Engineering
-            </p>
+        <div className="page-pad pointer-events-none absolute inset-x-0 top-[16%] z-10 hidden lg:block">
+          <div className="grid max-w-xl grid-cols-3 gap-4">
             {stats.map((stat) => (
-              <div key={stat.label}>
-                <p className="display text-[clamp(2.75rem,7.5vw,5.5rem)] leading-none tracking-[-0.03em]">
+              <div
+                key={`overlay-${stat.label}`}
+                className="border border-white/35 bg-black/25 px-4 py-3 backdrop-blur-sm"
+              >
+                <p className="display text-[clamp(1.5rem,2.4vw,2.25rem)] leading-none text-white">
                   {stat.value}
                 </p>
-                <div className="mt-3 border-t border-white/40 pt-3 text-[0.95rem] sm:text-[1.05rem]">
+                <p className="mt-2 text-xs uppercase tracking-[0.06em] text-white/80">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="page-pad relative z-10 flex min-h-[60vh] items-end pb-10 pt-20 sm:min-h-[68vh] sm:pb-12 lg:min-h-[76vh] lg:pb-14">
+          <div className="grid w-full items-end gap-6 border-t border-white/35 pt-6 text-white sm:gap-8 sm:pt-8 lg:grid-cols-[minmax(11rem,0.85fr)_repeat(3,minmax(0,1fr))]">
+            <p className="display text-[clamp(1.35rem,2.4vw,2.15rem)] font-bold leading-tight">
+              AIA Engineering
+            </p>
+            {stats.map((stat, idx) => (
+              <div key={stat.label} className="flex flex-col items-start">
+                <div
+                  className={`inline-flex items-center justify-center rounded-[3px] px-5 py-2.5 shadow-md ${
+                    idx === 1 ? "bg-[#041d2c] border border-white/20" : "bg-[#006fff]"
+                  }`}
+                >
+                  <p className="display text-[clamp(2.2rem,5vw,3.85rem)] font-bold leading-none tracking-tight text-white">
+                    {stat.value}
+                  </p>
+                </div>
+                <div className="mt-3 w-full border-t border-white/35 pt-2.5 text-[0.95rem] font-medium text-white/95 sm:text-[1.05rem]">
                   {stat.label}
                 </div>
               </div>

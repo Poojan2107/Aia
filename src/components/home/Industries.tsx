@@ -1,6 +1,7 @@
 import { industries } from "@/data/industries";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { ModelShowcase } from "@/components/home/ModelShowcase";
+import { Reveal } from "@/components/ui/Reveal";
 
 export function Industries() {
   return (
@@ -9,7 +10,7 @@ export function Industries() {
       className="bg-aia-surface-soft"
       aria-labelledby="industries-heading"
     >
-      <div className="page-pad grid gap-6 py-14 sm:gap-8 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-16 lg:py-24">
+      <Reveal className="page-pad grid gap-6 py-14 sm:gap-8 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-16 lg:py-24">
         <SectionLabel>Solutions by industry</SectionLabel>
         <h2
           id="industries-heading"
@@ -18,7 +19,7 @@ export function Industries() {
           Explore solutions for Mining, Cement, Quarry and Thermal Power
           applications.
         </h2>
-      </div>
+      </Reveal>
 
       <div className="divide-y divide-aia-line border-y border-aia-line bg-white">
         {industries.map((industry) => (

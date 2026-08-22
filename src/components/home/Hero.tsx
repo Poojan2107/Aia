@@ -14,12 +14,15 @@ const SLIDES = [
     src: assets.hero.dusk,
     alt: "AIA mining plant at dusk",
   },
+  {
+    src: "/images/hero-bg.png",
+    alt: "AIA wear components in heavy industrial service",
+  },
 ] as const;
 
 /** Locked to Figma Present hero + exported plates from AIA Assests */
 export function Hero() {
   const [index, setIndex] = useState(0);
-  const [showPager, setShowPager] = useState(false);
   const total = SLIDES.length;
 
   const go = useCallback(
@@ -41,9 +44,6 @@ export function Hero() {
       className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-[#0a1218]"
       aria-label="Hero"
       aria-roledescription="carousel"
-      onMouseEnter={() => setShowPager(true)}
-      onMouseLeave={() => setShowPager(false)}
-      onFocusCapture={() => setShowPager(true)}
     >
       {SLIDES.map((slide, i) => (
         <div
@@ -79,33 +79,29 @@ export function Hero() {
       />
 
       <div className="page-pad relative z-10 flex h-full flex-col justify-end pb-[5.25rem] pt-28 md:pb-[5.75rem] lg:pb-[6.25rem]">
-        <div className="grid items-end gap-8 lg:grid-cols-[minmax(0,1.58fr)_minmax(17.5rem,0.62fr)] lg:gap-12 xl:gap-16">
-          <h1 className="display text-[clamp(2.85rem,7.05vw,5.5rem)] uppercase leading-[0.915] tracking-[-0.034em] text-white [text-wrap:unset]">
+        <div className="animate-fade-up grid items-end gap-8 lg:grid-cols-[minmax(0,1.58fr)_minmax(18rem,0.62fr)] lg:gap-12 xl:gap-16">
+          <h1 className="display text-[clamp(2.5rem,6.5vw,5.25rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.035em] text-white [text-wrap:unset]">
             We engineer for
             <br />
-            the hours you
+            the hours you can&apos;t
             <br />
-            can&apos;t afford to lose.
+            afford to lose.
           </h1>
 
-          <div className="w-full max-w-[22rem] lg:mb-1.5 lg:justify-self-end">
-            <p className="mb-7 text-[1.0625rem] leading-[1.55] text-white md:mb-8 md:text-[1.125rem] md:leading-[1.58]">
+          <div className="w-full max-w-[24rem] rounded-2xl border border-white/15 bg-black/40 p-6 backdrop-blur-md lg:mb-1.5 lg:justify-self-end sm:p-7">
+            <p className="mb-6 text-[0.95rem] leading-[1.58] text-white/90 md:text-[1.05rem]">
               Advanced wear solutions engineered to extend component life,
               improve equipment availability and keep critical operations
               performing.
             </p>
-            <CtaButton href="#solutions" variant="solid">
+            <CtaButton href="#solutions" variant="solid" className="w-full justify-center sm:w-auto">
               Explore wear solutions
             </CtaButton>
           </div>
         </div>
       </div>
 
-      <div
-        className={`pointer-events-none absolute inset-x-0 bottom-7 z-20 flex justify-center transition-opacity duration-300 md:bottom-8 ${
-          showPager ? "opacity-100" : "opacity-0"
-        }`}
-      >
+      <div className="pointer-events-none absolute inset-x-0 bottom-7 z-20 flex justify-center md:bottom-8">
         <div
           className="pointer-events-auto inline-flex h-8 items-center gap-2.5 text-white/90"
           role="group"

@@ -1,17 +1,14 @@
 import { CtaButton } from "@/components/ui/CtaButton";
 import { WorldMap } from "@/components/ui/WorldMap";
+import { Reveal } from "@/components/ui/Reveal";
 
-/**
- * Figma World-Map-custom already includes the UAE contact callout.
- * Live HTML callout removed to avoid double-labeling.
- */
 export function GlobalMap() {
   return (
     <section
-      className="page-pad grid gap-8 bg-white py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:py-28"
+      className="page-pad grid gap-10 bg-white py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16 lg:py-28"
       aria-labelledby="map-heading"
     >
-      <div>
+      <Reveal>
         <h2 id="map-heading" className="sr-only">
           Global presence
         </h2>
@@ -30,13 +27,11 @@ export function GlobalMap() {
         >
           Find AIA near you
         </CtaButton>
-      </div>
+      </Reveal>
 
-      <div className="space-y-4">
-        <div className="-mx-1 overflow-x-auto overscroll-x-contain px-1 sm:mx-0 sm:overflow-visible sm:px-0">
-          <div className="relative mx-auto aspect-[16/10] w-[min(140%,520px)] min-w-[340px] sm:w-full sm:min-w-0">
-            <WorldMap className="absolute inset-0" activeRegion="UAE" />
-          </div>
+      <Reveal delay={80} className="space-y-5">
+        <div className="relative w-full">
+          <WorldMap className="w-full" activeRegion="UAE" />
         </div>
 
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.08em] text-aia-navy/70 sm:text-[11px]">
@@ -52,7 +47,7 @@ export function GlobalMap() {
             Subsidiary and Representative Offices
           </li>
         </ul>
-      </div>
+      </Reveal>
     </section>
   );
 }
