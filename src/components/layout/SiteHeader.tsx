@@ -33,7 +33,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="pointer-events-none absolute inset-x-0 top-0 z-40">
-        <div className="page-pad pointer-events-auto flex items-center justify-between gap-3 py-5 md:py-6">
+        <div className="page-pad mx-auto pointer-events-auto flex max-w-[1440px] items-center justify-between gap-3 py-5 md:py-6">
           <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>

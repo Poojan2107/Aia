@@ -12,7 +12,7 @@ export function WhatWeSolve() {
       aria-labelledby="what-we-solve-heading"
       id="what-we-solve"
     >
-      <div className="page-pad grid gap-x-12 gap-y-12 py-[4.5rem] sm:py-20 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-x-[4.5rem] lg:gap-y-16 lg:py-24 xl:gap-x-24">
+      <div className="page-pad mx-auto grid max-w-[1440px] gap-x-12 gap-y-12 py-[4.5rem] sm:py-20 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-x-[4.5rem] lg:gap-y-16 lg:py-24 xl:gap-x-24">
         <SectionLabel className="lg:pt-1">What we solve</SectionLabel>
 
         <div>
@@ -81,7 +81,7 @@ export function WhatWeSolve() {
           </div>
         </div>
 
-        <div className="page-pad relative z-10 flex min-h-[60vh] items-end pb-10 pt-20 sm:min-h-[68vh] sm:pb-12 lg:min-h-[76vh] lg:pb-14">
+        <div className="page-pad mx-auto relative z-10 flex min-h-[60vh] max-w-[1440px] items-end pb-10 pt-20 sm:min-h-[68vh] sm:pb-12 lg:min-h-[76vh] lg:pb-14">
           <div className="grid w-full items-end gap-6 border-t border-white/35 pt-6 text-white sm:gap-8 sm:pt-8 lg:grid-cols-[minmax(11rem,0.85fr)_repeat(3,minmax(0,1fr))]">
             <p className="display text-[clamp(1.35rem,2.4vw,2.15rem)] font-bold leading-tight">
               AIA Engineering

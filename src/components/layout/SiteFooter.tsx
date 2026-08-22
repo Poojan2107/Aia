@@ -54,7 +54,7 @@ export function SiteFooter() {
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.45)_0%,rgba(4,29,44,0.62)_45%,rgba(4,29,44,0.9)_100%)]"
       />
 
-      <div className="page-pad relative z-10 pb-[max(1rem,env(safe-area-inset-bottom))] pt-14 md:pt-20">
+      <div className="page-pad mx-auto relative z-10 max-w-[1440px] pb-[max(1rem,env(safe-area-inset-bottom))] pt-14 md:pt-20">
         {/* Tagline + logos */}
         <div className="mb-8 flex flex-col gap-6 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <p className="display max-w-[18ch] text-[clamp(1.65rem,4vw,2.75rem)] leading-[1.08] text-white">

@@ -10,7 +10,7 @@ export function Industries() {
       className="bg-aia-surface-soft"
       aria-labelledby="industries-heading"
     >
-      <Reveal className="page-pad grid gap-6 py-14 sm:gap-8 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-16 lg:py-24">
+      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-6 py-14 sm:gap-8 sm:py-20 lg:grid-cols-[0.7fr_1.3fr] lg:items-end lg:gap-16 lg:py-24">
         <SectionLabel>Solutions by industry</SectionLabel>
         <h2
           id="industries-heading"
@@ -23,7 +23,7 @@ export function Industries() {
 
       <div className="divide-y divide-aia-line border-y border-aia-line bg-white">
         {industries.map((industry) => (
-          <article key={industry.id} className="page-pad py-12 sm:py-16 lg:py-20">
+          <article key={industry.id} className="page-pad mx-auto max-w-[1440px] py-12 sm:py-16 lg:py-20">
             <ModelShowcase industry={industry} />
           </article>
         ))}

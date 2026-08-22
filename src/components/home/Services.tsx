@@ -20,10 +20,10 @@ export function Services() {
 
   return (
     <section
-      className="page-pad bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
+      className="bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
       aria-labelledby="services-heading"
     >
-      <Reveal className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-16">
         <div>
           <SectionLabel className="mb-6">Services & support</SectionLabel>
           <h2

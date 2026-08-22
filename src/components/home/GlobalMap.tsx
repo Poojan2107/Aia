@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 export function GlobalMap() {
   return (
     <section
-      className="page-pad grid gap-10 bg-white py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16 lg:py-28"
+      className="page-pad mx-auto grid max-w-[1440px] gap-10 bg-white py-14 sm:gap-12 sm:py-20 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16 lg:py-28"
       aria-labelledby="map-heading"
     >
       <Reveal>

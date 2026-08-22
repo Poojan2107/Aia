@@ -59,13 +59,13 @@ export function Gallery() {
         </p>
       </Reveal>
 
-      <div className="mx-auto grid max-w-[1180px] items-end gap-4 px-4 md:grid-cols-[0.9fr_1.35fr_0.9fr] md:gap-5">
+      <div className="page-pad mx-auto grid max-w-[1440px] items-end gap-5 md:grid-cols-[0.9fr_1.35fr_0.9fr] md:gap-6">
         {cards.map((card) => {
           const featured = "featured" in card && card.featured;
           return (
             <figure key={card.id} className="group relative">
               <div
-                className={`relative overflow-hidden bg-[#1a1f24] ${
+                className={`relative overflow-hidden bg-[#1a1f24] rounded-lg ${
                   featured ? "aspect-[16/10]" : "aspect-[4/5] md:aspect-[3/4]"
                 }`}
               >
@@ -108,6 +108,31 @@ export function Gallery() {
             </figure>
           );
         })}
+      </div>
+
+      <div className="mt-8 flex items-center justify-center gap-4">
+        <button
+          type="button"
+          aria-label="Previous slide"
+          className="flex size-9 items-center justify-center rounded-full border border-aia-navy/30 text-aia-navy transition hover:border-aia-navy hover:bg-aia-navy/5"
+        >
+          ‹
+        </button>
+        <div className="flex items-center gap-1.5">
+          <span className="size-2 rounded-full bg-aia-orange" />
+          <span className="size-2 rounded-full bg-[#006fff]/40" />
+          <span className="size-2 rounded-full bg-aia-navy/20" />
+          <span className="size-2 rounded-full bg-aia-navy/20" />
+          <span className="size-2 rounded-full bg-aia-navy/20" />
+          <span className="size-2 rounded-full bg-aia-navy/20" />
+        </div>
+        <button
+          type="button"
+          aria-label="Next slide"
+          className="flex size-9 items-center justify-center rounded-full border border-aia-navy/30 text-aia-navy transition hover:border-aia-navy hover:bg-aia-navy/5"
+        >
+          ›
+        </button>
       </div>
     </section>
   );

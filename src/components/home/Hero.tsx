@@ -79,7 +79,7 @@ export function Hero() {
       />
 
       <div className="page-pad relative z-10 flex h-full flex-col justify-end pb-[5.25rem] pt-28 md:pb-[5.75rem] lg:pb-[6.25rem]">
-        <div className="animate-fade-up grid items-end gap-8 lg:grid-cols-[minmax(0,1.58fr)_minmax(18rem,0.62fr)] lg:gap-12 xl:gap-16">
+        <div className="animate-fade-up mx-auto grid w-full max-w-[1440px] items-end gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.65fr)] lg:gap-12 xl:gap-16">
           <h1 className="display text-[clamp(2.5rem,6.5vw,5.25rem)] font-extrabold uppercase leading-[0.94] tracking-[-0.035em] text-white [text-wrap:unset]">
             We engineer for
             <br />

@@ -11,7 +11,7 @@ export function Vision() {
       className="relative overflow-hidden bg-white py-14 sm:py-20 lg:py-28"
       aria-labelledby="vision-heading"
     >
-      <div className="page-pad grid items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16 xl:gap-20">
+      <div className="page-pad mx-auto grid max-w-[1440px] items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-16 xl:gap-20">
         <div className="relative mx-auto w-full max-w-xl">
           <span
             aria-hidden

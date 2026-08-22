@@ -17,7 +17,7 @@ export function CaseStudies() {
       className="page-pad bg-aia-surface-soft py-14 sm:py-20 lg:py-28"
       aria-labelledby="cases-heading"
     >
-      <div className="mb-8 flex flex-col gap-6 sm:mb-12 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+      <div className="mx-auto mb-8 flex max-w-[1440px] flex-col gap-6 sm:mb-12 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <h2
           id="cases-heading"
           className="display max-w-[16ch] text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
@@ -55,7 +55,7 @@ export function CaseStudies() {
         </div>
       </div>
 
-      <div className="grid gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-[1440px] gap-8 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {ordered.map((item) => (
           <a key={item.href} href={item.href} className="group block">
             <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-2xl bg-[#e8eaec] sm:mb-5">

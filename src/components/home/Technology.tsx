@@ -14,7 +14,7 @@ const posters = [
 export function Technology() {
   return (
     <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <Reveal className="page-pad grid gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
+      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-8 py-14 sm:gap-10 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
         <div>
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
@@ -48,7 +48,7 @@ export function Technology() {
           return (
             <article
               key={pillar.index}
-              className="page-pad grid items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16"
+              className="page-pad mx-auto grid max-w-[1440px] items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16"
             >
               <div
                 className={
