@@ -12,10 +12,9 @@ const films = [
     id: "lining",
     title: "Ball Mill Lining Solutions",
     caption: "Safety | Wear Life | Operations",
-    poster: assets.millPoster,
+    poster: "/images/mill-poster.png",
     src: media.gallery.lining,
-    branded: true,
-    ribbon: "Through Bolting",
+    branded: false,
   },
   {
     id: "corporate",
@@ -24,7 +23,6 @@ const films = [
     poster: "/images/gallery-center.jpg",
     src: media.gallery.corporate,
     branded: false,
-    overlay: "6 manufacturing clusters",
   },
   {
     id: "components",
@@ -61,25 +59,27 @@ export function Gallery() {
 
   return (
     <section
-      className="overflow-x-hidden bg-[#f4f4f4] py-[var(--section-y)]"
+      className="overflow-x-hidden bg-[#f7f7f7] py-[var(--section-y)]"
+      id="gallery"
       aria-labelledby="gallery-heading"
     >
-      <Reveal className="page-pad mb-12 text-center sm:mb-16">
+      <Reveal from="right" className="page-pad mb-12 text-center sm:mb-16">
         <SectionLabel className="mb-6">Gallery</SectionLabel>
         <h2
           id="gallery-heading"
-          className="display mx-auto mb-5 max-w-[18ch] text-[clamp(1.9rem,5vw,3.75rem)] text-aia-navy"
+          className="display mx-auto mb-5 max-w-[18ch] text-[clamp(1.9rem,5vw,3.875rem)] font-semibold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
         >
           See what better performance looks like.
         </h2>
-        <p className="mx-auto max-w-[40rem] text-[1.02rem] leading-relaxed text-aia-navy/55 sm:text-[1.125rem]">
+        <p className="mx-auto max-w-[40rem] text-[1.125rem] font-light leading-[1.7] text-[#090909]/70 sm:text-[1.5rem] sm:leading-[2.125rem]">
           Explore AIA solutions, applications and engineering through videos that
           show how our products are designed to perform in demanding operating
           conditions.
         </p>
       </Reveal>
 
-      <div className="flex items-end justify-center gap-3 px-[4vw] md:gap-4 lg:gap-5">
+      <div className="relative overflow-hidden">
+      <div className="flex items-end justify-center gap-4 md:gap-5 lg:gap-6">
         {ordered.map((card, position) => {
           const featured = position === 1;
           const playing = playingId === card.id;
@@ -89,7 +89,7 @@ export function Gallery() {
               className={`relative shrink-0 transition-transform duration-500 ${
                 featured
                   ? "z-[1] w-[min(52rem,56vw)]"
-                  : "hidden w-[min(20rem,24vw)] md:block"
+                  : "hidden w-[min(26rem,30vw)] md:block"
               }`}
             >
               <div
@@ -123,7 +123,7 @@ export function Gallery() {
                     setPlayingId(next ? card.id : null)
                   }
                   className={`bg-[#1a1f24] ${
-                    featured ? "aspect-[16/10]" : "aspect-[4/5]"
+                    featured ? "aspect-[16/10]" : "aspect-[16/10]"
                   }`}
                   sizes={featured ? "56vw" : "24vw"}
                 >
@@ -165,15 +165,17 @@ export function Gallery() {
           );
         })}
       </div>
+      </div>
 
       <div className="mt-10 flex items-center justify-center gap-4">
         <button
           type="button"
           aria-label="Previous film"
           onClick={() => rotate(-1)}
-          className="flex size-10 items-center justify-center rounded-full border border-aia-navy/25 text-aia-navy transition hover:border-aia-orange hover:text-aia-orange"
+          className="size-10 overflow-hidden transition hover:opacity-70"
         >
-          ‹
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/next.svg" alt="" className="size-10 rotate-180" />
         </button>
         <div className="flex items-center gap-1.5">
           {films.map((film, i) => (
@@ -196,9 +198,10 @@ export function Gallery() {
           type="button"
           aria-label="Next film"
           onClick={() => rotate(1)}
-          className="flex size-10 items-center justify-center rounded-full border border-aia-navy/25 text-aia-navy transition hover:border-aia-orange hover:text-aia-orange"
+          className="size-10 overflow-hidden transition hover:opacity-70"
         >
-          ›
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/next.svg" alt="" className="size-10" />
         </button>
       </div>
     </section>

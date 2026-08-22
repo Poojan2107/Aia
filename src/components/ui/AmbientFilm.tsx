@@ -9,6 +9,8 @@ type Props = {
   className?: string;
   position?: string;
   sizes?: string;
+  /** Scale past the frame so encoded letterbox never shows. */
+  coverBleed?: boolean;
 };
 
 /**
@@ -20,6 +22,7 @@ export function AmbientFilm({
   className = "",
   position = "center center",
   sizes = "100vw",
+  coverBleed = false,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -69,7 +72,7 @@ export function AmbientFilm({
         alt=""
         fill
         sizes={sizes}
-        className="object-cover"
+        className={`object-cover ${coverBleed ? "scale-[1.12]" : ""}`}
         style={{ objectPosition: position }}
         quality={90}
       />
@@ -77,8 +80,8 @@ export function AmbientFilm({
         <video
           ref={videoRef}
           className={`absolute inset-0 h-full w-full max-w-none object-cover transition-opacity duration-700 ${
-            ready ? "opacity-100" : "opacity-0"
-          }`}
+            coverBleed ? "scale-[1.12]" : ""
+          } ${ready ? "opacity-100" : "opacity-0"}`}
           style={{ objectPosition: position }}
           muted
           loop

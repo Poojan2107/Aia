@@ -35,7 +35,7 @@ export const site = {
 export const stats = [
   { value: "+32 %", label: "Longer Wear Life*" },
   { value: "-24 %", label: "Unplanned Downtime*" },
-  { value: "+5X", label: "Improved Throughput*" },
+  { value: "+5 X", label: "Improved Throughput*" },
 ] as const;
 
 export const footprint = [

@@ -32,34 +32,6 @@ function FooterCol({
   );
 }
 
-function FooterSearch({
-  label,
-  href,
-  placeholder,
-}: {
-  label: string;
-  href: string;
-  placeholder: string;
-}) {
-  return (
-    <form action={href} method="get">
-      <p className="display mb-6 max-w-[20ch] text-[clamp(1.15rem,2.5vw,1.5rem)] leading-tight text-white">
-        {label}
-      </p>
-      <label className="flex h-[52px] items-center gap-3 rounded-full bg-white px-5">
-        <span className="size-2 shrink-0 rounded-full bg-aia-orange" aria-hidden />
-        <span className="sr-only">{placeholder}</span>
-        <input
-          type="search"
-          name="q"
-          placeholder={placeholder}
-          className="h-full w-full bg-transparent text-sm text-aia-navy outline-none placeholder:text-aia-navy/40"
-        />
-      </label>
-    </form>
-  );
-}
-
 export function SiteFooter() {
   return (
     <footer className="relative isolate w-full overflow-hidden bg-[#041d2c] text-white">
@@ -75,17 +47,17 @@ export function SiteFooter() {
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[#041d2c]/82"
+        className="absolute inset-0 bg-[#041d2c]/40"
       />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.45)_0%,rgba(4,29,44,0.62)_45%,rgba(4,29,44,0.9)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.25)_0%,rgba(4,29,44,0.4)_50%,rgba(4,29,44,0.78)_100%)]"
       />
 
       <div className="page-pad mx-auto relative z-10 max-w-[1440px] pb-[max(1rem,env(safe-area-inset-bottom))] pt-14 md:pt-20">
         {/* Tagline + logos */}
         <div className="mb-8 flex flex-col gap-6 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-          <p className="display max-w-[18ch] text-[clamp(1.65rem,4vw,2.75rem)] leading-[1.08] text-white">
+          <p className="display max-w-[18ch] text-[clamp(1.65rem,4vw,3rem)] font-semibold leading-[1.21] text-white lg:text-[3rem] lg:leading-[3.625rem]">
             Engineering wear solutions.
             <br />
             Supporting operations worldwide.
@@ -168,17 +140,31 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-8 border-t border-white/20 pt-10 md:grid-cols-2 md:gap-16">
-          <FooterSearch
-            label="Have a wear or performance challenge?"
-            href="/company/contact"
-            placeholder="Tell us about your mill or wear challenge"
-          />
-          <FooterSearch
-            label="Find AIA offices, representatives and support across global markets."
-            href="/company/global-presence"
-            placeholder="Search a city, country or region"
-          />
+        <div className="mt-10 grid gap-10 border-t border-white/25 pt-10 md:grid-cols-2 md:gap-0">
+          <div className="md:border-r md:border-white/25 md:pr-16">
+            <p className="display mb-6 max-w-[16ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-tight text-white">
+              Have a wear or performance challenge?
+            </p>
+            <Link
+              href="/company/contact"
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 text-aia-orange transition hover:bg-white/92"
+            >
+              <span className="size-2 rounded-full bg-aia-orange" aria-hidden />
+              Talk to an expert
+            </Link>
+          </div>
+          <div className="md:pl-16">
+            <p className="display mb-6 max-w-[20ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-tight text-white">
+              Find AIA offices, representatives and support across global markets.
+            </p>
+            <Link
+              href="/company/global-presence"
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 text-aia-orange transition hover:bg-white/92"
+            >
+              <span className="size-2 rounded-full bg-aia-orange" aria-hidden />
+              Explore global presence
+            </Link>
+          </div>
         </div>
 
         {/* Legal bar */}
@@ -198,7 +184,7 @@ export function SiteFooter() {
               </svg>
             </span>
           </div>
-          <p className="text-white/50">Site by I3</p>
+          <p className="text-white/50">Site by l3</p>
         </div>
       </div>
     </footer>

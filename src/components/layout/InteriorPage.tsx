@@ -6,23 +6,25 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { AssistChip } from "@/components/ui/AssistChip";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { Reveal } from "@/components/ui/Reveal";
+import type { InteriorContent } from "@/data/pages";
 
-type Props = {
-  title: string;
-  eyebrow?: string;
-  description?: string;
-};
+type Props = InteriorContent;
 
 export function InteriorPage({
   title,
-  eyebrow = "AIA Engineering",
-  description = "Explore how AIA Engineering supports critical operations with engineered wear solutions, application expertise, and a global presence built around performance.",
+  eyebrow,
+  description,
+  image,
+  highlights,
+  related,
 }: Props) {
+  const millPlate = image.includes("/mill-");
+
   return (
     <>
       <div className="relative min-h-[56vh] overflow-hidden bg-aia-navy text-white">
         <Image
-          src="/images/plant-aerial.png"
+          src={millPlate ? "/images/plant-aerial.png" : image}
           alt=""
           fill
           sizes="100vw"
@@ -44,12 +46,26 @@ export function InteriorPage({
           </Reveal>
         </div>
       </div>
+
       <main className="page-pad py-[var(--section-y)]">
-        <div className="mx-auto grid max-w-[1440px] gap-10 lg:grid-cols-[1.15fr_0.7fr] lg:gap-20">
+        <div className="mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-start lg:gap-20">
           <div>
             <p className="max-w-2xl text-lg leading-relaxed text-aia-navy/70 md:text-[1.35rem] md:leading-[1.65]">
               {description}
             </p>
+            <ul className="mt-10 space-y-3">
+              {highlights.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span
+                    aria-hidden
+                    className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange"
+                  />
+                  <span className="text-[1.05rem] leading-relaxed text-aia-navy/80">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
             <div className="mt-10 flex flex-wrap gap-4">
               <CtaButton href="/company/contact" variant="solid">
                 Talk to an expert
@@ -62,17 +78,47 @@ export function InteriorPage({
               </Link>
             </div>
           </div>
-          <aside className="border border-aia-line bg-aia-surface-soft p-8 md:p-10">
-            <div className="mb-8 max-w-full overflow-hidden">
-              <BrandLockup tone="dark" showVega={false} />
+
+          <aside>
+            <div
+              className={`relative mb-8 overflow-hidden bg-aia-surface-soft ${
+                millPlate ? "aspect-[16/10] bg-white" : "aspect-[16/10]"
+              }`}
+            >
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className={millPlate ? "object-contain p-4" : "object-cover"}
+              />
             </div>
-            <p className="mb-6 text-[1.05rem] leading-relaxed text-aia-navy/65">
-              Looking for a specific application, location, or resource? Our
-              teams can help you find the right wear solution and support model.
-            </p>
-            <CtaButton href="/company/global-presence" variant="outline">
-              Explore global presence
-            </CtaButton>
+            <div className="border border-aia-line bg-aia-surface-soft p-8 md:p-10">
+              <div className="mb-8 max-w-full overflow-hidden">
+                <BrandLockup tone="dark" showVega={false} />
+              </div>
+              <p className="mb-6 text-[1.05rem] leading-relaxed text-aia-navy/65">
+                Looking for a specific application, location, or resource? Our
+                teams can help you find the right wear solution and support model.
+              </p>
+              {related.length ? (
+                <ul className="mb-8 space-y-2">
+                  {related.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="text-[0.95rem] text-aia-navy/80 underline-offset-4 hover:text-aia-orange hover:underline"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <CtaButton href="/company/global-presence" variant="outline">
+                Explore global presence
+              </CtaButton>
+            </div>
           </aside>
         </div>
       </main>

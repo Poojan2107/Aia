@@ -15,16 +15,16 @@ export function Sustainability() {
       aria-labelledby="sustain-heading"
     >
       <Image
-        src="/images/sustainability-gear.jpg"
+        src="/images/sustainability.png"
         alt="Industrial gear framing a growing plant"
         fill
         sizes="100vw"
-        className="object-cover object-[62%_center]"
+            className="object-cover object-[70%_center]"
         quality={92}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,12,16,0.88)_0%,rgba(8,12,16,0.42)_42%,rgba(8,12,16,0.08)_68%,rgba(8,12,16,0.2)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,12,16,0.72)_0%,rgba(8,12,16,0.28)_48%,rgba(8,12,16,0.05)_72%,rgba(8,12,16,0.12)_100%)]"
       />
       <div
         aria-hidden
@@ -35,12 +35,12 @@ export function Sustainability() {
         <div className="max-w-[36rem]">
           <h2
             id="sustain-heading"
-            className="display mb-6 text-[clamp(2.1rem,5.6vw,4.35rem)] leading-[0.98]"
+            className="display mb-6 text-[clamp(2.1rem,5.6vw,4.35rem)] font-semibold leading-[0.98] lg:text-[4.35rem]"
           >
             Can heavy industry think lighter?
           </h2>
           <p className="mb-10 text-base leading-relaxed text-white/90 sm:text-lg md:text-[1.22rem] md:leading-[1.65]">
-            YES. We believe it can. By using resources more efficiently, reducing
+            YES, We believe it can. By using resources more efficiently, reducing
             waste and embracing reuse and recycling, we&apos;re working to lower
             the environmental impact of our operations while continuing to deliver
             the performance industry depends on.
@@ -93,12 +93,12 @@ export function Faq() {
       className="bg-[#f4f4f4] py-[var(--section-y)]"
       aria-labelledby="faq-heading"
     >
-      <div className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-16 xl:gap-24">
-        <Reveal>
+      <div className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-16 xl:gap-20">
+        <div className="lg:sticky lg:top-10 lg:self-start">
           <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
           <h2
             id="faq-heading"
-            className="display mb-8 max-w-[13ch] text-[clamp(1.9rem,4.8vw,3.75rem)] leading-[1.02] text-aia-navy sm:mb-10"
+            className="display mb-8 max-w-[13ch] text-[clamp(1.9rem,4.8vw,3.875rem)] font-semibold leading-[1.02] text-aia-navy sm:mb-10 lg:text-[3.875rem]"
           >
             Here are the essentials about AIA, what we make, and how our solutions
             support your operations.
@@ -106,9 +106,9 @@ export function Faq() {
           <CtaButton href="/company/contact" variant="solid">
             Ask an expert
           </CtaButton>
-        </Reveal>
+        </div>
 
-        <div>
+        <div className="lg:border-l lg:border-aia-navy/10 lg:pl-12 xl:pl-16">
           {faqs.map((item, index) => {
             const isOpen = open === index;
             return (
@@ -173,7 +173,7 @@ export function Insights() {
       <div className="mx-auto mb-8 max-w-[1440px] sm:mb-10">
         <h2
           id="insights-heading"
-          className="display text-center text-[clamp(1.85rem,4.8vw,3.875rem)] text-aia-navy"
+          className="display text-center text-[clamp(1.85rem,4.8vw,3.875rem)] font-semibold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
         >
           Ideas & Insights from AIA
         </h2>
@@ -206,7 +206,7 @@ export function Insights() {
           filtered.map((item) => (
             <article
               key={item.href}
-              className="grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
+              className="group grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
             >
               <div className="order-2 lg:order-1">
                 <time
@@ -225,13 +225,13 @@ export function Insights() {
                   Read article <span aria-hidden>›</span>
                 </a>
               </div>
-              <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-[22px] bg-aia-surface-soft lg:order-2">
+              <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-[18px] bg-aia-surface-soft lg:order-2">
                 <Image
                   src={item.image}
                   alt=""
                   fill
                   sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover"
+                  className="object-cover object-[80%_center] transition duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
                 />
               </div>
             </article>

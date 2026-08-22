@@ -75,7 +75,7 @@ export const megaSections: MegaSection[] = [
       },
     ],
     image: {
-      src: "/images/about-facility.jpg",
+      src: "/images/about-facility.png",
       alt: "AIA corporate facility",
     },
   },

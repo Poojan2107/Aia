@@ -34,7 +34,7 @@ export function BrandLockup({
           tone === "light" ? "mix-blend-screen" : ""
         } ${
           compact
-            ? "h-[clamp(2.1rem,3.05vw,3.35rem)]"
+            ? "h-[40px] max-w-[12.75rem]"
             : "h-10 sm:h-11 md:h-[3.35rem]"
         }`}
         priority={compact}
@@ -56,7 +56,7 @@ export function BrandLockup({
               tone === "light" ? "mix-blend-screen" : ""
             } ${
               compact
-                ? "md:h-[clamp(1.35rem,2.1vw,2.15rem)]"
+                ? "md:h-[22px] md:max-w-[5.75rem]"
                 : "md:h-6 lg:h-[1.65rem]"
             }`}
           />

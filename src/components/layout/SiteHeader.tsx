@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useEffect, useId, useState } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { megaSections } from "@/data/nav";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [activeId, setActiveId] = useState(megaSections[1]?.id ?? "company");
   const titleId = useId();
 
@@ -18,6 +20,13 @@ export function SiteHeader() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 72);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -32,8 +41,20 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-40">
-        <div className="page-pad mx-auto pointer-events-auto flex max-w-[1440px] items-center justify-between gap-3 py-[clamp(1.5rem,2.24vw,2.7rem)]">
+      <header
+        className={`pointer-events-none inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-500 ease-[var(--ease-out)] ${
+          scrolled
+            ? "fixed bg-[#041d2c]/90 shadow-[0_8px_40px_rgba(4,29,44,0.28)] backdrop-blur-md"
+            : "absolute bg-transparent"
+        }`}
+      >
+        <div
+          className={`page-pad mx-auto pointer-events-auto flex max-w-[1440px] items-center justify-between gap-3 transition-[padding] duration-500 ${
+            scrolled
+              ? "py-3"
+              : "py-[clamp(1.5rem,2.24vw,2.7rem)]"
+          }`}
+        >
           <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>
@@ -113,8 +134,9 @@ export function SiteHeader() {
                 className="w-full min-w-0 bg-transparent text-base text-white outline-none placeholder:text-white/45 md:text-[1.1rem]"
               />
             </label>
-            <div className="ml-3 flex shrink-0 items-center gap-3 text-white sm:ml-4 sm:gap-4">
-              <button type="button" className="ui-caps hidden items-center gap-2 sm:inline-flex">
+            <div className="ml-3 flex shrink-0 items-center gap-2 text-white sm:ml-4 sm:gap-3">
+              <ThemeToggle />
+              <button type="button" className="ui-caps hidden items-center gap-2 lg:inline-flex">
                 ENGLISH
                 <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
                   <path d="M0 0l4 4 4-4" fill="currentColor" />

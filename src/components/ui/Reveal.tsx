@@ -7,6 +7,8 @@ type Props = {
   className?: string;
   delay?: number;
   as?: "div" | "li" | "article" | "p" | "section" | "aside" | "figure";
+  /** Enter from the right, matching Present motion. */
+  from?: "up" | "right";
 };
 
 /** Quiet fade/rise used once a block enters view. */
@@ -15,6 +17,7 @@ export function Reveal({
   className = "",
   delay = 0,
   as: Tag = "div",
+  from = "up",
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
   const [inView, setInView] = useState(false);
@@ -45,7 +48,7 @@ export function Reveal({
   return (
     <Comp
       ref={ref}
-      className={`reveal ${inView ? "is-in" : ""} ${className}`}
+      className={`reveal ${from === "right" ? "from-right" : ""} ${inView ? "is-in" : ""} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

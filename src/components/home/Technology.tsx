@@ -7,7 +7,7 @@ import { assets } from "@/data/assets";
 import { media } from "@/data/media";
 
 const posters = [
-  assets.millPoster,
+  "/images/tech-material.png",
   "/images/tech-research.png",
   "/images/tech-performance.png",
 ];
@@ -20,13 +20,13 @@ export function Technology() {
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
             id="tech-heading"
-            className="display max-w-[12ch] text-[clamp(1.85rem,4.8vw,3.875rem)]"
+            className="display max-w-[12ch] text-[clamp(1.85rem,4.8vw,3.875rem)] font-semibold leading-[1.05] lg:text-[3.875rem] lg:leading-[4.0625rem]"
           >
             Engineered for what wear demands.
           </h2>
         </div>
         <div>
-          <p className="mb-6 max-w-xl text-base leading-relaxed text-aia-navy/70 sm:mb-8 sm:text-lg md:text-[1.35rem]">
+          <p className="mb-6 max-w-[50.75rem] text-base font-light leading-relaxed text-[#090909] sm:mb-8 sm:text-lg md:text-[1.75rem] md:leading-[2.375rem]">
             Every operating environment creates a different wear challenge. AIA
             combines application knowledge, metallurgy and research to develop
             materials and wear solutions around the conditions they are expected
@@ -53,13 +53,13 @@ export function Technology() {
                   textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
                 }
               >
-                <p className="mb-3 font-[family-name:var(--font-ui)] text-[0.78rem] font-medium uppercase tracking-[0.16em] text-[#b0b0b0] sm:mb-4 sm:text-[0.82rem]">
+                <p className="mb-3 font-[family-name:var(--font-ui)] text-[1.125rem] font-medium leading-[2.625rem] text-[#b0b0b0] sm:mb-4">
                   {pillar.index} / {pillar.label.toUpperCase()}
                 </p>
-                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.55rem,3.4vw,2.35rem)] sm:mb-5">
+                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.55rem,3.4vw,2rem)] font-semibold leading-[2.625rem] sm:mb-5">
                   {pillar.title}
                 </h3>
-                <p className="max-w-xl text-base leading-relaxed text-aia-navy/65 sm:text-lg">
+                <p className="max-w-[37.875rem] text-base font-light leading-relaxed text-[#090909] sm:text-lg md:text-[1.5rem] md:leading-[2.125rem]">
                   {pillar.description}
                 </p>
               </div>
@@ -69,7 +69,7 @@ export function Technology() {
                 src={videoSrc}
                 playback={videoSrc ? "click" : "ambient"}
                 film={Boolean(videoSrc)}
-                className={`order-1 aspect-[16/10] rounded-[28px] bg-aia-surface-soft sm:rounded-[32px] ${
+                className={`order-1 aspect-[16/10] rounded-[40px] bg-aia-surface-soft ${
                   textLeft ? "lg:order-2" : "lg:order-1"
                 }`}
                 sizes="(max-width: 1024px) 100vw, 50vw"

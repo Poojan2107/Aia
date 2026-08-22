@@ -1,20 +1,233 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import type { Industry } from "@/data/industries";
+
+type CopyProps = {
+  industry: Industry;
+  activeId: string | null;
+  onActive: (id: string | null) => void;
+  interactive?: boolean;
+  overlay?: boolean;
+  className?: string;
+  style?: CSSProperties;
+};
+
+export function IndustryCopy({
+  industry,
+  activeId,
+  onActive,
+  interactive = true,
+  overlay = true,
+  className = "",
+  style,
+}: CopyProps) {
+  return (
+    <div
+      className={`${overlay ? "absolute inset-0" : "relative"} flex flex-col justify-center ${className}`}
+      style={style}
+    >
+      <div className="mb-5 flex items-baseline gap-5 sm:mb-6 sm:gap-6">
+        <span className="font-[family-name:var(--font-ui)] text-[1.75rem] font-normal leading-[2.625rem] text-[#033361] md:text-[2rem]">
+          {industry.index}
+        </span>
+        <h3 className="display text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1] tracking-normal text-aia-navy md:leading-[3rem]">
+          {industry.name}
+        </h3>
+      </div>
+      <p className="mb-8 max-w-[22.125rem] whitespace-pre-line text-[clamp(1.35rem,2.6vw,2.5rem)] font-light leading-[1] text-[#090909] sm:mb-10">
+        {industry.description}
+      </p>
+
+      <ul className="mb-8 max-w-md sm:mb-10">
+        {industry.solutions.map((solution) => {
+          const isActive = activeId === solution.hotspotId;
+          return (
+            <li key={solution.id} className="border-t border-aia-line">
+              <button
+                type="button"
+                tabIndex={interactive ? 0 : -1}
+                className="group flex min-h-[3.25rem] w-full items-center justify-between gap-4 py-3.5 text-left sm:min-h-[3.75rem] sm:py-3.5"
+                onClick={() => onActive(solution.hotspotId)}
+                onMouseEnter={() => interactive && onActive(solution.hotspotId)}
+                onFocus={() => interactive && onActive(solution.hotspotId)}
+                aria-pressed={isActive}
+              >
+                <span
+                  className={`font-[family-name:var(--font-ui)] text-[1.125rem] leading-[1.875rem] transition-colors duration-300 ${
+                    isActive ? "font-medium text-aia-navy" : "font-normal text-[#090909]"
+                  }`}
+                >
+                  {solution.label}
+                </span>
+                <span
+                  aria-hidden
+                  className={`flex size-[26px] shrink-0 items-center justify-center rounded-full bg-aia-orange text-white transition-all duration-300 ${
+                    isActive
+                      ? "scale-100 opacity-100"
+                      : "scale-90 opacity-0 md:group-hover:opacity-100"
+                  }`}
+                >
+                  <svg width="11" height="11" viewBox="0 0 10 10" fill="none">
+                    <path
+                      d="M2 8L8 2M8 2H3.5M8 2V6.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </li>
+          );
+        })}
+        <li className="border-t border-aia-line" />
+      </ul>
+
+      <a
+        href={industry.href}
+        tabIndex={interactive ? 0 : -1}
+        className="ui-caps inline-flex min-h-8 items-center gap-2 font-medium tracking-[0.08em] text-aia-orange transition-opacity hover:opacity-80"
+      >
+        Explore {industry.name}
+        <span aria-hidden>›</span>
+      </a>
+    </div>
+  );
+}
+
+type MillProps = {
+  industry: Industry;
+  activeId: string | null;
+  onActive?: (id: string | null) => void;
+  priority?: boolean;
+  inspect?: boolean;
+  overlay?: boolean;
+  className?: string;
+  style?: CSSProperties;
+};
+
+const LABEL_SHIFT: Record<string, string> = {
+  left: "translate(-100%, -50%)",
+  right: "translate(0, -50%)",
+  top: "translate(-50%, -100%)",
+  bottom: "translate(-50%, 0)",
+};
+
+function labelPoint(point: Industry["hotspots"][number]) {
+  if (point.lx != null && point.ly != null) {
+    return { lx: point.lx, ly: point.ly };
+  }
+  const pad = 11;
+  const align = point.align ?? "right";
+  return {
+    lx: point.x + (align === "left" ? -pad : align === "right" ? pad : 0),
+    ly: point.y + (align === "top" ? -pad : align === "bottom" ? pad : 0),
+  };
+}
+
+export function IndustryMill({
+  industry,
+  activeId,
+  onActive,
+  priority = false,
+  inspect = false,
+  overlay = true,
+  className = "",
+  style,
+}: MillProps) {
+  return (
+    <div
+      className={`${overlay ? "absolute inset-0" : "relative h-full"} flex items-center justify-center ${className}`}
+      style={style}
+    >
+      <div
+        className="relative w-full max-h-full"
+        style={{
+          aspectRatio: industry.model.ratio,
+          maxWidth: industry.model.still?.width ?? 778,
+          maxHeight: industry.model.still?.height ?? 438,
+        }}
+      >
+        <Image
+          src={industry.model.poster}
+          alt={inspect ? industry.model.alt : ""}
+          fill
+          priority={priority}
+          quality={95}
+          sizes="(max-width: 1024px) 100vw, 70vw"
+          className="object-contain object-center"
+        />
+        {inspect ? (
+          <>
+            <svg
+              className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+              aria-hidden
+            >
+              {industry.hotspots.map((point) => {
+                const { lx, ly } = labelPoint(point);
+                const active = activeId === point.id;
+                return (
+                  <line
+                    key={point.id}
+                    x1={`${point.x}%`}
+                    y1={`${point.y}%`}
+                    x2={`${lx}%`}
+                    y2={`${ly}%`}
+                    stroke={
+                      active
+                        ? "var(--aia-orange)"
+                        : point.tone === "slate"
+                          ? "#2a3238"
+                          : "#c8c2b4"
+                    }
+                    strokeWidth="1.15"
+                  />
+                );
+              })}
+            </svg>
+            {industry.hotspots.map((point) => {
+              const active = activeId === point.id;
+              const { lx, ly } = labelPoint(point);
+              return (
+                <span key={`${point.id}-pin`}>
+                  <span
+                    aria-hidden
+                    className={`mill-pin ${active ? "is-active" : ""} ${point.tone === "accent" ? "is-accent" : ""}`}
+                    style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                  />
+                  <button
+                    type="button"
+                    className={`mill-callout ${active ? "is-active" : ""} ${point.tone === "slate" ? "is-slate" : ""} ${point.tone === "accent" ? "is-accent" : ""}`}
+                    style={{
+                      left: `${lx}%`,
+                      top: `${ly}%`,
+                      transform: LABEL_SHIFT[point.align ?? "right"],
+                    }}
+                    onMouseEnter={() => onActive?.(point.id)}
+                    onFocus={() => onActive?.(point.id)}
+                  >
+                    {point.label}
+                  </button>
+                </span>
+              );
+            })}
+          </>
+        ) : null}
+      </div>
+    </div>
+  );
+}
 
 type Props = {
   industry: Industry;
   priority?: boolean;
-  /** Tighter stage for the sticky 100svh plates. */
   compact?: boolean;
 };
 
-/**
- * Figma mill plates already include yellow callouts + leader lines.
- * Live layer = pulsing dots tied to the solution list.
- */
+/** Static layout used when motion is reduced. */
 export function ModelShowcase({
   industry,
   priority = false,
@@ -24,83 +237,20 @@ export function ModelShowcase({
     industry.solutions[0]?.hotspotId ?? industry.hotspots[0]?.id ?? null,
   );
 
-  const activeHotspot = industry.hotspots.find((h) => h.id === active);
-
   return (
     <div className="grid w-full items-center gap-8 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16 xl:gap-20">
-      <div className="order-2 lg:order-1">
-        <div className="mb-5 flex items-baseline gap-4 sm:mb-6 sm:gap-5">
-          <span className="font-[family-name:var(--font-ui)] text-[1.75rem] font-normal text-aia-navy/18 sm:text-[2.15rem] md:text-[2.5rem]">
-            {industry.index}
-          </span>
-          <h3 className="display text-[clamp(2.1rem,4.8vw,3.25rem)] text-aia-navy">
-            {industry.name}
-          </h3>
-        </div>
-        <p className="mb-8 max-w-[18ch] whitespace-pre-line text-[clamp(1.15rem,2.1vw,1.65rem)] leading-[1.25] text-aia-navy/40 sm:mb-10">
-          {industry.description}
-        </p>
-
-        <ul className="mb-8 max-w-md sm:mb-10">
-          {industry.solutions.map((solution) => {
-            const isActive = active === solution.hotspotId;
-            return (
-              <li key={solution.id} className="border-t border-aia-line">
-                <button
-                  type="button"
-                  className="group flex min-h-[3.25rem] w-full items-center justify-between gap-4 py-3.5 text-left sm:min-h-14 sm:py-4"
-                  onClick={() => setActive(solution.hotspotId)}
-                  onMouseEnter={() => setActive(solution.hotspotId)}
-                  onFocus={() => setActive(solution.hotspotId)}
-                  aria-pressed={isActive}
-                >
-                  <span
-                    className={`text-[1.05rem] transition-colors duration-300 sm:text-[1.15rem] ${
-                      isActive ? "font-semibold text-aia-navy" : "text-aia-muted"
-                    }`}
-                  >
-                    {solution.label}
-                  </span>
-                  <span
-                    aria-hidden
-                    className={`flex size-[26px] shrink-0 items-center justify-center rounded-full bg-aia-orange text-white transition-all duration-300 ${
-                      isActive
-                        ? "scale-100 opacity-100"
-                        : "scale-90 opacity-0 md:group-hover:opacity-100"
-                    }`}
-                  >
-                    <svg width="11" height="11" viewBox="0 0 10 10" fill="none">
-                      <path
-                        d="M2 8L8 2M8 2H3.5M8 2V6.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-          <li className="border-t border-aia-line" />
-        </ul>
-
-        <a
-          href={industry.href}
-          className="ui-caps inline-flex min-h-11 items-center gap-2 font-semibold tracking-[0.1em] text-aia-orange transition-opacity hover:opacity-80"
-        >
-          Explore {industry.name}
-          <span aria-hidden>›</span>
-        </a>
+      <div className="relative order-2 min-h-[28rem] lg:order-1">
+        <IndustryCopy
+          industry={industry}
+          activeId={active}
+          onActive={setActive}
+          overlay={false}
+        />
       </div>
-
       <div className="order-1 lg:order-2">
         <div
-          className={`relative w-full bg-white ${
-            compact
-              ? "h-[min(42vh,22rem)] sm:h-[min(52vh,28rem)]"
-              : "aspect-[16/10]"
+          className={`mill-well relative w-full overflow-visible ${
+            compact ? "h-[min(58vh,34rem)]" : "aspect-[16/10]"
           }`}
           onMouseLeave={() =>
             setActive(
@@ -110,77 +260,13 @@ export function ModelShowcase({
             )
           }
         >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(var(--aia-accent-rgb),0.12),transparent_68%)]"
-          />
-          <Image
-            src={industry.model.poster}
-            alt={industry.model.alt}
-            fill
+          <IndustryMill
+            industry={industry}
+            activeId={active}
+            onActive={setActive}
             priority={priority}
-            sizes="(max-width: 1024px) 100vw, 55vw"
-            className="object-contain object-center transition-transform duration-700 ease-[var(--ease-out)]"
-            style={{ transform: active ? "scale(1.025)" : "scale(1)" }}
+            inspect
           />
-
-          {industry.hotspots.map((hotspot) => {
-            const isActive = active === hotspot.id;
-            return (
-              <button
-                key={hotspot.id}
-                type="button"
-                className="absolute z-10 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
-                style={{ left: `${hotspot.x}%`, top: `${hotspot.y}%` }}
-                aria-label={hotspot.label}
-                aria-pressed={isActive}
-                onClick={() => setActive(hotspot.id)}
-                onMouseEnter={() => setActive(hotspot.id)}
-                onFocus={() => setActive(hotspot.id)}
-              >
-                <span
-                  className={`relative block size-2 rounded-full bg-[#f0c84a] transition-transform duration-300 ${
-                    isActive ? "scale-125 hotspot-ring is-active" : ""
-                  }`}
-                />
-              </button>
-            );
-          })}
-        </div>
-
-        <div className={`mt-4 md:hidden ${compact ? "hidden" : ""}`}>
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.08em] text-aia-muted">
-            Tap a part
-          </p>
-          <ul className="flex flex-wrap gap-2">
-            {industry.hotspots.map((hotspot) => {
-              const isActive = active === hotspot.id;
-              return (
-                <li key={hotspot.id}>
-                  <button
-                    type="button"
-                    onClick={() => setActive(hotspot.id)}
-                    className={`min-h-10 rounded-full px-3.5 py-2 text-left text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-aia-orange text-white"
-                        : "bg-aia-surface-soft text-aia-navy"
-                    }`}
-                    aria-pressed={isActive}
-                  >
-                    {hotspot.label}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          {activeHotspot ? (
-            <p className="mt-3 text-sm text-aia-navy/70">
-              Highlighted:{" "}
-              <span className="font-semibold text-aia-navy">
-                {activeHotspot.label}
-              </span>
-            </p>
-          ) : null}
         </div>
       </div>
     </div>

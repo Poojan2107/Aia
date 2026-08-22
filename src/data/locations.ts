@@ -11,6 +11,7 @@ export type Site = {
   y: number;
   phone: string;
   email: string;
+  short?: string;
 };
 
 /** Placeholder network used for the homepage map. */
@@ -74,6 +75,7 @@ export const sites: Site[] = [
     id: "uae",
     city: "Dubai",
     country: "United Arab Emirates",
+    short: "UAE",
     continent: "Asia",
     kind: "office",
     x: 62.2,

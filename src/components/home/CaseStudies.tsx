@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { caseStudies } from "@/data/content";
@@ -22,7 +22,7 @@ export function CaseStudies() {
         <Reveal>
         <h2
           id="cases-heading"
-          className="display max-w-[16ch] text-[clamp(1.9rem,5vw,3.875rem)] leading-[1.02] text-aia-navy"
+          className="display max-w-[828px] text-[clamp(1.9rem,5vw,3.875rem)] font-semibold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
         >
           When the challenge is real, performance has to be proven.
         </h2>
@@ -34,18 +34,15 @@ export function CaseStudies() {
           <div className="flex gap-3">
             <NavArrow
               label="Previous case studies"
+              reverse
               onClick={() =>
                 setOffset((v) => (v - 1 + caseStudies.length) % caseStudies.length)
               }
-            >
-              ‹
-            </NavArrow>
+            />
             <NavArrow
               label="Next case studies"
               onClick={() => setOffset((v) => (v + 1) % caseStudies.length)}
-            >
-              ›
-            </NavArrow>
+            />
           </div>
         </div>
       </div>
@@ -63,7 +60,7 @@ export function CaseStudies() {
                 className="object-cover transition duration-500 group-hover:scale-[1.03] group-hover:blur-[2px]"
               />
               <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.78rem] uppercase tracking-[0.16em] text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
-                Know more
+                Know More
                 <span className="flex size-8 items-center justify-center rounded-full bg-aia-orange text-base text-white">
                   →
                 </span>
@@ -84,20 +81,20 @@ export function CaseStudies() {
 function NavArrow({
   label,
   onClick,
-  children,
+  reverse = false,
 }: {
   label: string;
   onClick: () => void;
-  children: ReactNode;
+  reverse?: boolean;
 }) {
   return (
     <button
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition hover:bg-aia-orange hover:text-white"
+      className="flex size-11 items-center justify-center rounded-full border border-aia-navy/20 text-lg leading-none text-aia-navy transition hover:border-aia-orange hover:text-aia-orange"
     >
-      {children}
+      {reverse ? "‹" : "›"}
     </button>
   );
 }

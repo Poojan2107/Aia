@@ -37,13 +37,13 @@ export const services = [
   },
   {
     audience: "mining" as const,
-    title: "Marked Ball Test (MBT)",
+    title: "Marked Ball Test",
     description:
       "Evaluate grinding media wear to support alloy selection and cost-effective media performance.",
   },
   {
     audience: "mining" as const,
-    title: "Bench Test for Improved Recovery",
+    title: "Bench-scale Test for Better Recovery",
     description:
       "Testing to understand grinding behaviour and support improved mineral recovery.",
   },

@@ -75,17 +75,20 @@ function MarkerButton({
   return (
     <button
       type="button"
-      className="absolute z-[2] -translate-x-1/2 -translate-y-1/2"
+      className="absolute z-[2] -translate-x-1/2 -translate-y-[72%]"
       style={{ left: `${site.x}%`, top: `${site.y}%` }}
       onMouseEnter={onSelect}
       onFocus={onSelect}
       aria-pressed={active}
       aria-label={`${site.city}, ${site.country}, ${site.continent}`}
     >
-      <span
-        className={`block rounded-full ring-2 ring-white transition-transform duration-300 ${
-          site.kind === "office" ? "bg-aia-orange" : "bg-aia-navy"
-        } ${active ? "size-3.5 scale-110" : "size-2.5"}`}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/icons/map-indicator.svg"
+        alt=""
+        className={`h-[34px] w-[18px] origin-bottom transition-transform duration-300 ${
+          site.kind === "warehouse" ? "brightness-0" : ""
+        } ${active ? "scale-110" : "scale-100"}`}
       />
       {active ? (
         <span
@@ -112,21 +115,18 @@ function Tooltip({ site }: { site: Site }) {
           : `translate(${shift}, calc(-100% - 22px))`,
       }}
     >
-      <div className="relative">
+      <div className="relative overflow-hidden">
         <span
           aria-hidden
-          className="absolute inset-0 translate-x-2.5 translate-y-2.5 bg-[#f15a24]"
+          className="map-glow absolute -inset-8 -z-10 rounded-full"
         />
         <span
           aria-hidden
-          className="map-glow absolute -inset-6 -z-10 rounded-full"
+          className="absolute inset-0 translate-x-1 translate-y-1 bg-[#f15a24]"
         />
         <div className="relative bg-aia-orange px-4 py-3.5 text-white">
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white/75">
-            {site.continent}
-          </p>
-          <p className="mt-1 text-[1.08rem] font-semibold leading-tight">
-            {site.country}
+          <p className="text-[1.08rem] font-semibold leading-tight">
+            {site.short ?? site.country}
           </p>
           <p className="mt-2 text-sm text-white/92">Tel. {site.phone}</p>
           <p className="mt-0.5 break-all text-sm text-white/92">

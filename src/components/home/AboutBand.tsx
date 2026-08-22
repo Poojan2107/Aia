@@ -10,8 +10,8 @@ import { prefersReducedMotion, useScrollProgress } from "@/lib/motion";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
- * Figma About: grey stage, pinned aerial plate that scales up on scroll,
- * split titles overlapping the card, copy inside, ghost CTA below.
+ * Titles enter from the right and settle on the plate.
+ * Film always cover-crops so the stage never shows a black bar.
  */
 export function AboutBand() {
   const track = useRef<HTMLDivElement>(null);
@@ -22,19 +22,20 @@ export function AboutBand() {
     setReduced(prefersReducedMotion());
   }, []);
   const ease = reduced ? 1 : progress * progress * (3 - 2 * progress);
-  const scale = 0.68 + ease * 0.32;
-  const titleOut = ease * 34;
-  const copyFade = Math.max(0, 1 - ease * 1.2);
+  const scale = 0.82 + ease * 0.22;
+  const fromRight = (1 - ease) * 36;
+  const veil = 0.28 * (1 - ease);
+  const copyFade = Math.max(0, 1 - ease * 1.05);
 
   return (
-    <section aria-labelledby="about-heading" className="bg-[#b4bcc2]">
-      <div ref={track} className="relative h-[185vh]">
+    <section aria-labelledby="about-heading" className="bg-[#c8d1d7]">
+      <div ref={track} className="relative h-[190vh]">
         <div className="sticky top-0 flex h-[100svh] min-h-[640px] flex-col items-center justify-center overflow-hidden px-[max(1rem,env(safe-area-inset-left),env(safe-area-inset-right))] py-10 sm:py-14">
           <p className="mb-5 text-center display text-[clamp(2rem,8vw,2.75rem)] font-extrabold leading-none tracking-tight text-white lg:hidden">
             About AIA Engineering
           </p>
           <div
-            className="relative mx-auto w-full max-w-[1120px] origin-center will-change-transform"
+            className="relative mx-auto w-full max-w-[min(1120px,78vw)] origin-center will-change-transform"
             style={{ transform: `scale(${scale})` }}
           >
             <h2 id="about-heading" className="sr-only">
@@ -42,31 +43,33 @@ export function AboutBand() {
             </h2>
             <p
               aria-hidden
-              className="pointer-events-none absolute left-[-6%] top-1/2 z-20 hidden display text-[clamp(2.6rem,6.4vw,6.1rem)] font-extrabold leading-none tracking-tight text-white drop-shadow-sm lg:block"
-              style={{ transform: `translate(-${titleOut}%, -50%)` }}
+              className="pointer-events-none absolute left-[-7%] top-1/2 z-20 hidden display text-[clamp(2.75rem,6.4vw,6.25rem)] font-extrabold leading-none tracking-tight text-white drop-shadow-sm lg:block"
+              style={{ transform: `translate(${fromRight}%, -50%)` }}
             >
               About
             </p>
             <p
               aria-hidden
-              className="pointer-events-none absolute right-[-5%] top-1/2 z-20 hidden text-right display text-[clamp(2.6rem,6.4vw,6.1rem)] font-extrabold leading-none tracking-tight text-white drop-shadow-sm lg:block"
-              style={{ transform: `translate(${titleOut}%, -50%)` }}
+              className="pointer-events-none absolute right-[-6%] top-1/2 z-20 hidden text-right display text-[clamp(2.75rem,6.4vw,6.25rem)] font-extrabold leading-none tracking-tight text-white drop-shadow-sm lg:block"
+              style={{ transform: `translate(${fromRight * 1.12}%, -50%)` }}
             >
               AIA
               <br />
               Engineering
             </p>
 
-            <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#8a949c] shadow-[0_28px_90px_rgba(4,29,44,0.32)]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[12px] bg-[#6d767c] shadow-[0_28px_90px_rgba(4,29,44,0.28)]">
               <AmbientFilm
                 src={media.about}
-                poster="/images/plant-aerial-clean.jpg"
-                sizes="(max-width: 1100px) 100vw, 1120px"
-                position="center 40%"
+                poster="/images/plant-aerial.png"
+                sizes="(max-width: 1100px) 100vw, 1180px"
+                position="center center"
+                coverBleed
               />
               <div
                 aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.04)_0%,rgba(4,29,44,0.12)_55%,rgba(4,29,44,0.42)_100%)]"
+                className="absolute inset-0 bg-[#041d2c] transition-opacity duration-300"
+                style={{ opacity: veil }}
               />
               <p
                 className="absolute inset-x-[8%] bottom-[8%] z-10 text-center text-[0.8rem] leading-[1.55] text-white/95 sm:text-[0.92rem] md:text-[1.05rem] md:leading-[1.6]"

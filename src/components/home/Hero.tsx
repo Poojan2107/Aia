@@ -73,9 +73,9 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] bg-gradient-to-t from-black/55 via-black/16 to-transparent"
       />
 
-      <div className="page-pad relative z-10 flex h-full flex-col justify-end pb-[clamp(3.25rem,8.1vh,5.5rem)] pt-28">
-        <div className="mx-auto grid w-full max-w-[1440px] items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(18rem,0.5fr)] lg:gap-12 xl:gap-16">
-          <h1 className="display text-[clamp(2.05rem,4.55vw,4.6rem)] font-extrabold uppercase leading-[0.92] tracking-[-0.04em] text-white">
+      <div className="page-pad relative z-10 flex h-full flex-col justify-end pb-[clamp(3.5rem,7.6vh,5rem)] pt-28">
+        <div className="mx-auto grid w-full max-w-[1440px] items-end gap-8 lg:grid-cols-[minmax(0,1.42fr)_minmax(20rem,0.58fr)] lg:gap-10 xl:gap-14">
+          <h1 className="hero-enter display text-[clamp(2.4rem,5.2vw,5.625rem)] font-bold uppercase leading-[0.95] tracking-normal text-white lg:text-[5.625rem] lg:leading-[5.9375rem]">
             We engineer for
             <br />
             the hours you can&apos;t
@@ -83,8 +83,8 @@ export function Hero() {
             afford to lose.
           </h1>
 
-          <div className="w-full max-w-[30rem] pt-1 lg:justify-self-end lg:pt-2">
-            <p className="mb-6 max-w-[28rem] text-[0.95rem] leading-[1.55] text-white/92 md:text-[1.05rem] md:leading-[1.58]">
+          <div className="hero-enter-late w-full max-w-[32.75rem] pb-1 lg:justify-self-end">
+            <p className="mb-6 max-w-[524px] font-[family-name:var(--font-ui)] text-[1.125rem] leading-7 text-white/92">
               Advanced wear solutions engineered to extend component life,
               improve equipment availability and keep critical operations
               performing.
