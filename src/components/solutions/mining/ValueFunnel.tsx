@@ -7,7 +7,9 @@ import { miningPage } from "@/data/mining";
 const { funnel } = miningPage;
 
 type Focus = "production" | "cost" | "core" | null;
-type Offering = (typeof funnel.products)[number];
+type Offering =
+  | (typeof funnel.products)[number]
+  | (typeof funnel.services)[number];
 
 const allOfferings: Offering[] = [...funnel.products, ...funnel.services];
 
