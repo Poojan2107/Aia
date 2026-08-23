@@ -7,7 +7,7 @@ export const themes = {
     id: "orange" as const,
     label: "Orange",
     note: "AIA orange accent",
-    swatch: "#d6723c",
+    swatch: "#f36500",
   },
   blue: {
     id: "blue" as const,

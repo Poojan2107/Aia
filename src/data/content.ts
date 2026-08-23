@@ -37,13 +37,13 @@ export const services = [
   },
   {
     audience: "mining" as const,
-    title: "Marked Ball Test",
+    title: "Marked Ball Test (MBT)",
     description:
       "Evaluate grinding media wear to support alloy selection and cost-effective media performance.",
   },
   {
     audience: "mining" as const,
-    title: "Bench-scale Test for Better Recovery",
+    title: "Bench Test for Improved Recovery",
     description:
       "Testing to understand grinding behaviour and support improved mineral recovery.",
   },
@@ -200,20 +200,20 @@ export const insights = [
 
 export const caseStudies = [
   {
-    title: "40ft SAG mill in Latin America",
-    meta: "Life improvement - Throughput increase - Power reduction",
+    title: "40ft SAG mill in latin america",
+    meta: "Life improvement - Throughput Increase - Power Reduction",
     href: "/resources/case-studies/sag-latin-america",
     image: "/images/case-1.png",
   },
   {
     title: "15ft Ball mill in India",
-    meta: "Throughput increase - Power consumption",
+    meta: "Throughput Increase - Power Consumption",
     href: "/resources/case-studies/ball-mill-india",
     image: "/images/case-2.png",
   },
   {
     title: "34ft SAG mill in West Africa",
-    meta: "Life improvement - Throughput increase",
+    meta: "Life improvement - Throughput Increase",
     href: "/resources/case-studies/sag-west-africa",
     image: "/images/case-3.png",
   },

@@ -25,18 +25,14 @@ export function IndustryCopy({
 }: CopyProps) {
   return (
     <div
-      className={`${overlay ? "absolute inset-0" : "relative"} flex flex-col justify-center ${className}`}
+      className={`${overlay ? "absolute inset-0" : "relative"} flex flex-col justify-start ${className}`}
       style={style}
     >
-      <div className="mb-5 flex items-baseline gap-5 sm:mb-6 sm:gap-6">
-        <span className="font-[family-name:var(--font-ui)] text-[1.75rem] font-normal leading-[2.625rem] text-[#033361] md:text-[2rem]">
-          {industry.index}
-        </span>
-        <h3 className="display text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-[1] tracking-normal text-aia-navy md:leading-[3rem]">
-          {industry.name}
-        </h3>
+      <div className="industry-title mb-5 flex items-baseline gap-5 sm:mb-6 sm:gap-6">
+        <span className="industry-index">{industry.index}</span>
+        <h3 className="industry-name">{industry.name}</h3>
       </div>
-      <p className="mb-8 max-w-[22.125rem] whitespace-pre-line text-[clamp(1.35rem,2.6vw,2.5rem)] font-light leading-[1] text-[#090909] sm:mb-10">
+      <p className="industry-lede mb-8 whitespace-pre-line sm:mb-10">
         {industry.description}
       </p>
 
@@ -55,9 +51,10 @@ export function IndustryCopy({
                 aria-pressed={isActive}
               >
                 <span
-                  className={`font-[family-name:var(--font-ui)] text-[1.125rem] leading-[1.875rem] transition-colors duration-300 ${
+                  className={`text-[1.125rem] leading-[1.875rem] transition-colors duration-300 ${
                     isActive ? "font-medium text-aia-navy" : "font-normal text-[#090909]"
                   }`}
+                  style={{ fontFamily: "var(--font-sinteca)" }}
                 >
                   {solution.label}
                 </span>
@@ -146,9 +143,11 @@ export function IndustryMill({
       <div
         className="relative w-full max-h-full"
         style={{
+          width: industry.model.still?.width ?? 778,
+          height: industry.model.still?.height ?? 438,
           aspectRatio: industry.model.ratio,
-          maxWidth: industry.model.still?.width ?? 778,
-          maxHeight: industry.model.still?.height ?? 438,
+          maxWidth: "min(100%, 778px)",
+          maxHeight: "min(100%, 438px)",
         }}
       >
         <Image
@@ -161,17 +160,18 @@ export function IndustryMill({
           className="object-contain object-center"
         />
         {inspect ? (
-          <>
+          <div key={industry.id} className="mill-inspect absolute inset-0">
             <svg
               className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
               aria-hidden
             >
-              {industry.hotspots.map((point) => {
+              {industry.hotspots.map((point, i) => {
                 const { lx, ly } = labelPoint(point);
                 const active = activeId === point.id;
                 return (
                   <line
                     key={point.id}
+                    className="mill-leader"
                     x1={`${point.x}%`}
                     y1={`${point.y}%`}
                     x2={`${lx}%`}
@@ -181,18 +181,19 @@ export function IndustryMill({
                         ? "var(--aia-orange)"
                         : point.tone === "slate"
                           ? "#2a3238"
-                          : "#c8c2b4"
+                          : "#f0c424"
                     }
                     strokeWidth="1.15"
+                    style={{ ["--i" as string]: i }}
                   />
                 );
               })}
             </svg>
-            {industry.hotspots.map((point) => {
+            {industry.hotspots.map((point, i) => {
               const active = activeId === point.id;
               const { lx, ly } = labelPoint(point);
               return (
-                <span key={`${point.id}-pin`}>
+                <span key={`${point.id}-pin`} style={{ ["--i" as string]: i }}>
                   <span
                     aria-hidden
                     className={`mill-pin ${active ? "is-active" : ""} ${point.tone === "accent" ? "is-accent" : ""}`}
@@ -214,7 +215,7 @@ export function IndustryMill({
                 </span>
               );
             })}
-          </>
+          </div>
         ) : null}
       </div>
     </div>

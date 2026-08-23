@@ -18,11 +18,11 @@ export function CaseStudies() {
       className="page-pad bg-[#f6f6f6] py-[var(--section-y)]"
       aria-labelledby="cases-heading"
     >
-      <div className="mx-auto mb-10 flex max-w-[1440px] flex-col gap-6 sm:mb-14 lg:flex-row lg:items-start lg:justify-between">
+      <div className="page-max mb-10 flex flex-col gap-6 sm:mb-14 lg:flex-row lg:items-start lg:justify-between">
         <Reveal>
         <h2
           id="cases-heading"
-          className="display max-w-[828px] text-[clamp(1.9rem,5vw,3.875rem)] font-semibold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
+          className="display max-w-[828px] text-[clamp(1.9rem,3.229vw,3.875rem)] font-medium leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
         >
           When the challenge is real, performance has to be proven.
         </h2>
@@ -47,10 +47,17 @@ export function CaseStudies() {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-[1440px] gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+      <div
+        key={offset}
+        className="stagger-in page-max grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10"
+      >
         {ordered.map((item, i) => (
-          <Reveal key={item.href} delay={i * 100}>
-          <a href={item.href} className="group block">
+          <a
+            key={item.href}
+            href={item.href}
+            className="group block"
+            style={{ ["--i" as string]: i }}
+          >
             <div className="relative mb-5 aspect-[16/10] overflow-hidden rounded-[22px] bg-[#e8eaec]">
               <Image
                 src={item.image}
@@ -71,7 +78,6 @@ export function CaseStudies() {
             </h3>
             <p className="text-sm text-aia-muted sm:text-[0.98rem]">{item.meta}</p>
           </a>
-          </Reveal>
         ))}
       </div>
     </section>

@@ -8,7 +8,7 @@ export function GlobalMap() {
       className="bg-white py-[var(--section-y)]"
       aria-labelledby="map-heading"
     >
-      <div className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.38fr)_minmax(0,0.62fr)] lg:items-center lg:gap-16">
+      <div className="page-pad page-max grid gap-12 lg:grid-cols-[minmax(0,0.38fr)_minmax(0,0.62fr)] lg:items-center lg:gap-16">
         <Reveal>
           <h2 id="map-heading" className="sr-only">
             Global presence
@@ -24,30 +24,14 @@ export function GlobalMap() {
           <CtaButton
             href="/company/global-presence"
             variant="outline"
-            className="w-full justify-center sm:w-auto"
+            className="w-full justify-center border-[#c4a06a] text-aia-navy hover:border-aia-navy hover:bg-aia-navy hover:text-white sm:w-auto"
           >
             Find AIA near you
           </CtaButton>
         </Reveal>
 
-        <Reveal delay={80} className="space-y-5">
-          <div className="relative w-full">
-            <WorldMap className="w-full" />
-          </div>
-
-          <ul className="flex flex-wrap gap-x-8 gap-y-2 text-[11px] uppercase tracking-[0.08em] text-aia-navy/55">
-            <li className="flex items-center gap-2">
-              <span
-                className="size-2.5 shrink-0 rounded-full bg-aia-navy"
-                aria-hidden
-              />
-              Logistic Warehouses
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="size-2.5 shrink-0 rounded-full bg-aia-orange" />
-              Subsidiary and Representative Offices
-            </li>
-          </ul>
+        <Reveal delay={80}>
+          <WorldMap className="w-full" />
         </Reveal>
       </div>
     </section>

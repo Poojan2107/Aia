@@ -6,6 +6,9 @@ type Props = {
   value: string;
   className?: string;
   duration?: number;
+  delay?: number;
+  /** When set, count starts only when this becomes true (e.g. KPI plate locked). */
+  play?: boolean;
 };
 
 function split(value: string) {
@@ -30,19 +33,34 @@ function format(value: string, amount: number) {
 }
 
 /** Counts the numeric part of "120+", "+32 %", "1,00,000+" once in view. */
-export function CountUp({ value, className = "", duration = 1400 }: Props) {
+export function CountUp({
+  value,
+  className = "",
+  duration = 1400,
+  delay = 0,
+  play,
+}: Props) {
   const ref = useRef<HTMLSpanElement>(null);
   const [shown, setShown] = useState(() => format(value, 0));
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       setShown(value);
       return;
     }
+    if (play === false) {
+      setStarted(false);
+      setShown(format(value, 0));
+      return;
+    }
+    if (play === true) {
+      setStarted(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -54,7 +72,7 @@ export function CountUp({ value, className = "", duration = 1400 }: Props) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [value]);
+  }, [value, play]);
 
   useEffect(() => {
     if (!started) return;
@@ -63,17 +81,23 @@ export function CountUp({ value, className = "", duration = 1400 }: Props) {
       setShown(value);
       return;
     }
-    const start = performance.now();
     let frame = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - (1 - t) ** 3;
-      setShown(format(value, eased));
-      if (t < 1) frame = requestAnimationFrame(tick);
+    let start = 0;
+    const wait = window.setTimeout(() => {
+      start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - (1 - t) ** 3;
+        setShown(format(value, eased));
+        if (t < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    }, delay);
+    return () => {
+      window.clearTimeout(wait);
+      cancelAnimationFrame(frame);
     };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [started, value, duration]);
+  }, [started, value, duration, delay]);
 
   return (
     <span ref={ref} className={`tabular-nums ${className}`}>

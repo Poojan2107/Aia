@@ -33,7 +33,7 @@ export function CtaButton({
 }: Props) {
   const isFilled = variant === "solid" || variant === "cream";
   const classes = [
-    "inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full px-5 transition-[color,background-color,border-color,transform] duration-300 ease-[var(--ease-out)] hover:scale-[1.02] active:scale-[0.99]",
+    "inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full px-7 text-[14px] leading-8 transition-[color,background-color,border-color,transform] duration-300 ease-[var(--ease-out)] hover:scale-[1.02] active:scale-[0.99]",
     "ui-caps",
     variants[variant],
     className,

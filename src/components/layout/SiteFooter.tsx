@@ -54,10 +54,9 @@ export function SiteFooter() {
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.25)_0%,rgba(4,29,44,0.4)_50%,rgba(4,29,44,0.78)_100%)]"
       />
 
-      <div className="page-pad mx-auto relative z-10 max-w-[1440px] pb-[max(1rem,env(safe-area-inset-bottom))] pt-14 md:pt-20">
-        {/* Tagline + logos */}
-        <div className="mb-8 flex flex-col gap-6 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-          <p className="display max-w-[18ch] text-[clamp(1.65rem,4vw,3rem)] font-semibold leading-[1.21] text-white lg:text-[3rem] lg:leading-[3.625rem]">
+      <div className="relative z-10 pt-14 md:pt-20">
+        <div className="page-pad page-max mb-8 flex flex-col gap-6 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+          <p className="display max-w-[18ch] text-[clamp(1.65rem,4vw,3rem)] font-medium leading-[1.21] text-white lg:text-[3rem] lg:leading-[3.625rem]">
             Engineering wear solutions.
             <br />
             Supporting operations worldwide.
@@ -65,8 +64,8 @@ export function SiteFooter() {
           <BrandLockup tone="light" className="shrink-0 self-start sm:self-end" />
         </div>
 
-        {/* Accent link panel — inset card matching Figma */}
-        <div className="rounded-none bg-aia-orange px-5 py-8 text-white sm:px-8 sm:py-10 md:px-10 md:py-12">
+        <div className="bg-aia-orange text-white">
+          <div className="page-pad page-max py-8 sm:py-10 md:py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
             <div className="lg:col-span-2">
               <FooterCol title="Solutions" links={footerNav.solutions} />
@@ -138,8 +137,10 @@ export function SiteFooter() {
               </a>
             </div>
           </div>
+          </div>
         </div>
 
+        <div className="page-pad page-max pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="mt-10 grid gap-10 border-t border-white/25 pt-10 md:grid-cols-2 md:gap-0">
           <div className="md:border-r md:border-white/25 md:pr-16">
             <p className="display mb-6 max-w-[16ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-tight text-white">
@@ -147,7 +148,8 @@ export function SiteFooter() {
             </p>
             <Link
               href="/company/contact"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 text-aia-orange transition hover:bg-white/92"
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-6 font-semibold text-aia-orange transition hover:bg-white/92"
+              style={{ color: "var(--aia-orange)" }}
             >
               <span className="size-2 rounded-full bg-aia-orange" aria-hidden />
               Talk to an expert
@@ -159,7 +161,8 @@ export function SiteFooter() {
             </p>
             <Link
               href="/company/global-presence"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-5 text-aia-orange transition hover:bg-white/92"
+              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-6 font-semibold text-aia-orange transition hover:bg-white/92"
+              style={{ color: "var(--aia-orange)" }}
             >
               <span className="size-2 rounded-full bg-aia-orange" aria-hidden />
               Explore global presence
@@ -184,7 +187,8 @@ export function SiteFooter() {
               </svg>
             </span>
           </div>
-          <p className="text-white/50">Site by l3</p>
+          <p className="text-white/50">Site by I3</p>
+        </div>
         </div>
       </div>
     </footer>

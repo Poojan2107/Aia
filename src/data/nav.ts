@@ -54,31 +54,20 @@ export const megaSections: MegaSection[] = [
       {
         title: "About AIA",
         links: [
-          { label: "About AIA", href: "/company/about" },
           { label: "Board of Directors", href: "/company/board" },
           { label: "Memorandum of Association", href: "/company/moa" },
-        ],
-      },
-      {
-        title: "How we work",
-        links: [
           { label: "Technology & Manufacturing", href: "/company/technology" },
           { label: "Global Presence", href: "/company/global-presence" },
           { label: "Sustainability", href: "/company/sustainability" },
           { label: "CSR Initiatives", href: "/company/csr" },
-        ],
-      },
-      {
-        title: "Connect",
-        links: [
           { label: "Careers", href: "/company/careers" },
           { label: "Contact Us", href: "/company/contact" },
         ],
       },
     ],
     image: {
-      src: "/images/about-facility.png",
-      alt: "AIA corporate facility",
+      src: "/images/mega-building.jpg",
+      alt: "AIA corporate building",
     },
   },
   {

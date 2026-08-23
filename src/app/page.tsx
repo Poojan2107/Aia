@@ -15,8 +15,8 @@ import {
   Faq,
   Insights,
 } from "@/components/home/ClosingSections";
-import { AssistChip } from "@/components/ui/AssistChip";
 import { Reveal } from "@/components/ui/Reveal";
+import { AssistChip } from "@/components/ui/AssistChip";
 
 export default function HomePage() {
   return (
@@ -30,20 +30,12 @@ export default function HomePage() {
         <Technology />
         <AboutBand />
         <GlobalMap />
-        <Reveal>
-          <Vision />
-        </Reveal>
+        <Vision />
         <Gallery />
-        <Reveal>
-          <CaseStudies />
-        </Reveal>
+        <CaseStudies />
         <Sustainability />
-        <Reveal>
-          <Faq />
-        </Reveal>
-        <Reveal>
-          <Insights />
-        </Reveal>
+        <Faq />
+        <Insights />
       </main>
       <SiteFooter />
       <AssistChip />

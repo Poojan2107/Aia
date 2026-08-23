@@ -7,7 +7,18 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { assets } from "@/data/assets";
 import { media } from "@/data/media";
 
-const films = [
+type Film = {
+  id: string;
+  title: string;
+  caption?: string;
+  poster: string;
+  src?: string;
+  branded?: boolean;
+  ribbon?: string;
+  overlay?: string;
+};
+
+const films: readonly Film[] = [
   {
     id: "lining",
     title: "Ball Mill Lining Solutions",
@@ -32,7 +43,7 @@ const films = [
     src: media.gallery.components,
     branded: true,
   },
-] as const;
+];
 
 function BrandMarks() {
   return (
@@ -67,7 +78,7 @@ export function Gallery() {
         <SectionLabel className="mb-6">Gallery</SectionLabel>
         <h2
           id="gallery-heading"
-          className="display mx-auto mb-5 max-w-[18ch] text-[clamp(1.9rem,5vw,3.875rem)] font-semibold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
+          className="display mx-auto mb-5 max-w-[18ch] text-[clamp(1.9rem,3.229vw,3.875rem)] font-medium leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
         >
           See what better performance looks like.
         </h2>
@@ -86,10 +97,10 @@ export function Gallery() {
           return (
             <figure
               key={card.id}
-              className={`relative shrink-0 transition-transform duration-500 ${
+              className={`relative shrink-0 transition-[width,transform,opacity] duration-500 ease-[var(--ease-out)] ${
                 featured
-                  ? "z-[1] w-[min(52rem,56vw)]"
-                  : "hidden w-[min(26rem,30vw)] md:block"
+                  ? "z-[1] w-[min(52rem,56vw)] scale-100 opacity-100"
+                  : "hidden w-[min(26rem,30vw)] scale-[0.96] opacity-70 md:block"
               }`}
             >
               <div
@@ -146,7 +157,10 @@ export function Gallery() {
                 </MediaSlot>
               </div>
               {featured ? (
-                <p className="mt-4 flex items-center justify-center gap-2.5 text-[0.95rem] text-aia-navy/70">
+                <p
+                  key={card.id}
+                  className="caption-in mt-4 flex items-center justify-center gap-2.5 text-[0.95rem] text-aia-navy/70"
+                >
                   <YouTubeMark />
                   {card.title}
                 </p>

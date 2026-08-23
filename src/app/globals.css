@@ -6,23 +6,29 @@
 */
 :root,
 html[data-theme="orange"] {
-  --aia-orange: #f15a24;
-  --aia-orange-deep: #d94814;
-  --aia-accent-rgb: 241, 90, 36;
+  --aia-orange: #f36500;
+  --aia-orange-deep: #d45500;
+  --aia-label: #f36500;
+  --aia-label-alt: #da702e;
+  --aia-accent-rgb: 243, 101, 0;
   --aia-marker: #006fff;
   --aia-cream: #fff7e9;
   --aia-surface-soft: #f7f7f7;
   --aia-mining-alt: #7fb3d5;
+  --aia-about: #c3ccd4;
 }
 
 html[data-theme="blue"] {
   --aia-orange: #006fff;
   --aia-orange-deep: #0056d6;
+  --aia-label: #006fff;
+  --aia-label-alt: #006fff;
   --aia-accent-rgb: 0, 111, 255;
   --aia-marker: #041d2c;
   --aia-cream: #eef5ff;
   --aia-surface-soft: #f5f7fa;
   --aia-mining-alt: #7dd3fc;
+  --aia-about: #c3ccd4;
 }
 
 :root {
@@ -33,10 +39,18 @@ html[data-theme="blue"] {
   --aia-line: rgba(4, 29, 44, 0.12);
   --aia-surface: #f7f7f7;
   --header-h: 4.5rem;
-  --page-pad: clamp(1.25rem, 7vw, 8.375rem);
+  --page-pad: clamp(1.25rem, 6.979vw, 8.375rem);
+  --page-max: 103.25rem;
+  --col-solve: min(33.125rem, 27.604vw);
+  --gap-solve: min(10.875rem, 9.063vw);
+  --col-services: 35.5625rem;
+  --gap-services: 10.375rem;
+  --type-hero: 5.625rem;
+  --type-hero-lh: 5.9375rem;
+  --type-h2: 3.875rem;
+  --type-h2-lh: 4.0625rem;
   --section-y: clamp(4rem, 8vw, 7.5rem);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: var(--ease-out);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
@@ -59,6 +73,81 @@ html[data-theme="blue"] {
   --font-sans: var(--font-inter);
   --font-ui: var(--font-inter-ui);
   --font-serif: var(--font-instrument);
+}
+
+/* Figma families. Files in /public/fonts win; otherwise local() then fallbacks. */
+@font-face {
+  font-family: "Neue Haas Display";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    local("Neue Haas Grotesk Display Pro Light"),
+    local("NeueHaasDisplay-Light"),
+    url("/fonts/NeueHaasDisplay-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neue Haas Display";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Neue Haas Grotesk Display Pro Roman"),
+    local("NeueHaasDisplay-Roman"),
+    url("/fonts/NeueHaasDisplay-Roman.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neue Haas Display";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("Neue Haas Grotesk Display Pro Medium"),
+    local("NeueHaasDisplay-Medium"),
+    local("NeueHaasDisplay-Mediu"),
+    url("/fonts/NeueHaasDisplay-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neue Haas Display";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("Neue Haas Grotesk Display Pro Bold"),
+    local("NeueHaasDisplay-Bold"),
+    url("/fonts/NeueHaasDisplay-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Sinteca";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    local("Sinteca"),
+    local("Sinteca-Regular"),
+    url("/fonts/Sinteca-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Sinteca";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    local("Sinteca Medium"),
+    local("Sinteca-Medium"),
+    url("/fonts/Sinteca-Medium.woff2") format("woff2");
+}
+
+:root {
+  --font-haas: "Neue Haas Display", "Neue Haas Grotesk Display Pro", "Helvetica Neue",
+    var(--font-plus-jakarta), sans-serif;
+  --font-sinteca: "Sinteca", var(--font-inter-ui), sans-serif;
+  --font-ui: var(--font-inter-ui);
 }
 
 *,
@@ -108,7 +197,7 @@ body {
   margin: 0;
   background: var(--aia-surface);
   color: var(--aia-navy);
-  font-family: var(--font-sans), "Helvetica Neue", sans-serif;
+  font-family: var(--font-haas);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -144,6 +233,8 @@ video {
 
 img.hero-film,
 video.hero-film,
+img.hero-film,
+video.hero-film,
 img.film-cover,
 video.film-cover {
   max-width: none !important;
@@ -152,11 +243,106 @@ video.film-cover {
   object-fit: cover !important;
 }
 
+/*
+  Figma hero plate is 1920×1076. Type is 90/95 at that width.
+  Bottom inset clears the assist chip and glyph overshoot so "LOSE."
+  is never clipped. Overflow is clipped only on the film layer.
+*/
 .hero-viewport {
-  height: 100vh;
+  width: 100%;
   height: 100svh;
-  height: 100dvh;
-  min-height: 640px;
+  min-height: 100svh;
+}
+
+/*
+  Figma 1920×1076 plate: inset 134, headline 1042×285 at 90/95,
+  rail 524, gap 86. Lockup is absolutely pinned to the plate so
+  leftover Tailwind flex/relative classes cannot re-center it.
+  Lede aligns to the FIRST line of the headline (Present frame).
+  Bottom sits low enough that the assist chip overlaps the last line.
+*/
+.hero-copy {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  height: auto !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+.hero-lockup {
+  pointer-events: auto;
+  position: absolute;
+  left: var(--page-pad);
+  right: var(--page-pad);
+  bottom: max(1.25rem, 2.7vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.75rem;
+}
+
+.hero-headline {
+  font-family: var(--font-haas);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4.6875vw, 5.625rem);
+  line-height: 1.0556;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #fff;
+  overflow: visible;
+}
+
+.hero-headline span {
+  display: block;
+}
+
+.hero-rail {
+  flex-shrink: 0;
+}
+
+.hero-lede {
+  font-family: var(--font-sinteca), var(--font-ui), sans-serif;
+  font-size: clamp(0.9375rem, 0.9375vw, 1.125rem);
+  line-height: 1.5556;
+  color: #fff;
+}
+
+@media (min-width: 1024px) {
+  .hero-lockup {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .hero-headline {
+    flex: 0 0 63.075%;
+    width: 63.075%;
+    max-width: 63.075%;
+  }
+
+  .hero-headline span {
+    white-space: nowrap;
+  }
+
+  .hero-rail {
+    flex: 0 0 31.72%;
+    width: 31.72%;
+    margin-top: 0.35em;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-headline,
+  .hero-rail {
+    max-width: none;
+    width: 100%;
+  }
+
+  .hero-headline span {
+    white-space: normal;
+  }
 }
 
 .hero-film,
@@ -196,6 +382,103 @@ video.film-cover {
   perspective: 1400px;
 }
 
+/*
+  Figma industry plate (1920): label + intro on the top row,
+  01/title/list left (530), mill 778×438 on the right.
+*/
+.industry-plate {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding-inline: var(--page-pad);
+  padding-top: clamp(1.75rem, 5vh, 3.25rem);
+  padding-bottom: clamp(1rem, 2.8vh, 1.75rem);
+}
+
+.industry-kicker {
+  margin-bottom: 0.75rem;
+}
+
+.industry-intro {
+  margin: 0 0 1.25rem;
+  max-width: 22ch;
+  font-family: var(--font-haas);
+  font-size: clamp(1.35rem, 2.5vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--aia-navy);
+}
+
+.industry-index {
+  font-family: var(--font-sinteca);
+  font-size: clamp(1.35rem, 1.667vw, 2rem);
+  font-weight: 400;
+  line-height: 1.3125;
+  color: #033361;
+}
+
+.industry-name {
+  font-family: var(--font-haas);
+  font-size: clamp(2rem, 2.708vw, 3.25rem);
+  font-weight: 500;
+  line-height: 0.923;
+  letter-spacing: 0;
+  color: var(--aia-navy);
+}
+
+.industry-lede {
+  max-width: min(22.125rem, 18.44vw);
+  font-family: var(--font-haas);
+  font-size: clamp(1.35rem, 2.083vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1;
+  color: #090909;
+}
+
+@media (min-width: 1024px) {
+  .industry-plate {
+    display: grid;
+    grid-template-columns: min(33.125rem, 27.6vw) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "kicker intro"
+      "copy mill"
+      "tabs mill";
+    column-gap: clamp(2rem, 5.2vw, 5.5rem);
+    row-gap: 0.65rem;
+    align-items: start;
+  }
+
+  .industry-kicker {
+    grid-area: kicker;
+    margin-bottom: 0;
+    align-self: end;
+  }
+
+  .industry-intro {
+    grid-area: intro;
+    margin: 0;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .industry-copy {
+    grid-area: copy;
+    align-self: start;
+    padding-top: 0.35rem;
+  }
+
+  .industry-mill {
+    grid-area: mill;
+    align-self: stretch;
+  }
+
+  .industry-tabs {
+    grid-area: tabs;
+    align-self: end;
+  }
+}
+
 .mill-well {
   background: transparent;
   overflow: visible;
@@ -216,8 +499,8 @@ video.film-cover {
   border-radius: 4px;
   background: #f0c424;
   color: #041d2c;
-  font-family: var(--font-ui), sans-serif;
-  font-size: 0.7rem;
+  font-family: var(--font-sinteca);
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -235,12 +518,68 @@ video.film-cover {
   filter: brightness(1.06);
 }
 
+.mill-inspect .mill-leader {
+  stroke-dasharray: 140;
+  stroke-dashoffset: 140;
+  animation: mill-leader-in 0.55s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+.mill-inspect .mill-pin {
+  animation: mill-pin-in 0.4s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+.mill-inspect .mill-callout {
+  animation: mill-tag-in 0.45s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 50ms);
+}
+
+@keyframes mill-leader-in {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes mill-pin-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes mill-tag-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.stagger-in > * {
+  animation: mill-tag-in 0.45s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+.caption-in {
+  animation: mill-tag-in 0.4s var(--ease-out) both;
+}
+
 .mill-callout.is-slate {
   background: #2a3238;
   color: #fff;
 }
 
-.mill-callout.is-accent,
+.mill-callout.is-accent {
+  background: #f0c424;
+  color: #041d2c;
+}
+
 .mill-callout.is-active {
   background: var(--aia-orange);
   color: #fff;
@@ -253,12 +592,11 @@ video.film-cover {
   height: 7px;
   transform: translate(-50%, -50%);
   border-radius: 999px;
-  background: #fff;
-  box-shadow: 0 0 0 1.25px #2a3238;
+  background: #f0c424;
+  box-shadow: 0 0 0 1.25px #041d2c;
   pointer-events: none;
 }
 
-.mill-pin.is-accent,
 .mill-pin.is-active {
   background: var(--aia-orange);
   box-shadow: 0 0 0 1.25px var(--aia-orange);
@@ -275,34 +613,184 @@ video.film-cover {
   padding-inline: max(var(--page-pad), var(--safe-left), var(--safe-right));
 }
 
+.page-max {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+}
+
 .section-y {
   padding-block: var(--section-y);
 }
 
 .section-label {
-  font-family: var(--font-ui), sans-serif;
+  font-family: var(--font-sinteca);
   font-size: 1.125rem;
   font-weight: 500;
-  line-height: 1.555;
+  line-height: 1.75rem;
   letter-spacing: 1.44px;
   text-transform: uppercase;
-  color: var(--aia-orange);
+  color: var(--aia-label, var(--aia-orange));
+}
+
+.section-label-alt {
+  color: var(--aia-label-alt, var(--aia-orange));
 }
 
 .heading-onest {
   font-family: var(--font-onest), var(--font-display), sans-serif;
   font-weight: 600;
+  font-size: clamp(1.75rem, 2.9167vw, 3.5rem);
+  line-height: 1.0714;
+}
+
+/*
+  Figma What we solve plate (1920):
+  inset 134, label+body 530, gap 174, heading 952×180 at 56/60,
+  CTA 48px below heading, film 864×486 sharing y with body.
+*/
+.solve-plate {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-inline: var(--page-pad);
+  padding-top: clamp(4rem, 6.667vw, 8rem);
+  padding-bottom: clamp(3rem, 5.208vw, 6.25rem);
+}
+
+.solve-heading {
+  margin: 0 0 clamp(1.5rem, 2.5vw, 3rem);
+  max-width: min(59.5rem, 49.583vw);
+  font-family: var(--font-onest), var(--font-display), sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.75rem, 2.9167vw, 3.5rem);
+  line-height: 1.0714;
+  letter-spacing: 0;
+  color: var(--aia-navy);
+}
+
+.solve-body {
+  max-width: var(--col-solve);
+  font-family: var(--font-haas);
+  font-weight: 300;
+  font-size: clamp(1.125rem, 1.4583vw, 1.75rem);
+  line-height: 1.357;
+  letter-spacing: 0.0143em;
+  color: #090909;
+}
+
+.solve-film {
+  position: relative;
+  width: min(54rem, 45vw);
+  max-width: 100%;
+  aspect-ratio: 864 / 486;
+  overflow: hidden;
+  background: #c8ced0;
+}
+
+@media (min-width: 1024px) {
+  .solve-plate {
+    display: grid;
+    grid-template-columns: var(--col-solve) minmax(0, 1fr);
+    grid-template-areas:
+      "label main"
+      "body film";
+    column-gap: var(--gap-solve);
+    row-gap: 4.167vw;
+    align-items: start;
+  }
+
+  .solve-label {
+    grid-area: label;
+    padding-top: 0.125em;
+  }
+
+  .solve-main {
+    grid-area: main;
+  }
+
+  .solve-body {
+    grid-area: body;
+  }
+
+  .solve-film {
+    grid-area: film;
+  }
 }
 
 .display {
-  font-family: var(--font-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-haas);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
+/*
+  Figma KPI plate: 1px rule, then brand + figures under it.
+  Brand is one line, far left. Three stats share the right 3/4.
+*/
+.kpi-lockup {
+  width: 100%;
+}
+
+.kpi-rule {
+  height: 1px;
+  width: 100%;
+  margin: 0;
+  background: #fff;
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: clamp(1.25rem, 3vw, 3.5rem);
+  align-items: start;
+  padding-top: 1.15rem;
+}
+
+.kpi-brand {
+  margin: 0;
+  padding-top: 0.2em;
+  font-family: var(--font-haas);
+  font-size: clamp(1.5rem, 2.08vw, 2.375rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.kpi-stat {
+  min-width: 0;
+}
+
+.kpi-value {
+  margin: 0;
+  font-family: var(--font-haas);
+  font-size: clamp(2.75rem, 4.4vw, 4.75rem);
   font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.96;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.kpi-caption {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-haas);
+  font-size: clamp(0.95rem, 1.1vw, 1.2rem);
+  font-weight: 400;
+  line-height: 1.25;
+  color: #fff;
+}
+
+@media (max-width: 1023px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+    row-gap: 1.25rem;
+  }
 }
 
 .ui-caps {
-  font-family: var(--font-ui), sans-serif;
+  font-family: var(--font-sinteca);
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -355,24 +843,33 @@ video.film-cover {
   animation: fade-up 0.9s var(--ease-out) both;
 }
 
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .hero-enter {
-  animation: fade-up 1.05s var(--ease-out) both;
+  animation: hero-fade 0.9s var(--ease-out) both;
 }
 
 .hero-enter-late {
-  animation: fade-up 1.05s var(--ease-out) 0.16s both;
+  animation: hero-fade 0.9s var(--ease-out) 0.14s both;
 }
 
 .reveal {
-  opacity: 0;
-  transform: translate3d(0, 22px, 0);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
   transition:
-    opacity 0.9s var(--ease-out),
-    transform 0.9s var(--ease-out);
+    opacity 0.45s var(--ease-out),
+    transform 0.45s var(--ease-out);
 }
 
 .reveal.from-right {
-  transform: translate3d(64px, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .reveal.is-in {
@@ -652,7 +1149,12 @@ video.film-cover {
   .hotspot-pulse,
   .hero-enter,
   .hero-enter-late,
-  .animate-fade-up {
+  .animate-fade-up,
+  .mill-inspect .mill-leader,
+  .mill-inspect .mill-pin,
+  .mill-inspect .mill-callout,
+  .stagger-in > *,
+  .caption-in {
     animation: none;
   }
 }

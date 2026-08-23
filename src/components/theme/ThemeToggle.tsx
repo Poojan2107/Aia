@@ -23,7 +23,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
             onClick={() => setTheme(id)}
             aria-pressed={active}
             title={item.note}
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] transition sm:px-3 sm:text-[11px] ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] transition sm:px-2.5 sm:text-[11px] ${
               active
                 ? "bg-white text-aia-navy"
                 : "text-white/80 hover:bg-white/10 hover:text-white"
@@ -34,7 +34,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
               className="size-2 rounded-full ring-1 ring-black/10"
               style={{ background: item.swatch }}
             />
-            {item.label}
+            <span className="hidden sm:inline">{item.label}</span>
           </button>
         );
       })}

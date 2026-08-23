@@ -20,7 +20,7 @@ export function Reveal({
   from = "up",
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;
@@ -30,6 +30,10 @@ export function Reveal({
       setInView(true);
       return;
     }
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 100 && rect.bottom > -100) {
+      setInView(true);
+    }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -37,7 +41,7 @@ export function Reveal({
           io.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" },
+      { threshold: 0.01, rootMargin: "120px 0px 120px 0px" },
     );
     io.observe(el);
     return () => io.disconnect();

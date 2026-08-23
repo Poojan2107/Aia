@@ -15,12 +15,12 @@ const posters = [
 export function Technology() {
   return (
     <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <Reveal className="page-pad mx-auto grid max-w-[1440px] gap-8 py-[var(--section-y)] sm:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <Reveal className="page-pad page-max grid gap-8 py-[var(--section-y)] sm:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
           <h2
             id="tech-heading"
-            className="display max-w-[12ch] text-[clamp(1.85rem,4.8vw,3.875rem)] font-semibold leading-[1.05] lg:text-[3.875rem] lg:leading-[4.0625rem]"
+            className="display max-w-[12ch] text-[clamp(1.85rem,3.229vw,3.875rem)] font-medium leading-[1.048] lg:text-[3.875rem] lg:leading-[4.0625rem]"
           >
             Engineered for what wear demands.
           </h2>
@@ -47,7 +47,7 @@ export function Technology() {
           const textLeft = index === 1;
           const videoSrc = media.tech[pillar.index as keyof typeof media.tech];
           return (
-            <Reveal key={pillar.index} as="article" delay={index * 80} className="page-pad mx-auto grid max-w-[1440px] items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16">
+            <Reveal key={pillar.index} as="article" delay={index * 80} className="page-pad page-max grid items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16">
               <div
                 className={
                   textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
@@ -69,7 +69,7 @@ export function Technology() {
                 src={videoSrc}
                 playback={videoSrc ? "click" : "ambient"}
                 film={Boolean(videoSrc)}
-                className={`order-1 aspect-[16/10] rounded-[40px] bg-aia-surface-soft ${
+                className={`order-1 aspect-[16/10] rounded-[32px] bg-aia-surface-soft ${
                   textLeft ? "lg:order-2" : "lg:order-1"
                 }`}
                 sizes="(max-width: 1024px) 100vw, 50vw"

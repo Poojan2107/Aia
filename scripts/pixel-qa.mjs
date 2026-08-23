@@ -9,10 +9,11 @@ fs.mkdirSync(out, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1919, height: 1079 } });
+await page.emulateMedia({ reducedMotion: "no-preference" });
 await page.goto("http://127.0.0.1:3000/?theme=orange", {
-  waitUntil: "networkidle",
+  waitUntil: "domcontentloaded",
 });
-await page.waitForTimeout(900);
+await page.waitForTimeout(1500);
 await page.addStyleTag({
   content:
     "[data-aia-theme-toggle],[data-aia-assist]{opacity:0!important;pointer-events:none!important}",
@@ -40,7 +41,7 @@ for (const [sel, name] of shots) {
   const loc = page.locator(sel).first();
   if ((await loc.count()) === 0) continue;
   await loc.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(600);
   await page.screenshot({ path: path.join(out, `ours-${name}.png`) });
 }
 

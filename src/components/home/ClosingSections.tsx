@@ -15,23 +15,24 @@ export function Sustainability() {
       aria-labelledby="sustain-heading"
     >
       <Image
-        src="/images/sustainability.png"
+        src="/images/sustainability-gear.jpg"
         alt="Industrial gear framing a growing plant"
         fill
         sizes="100vw"
-            className="object-cover object-[70%_center]"
-        quality={92}
+        className="object-cover object-[72%_center]"
+        quality={90}
+        priority
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,12,16,0.72)_0%,rgba(8,12,16,0.28)_48%,rgba(8,12,16,0.05)_72%,rgba(8,12,16,0.12)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,12,16,0.78)_0%,rgba(8,12,16,0.42)_38%,rgba(8,12,16,0.08)_68%,rgba(8,12,16,0.04)_100%)]"
       />
       <div
         aria-hidden
         className="sustain-haze pointer-events-none absolute inset-y-[18%] right-[8%] w-[46%]"
       />
 
-      <div className="page-pad relative z-10 mx-auto flex min-h-[100svh] max-w-[1440px] items-center py-20 sm:py-24 lg:py-28">
+      <div className="page-pad page-max relative z-10 flex min-h-[100svh] items-center py-20 sm:py-24 lg:py-28">
         <div className="max-w-[36rem]">
           <h2
             id="sustain-heading"
@@ -48,7 +49,7 @@ export function Sustainability() {
           <div className="mb-10 grid gap-8 sm:mb-12 sm:grid-cols-2 sm:gap-10">
             <div>
               <p className="display text-[clamp(2.4rem,5.2vw,3.5rem)] font-bold leading-none">
-                <CountUp value="1,00,000+" duration={1600} />
+                <CountUp value="1,00,000+" duration={1600} delay={0} />
               </p>
               <p className="mt-3 text-base text-white/85 sm:text-lg">
                 Tree plantation during the year
@@ -56,7 +57,7 @@ export function Sustainability() {
             </div>
             <div>
               <p className="display text-[clamp(2.4rem,5.2vw,3.5rem)] font-bold leading-none">
-                <CountUp value="30%" duration={1400} />
+                <CountUp value="30%" duration={1400} delay={90} />
               </p>
               <p className="mt-3 text-base text-white/85 sm:text-lg">
                 Energy comes from the renewable energy resources
@@ -93,15 +94,15 @@ export function Faq() {
       className="bg-[#f4f4f4] py-[var(--section-y)]"
       aria-labelledby="faq-heading"
     >
-      <div className="page-pad mx-auto grid max-w-[1440px] gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-16 xl:gap-20">
+      <div className="page-pad page-max grid gap-12 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-start lg:gap-16 xl:gap-20">
         <div className="lg:sticky lg:top-10 lg:self-start">
           <SectionLabel className="mb-6">Frequently Asked Question</SectionLabel>
           <h2
             id="faq-heading"
-            className="display mb-8 max-w-[13ch] text-[clamp(1.9rem,4.8vw,3.875rem)] font-semibold leading-[1.02] text-aia-navy sm:mb-10 lg:text-[3.875rem]"
+            className="display mb-8 max-w-[13ch] text-[clamp(1.9rem,4.8vw,3.875rem)] font-medium leading-[1.02] text-aia-navy sm:mb-10 lg:text-[3.875rem]"
           >
-            Here are the essentials about AIA, what we make, and how our solutions
-            support your operations.
+            Here are the essentials about AIA, what we make, and how our
+            solutions support your operations.
           </h2>
           <CtaButton href="/company/contact" variant="solid">
             Ask an expert
@@ -170,10 +171,10 @@ export function Insights() {
       className="page-pad bg-white py-[var(--section-y)]"
       aria-labelledby="insights-heading"
     >
-      <div className="mx-auto mb-8 max-w-[1440px] sm:mb-10">
+      <div className="page-max mb-8 sm:mb-10">
         <h2
           id="insights-heading"
-          className="display text-center text-[clamp(1.85rem,4.8vw,3.875rem)] font-semibold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
+          className="display text-center text-[clamp(1.85rem,3.229vw,3.875rem)] font-medium leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
         >
           Ideas & Insights from AIA
         </h2>
@@ -197,25 +198,26 @@ export function Insights() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1440px] space-y-8 sm:space-y-10">
+      <div key={tab} className="stagger-in page-max space-y-8 sm:space-y-10">
         {filtered.length === 0 ? (
           <p className="border-t border-aia-line py-10 text-center text-aia-muted">
             More {tab.toLowerCase()} coming soon.
           </p>
         ) : (
-          filtered.map((item) => (
+          filtered.map((item, i) => (
             <article
               key={item.href}
-              className="group grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.05fr]"
+              className="group grid items-center gap-6 border-t border-aia-line pt-8 sm:gap-8 sm:pt-10 lg:grid-cols-[1fr_1.1fr_auto]"
+              style={{ ["--i" as string]: i }}
             >
               <div className="order-2 lg:order-1">
                 <time
                   dateTime={item.date}
-                  className="mb-4 block text-sm uppercase tracking-[0.06em] text-aia-muted"
+                  className="mb-4 block font-[family-name:var(--font-ui)] text-sm uppercase tracking-[0.06em] text-[#888888]"
                 >
                   {item.date}
                 </time>
-                <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,4.2vw,2.5rem)] text-aia-navy sm:mb-8">
+                <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,3.2vw,2.25rem)] font-medium leading-[1.1] text-aia-navy sm:mb-8">
                   {item.title}
                 </h3>
                 <a
@@ -233,6 +235,23 @@ export function Insights() {
                   sizes="(max-width: 1024px) 100vw, 45vw"
                   className="object-cover object-[80%_center] transition duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
                 />
+              </div>
+              <div className="hidden shrink-0 lg:flex lg:order-3">
+                <a
+                  href={item.href}
+                  aria-label={`Read ${item.title}`}
+                  className="flex size-11 items-center justify-center rounded-full border border-aia-orange text-aia-orange transition duration-300 hover:bg-aia-orange hover:text-white"
+                >
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path
+                      d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
               </div>
             </article>
           ))

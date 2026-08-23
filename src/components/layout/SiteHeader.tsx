@@ -10,7 +10,6 @@ import { megaSections } from "@/data/nav";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [activeId, setActiveId] = useState(megaSections[1]?.id ?? "company");
   const titleId = useId();
 
@@ -20,13 +19,6 @@ export function SiteHeader() {
       document.body.style.overflow = "";
     };
   }, [open]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 72);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -41,28 +33,17 @@ export function SiteHeader() {
 
   return (
     <>
-      <header
-        className={`pointer-events-none inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-500 ease-[var(--ease-out)] ${
-          scrolled
-            ? "fixed bg-[#041d2c]/90 shadow-[0_8px_40px_rgba(4,29,44,0.28)] backdrop-blur-md"
-            : "absolute bg-transparent"
-        }`}
-      >
-        <div
-          className={`page-pad mx-auto pointer-events-auto flex max-w-[1440px] items-center justify-between gap-3 transition-[padding] duration-500 ${
-            scrolled
-              ? "py-3"
-              : "py-[clamp(1.5rem,2.24vw,2.7rem)]"
-          }`}
-        >
+      {/* Hero overlay only — no dark sticky bar after scroll */}
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-40 bg-transparent">
+        <div className="page-pad pointer-events-auto flex items-center justify-between gap-3 py-[clamp(1.35rem,2.08vw,2.5rem)]">
           <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>
 
-          <div className="flex shrink-0 items-center gap-4 text-white md:gap-6">
+          <div className="flex shrink-0 items-center gap-5 text-white md:gap-6">
             <button
               type="button"
-              className="hidden items-center gap-2 text-[0.95rem] font-medium tracking-wide opacity-95 transition hover:opacity-100 sm:inline-flex"
+              className="hidden items-center gap-1.5 font-[family-name:var(--font-ui)] text-[0.9375rem] font-medium text-white opacity-95 transition hover:opacity-100 sm:inline-flex"
               aria-haspopup="listbox"
             >
               En
@@ -73,18 +54,20 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex h-[42px] items-center gap-2.5 rounded-full border border-white/25 bg-[rgba(8,14,20,0.45)] py-1.5 pl-4 pr-1.5 text-white backdrop-blur-[10px] transition hover:bg-[rgba(8,14,20,0.58)]"
+              className="inline-flex items-center gap-2.5 rounded-full bg-[#151c22]/80 py-[5px] pl-5 pr-[5px] text-white transition hover:bg-[#151c22]/95"
               aria-expanded={open}
               aria-controls="mega-menu"
             >
-              <span className="ui-caps tracking-[0.1em]">MENU</span>
+              <span className="ui-caps tracking-[0.12em] text-[0.8125rem] font-semibold text-white">
+                MENU
+              </span>
               <span
-                className="relative flex size-[28px] items-center justify-center rounded-full bg-aia-orange"
+                className="relative flex size-11 items-center justify-center rounded-full bg-aia-orange"
                 aria-hidden
               >
-                <span className="absolute top-[8px] h-[1.5px] w-[12px] rounded-full bg-white" />
-                <span className="absolute top-[12.5px] h-[1.5px] w-[12px] rounded-full bg-white" />
-                <span className="absolute top-[17px] h-[1.5px] w-[12px] rounded-full bg-white" />
+                <span className="absolute top-[13px] h-[2px] w-[16px] rounded-full bg-white" />
+                <span className="absolute top-[21px] h-[2px] w-[16px] rounded-full bg-white" />
+                <span className="absolute top-[28px] h-[2px] w-[16px] rounded-full bg-white" />
               </span>
             </button>
           </div>

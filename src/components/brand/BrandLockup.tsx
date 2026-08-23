@@ -15,9 +15,10 @@ export function BrandLockup({
   compact = false,
   showVega = true,
 }: Props) {
-  const aia = tone === "light" ? "/images/logo-aia.png" : "/images/logo-aia-dark.png";
+  const aia =
+    tone === "light" ? "/images/logo-aia-clean.png" : "/images/logo-aia-dark.png";
   const vega =
-    tone === "light" ? "/images/logo-vega.png" : "/images/logo-vega-dark.png";
+    tone === "light" ? "/images/logo-vega-clean.png" : "/images/logo-vega-dark.png";
   const divider =
     tone === "light" ? "rgba(255,255,255,0.45)" : "rgba(4,29,44,0.2)";
 
@@ -31,11 +32,9 @@ export function BrandLockup({
         width={820}
         height={272}
         className={`w-auto object-contain object-left ${
-          tone === "light" ? "mix-blend-screen" : ""
-        } ${
           compact
-            ? "h-[40px] max-w-[12.75rem]"
-            : "h-10 sm:h-11 md:h-[3.35rem]"
+            ? "h-[clamp(3.25rem,4.5vw,5.5rem)] max-w-[min(18rem,16vw)]"
+            : "h-10 sm:h-12 md:h-14"
         }`}
         priority={compact}
       />
@@ -44,7 +43,7 @@ export function BrandLockup({
         <>
           <span
             aria-hidden
-            className="hidden h-[clamp(1.35rem,2.4vw,2.75rem)] w-px shrink-0 self-center md:block"
+            className="hidden h-[clamp(2.5rem,4vw,4.25rem)] w-px shrink-0 self-center sm:block"
             style={{ background: divider }}
           />
           <Image
@@ -52,12 +51,10 @@ export function BrandLockup({
             alt="Vega Industries"
             width={376}
             height={272}
-            className={`hidden w-auto object-contain object-left md:block ${
-              tone === "light" ? "mix-blend-screen" : ""
-            } ${
+            className={`hidden w-auto object-contain object-left sm:block ${
               compact
-                ? "md:h-[22px] md:max-w-[5.75rem]"
-                : "md:h-6 lg:h-[1.65rem]"
+                ? "sm:h-[clamp(3rem,4.5vw,5.25rem)] sm:max-w-[min(8.75rem,7vw)]"
+                : "md:h-10 lg:h-12"
             }`}
           />
         </>
