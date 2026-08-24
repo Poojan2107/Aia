@@ -22,6 +22,33 @@ export function BrandLockup({
   const divider =
     tone === "light" ? "rgba(255,255,255,0.45)" : "rgba(4,29,44,0.2)";
 
+  if (compact) {
+    return (
+      <span className={`site-header-logo ${className}`.trim()}>
+        <Image
+          src={aia}
+          alt="AIA Engineering Limited"
+          width={820}
+          height={272}
+          className="site-header-logo-aia"
+          priority
+        />
+        {showVega ? (
+          <>
+            <span aria-hidden className="site-header-logo-divider" />
+            <Image
+              src={vega}
+              alt="Vega Industries"
+              width={376}
+              height={272}
+              className="site-header-logo-vega"
+            />
+          </>
+        ) : null}
+      </span>
+    );
+  }
+
   return (
     <span
       className={`inline-flex max-w-full items-center gap-3 md:gap-[0.9rem] ${className}`}
@@ -31,19 +58,14 @@ export function BrandLockup({
         alt="AIA Engineering Limited"
         width={820}
         height={272}
-        className={`w-auto object-contain object-left ${
-          compact
-            ? "h-[clamp(3.25rem,4.5vw,5.5rem)] max-w-[min(18rem,16vw)]"
-            : "h-10 sm:h-12 md:h-14"
-        }`}
-        priority={compact}
+        className="h-10 w-auto object-contain object-left sm:h-12 md:h-14"
       />
 
       {showVega ? (
         <>
           <span
             aria-hidden
-            className="hidden h-[clamp(2.5rem,4vw,4.25rem)] w-px shrink-0 self-center sm:block"
+            className="hidden h-10 w-px shrink-0 self-center sm:block md:h-12"
             style={{ background: divider }}
           />
           <Image
@@ -51,11 +73,7 @@ export function BrandLockup({
             alt="Vega Industries"
             width={376}
             height={272}
-            className={`hidden w-auto object-contain object-left sm:block ${
-              compact
-                ? "sm:h-[clamp(3rem,4.5vw,5.25rem)] sm:max-w-[min(8.75rem,7vw)]"
-                : "md:h-10 lg:h-12"
-            }`}
+            className="hidden w-auto object-contain object-left sm:block md:h-10 lg:h-12"
           />
         </>
       ) : null}

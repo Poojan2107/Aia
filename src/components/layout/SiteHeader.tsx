@@ -35,15 +35,15 @@ export function SiteHeader() {
     <>
       {/* Hero overlay only — no dark sticky bar after scroll */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-40 bg-transparent">
-        <div className="page-pad pointer-events-auto flex items-center justify-between gap-3 py-[clamp(1.35rem,2.08vw,2.5rem)]">
+        <div className="site-header-bar pointer-events-auto flex items-center justify-between gap-3">
           <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>
 
-          <div className="flex shrink-0 items-center gap-5 text-white md:gap-6">
+          <div className="site-header-actions">
             <button
               type="button"
-              className="hidden items-center gap-1.5 font-[family-name:var(--font-ui)] text-[0.9375rem] font-medium text-white opacity-95 transition hover:opacity-100 sm:inline-flex"
+              className="site-header-lang"
               aria-haspopup="listbox"
             >
               En
@@ -54,20 +54,15 @@ export function SiteHeader() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="inline-flex items-center gap-2.5 rounded-full bg-[#151c22]/80 py-[5px] pl-5 pr-[5px] text-white transition hover:bg-[#151c22]/95"
+              className="site-header-menu"
               aria-expanded={open}
               aria-controls="mega-menu"
             >
-              <span className="ui-caps tracking-[0.12em] text-[0.8125rem] font-semibold text-white">
-                MENU
-              </span>
-              <span
-                className="relative flex size-11 items-center justify-center rounded-full bg-aia-orange"
-                aria-hidden
-              >
-                <span className="absolute top-[13px] h-[2px] w-[16px] rounded-full bg-white" />
-                <span className="absolute top-[21px] h-[2px] w-[16px] rounded-full bg-white" />
-                <span className="absolute top-[28px] h-[2px] w-[16px] rounded-full bg-white" />
+              <span className="site-header-menu-label">MENU</span>
+              <span className="site-header-menu-icon" aria-hidden>
+                <span />
+                <span />
+                <span />
               </span>
             </button>
           </div>

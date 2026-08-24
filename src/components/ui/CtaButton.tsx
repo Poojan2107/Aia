@@ -53,7 +53,7 @@ export function CtaButton({
           }`}
         />
       ) : null}
-      <span className={isFilled || variant === "outline-light" ? "text-white" : "group-hover:!text-white"}>
+      <span className={isFilled || variant === "outline-light" ? "hero-cta-label text-white" : "hero-cta-label group-hover:!text-white"}>
         {children}
       </span>
     </>

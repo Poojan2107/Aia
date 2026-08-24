@@ -5,33 +5,41 @@ import { Reveal } from "@/components/ui/Reveal";
 export function GlobalMap() {
   return (
     <section
-      className="bg-white py-[var(--section-y)]"
-      aria-labelledby="map-heading"
+      className="global-map bg-white pb-[var(--section-y)] pt-[clamp(2.5rem,4.5vw,3.75rem)]"
+      aria-labelledby="global-map-heading"
     >
-      <div className="page-pad page-max grid gap-12 lg:grid-cols-[minmax(0,0.38fr)_minmax(0,0.62fr)] lg:items-center lg:gap-16">
+      <h2 id="global-map-heading" className="sr-only">
+        Global presence
+      </h2>
+      <div className="page-pad page-max grid gap-12 lg:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)] lg:items-center lg:gap-14">
         <Reveal>
-          <h2 id="map-heading" className="sr-only">
-            Global presence
-          </h2>
-          <p className="mb-5 max-w-md text-[1.15rem] font-light leading-relaxed text-[#090909] sm:text-[1.5rem] md:text-[1.75rem] md:leading-[2.375rem]">
-            Our offices, production facilities, and warehouses are strategically
-            positioned across the globe to maximize efficiency and client reach.
+          <p className="global-map-lead">
+            Our offices, production facilities,
+            <br />
+            and warehouses are strategically
+            <br />
+            positioned across the globe to maximize
+            <br />
+            efficiency and client reach.
           </p>
-          <p className="mb-8 max-w-md text-[1.15rem] font-light leading-relaxed text-[#090909] sm:mb-10 sm:text-[1.5rem] md:text-[1.75rem] md:leading-[2.375rem]">
-            Explore our office locations, production facilities, and warehouses on
-            our interactive map.
+          <p className="global-map-support">
+            Explore our office locations,
+            <br />
+            production facilities, and warehouses
+            <br />
+            on our interactive map.
           </p>
           <CtaButton
             href="/company/global-presence"
             variant="outline"
-            className="w-full justify-center border-[#c4a06a] text-aia-navy hover:border-aia-navy hover:bg-aia-navy hover:text-white sm:w-auto"
+            className="global-map-cta justify-center sm:w-auto"
           >
             Find AIA near you
           </CtaButton>
         </Reveal>
 
-        <Reveal delay={80}>
-          <WorldMap className="w-full" />
+        <Reveal delay={80} className="min-w-0">
+          <WorldMap className="global-map-plate w-full" />
         </Reveal>
       </div>
     </section>

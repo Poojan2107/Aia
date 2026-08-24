@@ -17,7 +17,8 @@ const display = Plus_Jakarta_Sans({
 const sans = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 

@@ -118,8 +118,6 @@ export const megaSections: MegaSection[] = [
 export const footerNav = {
   solutions: [
     { label: "Mining", href: "/solutions/mining" },
-    { label: "Mining Products", href: "/solutions/mining/products" },
-    { label: "Mining Services", href: "/solutions/mining/services" },
     { label: "Cement", href: "/solutions/cement" },
     { label: "Quarry", href: "/solutions/quarry" },
     { label: "Thermal Power", href: "/solutions/thermal" },
@@ -158,6 +156,7 @@ export const footerNav = {
     { label: "List of Stock Exchanges", href: "/investors/exchanges" },
     { label: "Scheme of Amalgamation", href: "/investors/amalgamation" },
     { label: "Corporate Announcement & Disclosure", href: "/investors/disclosures" },
+    { label: "Reports & Presentations", href: "/investors/reports" },
     { label: "Investor Regulation 46 LODR", href: "/investors/regulation-46" },
     { label: "Investor Contact Us", href: "/investors/contact" },
   ],

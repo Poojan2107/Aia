@@ -34,8 +34,8 @@ export const assets = {
     research: "/images/tech-research.png",
     performance: "/images/tech-performance.png",
   },
-  sustainability: "/images/sustainability.png",
-  worldMap: "/images/world-map.jpg",
+  sustainability: "/images/mill-cutaway.png",
+  worldMap: "/images/world-map-v2.jpg",
   footer: "/images/footer-bg.jpg",
   insights: {
     one: "/images/insight-1.jpg",

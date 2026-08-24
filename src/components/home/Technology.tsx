@@ -15,27 +15,25 @@ const posters = [
 export function Technology() {
   return (
     <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <Reveal className="page-pad page-max grid gap-8 py-[var(--section-y)] sm:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <Reveal className="tech-intro page-pad page-max grid gap-8 pt-[var(--section-y)] sm:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <SectionLabel className="mb-6">Technology and R&D</SectionLabel>
-          <h2
-            id="tech-heading"
-            className="display max-w-[12ch] text-[clamp(1.85rem,3.229vw,3.875rem)] font-medium leading-[1.048] lg:text-[3.875rem] lg:leading-[4.0625rem]"
-          >
-            Engineered for what wear demands.
+          <SectionLabel className="tech-label mb-6">Technology and R&D</SectionLabel>
+          <h2 id="tech-heading" className="tech-heading">
+            <span>Engineered for</span>
+            <span>what wear demands.</span>
           </h2>
         </div>
-        <div>
-          <p className="mb-6 max-w-[50.75rem] text-base font-light leading-relaxed text-[#090909] sm:mb-8 sm:text-lg md:text-[1.75rem] md:leading-[2.375rem]">
-            Every operating environment creates a different wear challenge. AIA
-            combines application knowledge, metallurgy and research to develop
-            materials and wear solutions around the conditions they are expected
-            to face.
+        <div className="tech-copy">
+          <p className="tech-body">
+            <span>Every operating environment creates a different wear challenge. AIA</span>
+            <span>combines application knowledge, metallurgy and research to develop</span>
+            <span>materials and wear solutions around the conditions they are expected</span>
+            <span>to face.</span>
           </p>
           <CtaButton
             href="/company/technology"
             variant="solid"
-            className="w-full justify-center sm:w-auto"
+            className="tech-cta w-full justify-center sm:w-auto"
           >
             Explore our technology
           </CtaButton>
@@ -47,21 +45,17 @@ export function Technology() {
           const textLeft = index === 1;
           const videoSrc = media.tech[pillar.index as keyof typeof media.tech];
           return (
-            <Reveal key={pillar.index} as="article" delay={index * 80} className="page-pad page-max grid items-center gap-6 py-8 sm:gap-10 sm:py-12 lg:grid-cols-2 lg:gap-16">
+            <Reveal key={pillar.index} as="article" delay={index * 80} className={`tech-pillar page-pad page-max grid items-start gap-6 pb-8 sm:gap-10 sm:pb-12 lg:gap-16${index === 0 ? " tech-first-window" : " pt-8 sm:pt-12"}${textLeft ? " is-text-left" : ""}`}>
               <div
-                className={
+                className={`tech-pillar-copy ${
                   textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
-                }
+                }`}
               >
-                <p className="mb-3 font-[family-name:var(--font-ui)] text-[1.125rem] font-medium leading-[2.625rem] text-[#b0b0b0] sm:mb-4">
-                  {pillar.index} / {pillar.label.toUpperCase()}
+                <p className="tech-kicker">
+                  {pillar.index} / {pillar.label}
                 </p>
-                <h3 className="display mb-4 max-w-[16ch] text-[clamp(1.55rem,3.4vw,2rem)] font-semibold leading-[2.625rem] sm:mb-5">
-                  {pillar.title}
-                </h3>
-                <p className="max-w-[37.875rem] text-base font-light leading-relaxed text-[#090909] sm:text-lg md:text-[1.5rem] md:leading-[2.125rem]">
-                  {pillar.description}
-                </p>
+                <h3 className="tech-pillar-title">{pillar.title}</h3>
+                <p className="tech-pillar-body">{pillar.description}</p>
               </div>
               <MediaSlot
                 poster={posters[index] ?? posters[0]}
@@ -69,7 +63,7 @@ export function Technology() {
                 src={videoSrc}
                 playback={videoSrc ? "click" : "ambient"}
                 film={Boolean(videoSrc)}
-                className={`order-1 aspect-[16/10] rounded-[32px] bg-aia-surface-soft ${
+                className={`tech-window order-1 rounded-[32px] bg-aia-surface-soft ${
                   textLeft ? "lg:order-2" : "lg:order-1"
                 }`}
                 sizes="(max-width: 1024px) 100vw, 50vw"

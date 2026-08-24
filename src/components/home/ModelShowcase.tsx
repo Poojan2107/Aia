@@ -23,49 +23,53 @@ export function IndustryCopy({
   className = "",
   style,
 }: CopyProps) {
+  const [expanded, setExpanded] = useState(false);
+  const description = industry.description.replace(/\n/g, " ");
+
   return (
     <div
       className={`${overlay ? "absolute inset-0" : "relative"} flex flex-col justify-start ${className}`}
       style={style}
     >
-      <div className="industry-title mb-5 flex items-baseline gap-5 sm:mb-6 sm:gap-6">
+      <div className="industry-title">
         <span className="industry-index">{industry.index}</span>
         <h3 className="industry-name">{industry.name}</h3>
       </div>
-      <p className="industry-lede mb-8 whitespace-pre-line sm:mb-10">
-        {industry.description}
-      </p>
+      <div className="industry-lede-wrap">
+        <p className={`industry-lede${expanded ? " is-expanded" : ""}`}>
+          {description}
+        </p>
+        <button
+          type="button"
+          tabIndex={interactive ? 0 : -1}
+          className="industry-read-more"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((open) => !open)}
+        >
+          {expanded ? "Read less" : "Read more"}
+        </button>
+      </div>
 
-      <ul className="mb-8 max-w-md sm:mb-10">
+      <ul
+        className="industry-solutions"
+        onMouseLeave={() => interactive && onActive(null)}
+      >
         {industry.solutions.map((solution) => {
-          const isActive = activeId === solution.hotspotId;
+          const isActive = activeId === solution.id;
           return (
-            <li key={solution.id} className="border-t border-aia-line">
+            <li key={solution.id} className="industry-solution">
               <button
                 type="button"
                 tabIndex={interactive ? 0 : -1}
-                className="group flex min-h-[3.25rem] w-full items-center justify-between gap-4 py-3.5 text-left sm:min-h-[3.75rem] sm:py-3.5"
-                onClick={() => onActive(solution.hotspotId)}
-                onMouseEnter={() => interactive && onActive(solution.hotspotId)}
-                onFocus={() => interactive && onActive(solution.hotspotId)}
+                className={`industry-solution-btn group ${isActive ? "is-active" : ""}`}
+                onClick={() => onActive(solution.id)}
+                onMouseEnter={() => interactive && onActive(solution.id)}
+                onFocus={() => interactive && onActive(solution.id)}
+                onBlur={() => interactive && onActive(null)}
                 aria-pressed={isActive}
               >
-                <span
-                  className={`text-[1.125rem] leading-[1.875rem] transition-colors duration-300 ${
-                    isActive ? "font-medium text-aia-navy" : "font-normal text-[#090909]"
-                  }`}
-                  style={{ fontFamily: "var(--font-sinteca)" }}
-                >
-                  {solution.label}
-                </span>
-                <span
-                  aria-hidden
-                  className={`flex size-[26px] shrink-0 items-center justify-center rounded-full bg-aia-orange text-white transition-all duration-300 ${
-                    isActive
-                      ? "scale-100 opacity-100"
-                      : "scale-90 opacity-0 md:group-hover:opacity-100"
-                  }`}
-                >
+                <span className="industry-solution-label">{solution.label}</span>
+                <span aria-hidden className="industry-solution-mark">
                   <svg width="11" height="11" viewBox="0 0 10 10" fill="none">
                     <path
                       d="M2 8L8 2M8 2H3.5M8 2V6.5"
@@ -80,13 +84,12 @@ export function IndustryCopy({
             </li>
           );
         })}
-        <li className="border-t border-aia-line" />
       </ul>
 
       <a
         href={industry.href}
         tabIndex={interactive ? 0 : -1}
-        className="ui-caps inline-flex min-h-8 items-center gap-2 font-medium tracking-[0.08em] text-aia-orange transition-opacity hover:opacity-80"
+        className="industry-cta"
       >
         Explore {industry.name}
         <span aria-hidden>›</span>
@@ -135,39 +138,50 @@ export function IndustryMill({
   className = "",
   style,
 }: MillProps) {
+  const solution = industry.solutions.find((item) => item.id === activeId);
+  const points = solution?.hotspots ?? industry.hotspots;
+  const src = solution?.image ?? industry.model.poster;
+  const alt = solution
+    ? (solution.imageAlt ?? solution.label)
+    : inspect
+      ? industry.model.alt
+      : "";
+  const squareSolution = Boolean(solution?.image.includes("/funnel/"));
+
   return (
     <div
       className={`${overlay ? "absolute inset-0" : "relative h-full"} flex items-center justify-center ${className}`}
       style={style}
     >
       <div
-        className="relative w-full max-h-full"
+        className="industry-mill-frame relative w-full max-h-full"
         style={{
-          width: industry.model.still?.width ?? 778,
-          height: industry.model.still?.height ?? 438,
-          aspectRatio: industry.model.ratio,
-          maxWidth: "min(100%, 778px)",
-          maxHeight: "min(100%, 438px)",
+          width: squareSolution ? 420 : (industry.model.still?.width ?? 640),
+          height: squareSolution ? 420 : (industry.model.still?.height ?? 360),
+          aspectRatio: squareSolution ? "1 / 1" : industry.model.ratio,
+          maxWidth: "min(100%, 520px)",
+          maxHeight: "min(100%, 340px)",
         }}
       >
         <Image
-          src={industry.model.poster}
-          alt={inspect ? industry.model.alt : ""}
+          key={src}
+          src={src}
+          alt={alt}
           fill
           priority={priority}
           quality={95}
-          sizes="(max-width: 1024px) 100vw, 70vw"
-          className="object-contain object-center"
+          sizes="(max-width: 1024px) 100vw, 40vw"
+          className="object-contain object-center industry-mill-image"
         />
         {inspect ? (
-          <div key={industry.id} className="mill-inspect absolute inset-0">
+          <div key={`${industry.id}-${solution?.id ?? "plate"}`} className="mill-inspect absolute inset-0">
             <svg
               className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
               aria-hidden
             >
-              {industry.hotspots.map((point, i) => {
+              {points.map((point, i) => {
                 const { lx, ly } = labelPoint(point);
-                const active = activeId === point.id;
+                const active = !solution && activeId === point.id;
                 return (
                   <line
                     key={point.id}
@@ -189,8 +203,8 @@ export function IndustryMill({
                 );
               })}
             </svg>
-            {industry.hotspots.map((point, i) => {
-              const active = activeId === point.id;
+            {points.map((point, i) => {
+              const active = !solution && activeId === point.id;
               const { lx, ly } = labelPoint(point);
               return (
                 <span key={`${point.id}-pin`} style={{ ["--i" as string]: i }}>
@@ -207,8 +221,12 @@ export function IndustryMill({
                       top: `${ly}%`,
                       transform: LABEL_SHIFT[point.align ?? "right"],
                     }}
-                    onMouseEnter={() => onActive?.(point.id)}
-                    onFocus={() => onActive?.(point.id)}
+                    onMouseEnter={() => {
+                      if (!solution) onActive?.(point.id);
+                    }}
+                    onFocus={() => {
+                      if (!solution) onActive?.(point.id);
+                    }}
                   >
                     {point.label}
                   </button>
@@ -234,9 +252,7 @@ export function ModelShowcase({
   priority = false,
   compact = false,
 }: Props) {
-  const [active, setActive] = useState<string | null>(
-    industry.solutions[0]?.hotspotId ?? industry.hotspots[0]?.id ?? null,
-  );
+  const [active, setActive] = useState<string | null>(null);
 
   return (
     <div className="grid w-full items-center gap-8 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16 xl:gap-20">
@@ -253,13 +269,6 @@ export function ModelShowcase({
           className={`mill-well relative w-full overflow-visible ${
             compact ? "h-[min(58vh,34rem)]" : "aspect-[16/10]"
           }`}
-          onMouseLeave={() =>
-            setActive(
-              industry.solutions[0]?.hotspotId ??
-                industry.hotspots[0]?.id ??
-                null,
-            )
-          }
         >
           <IndustryMill
             industry={industry}

@@ -15,7 +15,6 @@ import {
   Faq,
   Insights,
 } from "@/components/home/ClosingSections";
-import { Reveal } from "@/components/ui/Reveal";
 import { AssistChip } from "@/components/ui/AssistChip";
 
 export default function HomePage() {

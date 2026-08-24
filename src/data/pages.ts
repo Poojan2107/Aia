@@ -158,7 +158,7 @@ export const interiorPages: Record<string, InteriorContent> = {
     title: "Global presence",
     description:
       "Offices, warehouses and service centres are positioned to support mill operations close to the plant — from Ahmedabad to Dubai, Houston, Perth and beyond.",
-    image: "/images/world-map.jpg",
+    image: "/images/world-map-v2.jpg",
     highlights: [
       "India manufacturing and corporate base",
       "Regional offices across Americas, EMEA and APAC",

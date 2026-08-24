@@ -4,6 +4,9 @@ import { BrandLockup } from "@/components/brand/BrandLockup";
 import { footerNav } from "@/data/nav";
 import { site } from "@/data/site";
 
+const headingClass = "footer-h";
+const linkClass = "footer-a";
+
 function FooterCol({
   title,
   links,
@@ -13,16 +16,11 @@ function FooterCol({
 }) {
   return (
     <div>
-      <p className="mb-4 text-[1.05rem] font-semibold text-white md:text-lg">
-        {title}
-      </p>
-      <ul className="space-y-2.5">
+      <p className={headingClass}>{title}</p>
+      <ul>
         {links.map((link) => (
           <li key={`${title}-${link.label}`}>
-            <Link
-              href={link.href}
-              className="text-[0.95rem] leading-snug text-white/90 transition hover:text-white"
-            >
+            <Link href={link.href} className={linkClass}>
               {link.label}
             </Link>
           </li>
@@ -32,75 +30,64 @@ function FooterCol({
   );
 }
 
+function LinkedInIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
+      <rect width="28" height="28" rx="3" fill="white" />
+      <path
+        d="M8.2 11.4h2.35v8.4H8.2v-8.4Zm1.17-3.75c.76 0 1.38.62 1.38 1.38 0 .77-.62 1.39-1.38 1.39a1.39 1.39 0 0 1 0-2.77ZM12.35 11.4h2.25v1.15h.03c.31-.59 1.08-1.21 2.22-1.21 2.38 0 2.82 1.56 2.82 3.59v4.87h-2.35v-4.32c0-1.03-.02-2.35-1.43-2.35-1.43 0-1.65 1.12-1.65 2.28v4.39h-2.35v-8.4Z"
+        fill="var(--aia-orange)"
+      />
+    </svg>
+  );
+}
+
 export function SiteFooter() {
   return (
-    <footer className="relative isolate w-full overflow-hidden bg-[#041d2c] text-white">
-      {/* Clean photographic plate — no baked-in UI */}
+    <footer id="site-footer" className="site-footer">
       <Image
         src="/images/footer-bg.jpg"
         alt=""
         fill
         sizes="100vw"
-        className="object-cover object-center"
+        className="object-cover object-[center_30%]"
         aria-hidden
         priority={false}
       />
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[#041d2c]/40"
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.25)_0%,rgba(4,29,44,0.4)_50%,rgba(4,29,44,0.78)_100%)]"
-      />
+      <div aria-hidden className="site-footer-scrim" />
 
-      <div className="relative z-10 pt-14 md:pt-20">
-        <div className="page-pad page-max mb-8 flex flex-col gap-6 sm:mb-10 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-          <p className="display max-w-[18ch] text-[clamp(1.65rem,4vw,3rem)] font-medium leading-[1.21] text-white lg:text-[3rem] lg:leading-[3.625rem]">
+      <div className="page-pad page-max site-footer-inner">
+        <div className="site-footer-brand">
+          <p className="site-footer-lead">
             Engineering wear solutions.
             <br />
             Supporting operations worldwide.
           </p>
-          <BrandLockup tone="light" className="shrink-0 self-start sm:self-end" />
+          <BrandLockup tone="light" className="site-footer-logos" />
         </div>
 
-        <div className="bg-aia-orange text-white">
-          <div className="page-pad page-max py-8 sm:py-10 md:py-12">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
-            <div className="lg:col-span-2">
-              <FooterCol title="Solutions" links={footerNav.solutions} />
-            </div>
-            <div className="lg:col-span-2">
-              <FooterCol title="Company" links={footerNav.company} />
-            </div>
-            <div className="lg:col-span-2">
-              <FooterCol title="Resources hub" links={footerNav.resources} />
-            </div>
+        <div className="site-footer-panel">
+          <div className="site-footer-grid">
+            <FooterCol title="Solutions" links={footerNav.solutions} />
+            <FooterCol title="Company" links={footerNav.company} />
+            <FooterCol title="Resources hub" links={footerNav.resources} />
 
-            <div className="sm:col-span-2 lg:col-span-4">
-              <p className="mb-4 text-[1.05rem] font-semibold md:text-lg">
-                Investors & Connect
-              </p>
-              <div className="grid gap-6 sm:grid-cols-2 sm:gap-8">
-                <ul className="space-y-2.5">
+            <div className="site-footer-invest">
+              <p className={headingClass}>Investors &amp; Connect</p>
+              <div className="site-footer-invest-cols">
+                <ul>
                   {footerNav.investorsLeft.map((link) => (
                     <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-[0.95rem] text-white/90 hover:text-white"
-                      >
+                      <Link href={link.href} className={linkClass}>
                         {link.label}
                       </Link>
                     </li>
                   ))}
                 </ul>
-                <ul className="space-y-2.5">
+                <ul>
                   {footerNav.investorsRight.map((link) => (
                     <li key={`r-${link.label}`}>
-                      <Link
-                        href={link.href}
-                        className="text-[0.95rem] text-white/90 hover:text-white"
-                      >
+                      <Link href={link.href} className={linkClass}>
                         {link.label}
                       </Link>
                     </li>
@@ -109,86 +96,79 @@ export function SiteFooter() {
               </div>
             </div>
 
-            <div className="lg:col-span-2">
-              <p className="mb-4 text-[1.05rem] font-semibold md:text-lg">
-                {site.address.label}
-              </p>
-              <p className="mb-4 whitespace-pre-line text-[0.95rem] leading-relaxed text-white/90">
-                {site.address.lines.join("\n")}
-              </p>
-              <p className="text-[0.95rem] text-white/90">M: {site.phone}</p>
-              <p className="text-[0.95rem] text-white/90">F: {site.fax}</p>
-              <p className="break-all text-[0.95rem] text-white/90">
-                E: {site.email}
-              </p>
+            <div className="site-footer-office">
+              <p className={headingClass}>{site.address.label}</p>
+              <address className="not-italic">
+                <p className="footer-a footer-address">
+                  {site.address.lines.join(" ")}
+                </p>
+                <dl className="footer-contact">
+                  <div>
+                    <dt>M</dt>
+                    <dd>
+                      <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
+                        {site.phone}
+                      </a>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>F</dt>
+                    <dd>{site.fax}</dd>
+                  </div>
+                  <div>
+                    <dt>E</dt>
+                    <dd>
+                      <a href={`mailto:${site.email}`}>{site.email}</a>
+                    </dd>
+                  </div>
+                </dl>
+              </address>
               <a
                 href="https://www.linkedin.com"
-                className="mt-5 inline-flex size-9 items-center justify-center transition hover:opacity-90"
+                className="site-footer-li"
                 aria-label="AIA on LinkedIn"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/icons/linkedin.svg"
-                  alt=""
-                  width={36}
-                  height={36}
-                  className="size-9"
-                />
+                <LinkedInIcon />
               </a>
             </div>
           </div>
-          </div>
         </div>
 
-        <div className="page-pad page-max pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <div className="mt-10 grid gap-10 border-t border-white/25 pt-10 md:grid-cols-2 md:gap-0">
-          <div className="md:border-r md:border-white/25 md:pr-16">
-            <p className="display mb-6 max-w-[16ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-tight text-white">
-              Have a wear or performance challenge?
-            </p>
-            <Link
-              href="/company/contact"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-6 font-semibold text-aia-orange transition hover:bg-white/92"
-              style={{ color: "var(--aia-orange)" }}
-            >
-              <span className="size-2 rounded-full bg-aia-orange" aria-hidden />
+        <div className="site-footer-cta">
+          <div className="site-footer-cta-cell">
+            <p>Have a wear or performance challenge?</p>
+            <Link href="/company/contact" className="site-footer-btn">
+              <span aria-hidden />
               Talk to an expert
             </Link>
           </div>
-          <div className="md:pl-16">
-            <p className="display mb-6 max-w-[20ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-tight text-white">
-              Find AIA offices, representatives and support across global markets.
+          <div className="site-footer-cta-cell">
+            <p>
+              Find AIA offices, representatives and support across global
+              markets.
             </p>
-            <Link
-              href="/company/global-presence"
-              className="ui-caps inline-flex h-[50px] items-center gap-2.5 rounded-full bg-white px-6 font-semibold text-aia-orange transition hover:bg-white/92"
-              style={{ color: "var(--aia-orange)" }}
-            >
-              <span className="size-2 rounded-full bg-aia-orange" aria-hidden />
+            <Link href="/company/global-presence" className="site-footer-btn">
+              <span aria-hidden />
               Explore global presence
             </Link>
           </div>
         </div>
 
-        {/* Legal bar */}
-        <div className="flex flex-col gap-4 border-t border-white/20 py-6 text-sm text-white/75 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="site-footer-legal">
           <p>© 2026 {site.legalName}. All Rights Reserved.</p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <Link href="/privacy" className="hover:text-white">
-              Privacy Policy
-            </Link>
-            <Link href="/sitemap.xml" className="hover:text-white">
-              Sitemap
-            </Link>
-            <span className="inline-flex items-center gap-1.5">
+          <nav>
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/sitemap.xml">Sitemap</Link>
+            <span>
               En
               <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
                 <path d="M0 0l4 4 4-4" fill="currentColor" />
               </svg>
             </span>
-          </div>
-          <p className="text-white/50">Site by I3</p>
-        </div>
+          </nav>
+          <p className="site-footer-by">
+            Site by <b>I3</b>
+          </p>
         </div>
       </div>
     </footer>

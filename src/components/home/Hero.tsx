@@ -62,24 +62,28 @@ export function Hero() {
           onPlaying={() => setReady(true)}
           disablePictureInPicture
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.58)_0%,rgba(0,0,0,0.12)_30%,rgba(0,0,0,0.22)_60%,rgba(0,0,0,0.72)_100%)]" />
+        <div className="hero-scrim" aria-hidden />
       </div>
 
       <div className="hero-copy z-10" data-hero-lock="figma-1920">
         <div className="hero-lockup">
           <h1 className="hero-enter hero-headline">
-            <span>We engineer for</span>
-            <span>the hours you</span>
-            <span>can&apos;t afford to lose.</span>
+            <span>WE ENGINEER FOR</span>
+            <span>THE HOURS YOU</span>
+            <span>CAN&apos;T AFFORD TO LOSE.</span>
           </h1>
 
           <div className="hero-enter-late hero-rail">
-            <p className="hero-lede mb-[1.25vw]">
-              Advanced wear solutions engineered to extend component life,
-              improve equipment availability and keep critical operations
-              performing.
+            <p className="hero-lede">
+              <span>Advanced wear solutions engineered to extend component</span>
+              <span>life, improve equipment availability and keep critical</span>
+              <span>operations performing.</span>
             </p>
-            <CtaButton href="#solutions" variant="solid">
+            <CtaButton
+              href="#solutions"
+              variant="solid"
+              className="hero-cta !h-[40px] !px-[1.4rem] !text-[11px] !gap-2"
+            >
               Explore wear solutions
             </CtaButton>
           </div>
