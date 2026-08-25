@@ -34,6 +34,7 @@ export type Industry = {
   hotspots: Hotspot[];
 };
 
+/** Shared mill callouts — used only when the visible plate has no baked-in labels. */
 const millCutawayHotspots: Hotspot[] = [
   { id: "shell", label: "Shell Liners", x: 48, y: 38, lx: 72, ly: 16, align: "right" },
   { id: "media", label: "Grinding Media", x: 44, y: 62, lx: 70, ly: 72, align: "right", tone: "slate" },
@@ -64,27 +65,27 @@ export const industries: Industry[] = [
       {
         id: "sag",
         label: "SAG Mill Solutions",
-        image: "/images/funnel/funnel-sag-lining.png",
+        image: "/images/industry/mining.jpg",
         imageAlt: "SAG mill lining solutions",
         hotspots: millCutawayHotspots,
       },
       {
         id: "ball",
         label: "Ball Mill Solutions",
-        image: "/images/funnel/funnel-ball-lining.png",
+        image: "/images/industry/mining.jpg",
         imageAlt: "Ball mill lining solutions",
         hotspots: millCutawayHotspots,
       },
       {
         id: "verti",
         label: "Verti Mill Solutions",
-        image: "/images/funnel/funnel-verti.png",
+        image: "/images/industry/mining.jpg",
         imageAlt: "Vertical mill lining solutions",
         hotspots: vertiHotspots,
       },
     ],
     model: {
-      poster: "/images/mining-mill-plate.png",
+      poster: "/images/industry/mining.jpg",
       src: "/models/mining.glb",
       alt: "3D cutaway of a mining grinding mill with AIA wear components",
       ratio: "778 / 438",
@@ -110,7 +111,7 @@ export const industries: Industry[] = [
       {
         id: "tube",
         label: "Tube Mills",
-        image: "/images/cement-mill-clean.png",
+        image: "/images/industry/cement.jpg",
         imageAlt: "Cement tube mill wear solutions",
         hotspots: [
           { id: "gear", label: "Ring Gear", x: 18, y: 48, lx: 2, ly: 28, align: "left", tone: "slate" },
@@ -123,7 +124,7 @@ export const industries: Industry[] = [
       {
         id: "vrm",
         label: "Vertical Roller Mill (VRM)",
-        image: "/images/thermal-mill-clean.png",
+        image: "/images/industry/cement.jpg",
         imageAlt: "Cement vertical roller mill solutions",
         hotspots: [
           { id: "classifier", label: "Classifier", x: 50, y: 14, lx: 78, ly: 6, align: "right" },
@@ -135,7 +136,7 @@ export const industries: Industry[] = [
       },
     ],
     model: {
-      poster: "/images/cement-mill-plate.png",
+      poster: "/images/industry/cement.jpg",
       src: "/models/cement.glb",
       alt: "3D cement tube mill with AIA wear solutions",
       ratio: "800 / 450",
@@ -160,7 +161,7 @@ export const industries: Industry[] = [
       {
         id: "blow",
         label: "Blow Bars",
-        image: "/images/quarry-mill-clean.png",
+        image: "/images/industry/quarry.jpg",
         imageAlt: "Quarry blow bar wear parts",
         hotspots: [
           { id: "feed", label: "Feed Inlet", x: 50, y: 18, lx: 28, ly: 6, align: "top" },
@@ -173,7 +174,7 @@ export const industries: Industry[] = [
       {
         id: "hammers",
         label: "Hammers",
-        image: "/images/quarry-mill-plate.png",
+        image: "/images/industry/quarry.jpg",
         imageAlt: "Quarry hammer wear parts",
         hotspots: [
           { id: "feed", label: "Feed Inlet", x: 50, y: 16, lx: 28, ly: 4, align: "top" },
@@ -186,7 +187,7 @@ export const industries: Industry[] = [
       {
         id: "crusher",
         label: "Crusher Components",
-        image: "/images/quarry-mill-clean.png",
+        image: "/images/industry/quarry.jpg",
         imageAlt: "Quarry crusher components",
         hotspots: [
           { id: "feed", label: "Feed Inlet", x: 50, y: 18, lx: 28, ly: 6, align: "top" },
@@ -198,7 +199,7 @@ export const industries: Industry[] = [
       },
     ],
     model: {
-      poster: "/images/quarry-mill-plate.png",
+      poster: "/images/industry/quarry.jpg",
       src: "/models/quarry.glb",
       alt: "3D quarry crusher with AIA wear protection",
       ratio: "778 / 438",
@@ -225,7 +226,7 @@ export const industries: Industry[] = [
       {
         id: "tube",
         label: "Tube Mills",
-        image: "/images/cement-mill-clean.png",
+        image: "/images/industry/thermal.jpg",
         imageAlt: "Thermal tube mill wear solutions",
         hotspots: [
           { id: "gear", label: "Ring Gear", x: 18, y: 48, lx: 2, ly: 28, align: "left", tone: "slate" },
@@ -237,7 +238,7 @@ export const industries: Industry[] = [
       {
         id: "vrm",
         label: "VRM",
-        image: "/images/thermal-mill-clean.png",
+        image: "/images/industry/thermal.jpg",
         imageAlt: "Thermal vertical roller mill solutions",
         hotspots: [
           { id: "classifier", label: "Classifier", x: 50, y: 14, lx: 78, ly: 6, align: "right" },
@@ -249,7 +250,7 @@ export const industries: Industry[] = [
       },
     ],
     model: {
-      poster: "/images/thermal-mill-plate.png",
+      poster: "/images/industry/thermal.jpg",
       src: "/models/thermal.glb",
       alt: "3D thermal power vertical roller mill",
       ratio: "457 / 500",

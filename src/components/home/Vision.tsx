@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Reveal } from "@/components/ui/Reveal";
+import { useTheme } from "@/components/theme/ThemeProvider";
 import { prefersReducedMotion } from "@/lib/motion";
 
 function clamp01(n: number) {
@@ -45,9 +46,14 @@ function useEnterProgress(ref: RefObject<HTMLElement | null>) {
 }
 
 export function Vision() {
+  const { theme } = useTheme();
   const plate = useRef<HTMLDivElement>(null);
   const progress = useEnterProgress(plate);
   const rise = smooth(clamp01((progress - 0.08) / 0.7));
+  const plateSrc =
+    theme === "orange"
+      ? "/images/vision-figma.png"
+      : "/images/vision-plate-hq-white.webp";
 
   return (
     <section
@@ -65,7 +71,8 @@ export function Vision() {
               }}
             >
               <Image
-                src="/images/vision-plate-hq-white.webp"
+                key={plateSrc}
+                src={plateSrc}
                 alt="Mr. Bhadresh Kantilal Shah, Managing Director"
                 fill
                 sizes="(max-width: 1024px) 100vw, 52vw"

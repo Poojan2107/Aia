@@ -5,7 +5,7 @@ export function AssistChip() {
     <button
       type="button"
       data-aia-assist
-      className="group fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-[max(1.5rem,env(safe-area-inset-left))] z-30"
+      className="group fixed bottom-[max(1.5rem,env(safe-area-inset-bottom))] left-[max(1rem,env(safe-area-inset-left))] z-30 sm:left-[max(1.5rem,env(safe-area-inset-left))]"
       aria-label="Open AIA assistant"
     >
       <span className="assist-pulse relative flex size-[60px] items-center justify-center rounded-full bg-aia-orange text-white shadow-[0_10px_30px_rgba(var(--aia-accent-rgb),0.35)] transition duration-300 group-hover:scale-[1.04]">

@@ -24,7 +24,7 @@ export function Services() {
       aria-labelledby="services-heading"
     >
       <div className="page-pad page-max grid lg:grid-cols-[var(--col-services)_minmax(0,1fr)] lg:gap-x-[var(--gap-services)]">
-        <div className="services-intro lg:sticky lg:top-10 lg:self-start lg:py-[var(--section-y)]">
+        <div className="services-intro py-[var(--section-y)] lg:sticky lg:top-10 lg:self-start">
           <SectionLabel className="services-label mb-7">
             Services & support
           </SectionLabel>
@@ -41,7 +41,7 @@ export function Services() {
           </CtaButton>
         </div>
 
-        <div className="services-panel mt-12 min-w-0 lg:mt-0 lg:py-[var(--section-y)]">
+        <div className="services-panel min-w-0 pb-[var(--section-y)] lg:mt-0 lg:py-[var(--section-y)]">
           <div
             className="services-tabs"
             role="tablist"

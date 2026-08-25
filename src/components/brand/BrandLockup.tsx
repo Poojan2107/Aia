@@ -65,7 +65,7 @@ export function BrandLockup({
         <>
           <span
             aria-hidden
-            className="hidden h-10 w-px shrink-0 self-center sm:block md:h-12"
+            className="block h-8 w-px shrink-0 self-center sm:h-10 md:h-12"
             style={{ background: divider }}
           />
           <Image
@@ -73,7 +73,7 @@ export function BrandLockup({
             alt="Vega Industries"
             width={376}
             height={272}
-            className="hidden w-auto object-contain object-left sm:block md:h-10 lg:h-12"
+            className="block h-8 w-auto object-contain object-left sm:h-9 md:h-10 lg:h-12"
           />
         </>
       ) : null}

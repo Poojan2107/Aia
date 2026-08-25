@@ -36,21 +36,21 @@ export function Sustainability() {
               id="sustain-heading"
               className="display mb-6 text-[clamp(2rem,4vw,3.5rem)] !font-semibold leading-[1.05] lg:mb-7 lg:text-[3.5rem]"
             >
-              <span className="block whitespace-nowrap">Can heavy industry</span>
-              <span className="block whitespace-nowrap">think lighter?</span>
+              <span className="block lg:whitespace-nowrap">Can heavy industry</span>
+              <span className="block lg:whitespace-nowrap">think lighter?</span>
             </h2>
 
             <div className="max-w-[36rem] text-[1.05rem] font-light leading-[1.55] text-white sm:text-[1.2rem] sm:leading-[1.5] lg:text-[1.35rem] lg:leading-[1.48]">
               <p className="mb-0">
                 YES, We believe it can. By using resources more efficiently,
-                <br className="hidden sm:block" />
+                <br className="hidden lg:block" />
                 reducing waste and embracing reuse and recycling,
               </p>
               <p className="mt-5 mb-0 sm:mt-6">
                 we&apos;re working to lower the environmental impact of our
-                <br className="hidden sm:block" />
+                <br className="hidden lg:block" />
                 operations while continuing to deliver the performance
-                <br className="hidden sm:block" />
+                <br className="hidden lg:block" />
                 industry depends on.
               </p>
             </div>
@@ -61,7 +61,7 @@ export function Sustainability() {
                   <p className="display text-[clamp(1.85rem,3.5vw,2.6rem)] !font-bold leading-none tracking-tight">
                     <CountUp value="1,00,000+" duration={1600} delay={0} />
                   </p>
-                  <p className="mt-2.5 whitespace-nowrap text-[1.05rem] leading-snug text-white/85 sm:text-[1.15rem]">
+                  <p className="mt-2.5 text-[0.95rem] leading-snug text-white/85 sm:text-[1.15rem] lg:whitespace-nowrap">
                     Tree plantation during the year
                   </p>
                 </div>
@@ -104,97 +104,97 @@ export function Faq() {
 
   return (
     <section
-      className="bg-[#f7f7f7] py-12 sm:py-14 lg:py-16"
+      className="faq-section bg-[#f7f7f7]"
       aria-labelledby="faq-heading"
     >
-      <div className="page-pad page-max">
-        <div className="grid border-y border-r border-[#d6d6d6] lg:grid-cols-2 lg:items-stretch">
-          <div className="flex flex-col justify-center py-10 lg:border-r lg:border-[#d6d6d6] lg:py-0 lg:pr-10 xl:pr-12">
-            <SectionLabel className="mb-4 !text-[13px] !leading-5 !font-medium">
-              Frequently Asked Question
-            </SectionLabel>
-            <h2
-              id="faq-heading"
-              className="display mb-6 text-[clamp(1.5rem,3.2vw,2.5rem)] !font-bold leading-[1.1] tracking-[-0.01em] text-aia-navy lg:mb-7 lg:text-[2.5rem]"
-            >
-              <span className="sm:block sm:whitespace-nowrap">Here are the essentials </span>
-              <span className="sm:block sm:whitespace-nowrap">about AIA, what we make, </span>
-              <span className="sm:block sm:whitespace-nowrap">and how our solutions </span>
-              <span className="sm:block sm:whitespace-nowrap">support your operations.</span>
-            </h2>
-            <CtaButton
-              href="/company/contact"
-              variant="solid"
-              className="!h-[46px] w-fit !gap-2.5 !px-7 !text-[13px] !leading-none self-start [&>span:first-child]:!size-2"
-            >
-              Ask an expert
-            </CtaButton>
-          </div>
+      <div className="faq-grid grid border-y border-[#d6d6d6] lg:h-[550px] lg:grid-cols-2 lg:items-stretch">
+        <div className="faq-left flex flex-col justify-center py-14 sm:py-16 lg:border-r lg:border-[#d6d6d6] lg:py-0">
+          <SectionLabel className="mb-4 !text-[13px] !leading-5 !font-medium">
+            Frequently Asked Question
+          </SectionLabel>
+          <h2
+            id="faq-heading"
+            className="display mb-6 text-[clamp(1.5rem,3.2vw,2.5rem)] !font-bold leading-[1.1] tracking-[-0.01em] text-aia-navy lg:mb-7 lg:text-[2.5rem]"
+          >
+            <span className="lg:block lg:whitespace-nowrap">Here are the essentials </span>
+            <span className="lg:block lg:whitespace-nowrap">about AIA, what we make, </span>
+            <span className="lg:block lg:whitespace-nowrap">and how our solutions </span>
+            <span className="lg:block lg:whitespace-nowrap">support your operations.</span>
+          </h2>
+          <CtaButton
+            href="/company/contact"
+            variant="solid"
+            className="!h-[38px] w-fit !gap-1.5 !px-[18px] !text-[9px] !leading-none self-start [&>span:first-child]:!size-1.5"
+          >
+            Ask an expert
+          </CtaButton>
+        </div>
 
-          <div className="min-w-0 divide-y divide-[#d6d6d6] max-lg:border-t max-lg:border-[#d6d6d6]">
-            {faqs.map((item, index) => {
-              const isOpen = open === index;
-              return (
-                <div
-                  key={item.question}
-                  className={isOpen ? "bg-[#f0f1f6]" : undefined}
+        <div className="faq-right flex min-h-0 min-w-0 flex-col divide-y divide-[#d6d6d6] max-lg:border-t max-lg:border-[#d6d6d6] lg:h-full">
+          {faqs.map((item, index) => {
+            const isOpen = open === index;
+            return (
+              <div
+                key={item.question}
+                className={`flex min-h-0 flex-col lg:flex-1 ${
+                  isOpen ? "bg-[#f0f1f6]" : ""
+                }`}
+              >
+                <button
+                  type="button"
+                  className="flex min-h-[76px] w-full flex-1 items-center justify-between gap-5 px-7 py-5 text-left sm:min-h-[84px] sm:px-8 sm:py-[22px] lg:min-h-0 lg:pr-10"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpen(isOpen ? -1 : index)}
                 >
-                  <button
-                    type="button"
-                    className="flex min-h-[64px] w-full items-center justify-between gap-5 px-7 py-[18px] text-left sm:px-8"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpen(isOpen ? -1 : index)}
-                  >
-                    <span
-                      className={`min-w-0 flex-1 text-[1.1rem] leading-[1.4] sm:text-[1.1875rem] ${
-                        isOpen
-                          ? "font-medium text-aia-orange"
-                          : "font-normal text-[#111]"
-                      }`}
-                    >
-                      {item.question}
-                    </span>
-                    <span
-                      aria-hidden
-                      className={`flex size-4 shrink-0 items-center justify-center transition-transform duration-300 ${
-                        isOpen
-                          ? "rotate-90 text-aia-orange"
-                          : "text-[#111]/55"
-                      }`}
-                    >
-                      <svg
-                        width="8"
-                        height="14"
-                        viewBox="0 0 10 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="block"
-                      >
-                        <path
-                          d="M2 1.5L8 8L2 14.5"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                  <div
-                    className={`grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out)] ${
-                      isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  <span
+                    className={`min-w-0 flex-1 text-[1.1rem] leading-[1.4] sm:text-[1.1875rem] ${
+                      isOpen
+                        ? "font-medium text-aia-orange"
+                        : "font-normal text-[#111]"
                     }`}
                   >
-                    <div className="overflow-hidden">
-                      <p className="px-7 pb-5 text-[0.875rem] font-normal leading-[1.55] text-[#5a5d63] sm:px-8 sm:text-[0.9375rem] sm:leading-[1.6]">
-                        {item.answer}
-                      </p>
-                    </div>
+                    {item.question}
+                  </span>
+                  <span
+                    aria-hidden
+                    className={`flex size-4 shrink-0 items-center justify-center transition-transform duration-300 ${
+                      isOpen
+                        ? "rotate-90 text-aia-orange"
+                        : "text-[#111]/55"
+                    }`}
+                  >
+                    <svg
+                      width="9"
+                      height="15"
+                      viewBox="0 0 10 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="block"
+                    >
+                      <path
+                        d="M2 1.5L8 8L2 14.5"
+                        stroke="currentColor"
+                        strokeWidth="2.25"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out)] ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <p className="px-7 pb-6 text-[0.875rem] font-normal leading-[1.55] text-[#5a5d63] sm:px-8 sm:pb-7 sm:text-[0.9375rem] sm:leading-[1.6] lg:pr-10">
+                      {item.answer}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -218,23 +218,23 @@ export function Insights() {
       <div className="page-max">
         <h2
           id="insights-heading"
-          className="display text-center text-[clamp(1.85rem,3.229vw,3.875rem)] !font-bold leading-[1] text-aia-navy lg:text-[3.875rem] lg:leading-[3.875rem]"
+          className="display text-center text-[clamp(1.65rem,2.8vw,3rem)] !font-bold leading-[1] text-aia-navy lg:text-[3rem] lg:leading-[3rem]"
         >
           Ideas & Insights from AIA
         </h2>
 
         <div className="mt-8 sm:mt-10">
           <div className="-mx-1 overflow-x-auto overscroll-x-contain">
-            <div className="flex min-w-min gap-8 border-b border-[#d6d6d6] px-1 sm:gap-10">
+            <div className="flex min-w-min gap-8 border-b border-[#ececec] px-1 sm:gap-10">
               {tabs.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => setTab(item)}
-                  className={`-mb-px shrink-0 border-b-2 pb-3 text-base transition-colors sm:text-lg ${
+                  className={`-mb-px shrink-0 border-b-2 pb-3 text-sm transition-colors sm:text-[15px] ${
                     item === tab
                       ? "border-aia-orange text-aia-orange"
-                      : "border-transparent text-aia-muted"
+                      : "border-transparent text-aia-navy"
                   }`}
                 >
                   {item}
@@ -245,7 +245,7 @@ export function Insights() {
 
           <div
             key={tab}
-            className="stagger-in border-b border-[#d6d6d6] divide-y divide-[#d6d6d6]"
+            className="stagger-in border-b border-[#ececec] divide-y divide-[#ececec]"
           >
             {filtered.length === 0 ? (
               <p className="py-10 text-center text-aia-muted">
@@ -255,28 +255,28 @@ export function Insights() {
               filtered.map((item, i) => (
                 <article
                   key={item.href}
-                  className="group grid items-center gap-6 py-8 sm:gap-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_auto] lg:gap-10"
+                  className="group grid items-start gap-6 px-4 py-12 sm:gap-8 sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)_auto] lg:items-center lg:gap-10 lg:px-8 lg:py-16"
                   style={{ ["--i" as string]: i }}
                 >
-                  <div className="order-2 flex flex-col justify-center lg:order-1">
+                  <div className="order-2 flex max-w-[22rem] flex-col items-start lg:order-1 xl:max-w-[24rem]">
                     <time
                       dateTime={item.date}
-                      className="mb-4 block font-[family-name:var(--font-ui)] text-sm uppercase tracking-[0.06em] text-[#888888]"
+                      className="-mt-6 mb-[30px] block font-[family-name:var(--font-sinteca)] text-[13px] font-normal leading-[22px] tracking-normal text-[#888888]"
                     >
                       {item.date}
                     </time>
-                    <h3 className="display mb-6 max-w-[22ch] text-[clamp(1.35rem,3.2vw,2.25rem)] !font-bold leading-[1.1] text-aia-navy sm:mb-8">
+                    <h3 className="display mb-0 line-clamp-3 text-[clamp(1.35rem,2.4vw,2rem)] !font-bold leading-[1.2] tracking-[-0.01em] text-aia-navy">
                       {item.title}
                     </h3>
                     <a
                       href={item.href}
-                      className="ui-caps inline-flex min-h-11 items-center gap-2 text-aia-orange hover:opacity-80"
+                      className="ui-caps mt-14 inline-flex items-center gap-1.5 !text-[10px] !font-normal !leading-none text-aia-orange hover:opacity-80 sm:mt-16"
                     >
                       Read article <span aria-hidden>›</span>
                     </a>
                   </div>
 
-                  <div className="relative order-1 aspect-[16/10] overflow-hidden rounded-[18px] bg-aia-surface-soft lg:order-2">
+                  <div className="relative order-1 aspect-[2/1] overflow-hidden rounded-[18px] bg-aia-surface-soft lg:order-2 lg:h-[min(300px,30vw)] lg:w-full lg:max-w-[34rem] lg:aspect-auto lg:justify-self-end">
                     <Image
                       src={item.image}
                       alt=""
@@ -290,11 +290,17 @@ export function Insights() {
                     <a
                       href={item.href}
                       aria-label={`Read ${item.title}`}
-                      className="flex size-11 items-center justify-center rounded-full border border-aia-orange bg-white text-aia-orange transition duration-300 hover:bg-aia-orange hover:text-white"
+                      className="flex size-8 items-center justify-center rounded-full border border-aia-orange bg-transparent text-aia-orange transition duration-300 hover:bg-aia-orange hover:text-white"
                     >
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        aria-hidden
+                      >
                         <path
-                          d="M2.5 6H9.5M9.5 6L6 2.5M9.5 6L6 9.5"
+                          d="M5 2.5L10 7L5 11.5"
                           stroke="currentColor"
                           strokeWidth="1.5"
                           strokeLinecap="round"

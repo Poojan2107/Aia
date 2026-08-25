@@ -88,13 +88,13 @@ export function SiteHeader() {
         />
 
         <div
-          className={`absolute inset-0 flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all duration-500 ease-[var(--ease-out)] md:inset-auto md:left-1/2 md:top-[max(1.25rem,2.5vh)] md:h-[min(783px,93vh)] md:w-[min(1372px,94vw)] md:-translate-x-1/2 ${
+          className={`absolute inset-0 flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all duration-500 ease-[var(--ease-out)] md:inset-auto md:left-1/2 md:top-[max(2.75rem,6.5vh)] md:h-[min(620px,78vh)] md:w-[min(1120px,86vw)] md:-translate-x-1/2 ${
             open
               ? "translate-y-0 opacity-100"
               : "translate-y-3 opacity-0 md:-translate-y-3"
           }`}
         >
-          <div className="flex h-16 shrink-0 items-center justify-between bg-aia-orange px-4 sm:h-20 sm:px-6 md:px-10">
+          <div className="flex h-[3.25rem] shrink-0 items-center justify-between bg-aia-orange px-4 sm:h-16 sm:px-6 md:px-10">
             <label className="flex min-w-0 flex-1 items-center gap-3 text-white/75">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
                 <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
@@ -114,31 +114,61 @@ export function SiteHeader() {
             </label>
             <div className="ml-3 flex shrink-0 items-center gap-2 text-white sm:ml-4 sm:gap-3">
               <ThemeToggle />
-              <button type="button" className="ui-caps hidden items-center gap-2 lg:inline-flex">
+              <button
+                type="button"
+                className="ui-caps hidden items-center gap-2 !text-[12px] !font-medium !leading-none tracking-[0.08em] lg:inline-flex"
+              >
                 ENGLISH
-                <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
-                  <path d="M0 0l4 4 4-4" fill="currentColor" />
+                <svg
+                  width="10"
+                  height="6"
+                  viewBox="0 0 10 6"
+                  fill="none"
+                  aria-hidden
+                  className="shrink-0"
+                >
+                  <path
+                    d="M1 1 L5 5 L9 1"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="square"
+                    strokeLinejoin="miter"
+                  />
                 </svg>
               </button>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex h-9 items-center gap-2 rounded-full border border-white/40 bg-white/10 px-4 transition hover:bg-white/20 sm:h-10"
+                className="inline-flex h-8 shrink-0 items-center gap-2 rounded-full bg-white/10 px-3.5 transition hover:bg-white/20 sm:h-9"
               >
-                <span className="ui-caps font-semibold">CLOSE</span>
-                <span aria-hidden className="text-base leading-none">
-                  ✕
+                <span className="ui-caps !text-[12px] !font-medium !leading-none tracking-[0.08em]">
+                  CLOSE
                 </span>
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  aria-hidden
+                  className="shrink-0"
+                >
+                  <path
+                    d="M1.5 1.5 L8.5 8.5 M8.5 1.5 L1.5 8.5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="square"
+                  />
+                </svg>
               </button>
             </div>
           </div>
 
-          <div className="grid min-h-0 flex-1 overflow-y-auto overscroll-contain lg:grid-cols-[0.95fr_0.85fr_0.7fr] lg:overflow-hidden">
-            <div className="flex flex-col border-b border-aia-line p-5 sm:p-8 md:p-12 lg:border-b-0 lg:border-r">
+          <div className="mega-menu-body grid min-h-0 flex-1 overflow-y-auto overscroll-contain lg:grid-cols-[0.9fr_0.8fr_1fr] lg:overflow-hidden">
+            <div className="mega-menu-col mega-menu-col--primary flex flex-col">
               <h2 id={titleId} className="sr-only">
                 Site navigation
               </h2>
-              <nav aria-label="Primary">
+              <nav aria-label="Primary" className="mega-menu-pad flex-1">
                 <ul className="space-y-4 sm:space-y-5">
                   {megaSections.map((section) => {
                     const isActive = section.id === active.id;
@@ -152,27 +182,40 @@ export function SiteHeader() {
                           className="group flex w-full items-center gap-3 text-left sm:gap-5"
                           aria-current={isActive ? "true" : undefined}
                         >
-                          <span className="w-7 font-[family-name:var(--font-ui)] text-base text-aia-orange/45 sm:w-8 sm:text-[1.15rem]">
+                          <span className="w-7 font-[family-name:var(--font-ui)] text-sm text-aia-orange/45 sm:w-8 sm:text-base">
                             {section.index}
                           </span>
                           <span
-                            className={`display text-[clamp(1.5rem,4.5vw,2.5rem)] transition-colors duration-300 ${
+                            className={`display whitespace-nowrap text-[clamp(1.25rem,3.5vw,2rem)] transition-colors duration-300 ${
                               isActive
-                                ? "text-aia-navy"
-                                : "text-aia-muted group-hover:text-aia-navy/70"
+                                ? "!font-bold text-aia-navy"
+                                : "!font-semibold text-aia-muted group-hover:text-aia-navy/70"
                             }`}
                           >
                             {section.label}
                           </span>
                           <span
                             aria-hidden
-                            className={`ml-1 text-aia-orange transition-all duration-300 ${
+                            className={`ml-2 inline-flex size-[0.55em] shrink-0 items-center justify-center text-aia-orange transition-all duration-300 ${
                               isActive
                                 ? "translate-x-0 opacity-100"
                                 : "-translate-x-1 opacity-0"
                             }`}
                           >
-                            ›
+                            <svg
+                              viewBox="0 0 10 16"
+                              fill="none"
+                              className="h-[0.9em] w-auto"
+                              aria-hidden
+                            >
+                              <path
+                                d="M2 2 L8 8 L2 14"
+                                stroke="currentColor"
+                                strokeWidth="2.25"
+                                strokeLinecap="square"
+                                strokeLinejoin="miter"
+                              />
+                            </svg>
                           </span>
                         </button>
                       </li>
@@ -181,21 +224,25 @@ export function SiteHeader() {
                 </ul>
               </nav>
 
-              <div className="mt-8 border-t border-aia-line pt-6 lg:mt-auto lg:pt-8">
-                <p className="display mb-5 max-w-sm text-[1.5rem] leading-tight text-aia-navy sm:text-[2rem]">
+              <div className="mega-menu-cta mega-menu-pad lg:mt-auto">
+                <p className="display mb-5 max-w-sm !font-bold text-[1.5rem] leading-tight text-aia-navy sm:text-[1.9rem]">
                   Have a wear or performance challenge?
                 </p>
-                <CtaButton href="/company/contact" variant="outline">
+                <CtaButton
+                  href="/company/contact"
+                  variant="outline"
+                  className="!h-9 !gap-2 !px-4 !text-[10px] !leading-none [&>span:first-child]:!size-1.5"
+                >
                   Talk to an expert
                 </CtaButton>
               </div>
             </div>
 
-            <div className="border-b border-aia-line p-5 sm:p-8 md:p-12 lg:border-b-0 lg:border-r lg:overflow-y-auto">
+            <div className="mega-menu-col mega-menu-col--links mega-menu-pad lg:overflow-y-auto">
               <div className="space-y-8">
                 {active.groups.map((group) => (
                   <div key={group.title}>
-                    <p className="mb-3 text-lg font-semibold text-aia-navy sm:text-[1.25rem]">
+                    <p className="mb-3 text-xl font-medium text-aia-navy sm:text-[1.35rem]">
                       {group.title}
                     </p>
                     <ul className="space-y-3">
@@ -204,7 +251,7 @@ export function SiteHeader() {
                           <Link
                             href={link.href}
                             onClick={() => setOpen(false)}
-                            className="block text-base text-aia-muted transition-colors duration-300 hover:text-aia-orange sm:text-lg"
+                            className="block text-lg font-light text-aia-muted transition-colors duration-300 hover:text-aia-orange sm:text-[1.2rem]"
                           >
                             {link.label}
                           </Link>
@@ -216,18 +263,15 @@ export function SiteHeader() {
               </div>
             </div>
 
-            <div className="relative hidden min-h-[280px] bg-aia-surface-soft lg:block">
+            <div className="mega-menu-col mega-menu-col--media relative hidden min-h-0 bg-aia-surface-soft lg:block">
               <Image
                 key={active.image.src}
                 src={active.image.src}
                 alt={active.image.alt}
                 fill
-                sizes="387px"
+                sizes="(min-width: 1024px) 32vw, 420px"
                 className="object-cover object-center animate-fade-up"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"
+                priority
               />
             </div>
           </div>

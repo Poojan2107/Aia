@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { industries } from "@/data/industries";
 import { IndustryCopy, IndustryMill } from "@/components/home/ModelShowcase";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -29,11 +35,11 @@ function activeFromProgress(progress: number) {
 
 type PinMode = "before" | "fixed" | "after";
 
-function IndustryHead() {
+function IndustryHead({ headingId }: { headingId?: string }) {
   return (
     <div className="industry-head">
       <SectionLabel className="industry-kicker">Solutions by industry</SectionLabel>
-      <h2 id="industries-heading" className="industry-intro">
+      <h2 id={headingId} className="industry-intro">
         <span>Explore solutions for Mining, Cement,</span>
         <span>Quarry and Thermal Power applications.</span>
       </h2>
@@ -41,22 +47,96 @@ function IndustryHead() {
   );
 }
 
+function IndustryCard({
+  industry,
+  focus,
+  setFocus,
+  priority,
+  interactive = true,
+}: {
+  industry: (typeof industries)[number];
+  focus: string | null;
+  setFocus: (id: string | null) => void;
+  priority?: boolean;
+  interactive?: boolean;
+}) {
+  return (
+    <div className="industry-plate">
+      <div className="industry-copy relative min-h-0">
+        <IndustryCopy
+          industry={industry}
+          activeId={focus}
+          onActive={setFocus}
+          interactive={interactive}
+          overlay={false}
+        />
+      </div>
+
+      <div className="industry-mill relative min-h-0">
+        <div className="mill-well relative flex h-full min-h-0 w-full items-center justify-center overflow-visible sm:min-h-[28svh] lg:min-h-0 lg:items-start lg:justify-end">
+          <IndustryMill
+            industry={industry}
+            activeId={interactive ? focus : null}
+            onActive={setFocus}
+            priority={priority}
+            inspect={false}
+            overlay={false}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Stacked cards for tablet/phone — no 100svh pin (avoids clipping). */
+function IndustryStackStatic({
+  focusById,
+  setFocusById,
+}: {
+  focusById: Record<string, string | null>;
+  setFocusById: Dispatch<SetStateAction<Record<string, string | null>>>;
+}) {
+  return (
+    <section
+      className="industry-stack lg:hidden"
+      aria-labelledby="industries-heading"
+    >
+      <IndustryHead headingId="industries-heading" />
+      {industries.map((industry, i) => (
+        <div
+          key={industry.id}
+          id={industry.id}
+          className="industry-card-static border-b border-aia-line/60"
+        >
+          <IndustryCard
+            industry={industry}
+            focus={focusById[industry.id] ?? null}
+            setFocus={(id) =>
+              setFocusById((prev) => ({ ...prev, [industry.id]: id }))
+            }
+            priority={i === 0}
+          />
+        </div>
+      ))}
+    </section>
+  );
+}
+
 /**
- * Tall scroll track + fixed viewport stage.
- * Shared header stays put; only industry cards slide and cover each other.
+ * Desktop scroll-pin stage. Hidden below lg so PC layout stays unchanged.
  */
-export function IndustryStack() {
+function IndustryStackDesktop({
+  focusById,
+  setFocusById,
+  reduced,
+}: {
+  focusById: Record<string, string | null>;
+  setFocusById: Dispatch<SetStateAction<Record<string, string | null>>>;
+  reduced: boolean;
+}) {
   const trackRef = useRef<HTMLElement>(null);
-  const [reduced, setReduced] = useState(false);
   const [progress, setProgress] = useState(0);
   const [pinMode, setPinMode] = useState<PinMode>("before");
-  const [focusById, setFocusById] = useState<Record<string, string | null>>(
-    () => Object.fromEntries(industries.map((industry) => [industry.id, null])),
-  );
-
-  useEffect(() => {
-    setReduced(prefersReducedMotion());
-  }, []);
 
   useEffect(() => {
     if (reduced) return;
@@ -101,16 +181,17 @@ export function IndustryStack() {
     };
   }, [reduced]);
 
-  const activeIndex = reduced ? 0 : activeFromProgress(progress);
-
   if (reduced) {
     return (
-      <section className="industry-stack" aria-labelledby="industries-heading">
-        <IndustryHead />
+      <section
+        className="industry-stack hidden lg:block"
+        aria-labelledby="industries-heading-desktop"
+      >
+        <IndustryHead headingId="industries-heading-desktop" />
         {industries.map((industry, i) => (
           <div
             key={industry.id}
-            id={industry.id}
+            id={`desktop-${industry.id}`}
             className="industry-card-static border-b border-aia-line/60"
           >
             <IndustryCard
@@ -127,6 +208,7 @@ export function IndustryStack() {
     );
   }
 
+  const activeIndex = activeFromProgress(progress);
   const stageClass =
     pinMode === "fixed"
       ? "industry-stage is-fixed"
@@ -137,21 +219,20 @@ export function IndustryStack() {
   return (
     <section
       ref={trackRef}
-      className="industry-stack relative"
-      aria-labelledby="industries-heading"
+      className="industry-stack relative hidden lg:block"
+      aria-labelledby="industries-heading-desktop"
       style={{ height: `${COUNT * 100}vh` }}
     >
       {industries.map((industry, i) => (
         <span
           key={`anchor-${industry.id}`}
-          id={industry.id}
           className="pointer-events-none absolute left-0 h-px w-px"
           style={{ top: `${(i / COUNT) * 100}%` }}
         />
       ))}
 
       <div className={stageClass}>
-        <IndustryHead />
+        <IndustryHead headingId="industries-heading-desktop" />
         <div className="industry-cards">
           {industries.map((industry, i) => {
             const y = cardOffsetY(i, progress);
@@ -185,43 +266,31 @@ export function IndustryStack() {
   );
 }
 
-function IndustryCard({
-  industry,
-  focus,
-  setFocus,
-  priority,
-  interactive = true,
-}: {
-  industry: (typeof industries)[number];
-  focus: string | null;
-  setFocus: (id: string | null) => void;
-  priority?: boolean;
-  interactive?: boolean;
-}) {
-  return (
-    <div className="industry-plate">
-      <div className="industry-copy relative min-h-0">
-        <IndustryCopy
-          industry={industry}
-          activeId={focus}
-          onActive={setFocus}
-          interactive={interactive}
-          overlay={false}
-        />
-      </div>
+/**
+ * Tall scroll track + fixed viewport stage on desktop.
+ * Stacked cards below lg — no JS breakpoint needed.
+ */
+export function IndustryStack() {
+  const [reduced, setReduced] = useState(false);
+  const [focusById, setFocusById] = useState<Record<string, string | null>>(
+    () => Object.fromEntries(industries.map((industry) => [industry.id, null])),
+  );
 
-      <div className="industry-mill relative min-h-0">
-        <div className="mill-well relative flex h-full min-h-[36svh] w-full items-center justify-center overflow-visible lg:min-h-0 lg:items-start lg:justify-end">
-          <IndustryMill
-            industry={industry}
-            activeId={interactive ? focus : null}
-            onActive={setFocus}
-            priority={priority}
-            inspect={interactive}
-            overlay={false}
-          />
-        </div>
-      </div>
-    </div>
+  useEffect(() => {
+    setReduced(prefersReducedMotion());
+  }, []);
+
+  return (
+    <>
+      <IndustryStackStatic
+        focusById={focusById}
+        setFocusById={setFocusById}
+      />
+      <IndustryStackDesktop
+        focusById={focusById}
+        setFocusById={setFocusById}
+        reduced={reduced}
+      />
+    </>
   );
 }

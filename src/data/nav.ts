@@ -42,8 +42,8 @@ export const megaSections: MegaSection[] = [
       },
     ],
     image: {
-      src: "/images/mining-mill.png",
-      alt: "AIA grinding mill wear solution",
+      src: "/images/service-2.png",
+      alt: "AIA Engineering industrial solutions",
     },
   },
   {
@@ -88,8 +88,8 @@ export const megaSections: MegaSection[] = [
       },
     ],
     image: {
-      src: "/images/hero-dusk.png",
-      alt: "AIA engineering in the field",
+      src: "/images/service-1.jpg",
+      alt: "AIA Engineering services",
     },
   },
   {
@@ -109,8 +109,8 @@ export const megaSections: MegaSection[] = [
       },
     ],
     image: {
-      src: "/images/thermal-mill.png",
-      alt: "AIA Engineering thermal grinding solutions",
+      src: "/images/tech-research.png",
+      alt: "AIA Engineering technology and research",
     },
   },
 ];

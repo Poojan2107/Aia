@@ -5,14 +5,14 @@ export type ThemeId = "orange" | "blue";
 export const themes = {
   orange: {
     id: "orange" as const,
-    label: "Orange",
-    note: "AIA orange accent",
+    label: "Industrial",
+    note: "AIA industrial orange accent",
     swatch: "#f36500",
   },
   blue: {
     id: "blue" as const,
-    label: "Blue",
-    note: "AIA blue accent",
+    label: "Signature Blue",
+    note: "AIA signature blue accent",
     swatch: "#006fff",
   },
 } as const;

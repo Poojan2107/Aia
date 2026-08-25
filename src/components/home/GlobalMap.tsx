@@ -15,18 +15,18 @@ export function GlobalMap() {
         <Reveal>
           <p className="global-map-lead">
             Our offices, production facilities,
-            <br />
+            <br className="hidden lg:inline" />
             and warehouses are strategically
-            <br />
+            <br className="hidden lg:inline" />
             positioned across the globe to maximize
-            <br />
+            <br className="hidden lg:inline" />
             efficiency and client reach.
           </p>
           <p className="global-map-support">
             Explore our office locations,
-            <br />
+            <br className="hidden lg:inline" />
             production facilities, and warehouses
-            <br />
+            <br className="hidden lg:inline" />
             on our interactive map.
           </p>
           <CtaButton

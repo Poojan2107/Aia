@@ -140,13 +140,18 @@ export function IndustryMill({
 }: MillProps) {
   const solution = industry.solutions.find((item) => item.id === activeId);
   const points = solution?.hotspots ?? industry.hotspots;
-  const src = solution?.image ?? industry.model.poster;
+  // Always use the industry plate — solution hover only highlights list items.
+  // Avoids broken/overexposed alternate cutaway assets on hover.
+  const src = industry.model.poster;
   const alt = solution
     ? (solution.imageAlt ?? solution.label)
     : inspect
       ? industry.model.alt
-      : "";
-  const squareSolution = Boolean(solution?.image.includes("/funnel/"));
+      : industry.model.alt;
+  const squareSolution = false;
+  const still = industry.model.still;
+  const frameWidth = still?.width ?? 640;
+  const frameHeight = still?.height ?? 360;
 
   return (
     <div
@@ -154,13 +159,13 @@ export function IndustryMill({
       style={style}
     >
       <div
-        className="industry-mill-frame relative w-full max-h-full"
+        className="industry-mill-frame relative w-full max-h-full bg-white"
         style={{
-          width: squareSolution ? 420 : (industry.model.still?.width ?? 640),
-          height: squareSolution ? 420 : (industry.model.still?.height ?? 360),
+          width: frameWidth,
+          height: frameHeight,
           aspectRatio: squareSolution ? "1 / 1" : industry.model.ratio,
-          maxWidth: "min(100%, 520px)",
-          maxHeight: "min(100%, 340px)",
+          maxWidth: squareSolution ? "min(100%, 380px)" : "min(100%, 520px)",
+          maxHeight: squareSolution ? "min(100%, 380px)" : "min(100%, 340px)",
         }}
       >
         <Image
@@ -275,7 +280,7 @@ export function ModelShowcase({
             activeId={active}
             onActive={setActive}
             priority={priority}
-            inspect
+            inspect={false}
           />
         </div>
       </div>

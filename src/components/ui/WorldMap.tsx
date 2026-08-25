@@ -33,7 +33,7 @@ export function WorldMap({ className = "" }: Props) {
         ))}
       </div>
 
-      <div className="pointer-events-none absolute bottom-3 left-20 z-[3] sm:bottom-0 sm:left-86">
+      <div className="pointer-events-none absolute -bottom-5 left-4 z-[3] sm:-bottom-2 sm:left-6 lg:bottom-0 lg:left-86">
         <ul className="flex flex-col gap-1.5 text-[0.6875rem] font-light tracking-[0.02em] text-black">
           <li className="flex items-center gap-2">
             <span

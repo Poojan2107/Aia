@@ -9,7 +9,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
   return (
     <div
-      className={`flex items-center gap-1 rounded-full border border-white/35 bg-white/10 p-1 ${className}`}
+      className={`flex items-center gap-1 rounded-full bg-white/10 p-1 ${className}`}
       role="group"
       aria-label="Accent colour"
     >
@@ -23,7 +23,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
             onClick={() => setTheme(id)}
             aria-pressed={active}
             title={item.note}
-            className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] transition sm:px-2.5 sm:text-[11px] ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1.5 text-[8px] font-semibold uppercase tracking-[0.08em] transition sm:px-2.5 sm:text-[9px] ${
               active
                 ? "bg-white text-aia-navy"
                 : "text-white/80 hover:bg-white/10 hover:text-white"

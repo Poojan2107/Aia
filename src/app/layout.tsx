@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Inter, Plus_Jakarta_Sans, Instrument_Serif, Onest } from "next/font/google";
 import "./globals.css";
+import { HomeOnlyGuard } from "@/components/navigation/HomeOnlyGuard";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { getSiteUrl, site } from "@/data/site";
-
-const themeBootScript = `(function(){try{var k="aia-theme";var q=new URLSearchParams(location.search).get("theme");var t=(q==="blue"||q==="orange")?q:localStorage.getItem(k);if(t==="blue"||t==="orange")document.documentElement.dataset.theme=t;else document.documentElement.dataset.theme="orange";}catch(e){document.documentElement.dataset.theme="orange";}})();`;
 
 const display = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -45,6 +43,23 @@ const onest = Onest({
 });
 
 const siteUrl = getSiteUrl();
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: site.legalName,
+  url: site.url,
+  email: site.email,
+  telephone: site.phone,
+  description: site.description,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "11–12, Sigma Corporates, Sindhubhavan Road, Bodakdev",
+    addressLocality: "Ahmedabad",
+    postalCode: "380054",
+    addressCountry: "IN",
+  },
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -117,23 +132,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: site.legalName,
-    url: site.url,
-    email: site.email,
-    telephone: site.phone,
-    description: site.description,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "11–12, Sigma Corporates, Sindhubhavan Road, Bodakdev",
-      addressLocality: "Ahmedabad",
-      postalCode: "380054",
-      addressCountry: "IN",
-    },
-  };
-
   return (
     <html
       lang="en"
@@ -141,20 +139,24 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${ui.variable} ${serif.variable} ${onest.variable} h-full`}
     >
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="/theme-boot.js" />
+      </head>
       <body
         className="min-h-full bg-aia-surface text-aia-navy antialiased"
         suppressHydrationWarning
       >
-        <Script
-          id="aia-theme-boot"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: themeBootScript }}
-        />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          // JSON-LD is static SEO data; suppress React 19 client script warning
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+          }}
         />
         <ThemeProvider>
+          <HomeOnlyGuard />
           {children}
         </ThemeProvider>
       </body>
