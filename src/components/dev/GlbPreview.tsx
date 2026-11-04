@@ -9,30 +9,6 @@ export type PreviewModel = {
   sizeLabel: string;
 };
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "model-viewer": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      > & {
-        src?: string;
-        alt?: string;
-        poster?: string;
-        ar?: boolean;
-        "camera-controls"?: boolean;
-        "touch-action"?: string;
-        "shadow-intensity"?: string;
-        exposure?: string;
-        "environment-image"?: string;
-        "interaction-prompt"?: string;
-        loading?: "auto" | "lazy" | "eager";
-        reveal?: "auto" | "interaction" | "manual";
-        style?: React.CSSProperties;
-      };
-    }
-  }
-}
 
 type Props = {
   models: PreviewModel[];

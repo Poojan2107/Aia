@@ -3,7 +3,10 @@ import { Inter, Plus_Jakarta_Sans, Instrument_Serif, Onest } from "next/font/goo
 import "./globals.css";
 import { HomeOnlyGuard } from "@/components/navigation/HomeOnlyGuard";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
-import { getSiteUrl, site } from "@/data/site";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { organizationJsonLd } from "@/lib/seo";
+import { siteUrl } from "@/lib/env";
+import { site } from "@/data/site";
 
 const display = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -41,25 +44,6 @@ const onest = Onest({
   weight: ["600"],
   display: "swap",
 });
-
-const siteUrl = getSiteUrl();
-
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: site.legalName,
-  url: site.url,
-  email: site.email,
-  telephone: site.phone,
-  description: site.description,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "11–12, Sigma Corporates, Sindhubhavan Road, Bodakdev",
-    addressLocality: "Ahmedabad",
-    postalCode: "380054",
-    addressCountry: "IN",
-  },
-};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -147,14 +131,13 @@ export default function RootLayout({
         className="min-h-full bg-aia-surface text-aia-navy antialiased"
         suppressHydrationWarning
       >
-        <script
-          type="application/ld+json"
-          // JSON-LD is static SEO data; suppress React 19 client script warning
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
-          }}
-        />
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-aia-orange focus:px-4 focus:py-2 focus:text-white"
+        >
+          Skip to content
+        </a>
+        <JsonLd data={organizationJsonLd} />
         <ThemeProvider>
           <HomeOnlyGuard />
           {children}

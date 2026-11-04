@@ -1,5 +1,8 @@
+import { homeOnly } from "@/lib/env";
+
 /** Paths that remain navigable while the site is home-only. */
 export function isHomeOnlyAllowedHref(href: string | null | undefined): boolean {
+  if (!homeOnly) return true;
   if (!href) return true;
   const value = href.trim();
   if (!value || value === "#") return true;
@@ -9,7 +12,7 @@ export function isHomeOnlyAllowedHref(href: string | null | undefined): boolean 
   // Relative app paths
   if (value.startsWith("/")) {
     const path = value.split(/[?#]/)[0] ?? "/";
-    return path === "/" || path === "" || path === "/dev/models";
+    return path === "/" || path === "" || path === "/dev/models" || path.startsWith("/dev/models/");
   }
 
   // Absolute same-origin checked at runtime in HomeOnlyGuard

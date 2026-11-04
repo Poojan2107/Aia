@@ -11,7 +11,7 @@
     } else {
       document.documentElement.dataset.theme = "orange";
     }
-  } catch (e) {
+  } catch {
     document.documentElement.dataset.theme = "orange";
   }
 })();

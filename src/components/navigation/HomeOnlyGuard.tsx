@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { isHomeOnlyAllowedHref } from "@/lib/home-only";
+import { homeOnly } from "@/lib/env";
 
 function markLink(el: HTMLAnchorElement) {
   const href = el.getAttribute("href");
@@ -19,6 +20,8 @@ function markLink(el: HTMLAnchorElement) {
 /** Blocks navigation away from home; keeps all button/link styling unchanged. */
 export function HomeOnlyGuard() {
   useEffect(() => {
+    if (!homeOnly) return;
+
     const scan = () => {
       document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach(markLink);
     };
@@ -50,6 +53,8 @@ export function HomeOnlyGuard() {
       observer.disconnect();
     };
   }, []);
+
+  if (!homeOnly) return null;
 
   return null;
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Hero } from "@/components/home/Hero";
@@ -16,6 +17,10 @@ import {
   Insights,
 } from "@/components/home/ClosingSections";
 import { AssistChip } from "@/components/ui/AssistChip";
+import { routeById } from "@/lib/routes";
+import { metadataFor } from "@/lib/seo";
+
+export const metadata: Metadata = metadataFor(routeById("home"));
 
 export default function HomePage() {
   return (
