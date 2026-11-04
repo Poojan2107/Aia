@@ -1,24 +1,13 @@
 import { notFound } from "next/navigation";
 import { childrenOf, href, routeById, type RouteEntry } from "@/lib/routes";
+import { cms } from "@/lib/cms";
 import { PageShell } from "@/components/templates/page/chrome";
-import {
-  HubPage,
-  ContentPage,
-  LegalPage,
-  ThankYouPage,
-  HtmlSitemapPage,
-} from "@/components/templates/page/basic";
+import { HubPage, ContentPage, LegalPage, ThankYouPage, HtmlSitemapPage } from "@/components/templates/page/basic";
 import { MiningLanding } from "@/components/solutions/mining/MiningLanding";
 import { IndustryProducts } from "@/components/templates/industry/IndustryProducts";
 import { IndustryServices } from "@/components/templates/industry/IndustryServices";
 import { IndustrySolutions } from "@/components/templates/industry/IndustrySolutions";
-import {
-  BoardPage,
-  DirectorPage,
-  CommitteesPage,
-  CsrListingPage,
-  CsrDetailPage,
-} from "@/components/templates/company";
+import { BoardPage, DirectorPage, CommitteesPage, CsrListingPage, CsrDetailPage } from "@/components/templates/company";
 import { InvestorPage, StockTickerPage } from "@/components/templates/investors/InvestorPage";
 import {
   CaseStudyListingPage,
@@ -31,250 +20,198 @@ import {
 } from "@/components/templates/knowledge";
 import { CareersPage, JobsPage, JobPage } from "@/components/templates/careers";
 import { ContactPage } from "@/components/templates/contact";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { absolute, productListJsonLd } from "@/lib/seo";
 
-import { hubHeroes, contentPages } from "@/content/pages";
-import { miningProducts, miningServices } from "@/content/industries/mining";
-import { cementSolutions, cementProducts, cementServices } from "@/content/industries/cement";
-import { quarryProducts } from "@/content/industries/quarry";
-import { thermalSolutions, thermalProducts, thermalServices } from "@/content/industries/thermal-power";
-import { investorPages } from "@/content/investors";
-import { directors } from "@/content/company/directors";
-import { csrInitiatives } from "@/content/company/csr";
-import { caseStudies } from "@/content/knowledge/case-studies";
-import { articles } from "@/content/knowledge/articles";
-import { jobs } from "@/content/careers/jobs";
-
-const productContentMap = {
-  "mining-products": { content: miningProducts, label: "Mining Products", industry: "mining" },
-  "cement-products": { content: cementProducts, label: "Cement Products", industry: "cement" },
-  "quarry-products": { content: quarryProducts, label: "Quarry Products", industry: "quarry" },
-  "thermal-power-products": { content: thermalProducts, label: "Thermal Power Products", industry: "thermal-power" },
+/** Industry key used for `/contact?industry=` pre-selection, from the industry root route. */
+const industryOf: Record<string, string> = {
+  mining: "mining",
+  cement: "cement",
+  "quarry-products": "quarry",
+  "thermal-power": "thermal-power",
 };
 
-const serviceContentMap = {
-  "mining-services": { content: miningServices, label: "Mining Services", industry: "mining" },
-  "cement-services": { content: cementServices, label: "Cement Services", industry: "cement" },
-  "thermal-power-services": { content: thermalServices, label: "Thermal Power Services", industry: "thermal-power" },
-};
+function industryContext(route: RouteEntry) {
+  const root = industryOf[route.id] ? route : route.parent ? routeById(route.parent) : undefined;
+  const industry = root ? industryOf[root.id] : undefined;
+  const label = (root ?? route).navLabel ?? (root ?? route).title;
+  return {
+    contactHref: industry ? `${href("contact")}?industry=${industry}` : href("contact"),
+    label,
+  };
+}
 
-const solutionContentMap = {
-  cement: { content: cementSolutions, label: "Cement Solutions", industry: "cement" },
-  "thermal-power": { content: thermalSolutions, label: "Thermal Power Solutions", industry: "thermal-power" },
-};
+function backLink(route: RouteEntry) {
+  const parent = route.parent ? routeById(route.parent) : undefined;
+  return parent && parent.pillar === "solutions" && parent.id !== "solutions"
+    ? { href: parent.path, label: `Back to ${parent.navLabel ?? parent.title}` }
+    : undefined;
+}
 
-export function renderRoute(route: RouteEntry) {
-  let content: React.ReactNode;
+const slugOf = (route: RouteEntry) => route.id.split(":")[1] ?? "";
 
+function required<T>(value: T | undefined): T {
+  if (value === undefined) notFound();
+  return value;
+}
+
+async function body(route: RouteEntry): Promise<React.ReactNode> {
   switch (route.template) {
-    case "home":
-      // Handled directly by app/page.tsx
-      return null;
+    case "hub":
+      return <HubPage route={route} hero={required(await cms.hubHero(route.id))} />;
 
-    case "hub": {
-      const hero = hubHeroes[route.id];
-      if (!hero) notFound();
-      content = <HubPage route={route} hero={hero} />;
-      break;
-    }
-
-    case "mining-landing": {
-      content = <MiningLanding />;
-      break;
-    }
+    case "mining-landing":
+      return <MiningLanding />;
 
     case "industry-products": {
-      const entry = productContentMap[route.id as keyof typeof productContentMap];
-      if (!entry) notFound();
-      const parentRoute = route.parent ? routeById(route.parent) : undefined;
-      const back = parentRoute
-        ? { href: parentRoute.path, label: `Back to ${parentRoute.navLabel ?? parentRoute.title}` }
-        : undefined;
-      const contactHref = `${href("contact")}?industry=${entry.industry}`;
-      content = (
-        <IndustryProducts
-          content={entry.content}
-          label={entry.label}
-          contactHref={contactHref}
-          back={back}
-        />
+      const { contactHref, label } = industryContext(route);
+      const content = required(await cms.industryProducts(route.id));
+      const products = content.groups.flatMap((group) => group.products);
+      return (
+        <>
+          <JsonLd data={productListJsonLd(route.title, absolute(route.path), products)} />
+          <IndustryProducts content={content} label={`${label} products`} contactHref={contactHref} back={backLink(route)} />
+        </>
       );
-      break;
     }
 
     case "industry-services": {
-      const entry = serviceContentMap[route.id as keyof typeof serviceContentMap];
-      if (!entry) notFound();
-      const parentRoute = route.parent ? routeById(route.parent) : undefined;
-      const back = parentRoute
-        ? { href: parentRoute.path, label: `Back to ${parentRoute.navLabel ?? parentRoute.title}` }
-        : undefined;
-      const contactHref = `${href("contact")}?industry=${entry.industry}`;
-      content = (
+      const { contactHref, label } = industryContext(route);
+      return (
         <IndustryServices
-          content={entry.content}
-          label={entry.label}
+          content={required(await cms.industryServices(route.id))}
+          label={`${label} services`}
           contactHref={contactHref}
-          back={back}
+          back={backLink(route)}
         />
       );
-      break;
     }
 
     case "industry-solutions": {
-      const entry = solutionContentMap[route.id as keyof typeof solutionContentMap];
-      if (!entry) notFound();
-      const contactHref = `${href("contact")}?industry=${entry.industry}`;
+      const { contactHref, label } = industryContext(route);
       const explore = childrenOf(route.id).map((child) => ({
-        label: child.navLabel ?? child.title,
+        label: child.title,
         href: child.path,
         description: child.description,
       }));
-      content = (
+      return (
         <IndustrySolutions
-          content={entry.content}
-          label={entry.label}
+          content={required(await cms.industrySolutions(route.id))}
+          label={label}
           contactHref={contactHref}
           explore={explore}
         />
       );
-      break;
     }
 
-    case "content": {
-      const page = contentPages[route.id];
-      if (!page) notFound();
-      content = <ContentPage route={route} content={page} />;
-      break;
-    }
+    case "content":
+      return <ContentPage route={route} content={required(await cms.contentPage(route.id))} />;
 
-    case "legal": {
-      const page = contentPages[route.id];
-      if (!page) notFound();
-      content = <LegalPage route={route} content={page} />;
-      break;
-    }
+    case "legal":
+      return <LegalPage route={route} content={required(await cms.contentPage(route.id))} />;
 
-    case "board": {
-      content = <BoardPage route={route} />;
-      break;
-    }
+    case "board":
+      return <BoardPage route={route} directors={await cms.directors()} />;
 
     case "director": {
-      const slug = route.id.split(":")[1];
-      const director = directors.find((d) => d.slug === slug);
-      if (!director) notFound();
-      content = <DirectorPage route={route} director={director} />;
-      break;
+      const director = (await cms.directors()).find((d) => d.slug === slugOf(route));
+      return <DirectorPage route={route} director={required(director)} />;
     }
 
-    case "committees": {
-      content = <CommitteesPage route={route} />;
-      break;
-    }
+    case "committees":
+      return <CommitteesPage route={route} committees={await cms.committees()} />;
 
-    case "csr-listing": {
-      content = <CsrListingPage route={route} />;
-      break;
-    }
+    case "csr-listing":
+      return <CsrListingPage route={route} initiatives={await cms.csrInitiatives()} focusAreas={await cms.csrFocusAreas()} />;
 
     case "csr-detail": {
-      const slug = route.id.split(":")[1];
-      const initiative = csrInitiatives.find((c) => c.slug === slug);
-      if (!initiative) notFound();
-      content = <CsrDetailPage route={route} initiative={initiative} />;
-      break;
+      const initiative = (await cms.csrInitiatives()).find((c) => c.slug === slugOf(route));
+      return <CsrDetailPage route={route} initiative={required(initiative)} />;
     }
 
     case "investor": {
-      const page = investorPages[route.id];
-      if (!page) notFound();
-      content = <InvestorPage route={route} content={page} />;
-      break;
+      const content = required(await cms.investorPage(route.id));
+      const documents = content.category ? await cms.investorDocuments(content.category) : [];
+      return <InvestorPage route={route} content={content} documents={documents} />;
     }
 
-    case "stock-ticker": {
-      content = <StockTickerPage route={route} />;
-      break;
-    }
+    case "stock-ticker":
+      return <StockTickerPage route={route} />;
 
-    case "case-study-listing": {
-      content = <CaseStudyListingPage route={route} />;
-      break;
-    }
+    case "case-study-listing":
+      return <CaseStudyListingPage route={route} caseStudies={await cms.caseStudies()} />;
 
     case "case-study": {
-      const slug = route.id.split(":")[1];
-      const caseStudy = caseStudies.find((c) => c.slug === slug);
-      if (!caseStudy) notFound();
-      content = <CaseStudyPage route={route} caseStudy={caseStudy} />;
-      break;
+      const caseStudy = (await cms.caseStudies()).find((c) => c.slug === slugOf(route));
+      return <CaseStudyPage route={route} caseStudy={required(caseStudy)} />;
     }
 
-    case "article-listing": {
-      content = <ArticleListingPage route={route} />;
-      break;
-    }
+    case "article-listing":
+      return <ArticleListingPage route={route} articles={await cms.articles()} />;
 
     case "article": {
-      const slug = route.id.split(":")[1];
-      const article = articles.find((a) => a.slug === slug);
-      if (!article) notFound();
-      content = <ArticlePage route={route} article={article} />;
-      break;
+      const article = (await cms.articles()).find((a) => a.slug === slugOf(route));
+      return <ArticlePage route={route} article={required(article)} />;
     }
 
-    case "media": {
-      content = <MediaPage route={route} />;
-      break;
-    }
+    case "media":
+      return <MediaPage route={route} items={await cms.mediaItems()} />;
 
-    case "downloads": {
-      content = <DownloadsPage route={route} />;
-      break;
-    }
+    case "downloads":
+      return <DownloadsPage route={route} documents={await cms.downloads()} />;
 
-    case "faqs": {
-      content = <FaqsPage route={route} />;
-      break;
-    }
+    case "faqs":
+      return <FaqsPage route={route} faqs={await cms.faqs()} />;
 
-    case "careers": {
-      content = <CareersPage route={route} />;
-      break;
-    }
+    case "careers":
+      return <CareersPage route={route} jobs={await cms.jobs()} />;
 
-    case "jobs": {
-      content = <JobsPage route={route} />;
-      break;
-    }
+    case "jobs":
+      return <JobsPage route={route} jobs={await cms.jobs()} />;
 
     case "job": {
-      const slug = route.id.split(":")[1];
-      const job = jobs.find((j) => j.slug === slug);
-      if (!job) notFound();
-      content = <JobPage route={route} job={job} />;
-      break;
+      const job = (await cms.jobs()).find((j) => j.slug === slugOf(route));
+      return <JobPage route={route} job={required(job)} />;
     }
 
-    case "contact": {
-      content = <ContactPage route={route} />;
-      break;
-    }
+    case "contact":
+      return <ContactPage route={route} />;
 
-    case "thank-you": {
-      content = <ThankYouPage route={route} />;
-      break;
-    }
+    case "thank-you":
+      return <ThankYouPage route={route} />;
 
-    case "html-sitemap": {
-      content = <HtmlSitemapPage route={route} />;
-      break;
-    }
+    case "html-sitemap":
+      return <HtmlSitemapPage route={route} />;
 
-    default:
-      notFound();
+    case "home":
+      return null;
   }
-
-  return <PageShell route={route}>{content}</PageShell>;
 }
 
+/** Renders any register route inside the shared page shell. */
+export async function renderRoute(route: RouteEntry) {
+  return <PageShell route={route}>{await body(route)}</PageShell>;
+}
+
+/** Hero image of a route, for social cards in `generateMetadata`. */
+export async function heroImageFor(route: RouteEntry) {
+  switch (route.template) {
+    case "content":
+    case "legal":
+      return (await cms.contentPage(route.id))?.hero.image;
+    case "industry-products":
+      return (await cms.industryProducts(route.id))?.hero.image;
+    case "industry-services":
+      return (await cms.industryServices(route.id))?.hero.image;
+    case "industry-solutions":
+      return (await cms.industrySolutions(route.id))?.hero.image;
+    case "hub":
+      return (await cms.hubHero(route.id))?.image;
+    case "case-study":
+      return (await cms.caseStudies()).find((c) => c.slug === slugOf(route))?.image;
+    case "article":
+      return (await cms.articles()).find((a) => a.slug === slugOf(route))?.image;
+    default:
+      return undefined;
+  }
+}

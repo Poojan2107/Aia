@@ -10,7 +10,7 @@ export const quarryProducts: IndustryProductsContent = {
   hero: {
     line1: "Crusher Wear Parts for Quarries",
     line2: "Impact, VSI and hammer crushers",
-    image: { src: "/images/industry/quarry.jpg", alt: "Aggregate quarry with crushing plant" },
+    image: { src: "/images/gallery-2.png", alt: "Benches of an open-pit quarry" },
   },
   groups: [
     {

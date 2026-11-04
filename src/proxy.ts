@@ -89,7 +89,8 @@ export const config = {
     /*
       Skip Next internals and static assets so images/fonts/models still load.
     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|map|txt|xml|woff2?|mp4|webm|glb|gltf)$).*)",
+    // API routes (health check, revalidation, draft) never go through redirects or the home-only lock.
+    "/((?!api/|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|map|txt|xml|woff2?|mp4|webm|glb|gltf)$).*)",
   ],
 };
 

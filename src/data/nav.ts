@@ -196,3 +196,10 @@ export const footerNav = {
     { label: "Investor Contact", href: href("investor-contact") },
   ],
 };
+
+/** Every href used by the mega menu and footer (checked against the page register in tests). */
+export function navTargets(): string[] {
+  const footer = Object.values(footerNav).flatMap((links) => links.map((link) => link.href));
+  const mega = megaSections.flatMap((section) => section.groups.flatMap((group) => group.links.map((link) => link.href)));
+  return Array.from(new Set([...mega, ...footer]));
+}

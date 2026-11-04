@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { allRoutes, routeByPath } from "@/lib/routes";
 import { metadataFor } from "@/lib/seo";
-import { renderRoute } from "@/lib/render";
+import { heroImageFor, renderRoute } from "@/lib/render";
 
 export const dynamicParams = false;
 
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const route = routeByPath(path);
   if (!route) return {};
 
-  return metadataFor(route);
+  return metadataFor(route, await heroImageFor(route));
 }
 
 export default async function DynamicRoutePage({ params }: Props) {

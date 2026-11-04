@@ -1,5 +1,5 @@
-import { documentsFor, scrip } from "@/content/investors";
-import type { InvestorPageContent } from "@/content/types";
+import { scrip } from "@/content/investors";
+import type { InvestorDocument, InvestorPageContent } from "@/content/types";
 import { mediaHref } from "@/lib/env";
 import { childrenOf, type RouteEntry } from "@/lib/routes";
 import { Container, PageHero, Paragraphs, Sections } from "@/components/templates/page/chrome";
@@ -34,8 +34,15 @@ function InvestorNav({ route }: { route: RouteEntry }) {
   );
 }
 
-export function InvestorPage({ route, content }: { route: RouteEntry; content: InvestorPageContent }) {
-  const documents = content.category ? documentsFor(content.category) : [];
+export function InvestorPage({
+  route,
+  content,
+  documents,
+}: {
+  route: RouteEntry;
+  content: InvestorPageContent;
+  documents: InvestorDocument[];
+}) {
   const hrefs = Object.fromEntries(documents.map((doc) => [doc.id, mediaHref(doc.file)]));
   const withNav = route.pillar === "investors";
 

@@ -160,3 +160,30 @@ export const organizationJsonLd = {
     { "@type": "PropertyValue", propertyID: "ISIN", value: "INE212H01026" },
   ],
 };
+
+/** ItemList of products on an industry Products page (names and descriptions only, never prices). */
+export function productListJsonLd(
+  name: string,
+  url: string,
+  products: { id: string; title: string; body: string; image: { src: string } }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    url,
+    itemListElement: products.map((product, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Product",
+        name: product.title,
+        description: product.body,
+        url: `${url}#${product.id}`,
+        image: product.image.src.startsWith("http") ? product.image.src : `${siteUrl}${product.image.src}`,
+        brand: { "@type": "Brand", name: site.name },
+        manufacturer: { "@id": `${siteUrl}/#organization` },
+      },
+    })),
+  };
+}

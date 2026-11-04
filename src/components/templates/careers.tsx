@@ -1,20 +1,12 @@
-"use client";
-
-import { useMemo, useState } from "react";
 import Link from "next/link";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Reveal } from "@/components/ui/Reveal";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { jobs } from "@/content/careers/jobs";
 import type { Job } from "@/content/types";
 import type { RouteEntry } from "@/lib/routes";
 import { absolute, jobPostingJsonLd } from "@/lib/seo";
-import {
-  Container,
-  EmptyState,
-  PageHero,
-  formatDate,
-} from "@/components/templates/page/chrome";
+import { Container, PageHero, formatDate } from "@/components/templates/page/chrome";
+import { FilteredJobList } from "@/components/templates/filters";
 
 /* ------------------------------------------------------------- Careers Landing */
 
@@ -26,8 +18,8 @@ const careersLandingHero = {
   image: { src: "/images/hero-plate.jpg", alt: "AIA Engineering manufacturing and foundry operations" },
 };
 
-export function CareersPage({ route }: { route: RouteEntry }) {
-  const latestJobs = jobs.slice(0, 3);
+export function CareersPage({ route, jobs }: { route: RouteEntry; jobs: Job[] }) {
+  const latestJobs = [...jobs].sort((a, b) => b.postedAt.localeCompare(a.postedAt)).slice(0, 3);
 
   return (
     <>
@@ -128,82 +120,22 @@ const jobsHero = {
   image: { src: "/images/hero-plate.jpg", alt: "" },
 };
 
-export function JobsPage({ route }: { route: RouteEntry }) {
-  const [selectedFunction, setSelectedFunction] = useState<string>("All");
-
-  const functions = useMemo(
-    () => ["All", ...Array.from(new Set(jobs.map((j) => j.function))).sort()],
-    [],
-  );
-
-  const visible = useMemo(() => {
-    if (selectedFunction === "All") return jobs;
-    return jobs.filter((j) => j.function === selectedFunction);
-  }, [selectedFunction]);
+export function JobsPage({ route, jobs }: { route: RouteEntry; jobs: Job[] }) {
+  const rows = jobs.map((job) => ({
+    slug: job.slug,
+    href: `${route.path}/${job.slug}`,
+    title: job.title,
+    summary: job.summary,
+    function: job.function,
+    type: job.type,
+    location: job.location,
+  }));
 
   return (
     <>
       <PageHero route={route} hero={jobsHero} status="draft" size="compact" />
       <Container className="py-14 sm:py-20 lg:py-24">
-        {/* Filters */}
-        <div className="mb-10 flex flex-wrap gap-2" role="tablist" aria-label="Filter vacancies by department">
-          {functions.map((fn) => {
-            const active = selectedFunction === fn;
-            return (
-              <button
-                key={fn}
-                type="button"
-                onClick={() => setSelectedFunction(fn)}
-                className={`rounded-full px-5 py-2 text-[0.85rem] font-semibold transition ${
-                  active
-                    ? "bg-aia-navy text-white shadow-sm"
-                    : "border border-aia-line bg-white text-aia-navy/70 hover:border-aia-orange hover:text-aia-navy"
-                }`}
-              >
-                {fn}
-              </button>
-            );
-          })}
-        </div>
-
-        {visible.length ? (
-          <ul className="divide-y divide-aia-line border-y border-aia-line">
-            {visible.map((job) => (
-              <li key={job.slug}>
-                <Link
-                  href={`/careers/open-positions/${job.slug}`}
-                  className="group flex flex-col justify-between gap-6 py-8 transition duration-200 hover:bg-aia-surface-soft/60 sm:flex-row sm:items-center sm:px-6"
-                >
-                  <div className="max-w-[48rem]">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-aia-orange/10 px-3 py-1 font-[family-name:var(--font-ui)] text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-aia-orange">
-                        {job.function}
-                      </span>
-                      <span className="text-[0.8rem] text-aia-navy/55">{job.type}</span>
-                      <span className="text-[0.8rem] text-aia-navy/35">•</span>
-                      <span className="text-[0.8rem] text-aia-navy/55">{job.location}</span>
-                    </div>
-                    <h3 className="mt-3 text-[1.25rem] font-bold text-aia-navy group-hover:text-aia-orange">
-                      {job.title}
-                    </h3>
-                    <p className="mt-2 text-[0.95rem] leading-[1.7] text-aia-navy/65">
-                      {job.summary}
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-[0.9rem] font-semibold text-aia-orange group-hover:translate-x-1 transition duration-200">
-                    Apply now →
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState
-            title="No vacancies currently in this function"
-            body="Check back soon or submit a general inquiry to our careers team."
-            action={{ label: "Contact Careers", href: "/contact" }}
-          />
-        )}
+        <FilteredJobList jobs={rows} />
       </Container>
     </>
   );

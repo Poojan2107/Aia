@@ -11,7 +11,7 @@ import { caseStudyHref } from "@/content/knowledge/case-studies";
  * Product Management must confirm product names and variants before launch.
  */
 
-const heroImage = { src: "/images/industry/cement.jpg", alt: "Cement plant grinding section with tube mills" };
+const heroImage = { src: "/images/hero-plate.jpg", alt: "Grinding mill hall with large tube mills" };
 
 const cases = [
   {

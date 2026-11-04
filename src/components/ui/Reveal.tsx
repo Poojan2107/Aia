@@ -22,7 +22,9 @@ export function Reveal({
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
   const reduced = useReducedMotion();
-  const [inView, setInView] = useState(false);
+  // Start visible so server-rendered HTML is readable (LCP, crawlers, no-JS);
+  // the observer below only ever confirms visibility.
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const el = ref.current;

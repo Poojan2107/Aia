@@ -19,7 +19,7 @@ export const contentPages: Record<string, ContentPageContent> = {
       line1: "About AIA",
       line2: "Engineered for the hours you can't afford to lose",
       lead: "AIA Engineering designs, manufactures and supplies high-chromium wear, corrosion and abrasion resistant castings, and works with customers to improve the performance of their grinding and crushing operations.",
-      image: img("/images/about-facility.jpg", "AIA Engineering manufacturing facility"),
+      image: img("/images/plant-aerial.png", "Aerial view of an AIA Engineering manufacturing plant"),
     },
     facts: footprint.map((item) => ({ value: item.value, label: item.label })),
     sections: [
@@ -129,7 +129,7 @@ export const contentPages: Record<string, ContentPageContent> = {
       eyebrow: "Company",
       line1: "Sustainability",
       line2: "Responsible manufacturing",
-      image: img("/images/sustainability-hero.jpg", "Renewable energy installation at an AIA facility"),
+      image: img("/images/footer-bg.jpg", "Industrial plant at dusk"),
     },
     sections: [
       {

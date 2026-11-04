@@ -10,7 +10,7 @@ import type {
  * coverage before launch.
  */
 
-const heroImage = { src: "/images/industry/thermal.jpg", alt: "Coal-fired thermal power plant" };
+const heroImage = { src: "/images/footer-bg.jpg", alt: "Industrial power plant at dusk" };
 
 export const thermalSolutions: IndustrySolutionsContent = {
   status: "draft",

@@ -2,9 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { committees, directors } from "@/content/company/directors";
-import { csrFocusAreas, csrInitiatives } from "@/content/company/csr";
-import type { CsrInitiative, Director } from "@/content/types";
+import type { Committee, CsrInitiative, Director } from "@/content/types";
 import type { RouteEntry } from "@/lib/routes";
 import {
   Bullets,
@@ -50,7 +48,7 @@ function Portrait({ director, size }: { director: Director; size: "card" | "larg
   );
 }
 
-export function BoardPage({ route }: { route: RouteEntry }) {
+export function BoardPage({ route, directors }: { route: RouteEntry; directors: Director[] }) {
   const groups = (["executive", "independent", "non-executive"] as const)
     .map((category) => ({ category, items: directors.filter((d) => d.category === category) }))
     .filter((group) => group.items.length);
@@ -120,7 +118,7 @@ export function DirectorPage({ route, director }: { route: RouteEntry; director:
   );
 }
 
-export function CommitteesPage({ route }: { route: RouteEntry }) {
+export function CommitteesPage({ route, committees }: { route: RouteEntry; committees: Committee[] }) {
   return (
     <>
       <PageHero route={route} hero={{ ...boardHero, line1: "Board Committees" }} status="draft" />
@@ -168,7 +166,15 @@ export function CommitteesPage({ route }: { route: RouteEntry }) {
 
 const csrHero = { eyebrow: "Company", line1: "CSR Initiatives", line2: "Community programmes", image: { src: "/images/sustainability-alt.jpg", alt: "Community programme supported by AIA Engineering" } };
 
-export function CsrListingPage({ route }: { route: RouteEntry }) {
+export function CsrListingPage({
+  route,
+  initiatives: csrInitiatives,
+  focusAreas: csrFocusAreas,
+}: {
+  route: RouteEntry;
+  initiatives: CsrInitiative[];
+  focusAreas: { area: CsrInitiative["area"]; body: string }[];
+}) {
   return (
     <>
       <PageHero route={route} hero={csrHero} status="draft" />
