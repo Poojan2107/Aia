@@ -34,6 +34,7 @@ html[data-theme="blue"] {
 }
 
 :root {
+  --site-header-h: 4.5rem; /* fixed navbar height; sticky elements sit below it */
   --aia-navy: #041d2c;
   --aia-ink: #0a0a0a;
   --aia-muted: #888888;

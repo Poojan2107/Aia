@@ -71,7 +71,7 @@ export function SiteFooter() {
           <div className="site-footer-shell">
             <div className="site-footer-panel">
               <div className="site-footer-grid">
-                <FooterCol title="Solutions" links={footerNav.solutions} />
+                <FooterCol title="Our Solutions" links={footerNav.solutions} />
                 <FooterCol title="Company" links={footerNav.company} />
                 <FooterCol title="Knowledge Hub" links={footerNav.resources} />
 

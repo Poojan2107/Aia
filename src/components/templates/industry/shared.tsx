@@ -81,7 +81,7 @@ export function IndustryHero({ hero, label, anchors }: { hero: Hero; label: stri
 
 export function SectionNav({ anchors, active, label }: { anchors: Anchor[]; active: string; label: string }) {
   return (
-    <nav className="sticky top-0 z-30 border-b border-aia-line bg-white/90 backdrop-blur-md" aria-label={label}>
+    <nav className="sticky top-[var(--site-header-h)] z-30 border-b border-aia-line bg-white/90 backdrop-blur-md" aria-label={label}>
       <div className="page-pad mx-auto flex max-w-[1440px] gap-2 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {anchors.map((anchor) => {
           const on = active === anchor.id;

@@ -1,282 +1,279 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useId, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
-import { CtaButton } from "@/components/ui/CtaButton";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
-import { megaSections } from "@/data/nav";
+import { mainNav, type NavItem } from "@/data/nav";
+
+/**
+ * Standard site navigation: logo, the six sitemap pillars with dropdowns on
+ * desktop (hover, click or keyboard), and an accordion drawer on mobile.
+ * Transparent over the dark page heroes, solid once the page scrolls.
+ */
+
+function isCurrent(item: NavItem, pathname: string) {
+  if (pathname === item.href || pathname.startsWith(`${item.href}/`)) return true;
+  return (item.groups ?? []).some((g) => g.links.some((l) => pathname === l.href || pathname.startsWith(`${l.href}/`)));
+}
+
+function subscribeScroll(callback: () => void) {
+  window.addEventListener("scroll", callback, { passive: true });
+  return () => window.removeEventListener("scroll", callback);
+}
+const getScrolled = () => window.scrollY > 24;
+const getScrolledServer = () => false;
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}>
+      <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function DesktopItem({ item, open, onOpen, onClose, current }: {
+  item: NavItem;
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  current: boolean;
+}) {
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const panelId = `nav-panel-${item.id}`;
+  const base = `flex h-11 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-[0.84rem] font-semibold transition-colors xl:px-4 xl:text-[0.88rem] ${
+    current ? "text-aia-orange" : "text-white hover:text-aia-orange"
+  }`;
+
+  if (!item.groups) {
+    return (
+      <li>
+        <Link href={item.href} className={base} aria-current={current ? "page" : undefined}>
+          {item.label}
+        </Link>
+      </li>
+    );
+  }
+
+  const wide = item.groups.length > 1;
+  const enter = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    onOpen();
+  };
+  const leave = () => {
+    closeTimer.current = setTimeout(onClose, 150);
+  };
+
+  return (
+    <li
+      className="relative"
+      onPointerEnter={(e) => e.pointerType === "mouse" && enter()}
+      onPointerLeave={(e) => e.pointerType === "mouse" && leave()}
+    >
+      <button
+        type="button"
+        className={base}
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => (open ? onClose() : onOpen())}
+      >
+        {item.label}
+        <Chevron open={open} />
+      </button>
+      <div
+        id={panelId}
+        hidden={!open}
+        className={`absolute top-full pt-3 ${wide ? "left-1/2 -translate-x-1/2" : "left-0"}`}
+      >
+        <div className={`rounded-2xl border border-aia-line bg-white p-6 text-aia-navy shadow-[0_24px_60px_rgba(4,29,44,0.18)] ${wide ? "w-max max-w-[min(92vw,56rem)]" : "w-72"}`}>
+          <Link
+            href={item.href}
+            onClick={onClose}
+            className="mb-4 block border-b border-aia-line pb-3 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-aia-orange hover:underline"
+          >
+            {item.label} overview →
+          </Link>
+          <div className={wide ? `grid gap-x-10 gap-y-6 ${item.groups.length > 2 ? "grid-cols-4" : "grid-cols-2"}` : ""}>
+            {item.groups.map((group, gi) => (
+              <div key={group.title ?? gi}>
+                {group.title ? (
+                  <p className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-aia-navy/50">{group.title}</p>
+                ) : null}
+                <ul className="space-y-0.5">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={onClose}
+                        className="block whitespace-nowrap rounded-lg px-2 py-1.5 text-[0.9rem] text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-orange"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: string }) {
+  const [expanded, setExpanded] = useState<string | null>(() => mainNav.find((item) => isCurrent(item, pathname))?.id ?? null);
+
+  return (
+    <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col bg-aia-navy text-white lg:hidden" role="dialog" aria-modal="true" aria-label="Site navigation">
+      <div className="flex items-center justify-between px-5 py-4">
+        <Link href="/" onClick={onClose} aria-label="AIA Engineering home">
+          <BrandLockup tone="light" compact />
+        </Link>
+        <button type="button" onClick={onClose} className="flex size-11 items-center justify-center rounded-full border border-white/25" aria-label="Close menu">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden>
+            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+      <nav aria-label="Main" className="flex-1 overflow-y-auto px-5 pb-10">
+        <ul className="divide-y divide-white/10 border-y border-white/10">
+          {mainNav.map((item) => {
+            const open = expanded === item.id;
+            if (!item.groups) {
+              return (
+                <li key={item.id}>
+                  <Link href={item.href} onClick={onClose} className="block py-4 text-[1.1rem] font-semibold">
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            }
+            return (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between py-4 text-left text-[1.1rem] font-semibold"
+                  aria-expanded={open}
+                  aria-controls={`m-${item.id}`}
+                  onClick={() => setExpanded(open ? null : item.id)}
+                >
+                  {item.label}
+                  <Chevron open={open} />
+                </button>
+                <div id={`m-${item.id}`} hidden={!open} className="pb-4">
+                  <Link href={item.href} onClick={onClose} className="mb-2 block text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-aia-orange">
+                    {item.label} overview
+                  </Link>
+                  {item.groups.map((group, gi) => (
+                    <div key={group.title ?? gi} className="mt-3">
+                      {group.title ? <p className="mb-1 text-[0.72rem] uppercase tracking-[0.12em] text-white/45">{group.title}</p> : null}
+                      <ul>
+                        {group.links.map((link) => (
+                          <li key={link.href}>
+                            <Link href={link.href} onClick={onClose} className="block py-1.5 text-[0.98rem] text-white/80 hover:text-aia-orange">
+                              {link.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="mt-8 flex items-center gap-4">
+          <ThemeToggle />
+        </div>
+      </nav>
+    </div>
+  );
+}
 
 export function SiteHeader() {
-  const [open, setOpen] = useState(false);
-  const [activeId, setActiveId] = useState(megaSections[1]?.id ?? "company");
-  const titleId = useId();
+  const pathname = usePathname() ?? "/";
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const scrolled = useSyncExternalStore(subscribeScroll, getScrolled, getScrolledServer);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpenId(null);
+      setMobileOpen(false);
+    };
+    const onPointer = (e: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenId(null);
+    };
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  const active = megaSections.find((s) => s.id === activeId) ?? megaSections[0];
+  }, [mobileOpen]);
 
   return (
     <>
-      {/* Hero overlay only — no dark sticky bar after scroll */}
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-40 bg-transparent">
-        <div className="site-header-bar pointer-events-auto flex items-center justify-between gap-3">
-          <Link href="/" className="min-w-0 shrink" aria-label="AIA Engineering home">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-aia-navy">
+        Skip to content
+      </a>
+      <header
+        className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
+          scrolled || openId ? "bg-aia-navy/95 shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur" : "bg-transparent"
+        }`}
+      >
+        <div className="page-pad mx-auto flex h-[var(--site-header-h)] max-w-[1440px] items-center justify-between gap-4">
+          <Link href="/" className="min-w-0 shrink-0" aria-label="AIA Engineering home">
             <BrandLockup tone="light" compact />
           </Link>
 
-          <div className="site-header-actions">
+          <nav ref={navRef} aria-label="Main" className="hidden lg:block">
+            <ul className="flex items-center">
+              {mainNav.map((item) => (
+                <DesktopItem
+                  key={item.id}
+                  item={item}
+                  open={openId === item.id}
+                  onOpen={() => setOpenId(item.id)}
+                  onClose={() => setOpenId((id) => (id === item.id ? null : id))}
+                  current={isCurrent(item, pathname)}
+                />
+              ))}
+            </ul>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <div className="hidden xl:block">
+              <ThemeToggle />
+            </div>
             <button
               type="button"
-              className="site-header-lang"
-              aria-haspopup="listbox"
+              onClick={() => setMobileOpen(true)}
+              className="flex size-11 items-center justify-center rounded-full border border-white/30 text-white lg:hidden"
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              aria-label="Open menu"
             >
-              En
-              <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
-                <path d="M0 0l4 4 4-4" fill="currentColor" />
+              <svg width="18" height="14" viewBox="0 0 18 14" aria-hidden>
+                <path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              className="site-header-menu"
-              aria-expanded={open}
-              aria-controls="mega-menu"
-            >
-              <span className="site-header-menu-label">MENU</span>
-              <span className="site-header-menu-icon" aria-hidden>
-                <span />
-                <span />
-                <span />
-              </span>
             </button>
           </div>
         </div>
       </header>
-
-      <div
-        id="mega-menu"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        className={`fixed inset-0 z-[60] transition-[visibility,opacity] duration-300 ${
-          open
-            ? "visible opacity-100"
-            : "invisible pointer-events-none opacity-0"
-        }`}
-      >
-        <button
-          type="button"
-          aria-label="Close menu"
-          className="absolute inset-0 bg-black/45 backdrop-blur-[28px]"
-          onClick={() => setOpen(false)}
-        />
-
-        <div
-          className={`absolute inset-0 flex flex-col overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.28)] transition-all duration-500 ease-[var(--ease-out)] md:inset-auto md:left-1/2 md:top-[max(2.75rem,6.5vh)] md:h-[min(620px,78vh)] md:w-[min(1120px,86vw)] md:-translate-x-1/2 ${
-            open
-              ? "translate-y-0 opacity-100"
-              : "translate-y-3 opacity-0 md:-translate-y-3"
-          }`}
-        >
-          <div className="flex h-[3.25rem] shrink-0 items-center justify-between bg-aia-orange px-4 sm:h-16 sm:px-6 md:px-10">
-            <label className="flex min-w-0 flex-1 items-center gap-3 text-white/75">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-                <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
-                <path
-                  d="M20 20l-3.5-3.5"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="sr-only">Search</span>
-              <input
-                type="search"
-                placeholder="Search here..."
-                className="w-full min-w-0 bg-transparent text-base text-white outline-none placeholder:text-white/45 md:text-[1.1rem]"
-              />
-            </label>
-            <div className="ml-3 flex shrink-0 items-center gap-2 text-white sm:ml-4 sm:gap-3">
-              <ThemeToggle />
-              <button
-                type="button"
-                className="ui-caps hidden items-center gap-2 !text-[12px] !font-medium !leading-none tracking-[0.08em] lg:inline-flex"
-              >
-                ENGLISH
-                <svg
-                  width="10"
-                  height="6"
-                  viewBox="0 0 10 6"
-                  fill="none"
-                  aria-hidden
-                  className="shrink-0"
-                >
-                  <path
-                    d="M1 1 L5 5 L9 1"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="square"
-                    strokeLinejoin="miter"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex h-8 shrink-0 items-center gap-2 rounded-full bg-white/10 px-3.5 transition hover:bg-white/20 sm:h-9"
-              >
-                <span className="ui-caps !text-[12px] !font-medium !leading-none tracking-[0.08em]">
-                  CLOSE
-                </span>
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  aria-hidden
-                  className="shrink-0"
-                >
-                  <path
-                    d="M1.5 1.5 L8.5 8.5 M8.5 1.5 L1.5 8.5"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="square"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div className="mega-menu-body grid min-h-0 flex-1 overflow-y-auto overscroll-contain lg:grid-cols-[0.9fr_0.8fr_1fr] lg:overflow-hidden">
-            <div className="mega-menu-col mega-menu-col--primary flex flex-col">
-              <h2 id={titleId} className="sr-only">
-                Site navigation
-              </h2>
-              <nav aria-label="Primary" className="mega-menu-pad flex-1">
-                <ul className="space-y-4 sm:space-y-5">
-                  {megaSections.map((section) => {
-                    const isActive = section.id === active.id;
-                    return (
-                      <li key={section.id}>
-                        <button
-                          type="button"
-                          onClick={() => setActiveId(section.id)}
-                          onMouseEnter={() => setActiveId(section.id)}
-                          onFocus={() => setActiveId(section.id)}
-                          className="group flex w-full items-center gap-3 text-left sm:gap-5"
-                          aria-current={isActive ? "true" : undefined}
-                        >
-                          <span className="w-7 font-[family-name:var(--font-ui)] text-sm text-aia-orange/45 sm:w-8 sm:text-base">
-                            {section.index}
-                          </span>
-                          <span
-                            className={`display whitespace-nowrap text-[clamp(1.25rem,3.5vw,2rem)] transition-colors duration-300 ${
-                              isActive
-                                ? "!font-bold text-aia-navy"
-                                : "!font-semibold text-aia-muted group-hover:text-aia-navy/70"
-                            }`}
-                          >
-                            {section.label}
-                          </span>
-                          <span
-                            aria-hidden
-                            className={`ml-2 inline-flex size-[0.55em] shrink-0 items-center justify-center text-aia-orange transition-all duration-300 ${
-                              isActive
-                                ? "translate-x-0 opacity-100"
-                                : "-translate-x-1 opacity-0"
-                            }`}
-                          >
-                            <svg
-                              viewBox="0 0 10 16"
-                              fill="none"
-                              className="h-[0.9em] w-auto"
-                              aria-hidden
-                            >
-                              <path
-                                d="M2 2 L8 8 L2 14"
-                                stroke="currentColor"
-                                strokeWidth="2.25"
-                                strokeLinecap="square"
-                                strokeLinejoin="miter"
-                              />
-                            </svg>
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-
-              <div className="mega-menu-cta mega-menu-pad lg:mt-auto">
-                <p className="display mb-5 max-w-sm !font-bold text-[1.5rem] leading-tight text-aia-navy sm:text-[1.9rem]">
-                  Have a wear or performance challenge?
-                </p>
-                <CtaButton
-                  href="/contact"
-                  variant="outline"
-                  className="!h-9 !gap-2 !px-4 !text-[10px] !leading-none [&>span:first-child]:!size-1.5"
-                >
-                  Talk to an expert
-                </CtaButton>
-              </div>
-            </div>
-
-            <div className="mega-menu-col mega-menu-col--links mega-menu-pad lg:overflow-y-auto">
-              <div className="space-y-8">
-                {active.groups.map((group) => (
-                  <div key={group.title}>
-                    <p className="mb-3 text-xl font-medium text-aia-navy sm:text-[1.35rem]">
-                      {group.title}
-                    </p>
-                    <ul className="space-y-3">
-                      {group.links.map((link) => (
-                        <li key={link.href}>
-                          <Link
-                            href={link.href}
-                            onClick={() => setOpen(false)}
-                            className="block text-lg font-light text-aia-muted transition-colors duration-300 hover:text-aia-orange sm:text-[1.2rem]"
-                          >
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mega-menu-col mega-menu-col--media relative hidden min-h-0 bg-aia-surface-soft lg:block">
-              <Image
-                key={active.image.src}
-                src={active.image.src}
-                alt={active.image.alt}
-                fill
-                sizes="(min-width: 1024px) 32vw, 420px"
-                className="object-cover object-center animate-fade-up"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      {mobileOpen ? <MobileMenu pathname={pathname} onClose={() => setMobileOpen(false)} /> : null}
     </>
   );
 }

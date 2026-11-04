@@ -10,7 +10,7 @@ function InvestorNav({ route }: { route: RouteEntry }) {
   const siblings = route.pillar === "investors" ? childrenOf("investors") : [];
   if (!siblings.length) return null;
   return (
-    <nav aria-label="Investor pages" className="lg:sticky lg:top-8">
+    <nav aria-label="Investor pages" className="lg:sticky lg:top-[calc(var(--site-header-h)+1.5rem)]">
       <p className="mb-4 ui-caps tracking-[0.12em] text-aia-navy/55">Investors</p>
       <ul className="space-y-1">
         {siblings.map((page) => {
