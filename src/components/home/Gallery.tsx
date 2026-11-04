@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MediaSlot } from "@/components/ui/MediaSlot";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { assets } from "@/data/assets";
+
 import { media } from "@/data/media";
 
 type Film = {
