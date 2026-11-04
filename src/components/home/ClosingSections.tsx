@@ -6,7 +6,7 @@ import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { faqs, insights } from "@/data/content";
 import { CountUp } from "@/components/ui/CountUp";
-import { Reveal } from "@/components/ui/Reveal";
+
 
 export function Sustainability() {
   return (
@@ -106,7 +106,7 @@ export function Faq() {
             Here are the essentials about AIA, what we make, and how our
             solutions support your operations.
           </h2>
-          <CtaButton href="/company/contact" variant="solid">
+          <CtaButton href="/contact" variant="solid">
             Ask an expert
           </CtaButton>
         </div>

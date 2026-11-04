@@ -156,7 +156,7 @@ export const industries: Industry[] = [
     name: "Quarry",
     description:
       "The aggregate and quarry sector demands wear parts that can handle harsh working conditions. AIA Engineering Ltd. and Vega Industries offer durable products to deliver consistent performance with a significantly longer life, enhancing higher equipment availability and reliability.",
-    href: "/solutions/quarry",
+    href: "/solutions/quarry/products",
     solutions: [
       {
         id: "blow",
@@ -221,7 +221,7 @@ export const industries: Industry[] = [
     name: "Thermal",
     description:
       "AIA Engineering and Vega Industries manufacture specialised wear-resistant mill components for the Thermal Industry. Our grinding systems are designed to maximise uptime, improve mill productivity and reduce the frequency of replacements.",
-    href: "/solutions/thermal",
+    href: "/solutions/thermal-power",
     solutions: [
       {
         id: "tube",

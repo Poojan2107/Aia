@@ -73,7 +73,7 @@ export function SiteFooter() {
               <div className="site-footer-grid">
                 <FooterCol title="Solutions" links={footerNav.solutions} />
                 <FooterCol title="Company" links={footerNav.company} />
-                <FooterCol title="Resources hub" links={footerNav.resources} />
+                <FooterCol title="Knowledge Hub" links={footerNav.resources} />
 
                 <div className="site-footer-invest">
                   <p className={headingClass}>Investors &amp; Connect</p>
@@ -147,7 +147,7 @@ export function SiteFooter() {
                     <br />
                     performance challenge?
                   </p>
-                  <Link href="/company/contact" className="site-footer-btn">
+                  <Link href="/contact" className="site-footer-btn">
                     <span aria-hidden />
                     Talk to an expert
                   </Link>
@@ -180,8 +180,9 @@ export function SiteFooter() {
         <div className="site-footer-legal">
           <p>© 2026 {site.legalName}. All Rights Reserved.</p>
           <nav>
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/sitemap.xml">Sitemap</Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/policies">Policies</Link>
+            <Link href="/sitemap">Sitemap</Link>
             <span>
               En
               <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>

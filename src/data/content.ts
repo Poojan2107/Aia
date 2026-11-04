@@ -171,7 +171,7 @@ export const insights = [
     type: "Blogs" as const,
     title:
       "What Plant Teams Should Look for When Selecting Grinding Media and Wear Parts",
-    href: "/resources/insights/selecting-grinding-media",
+    href: "/knowledge-hub/news-and-insights",
     image: "/images/insight-1.jpg",
   },
   {
@@ -179,21 +179,21 @@ export const insights = [
     type: "Blogs" as const,
     title:
       "The Role of Material, Design and Operating Conditions in Extending Mill Life",
-    href: "/resources/insights/extending-mill-life",
+    href: "/knowledge-hub/news-and-insights",
     image: "/images/insight-2.jpg",
   },
   {
     date: "12 January 2026",
     type: "News" as const,
     title: "AIA expands global service coverage for critical grinding assets",
-    href: "/resources/insights/global-service-coverage",
+    href: "/knowledge-hub/news-and-insights",
     image: "/images/insight-1.jpg",
   },
   {
     date: "02 February 2026",
     type: "Press Release" as const,
     title: "AIA Engineering reports continued investment in wear R&D",
-    href: "/resources/insights/wear-rd-investment",
+    href: "/knowledge-hub/news-and-insights",
     image: "/images/insight-2.jpg",
   },
 ] as const;
@@ -202,19 +202,19 @@ export const caseStudies = [
   {
     title: "40ft SAG mill in latin america",
     meta: "Life improvement - Throughput Increase - Power Reduction",
-    href: "/resources/case-studies/sag-latin-america",
+    href: "/knowledge-hub/case-studies/40ft-sag-mill-in-latin-america",
     image: "/images/case-1.png",
   },
   {
     title: "15ft Ball mill in India",
     meta: "Throughput Increase - Power Consumption",
-    href: "/resources/case-studies/ball-mill-india",
+    href: "/knowledge-hub/case-studies/15-ft-ball-mill-in-india",
     image: "/images/case-2.png",
   },
   {
     title: "34ft SAG mill in West Africa",
     meta: "Life improvement - Throughput Increase",
-    href: "/resources/case-studies/sag-west-africa",
+    href: "/knowledge-hub/case-studies/34ft-sag-mill-in-west-africa",
     image: "/images/case-3.png",
   },
 ] as const;

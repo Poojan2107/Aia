@@ -229,7 +229,7 @@ export function SiteHeader() {
                   Have a wear or performance challenge?
                 </p>
                 <CtaButton
-                  href="/company/contact"
+                  href="/contact"
                   variant="outline"
                   className="!h-9 !gap-2 !px-4 !text-[10px] !leading-none [&>span:first-child]:!size-1.5"
                 >

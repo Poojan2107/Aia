@@ -3,7 +3,7 @@ import { MediaSlot } from "@/components/ui/MediaSlot";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { technologyPillars } from "@/data/content";
-import { assets } from "@/data/assets";
+
 import { media } from "@/data/media";
 
 const posters = [
@@ -31,7 +31,7 @@ export function Technology() {
             <span>to face.</span>
           </p>
           <CtaButton
-            href="/company/technology"
+            href="/company/technology-and-infrastructure"
             variant="solid"
             className="tech-cta w-full justify-center sm:w-auto"
           >

@@ -214,19 +214,19 @@ export const miningPage = {
     {
       title: "40ft SAG Mill in Latin America",
       body: "Improving the life of mill internals, reducing reline time for a customer who was facing maintenance issues.",
-      href: "/resources/case-studies/sag-latin-america",
+      href: "/knowledge-hub/case-studies/40ft-sag-mill-in-latin-america",
       image: "/images/case-1.png",
     },
     {
       title: "34ft SAG Mill in West Africa",
       body: "Optimizing SAG Mill performance for our customer who was facing issues in life of mill internals and throughput.",
-      href: "/resources/case-studies/sag-west-africa",
+      href: "/knowledge-hub/case-studies/34ft-sag-mill-in-west-africa",
       image: "/images/case-2.png",
     },
     {
       title: "28ft SAG Mill in Asia",
       body: "Optimizing SAG Mill performance for our customer who was facing issues in life of mill internals and throughput.",
-      href: "/resources/case-studies/sag-asia",
+      href: "/knowledge-hub/case-studies/28ft-sag-mill-in-asia",
       image: "/images/case-3.png",
     },
   ],

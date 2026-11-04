@@ -33,7 +33,7 @@ export function Services() {
             <span>We help you perform.</span>
           </h2>
           <CtaButton
-            href="/company/contact"
+            href="/contact"
             variant="solid"
             className="services-cta"
           >

@@ -30,7 +30,7 @@ export function CaseStudies() {
         </Reveal>
         <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
           <CtaButton
-            href="/resources/case-studies"
+            href="/knowledge-hub/case-studies"
             variant="solid"
             className="!h-9 !gap-2 !px-5 !text-[11px] !leading-none [&>span:first-child]:!size-1.5"
           >
