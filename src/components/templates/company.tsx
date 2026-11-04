@@ -36,14 +36,25 @@ function Portrait({ director, size }: { director: Director; size: "card" | "larg
   const box = size === "card" ? "aspect-[4/5]" : "aspect-[4/5] max-w-[22rem]";
   if (director.portrait) {
     return (
-      <div className={`relative ${box} overflow-hidden rounded-2xl bg-[#e8eaec]`}>
+      <div className={`relative ${box} overflow-hidden rounded-2xl bg-[#e8eaec] shadow-sm transition-transform duration-300 group-hover:scale-[1.02]`}>
         <Image src={director.portrait.src} alt={director.portrait.alt} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
       </div>
     );
   }
   return (
-    <div aria-hidden className={`flex ${box} items-center justify-center rounded-2xl bg-aia-surface-soft`}>
-      <span className="display text-[3rem] font-extrabold text-aia-navy/25">{initials(director.name)}</span>
+    <div
+      aria-hidden
+      className={`relative flex ${box} flex-col items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#0c2438] via-[#041d2c] to-[#021019] shadow-inner transition-transform duration-300 group-hover:scale-[1.02]`}
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,106,0,0.14),transparent_70%)]" />
+      <div className="relative flex size-20 items-center justify-center rounded-full border border-white/15 bg-white/5 backdrop-blur-sm shadow-lg">
+        <span className="display text-[1.8rem] font-extrabold tracking-wider text-white/90">
+          {initials(director.name)}
+        </span>
+      </div>
+      <div className="absolute bottom-3 text-center">
+        <span className="ui-caps text-[0.65rem] tracking-[0.18em] text-white/40">AIA Leadership</span>
+      </div>
     </div>
   );
 }
@@ -123,31 +134,37 @@ export function CommitteesPage({ route, committees }: { route: RouteEntry; commi
     <>
       <PageHero route={route} hero={{ ...boardHero, line1: "Board Committees" }} status="draft" />
       <Container className="py-16 sm:py-20 lg:py-24">
-        <div className="space-y-6">
+        <div className="space-y-8">
           {committees.map((committee) => (
             <section
               key={committee.slug}
               id={committee.slug}
-              className="scroll-mt-24 rounded-2xl border border-aia-line p-7 sm:p-10"
+              className="scroll-mt-32 rounded-2xl border border-aia-line/80 bg-white p-7 sm:p-10 shadow-[0_4px_24px_rgba(4,29,44,0.03)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(4,29,44,0.06)]"
               aria-labelledby={`${committee.slug}-h`}
             >
-              <h2 id={`${committee.slug}-h`} className="display text-[clamp(1.4rem,2.6vw,2rem)] font-extrabold text-aia-navy">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-aia-line/60 bg-aia-surface-soft px-3 py-0.5 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-aia-navy/70">
+                <span className="size-1.5 rounded-full bg-aia-orange" />
+                <span>Statutory Committee</span>
+              </div>
+              <h2 id={`${committee.slug}-h`} className="display text-[clamp(1.4rem,2.6vw,2.1rem)] font-extrabold text-aia-navy">
                 {committee.name}
               </h2>
-              <p className="mt-3 max-w-[50rem] text-[1rem] leading-[1.7] text-aia-navy/70">{committee.mandate}</p>
+              <p className="mt-3 max-w-[50rem] text-[1.02rem] leading-[1.75] text-aia-navy/75">{committee.mandate}</p>
               <div className="mt-8 grid gap-10 lg:grid-cols-2">
-                <div>
-                  <h3 className="mb-4 ui-caps tracking-[0.12em] text-aia-navy/55">Responsibilities</h3>
+                <div className="rounded-xl border border-aia-line/60 bg-aia-surface-soft/40 p-6">
+                  <h3 className="mb-4 ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Responsibilities & Terms of Reference</h3>
                   <Bullets items={committee.responsibilities} />
                 </div>
-                <div>
-                  <h3 className="mb-4 ui-caps tracking-[0.12em] text-aia-navy/55">Composition</h3>
+                <div className="rounded-xl border border-aia-line/60 bg-aia-surface-soft/40 p-6">
+                  <h3 className="mb-4 ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Composition</h3>
                   {committee.members.length ? (
-                    <ul className="space-y-2">
+                    <ul className="space-y-3">
                       {committee.members.map((member) => (
-                        <li key={member.name} className="flex justify-between gap-4 border-b border-aia-line pb-2 text-[0.95rem]">
-                          <span>{member.name}</span>
-                          <span className="text-aia-navy/55">{member.position}</span>
+                        <li key={member.name} className="flex items-center justify-between gap-4 border-b border-aia-line/60 pb-2.5 text-[0.95rem]">
+                          <span className="font-semibold text-aia-navy">{member.name}</span>
+                          <span className="rounded-full border border-aia-line/60 bg-white px-2.5 py-0.5 text-[0.78rem] font-semibold text-aia-navy/75 shadow-xs">
+                            {member.position}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -180,12 +197,15 @@ export function CsrListingPage({
       <PageHero route={route} hero={csrHero} status="draft" />
       <Container className="py-16 sm:py-20 lg:py-24">
         <h2 className="display mb-8 text-[clamp(1.5rem,3vw,2.2rem)] font-extrabold text-aia-navy">Focus areas</h2>
-        <ul className="mb-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mb-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {csrFocusAreas.map((item) => (
-            <li key={item.area} className="rounded-2xl border border-aia-line p-6">
+            <li
+              key={item.area}
+              className="rounded-2xl border border-aia-line/80 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-aia-orange/40 hover:shadow-[0_16px_36px_rgba(4,29,44,0.06)]"
+            >
               <span aria-hidden className="mb-4 block h-[3px] w-10 bg-aia-orange" />
-              <p className="text-[1.05rem] font-bold">{item.area}</p>
-              <p className="mt-2 text-[0.92rem] leading-[1.7] text-aia-navy/65">{item.body}</p>
+              <p className="text-[1.1rem] font-bold text-aia-navy">{item.area}</p>
+              <p className="mt-2 text-[0.92rem] leading-[1.7] text-aia-navy/70">{item.body}</p>
             </li>
           ))}
         </ul>

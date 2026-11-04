@@ -84,31 +84,33 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
       <div
         id={panelId}
         hidden={!open}
-        className={`absolute top-full pt-3 ${wide ? "left-1/2 -translate-x-1/2" : "left-0"}`}
+        className={`absolute top-full pt-2.5 ${wide ? "left-1/2 -translate-x-1/2" : "left-0"} animate-in fade-in-0 zoom-in-95 duration-150`}
       >
-        <div className={`rounded-2xl border border-aia-line bg-white p-6 text-aia-navy shadow-[0_24px_60px_rgba(4,29,44,0.18)] ${wide ? "w-max max-w-[min(92vw,56rem)]" : "w-72"}`}>
+        <div className={`rounded-2xl border border-aia-line/80 bg-white/98 p-6 text-aia-navy shadow-[0_24px_60px_rgba(4,29,44,0.16)] backdrop-blur-md ${wide ? "w-max max-w-[min(92vw,58rem)]" : "w-72"}`}>
           <Link
             href={item.href}
             onClick={onClose}
-            className="mb-4 block border-b border-aia-line pb-3 text-[0.78rem] font-semibold uppercase tracking-[0.14em] text-aia-orange hover:underline"
+            className="group mb-4 flex items-center justify-between border-b border-aia-line pb-3 text-[0.76rem] font-bold uppercase tracking-[0.14em] text-aia-orange hover:text-[#d65217]"
           >
-            {item.label} overview →
+            <span>{item.label} Overview</span>
+            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
           </Link>
           <div className={wide ? `grid gap-x-10 gap-y-6 ${item.groups.length > 2 ? "grid-cols-4" : "grid-cols-2"}` : ""}>
             {item.groups.map((group, gi) => (
               <div key={group.title ?? gi}>
                 {group.title ? (
-                  <p className="mb-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-aia-navy/50">{group.title}</p>
+                  <p className="mb-2.5 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-aia-navy/45">{group.title}</p>
                 ) : null}
-                <ul className="space-y-0.5">
+                <ul className="space-y-1">
                   {group.links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
                         onClick={onClose}
-                        className="block whitespace-nowrap rounded-lg px-2 py-1.5 text-[0.9rem] text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-orange"
+                        className="group flex items-center justify-between whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[0.88rem] font-medium text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-orange"
                       >
-                        {link.label}
+                        <span>{link.label}</span>
+                        <span className="text-[0.75rem] opacity-0 transition-opacity group-hover:opacity-100 text-aia-orange">→</span>
                       </Link>
                     </li>
                   ))}
@@ -230,8 +232,10 @@ export function SiteHeader() {
         Skip to content
       </a>
       <header
-        className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
-          scrolled || openId ? "bg-aia-navy/95 shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur" : "bg-transparent"
+        className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+          scrolled || openId
+            ? "border-b border-white/10 bg-aia-navy/95 shadow-[0_8px_30px_rgba(0,0,0,0.22)] backdrop-blur-md"
+            : "border-b border-transparent bg-transparent"
         }`}
       >
         <div className="page-pad mx-auto flex h-[var(--site-header-h)] max-w-[1440px] items-center justify-between gap-4">

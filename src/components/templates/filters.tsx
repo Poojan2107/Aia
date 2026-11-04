@@ -71,29 +71,32 @@ export function FilteredJobList({ jobs }: { jobs: JobRow[] }) {
     <>
       <FilterButtons label="Filter vacancies by function" options={options} value={value} onChange={setValue} />
       {visible.length ? (
-        <ul className="divide-y divide-aia-line border-y border-aia-line">
+        <ul className="divide-y divide-aia-line/70 rounded-2xl border border-aia-line/80 bg-white overflow-hidden shadow-xs">
           {visible.map((job) => (
             <li key={job.slug}>
               <Link
                 href={job.href}
-                className="group flex flex-col justify-between gap-6 py-8 transition duration-200 hover:bg-aia-surface-soft/60 sm:flex-row sm:items-center sm:px-6"
+                className="group flex flex-col justify-between gap-6 p-6 sm:p-8 transition duration-200 hover:bg-aia-surface-soft/60 sm:flex-row sm:items-center"
               >
                 <div className="max-w-[48rem]">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-aia-orange/10 px-3 py-1 font-[family-name:var(--font-ui)] text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-aia-orange">
                       {job.function}
                     </span>
-                    <span className="text-[0.8rem] text-aia-navy/55">{job.type}</span>
+                    <span className="rounded-full bg-aia-surface-soft px-2.5 py-0.5 text-[0.75rem] font-medium text-aia-navy/70 border border-aia-line/50">
+                      {job.type}
+                    </span>
                     <span aria-hidden className="text-[0.8rem] text-aia-navy/35">
                       •
                     </span>
-                    <span className="text-[0.8rem] text-aia-navy/55">{job.location}</span>
+                    <span className="text-[0.85rem] font-medium text-aia-navy/60">{job.location}</span>
                   </div>
-                  <h3 className="mt-3 text-[1.25rem] font-bold text-aia-navy group-hover:text-aia-orange">{job.title}</h3>
-                  <p className="mt-2 text-[0.95rem] leading-[1.7] text-aia-navy/65">{job.summary}</p>
+                  <h3 className="mt-3 text-[1.25rem] font-bold text-aia-navy transition-colors group-hover:text-aia-orange">{job.title}</h3>
+                  <p className="mt-2 text-[0.95rem] leading-[1.7] text-aia-navy/70">{job.summary}</p>
                 </div>
-                <span className="shrink-0 text-[0.9rem] font-semibold text-aia-orange transition duration-200 group-hover:translate-x-1">
-                  View role →
+                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.85rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-orange group-hover:bg-aia-orange group-hover:text-white">
+                  <span>View role</span>
+                  <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                 </span>
               </Link>
             </li>
@@ -116,7 +119,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
   const embed = item.src && /youtube\.com|youtube-nocookie\.com|vimeo\.com/.test(item.src);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-aia-line bg-white">
+    <article className="overflow-hidden rounded-2xl border border-aia-line/80 bg-white shadow-xs transition-all duration-300 hover:shadow-md hover:border-aia-orange/40">
       <div className="relative aspect-[16/9] w-full bg-[#111]">
         {playing && item.src ? (
           embed ? (

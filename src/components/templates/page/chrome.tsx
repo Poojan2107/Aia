@@ -72,26 +72,46 @@ export function PageHero({
   status?: ContentStatus;
   size?: "default" | "compact";
 }) {
-  const height = size === "compact" ? "min-h-[46vh]" : "min-h-[60vh]";
+  const height = size === "compact" ? "min-h-[48vh]" : "min-h-[62vh]";
   return (
     <section className={`relative ${height} overflow-hidden bg-aia-navy text-white`} aria-labelledby="page-title">
       <Image src={hero.image.src} alt={hero.image.alt} fill priority sizes="100vw" className="object-cover object-center" />
       <div
         aria-hidden
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.55)_0%,rgba(4,29,44,0.78)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.72)_0%,rgba(4,29,44,0.52)_42%,rgba(4,29,44,0.94)_100%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-aia-navy/80 to-transparent"
       />
       <div className={`page-pad relative z-10 mx-auto flex ${height} max-w-[1440px] flex-col justify-end pb-14 pt-36 sm:pb-16`}>
-        <div className="animate-fade-up max-w-[60rem]">
+        <div className="animate-fade-up max-w-[62rem]">
           <Breadcrumbs route={route} />
-          {hero.eyebrow ? <p className="mb-3 ui-caps tracking-[0.12em] text-white/60">{hero.eyebrow}</p> : null}
+          {hero.eyebrow ? (
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 backdrop-blur-sm">
+              <span className="size-1.5 rounded-full bg-aia-orange" />
+              <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-white/90">
+                {hero.eyebrow}
+              </span>
+            </div>
+          ) : null}
           <h1 id="page-title" className="display text-[clamp(2.3rem,5.2vw,4.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em]">
-            <span className="block">{hero.line1}</span>
-            {hero.line2 ? <span className="mt-1 block text-aia-orange">{hero.line2}</span> : null}
+            <span className="block text-white">{hero.line1}</span>
+            {hero.line2 ? (
+              <span className="mt-2 block bg-gradient-to-r from-aia-orange via-[#ff7a3d] to-aia-orange bg-clip-text text-transparent">
+                {hero.line2}
+              </span>
+            ) : null}
           </h1>
-          {hero.lead ? <p className="mt-6 max-w-[44rem] text-[1.05rem] leading-[1.7] text-white/80 md:text-[1.15rem]">{hero.lead}</p> : null}
+          {hero.lead ? (
+            <p className="mt-6 max-w-[46rem] text-[1.08rem] font-light leading-[1.75] text-white/90 md:text-[1.18rem]">
+              {hero.lead}
+            </p>
+          ) : null}
           {status ? <DraftBadge status={status} /> : null}
         </div>
       </div>
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-aia-orange/60 to-transparent" />
     </section>
   );
 }

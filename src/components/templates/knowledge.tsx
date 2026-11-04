@@ -105,41 +105,50 @@ export function CaseStudyPage({
 
       <Container className="py-14 sm:py-20 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.68fr)_minmax(0,0.32fr)] lg:gap-16">
-          <div className="space-y-12">
-            <section aria-labelledby="challenge-heading">
-              <h2 id="challenge-heading" className="display text-[clamp(1.5rem,2.8vw,2rem)] font-extrabold text-aia-navy">
+          <div className="space-y-10">
+            <section aria-labelledby="challenge-heading" className="rounded-2xl border border-aia-line/80 bg-white p-7 sm:p-9 shadow-xs">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="size-2 rounded-full bg-aia-orange" />
+                <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Problem Statement</span>
+              </div>
+              <h2 id="challenge-heading" className="display text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
                 The Challenge
               </h2>
-              <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-orange" />
-              <Paragraphs items={caseStudy.challenge} className="mt-5" />
+              <Paragraphs items={caseStudy.challenge} className="mt-5 text-[1.02rem] leading-[1.8]" />
             </section>
 
-            <section aria-labelledby="approach-heading">
-              <h2 id="approach-heading" className="display text-[clamp(1.5rem,2.8vw,2rem)] font-extrabold text-aia-navy">
+            <section aria-labelledby="approach-heading" className="rounded-2xl border border-aia-line/80 bg-white p-7 sm:p-9 shadow-xs">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="size-2 rounded-full bg-aia-orange" />
+                <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Engineered Solution</span>
+              </div>
+              <h2 id="approach-heading" className="display text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
                 Our Approach
               </h2>
-              <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-orange" />
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-6 space-y-3.5">
                 {caseStudy.approach.map((point) => (
-                  <li key={point} className="flex items-start gap-3">
-                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange" />
-                    <span className="text-[1rem] leading-relaxed text-aia-navy/80">{point}</span>
+                  <li key={point} className="flex items-start gap-3.5">
+                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 rounded-full bg-aia-orange" />
+                    <span className="text-[1.02rem] leading-relaxed text-aia-navy/85">{point}</span>
                   </li>
                 ))}
               </ul>
             </section>
 
             {caseStudy.results?.length > 0 ? (
-              <section aria-labelledby="results-heading">
-                <h2 id="results-heading" className="display text-[clamp(1.5rem,2.8vw,2rem)] font-extrabold text-aia-navy">
+              <section aria-labelledby="results-heading" className="rounded-2xl border border-emerald-500/25 bg-gradient-to-br from-white via-emerald-50/20 to-emerald-50/40 p-7 sm:p-9 shadow-xs">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="size-2 rounded-full bg-emerald-600" />
+                  <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-emerald-800">Verified Outcomes</span>
+                </div>
+                <h2 id="results-heading" className="display text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
                   Results & Operational Impact
                 </h2>
-                <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-orange" />
-                <ul className="mt-5 space-y-3">
+                <ul className="mt-6 space-y-3.5">
                   {caseStudy.results.map((res) => (
-                    <li key={res} className="flex items-start gap-3">
-                      <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-emerald-600" />
-                      <span className="text-[1rem] leading-relaxed text-aia-navy/80">{res}</span>
+                    <li key={res} className="flex items-start gap-3.5">
+                      <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 rounded-full bg-emerald-600" />
+                      <span className="text-[1.02rem] font-medium leading-relaxed text-aia-navy/90">{res}</span>
                     </li>
                   ))}
                 </ul>
@@ -147,18 +156,19 @@ export function CaseStudyPage({
             ) : null}
 
             {caseStudy.pdf ? (
-              <div className="rounded-2xl border border-aia-line bg-aia-surface-soft p-6 sm:p-8">
-                <h3 className="text-[1.1rem] font-bold text-aia-navy">Download Full Case Study</h3>
-                <p className="mt-2 text-[0.92rem] text-aia-navy/70">
-                  Read the complete technical report, metallurgical details, and operating data.
+              <div className="rounded-2xl border border-aia-line/80 bg-aia-surface-soft/80 p-6 sm:p-8">
+                <h3 className="text-[1.15rem] font-bold text-aia-navy">Download Full Technical Case Study</h3>
+                <p className="mt-2 text-[0.94rem] leading-relaxed text-aia-navy/70">
+                  Read the complete metallurgical analysis, circuit operating data, and field engineering notes.
                 </p>
                 <div className="mt-5">
                   <a
                     href={mediaHref(caseStudy.pdf)}
                     download
-                    className="inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full border border-aia-orange bg-aia-orange px-7 text-[14px] leading-8 text-white transition hover:bg-[#d65217] ui-caps"
+                    className="inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full border border-aia-orange bg-aia-orange px-7 text-[14px] leading-8 font-semibold text-white transition hover:bg-[#d65217] shadow-sm"
                   >
-                    Download PDF Report
+                    <span>Download PDF Report</span>
+                    <span aria-hidden>↓</span>
                   </a>
                 </div>
               </div>
@@ -166,39 +176,40 @@ export function CaseStudyPage({
           </div>
 
           <aside className="space-y-8">
-            <div className="rounded-2xl border border-aia-line p-6">
-              <p className="ui-caps tracking-[0.12em] text-aia-navy/55">Operation details</p>
+            <div className="rounded-2xl border border-aia-line/80 bg-white p-6 sm:p-7 shadow-xs">
+              <p className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Operation Profile</p>
               <dl className="mt-4 space-y-4 text-[0.92rem]">
-                <div>
+                <div className="border-b border-aia-line/60 pb-3">
                   <dt className="text-aia-navy/55">Industry</dt>
-                  <dd className="font-semibold capitalize text-aia-navy">{caseStudy.industry.replace("-", " ")}</dd>
+                  <dd className="mt-0.5 font-bold capitalize text-aia-navy">{caseStudy.industry.replace("-", " ")}</dd>
                 </div>
-                <div>
+                <div className="border-b border-aia-line/60 pb-3">
                   <dt className="text-aia-navy/55">Equipment</dt>
-                  <dd className="font-semibold text-aia-navy">{caseStudy.equipment}</dd>
+                  <dd className="mt-0.5 font-bold text-aia-navy">{caseStudy.equipment}</dd>
                 </div>
-                <div>
+                <div className="border-b border-aia-line/60 pb-3">
                   <dt className="text-aia-navy/55">Region</dt>
-                  <dd className="font-semibold text-aia-navy">{caseStudy.region}</dd>
+                  <dd className="mt-0.5 font-bold text-aia-navy">{caseStudy.region}</dd>
                 </div>
                 <div>
                   <dt className="text-aia-navy/55">Published</dt>
-                  <dd className="font-semibold text-aia-navy">{formatDate(caseStudy.publishedAt)}</dd>
+                  <dd className="mt-0.5 font-bold text-aia-navy">{formatDate(caseStudy.publishedAt)}</dd>
                 </div>
               </dl>
             </div>
 
             {related.length ? (
-              <div className="rounded-2xl border border-aia-line p-6">
-                <p className="ui-caps mb-4 tracking-[0.12em] text-aia-navy/55">Related Solutions</p>
+              <div className="rounded-2xl border border-aia-line/80 bg-white p-6 sm:p-7 shadow-xs">
+                <p className="ui-caps mb-4 text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Related Solutions</p>
                 <ul className="space-y-2">
                   {related.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="block rounded-lg px-3 py-2 text-[0.9rem] font-semibold text-aia-navy transition hover:bg-aia-surface-soft hover:text-aia-orange"
+                        className="group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[0.9rem] font-semibold text-aia-navy transition hover:bg-aia-surface-soft hover:text-aia-orange"
                       >
-                        {link.label} →
+                        <span>{link.label}</span>
+                        <span className="text-aia-orange transition-transform duration-200 group-hover:translate-x-1">→</span>
                       </Link>
                     </li>
                   ))}
@@ -206,12 +217,13 @@ export function CaseStudyPage({
               </div>
             ) : null}
 
-            <div className="p-2">
+            <div className="px-2">
               <Link
                 href="/knowledge-hub/case-studies"
-                className="text-[0.9rem] font-semibold text-aia-orange hover:underline"
+                className="inline-flex items-center gap-1.5 text-[0.9rem] font-semibold text-aia-orange hover:underline"
               >
-                ← Back to all case studies
+                <span>←</span>
+                <span>Back to all case studies</span>
               </Link>
             </div>
           </aside>

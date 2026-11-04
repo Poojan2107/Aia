@@ -99,7 +99,7 @@ export function AboutBand() {
             className="pointer-events-none absolute inset-0 z-20 overflow-hidden"
             aria-hidden
           >
-            <div className="absolute left-1/2 top-[46%] flex max-w-[min(100%,92vw)] -translate-x-1/2 -translate-y-1/2 flex-wrap items-baseline justify-center gap-x-[0.35em] text-center lg:max-w-none lg:flex-nowrap lg:gap-x-0 lg:whitespace-nowrap">
+            <div className="absolute left-1/2 top-[46%] flex max-w-[min(100%,92vw)] -translate-x-1/2 -translate-y-1/2 flex-wrap items-baseline justify-center gap-x-[0.38em] text-center lg:max-w-none lg:flex-nowrap lg:gap-x-[0.42em] lg:whitespace-nowrap">
               <span
                 className="display text-[clamp(1.35rem,7vw,5.25rem)] font-extrabold leading-none tracking-normal text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.4)]"
                 style={{
