@@ -44,7 +44,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(process.env.VERCEL ? {} : { output: "standalone" }),
   skipTrailingSlashRedirect: true,
   poweredByHeader: false,
   images: {
