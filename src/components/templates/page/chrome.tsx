@@ -1,0 +1,245 @@
+import Image from "next/image";
+import Link from "next/link";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { AssistChip } from "@/components/ui/AssistChip";
+import { Reveal } from "@/components/ui/Reveal";
+import { JsonLd } from "@/components/seo/JsonLd";
+import type { ContentStatus, Hero, LinkRef, Section } from "@/content/types";
+import { trail, type RouteEntry } from "@/lib/routes";
+import { breadcrumbJsonLd } from "@/lib/seo";
+import { showDraftBadges } from "@/lib/env";
+
+/** Header, footer, assistant chip and breadcrumb structured data around a page. */
+export function PageShell({ route, children }: { route: RouteEntry; children: React.ReactNode }) {
+  return (
+    <>
+      <SiteHeader />
+      <main id="main">{children}</main>
+      <SiteFooter />
+      <AssistChip />
+      {route.id !== "home" ? <JsonLd data={breadcrumbJsonLd(trail(route.id))} /> : null}
+    </>
+  );
+}
+
+export function Breadcrumbs({ route, tone = "light" }: { route: RouteEntry; tone?: "light" | "dark" }) {
+  const items = trail(route.id);
+  const base = tone === "light" ? "text-white/60" : "text-aia-navy/55";
+  const hover = tone === "light" ? "hover:text-white" : "hover:text-aia-orange";
+  return (
+    <nav aria-label="Breadcrumb" className="mb-5">
+      <ol className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.78rem] ${base}`}>
+        {items.map((item, i) => {
+          const last = i === items.length - 1;
+          return (
+            <li key={item.id} className="flex items-center gap-2">
+              {last ? (
+                <span aria-current="page" className={tone === "light" ? "text-white" : "text-aia-navy"}>
+                  {item.navLabel ?? item.title}
+                </span>
+              ) : (
+                <Link href={item.path} className={`transition ${hover}`}>
+                  {item.navLabel ?? item.title}
+                </Link>
+              )}
+              {!last ? <span aria-hidden>/</span> : null}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+export function DraftBadge({ status }: { status: ContentStatus }) {
+  if (status !== "draft" || !showDraftBadges) return null;
+  return (
+    <p className="mt-5 inline-flex rounded-full border border-amber-300/60 bg-amber-200/15 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-amber-200">
+      Draft content: awaiting AIA approval
+    </p>
+  );
+}
+
+export function PageHero({
+  route,
+  hero,
+  status,
+  size = "default",
+}: {
+  route: RouteEntry;
+  hero: Hero;
+  status?: ContentStatus;
+  size?: "default" | "compact";
+}) {
+  const height = size === "compact" ? "min-h-[46vh]" : "min-h-[60vh]";
+  return (
+    <section className={`relative ${height} overflow-hidden bg-aia-navy text-white`} aria-labelledby="page-title">
+      <Image src={hero.image.src} alt={hero.image.alt} fill priority sizes="100vw" className="object-cover object-center" />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.55)_0%,rgba(4,29,44,0.78)_100%)]"
+      />
+      <div className={`page-pad relative z-10 mx-auto flex ${height} max-w-[1440px] flex-col justify-end pb-14 pt-36 sm:pb-16`}>
+        <div className="animate-fade-up max-w-[60rem]">
+          <Breadcrumbs route={route} />
+          {hero.eyebrow ? <p className="mb-3 ui-caps tracking-[0.12em] text-white/60">{hero.eyebrow}</p> : null}
+          <h1 id="page-title" className="display text-[clamp(2.3rem,5.2vw,4.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em]">
+            <span className="block">{hero.line1}</span>
+            {hero.line2 ? <span className="mt-1 block text-aia-orange">{hero.line2}</span> : null}
+          </h1>
+          {hero.lead ? <p className="mt-6 max-w-[44rem] text-[1.05rem] leading-[1.7] text-white/80 md:text-[1.15rem]">{hero.lead}</p> : null}
+          {status ? <DraftBadge status={status} /> : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function Container({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <div className={`page-pad mx-auto max-w-[1440px] ${className}`}>{children}</div>;
+}
+
+export function Paragraphs({ items, className = "" }: { items: string[]; className?: string }) {
+  return (
+    <div className={`space-y-5 ${className}`}>
+      {items.map((text) => (
+        <p key={text} className="text-[1rem] leading-[1.8] text-aia-navy/75 md:text-[1.06rem]">
+          {text}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+export function Bullets({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-3">
+      {items.map((item) => (
+        <li key={item} className="flex items-start gap-3">
+          <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange" />
+          <span className="text-[1rem] leading-relaxed text-aia-navy/80">{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function LinkList({ links }: { links: LinkRef[] }) {
+  return (
+    <ul className="flex flex-wrap gap-3">
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link
+            href={link.href}
+            className="inline-flex rounded-full border border-aia-line px-4 py-2 text-[0.85rem] font-semibold text-aia-navy transition hover:border-aia-orange hover:bg-aia-orange hover:text-white"
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Renders CMS-style sections: heading, paragraphs, bullets, optional image and links. */
+export function Sections({ sections }: { sections: Section[] }) {
+  return (
+    <div className="divide-y divide-aia-line">
+      {sections.map((section, i) => (
+        <section key={section.id} id={section.id} className="scroll-mt-24 py-14 first:pt-0 sm:py-16" aria-labelledby={`${section.id}-h`}>
+          <div className={`grid gap-10 ${section.image ? "lg:grid-cols-[minmax(0,0.55fr)_minmax(0,0.45fr)] lg:gap-16" : ""}`}>
+            <Reveal className={section.image && i % 2 === 1 ? "lg:order-2" : ""}>
+              <h2 id={`${section.id}-h`} className="display text-[clamp(1.6rem,3.2vw,2.5rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-aia-navy">
+                {section.heading}
+              </h2>
+              <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-orange" />
+              <div className="mt-6 max-w-[48rem] space-y-6">
+                {section.body?.length ? <Paragraphs items={section.body} /> : null}
+                {section.bullets?.length ? <Bullets items={section.bullets} /> : null}
+                {section.links?.length ? <LinkList links={section.links} /> : null}
+              </div>
+            </Reveal>
+            {section.image ? (
+              <Reveal delay={80} className={i % 2 === 1 ? "lg:order-1" : ""}>
+                <div className="relative aspect-[16/11] overflow-hidden rounded-[22px] bg-[#e8eaec]">
+                  <Image
+                    src={section.image.src}
+                    alt={section.image.alt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 45vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
+            ) : null}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+export function EmptyState({ title, body, action }: { title: string; body: string; action?: LinkRef }) {
+  return (
+    <div className="rounded-2xl border border-dashed border-aia-line bg-aia-surface-soft px-8 py-14 text-center">
+      <p className="text-[1.15rem] font-bold text-aia-navy">{title}</p>
+      <p className="mx-auto mt-3 max-w-[36rem] text-[0.95rem] leading-[1.7] text-aia-navy/65">{body}</p>
+      {action ? (
+        <Link href={action.href} className="mt-6 inline-flex text-[0.9rem] font-semibold text-aia-orange underline-offset-4 hover:underline">
+          {action.label}
+        </Link>
+      ) : null}
+    </div>
+  );
+}
+
+export function CardGrid({
+  items,
+  columns = 3,
+}: {
+  items: { href: string; title: string; body?: string; meta?: string; image?: { src: string; alt: string } }[];
+  columns?: 2 | 3 | 4;
+}) {
+  const cols = { 2: "md:grid-cols-2", 3: "md:grid-cols-2 lg:grid-cols-3", 4: "sm:grid-cols-2 lg:grid-cols-4" }[columns];
+  return (
+    <ul className={`grid gap-6 ${cols}`}>
+      {items.map((item, i) => (
+        <li key={item.href}>
+          <Reveal delay={(i % 3) * 80} className="h-full">
+            <Link
+              href={item.href}
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-aia-line bg-white transition duration-300 hover:-translate-y-1 hover:border-aia-orange/50 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+            >
+              {item.image ? (
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#e8eaec]">
+                  <Image
+                    src={item.image.src}
+                    alt={item.image.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                  />
+                </div>
+              ) : null}
+              <div className="flex flex-1 flex-col p-6">
+                {item.meta ? (
+                  <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+                    {item.meta}
+                  </p>
+                ) : null}
+                <h3 className="mt-2 text-[1.15rem] font-bold leading-snug text-aia-navy group-hover:text-aia-orange">{item.title}</h3>
+                {item.body ? <p className="mt-3 text-[0.92rem] leading-[1.7] text-aia-navy/65">{item.body}</p> : null}
+                <span aria-hidden className="mt-auto pt-6 text-aia-orange">→</span>
+              </div>
+            </Link>
+          </Reveal>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function formatDate(iso: string) {
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" });
+}
