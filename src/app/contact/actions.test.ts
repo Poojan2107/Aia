@@ -21,6 +21,7 @@ describe("submitContactForm", () => {
 
   afterEach(() => {
     process.env = originalEnv;
+    vi.unstubAllEnvs();
   });
 
   it("silently redirects bot when honeypot bot_trap is filled", async () => {
@@ -47,7 +48,7 @@ describe("submitContactForm", () => {
   });
 
   it("returns an error in production when CONTACT_WEBHOOK_URL is not configured", async () => {
-    process.env.NODE_ENV = "production";
+    vi.stubEnv("NODE_ENV", "production");
     delete process.env.CONTACT_WEBHOOK_URL;
 
     const formData = new FormData();
