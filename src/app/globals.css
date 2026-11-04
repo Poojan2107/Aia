@@ -73,7 +73,7 @@ html[data-theme="blue"] {
   --color-aia-surface-soft: var(--aia-surface-soft);
   --font-display: var(--font-plus-jakarta);
   --font-sans: var(--font-inter);
-  --font-ui: var(--font-inter-ui);
+  --font-ui: var(--font-inter);
   --font-serif: var(--font-instrument);
 }
 
@@ -148,7 +148,7 @@ html[data-theme="blue"] {
     "Neue Haas Grotesk Display", "Helvetica Neue", var(--font-plus-jakarta),
     sans-serif;
   --font-sinteca: "Sinteca", var(--font-inter), sans-serif;
-  --font-ui: var(--font-inter-ui);
+  --font-ui: var(--font-inter);
 }
 
 *,

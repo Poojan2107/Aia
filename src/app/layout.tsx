@@ -8,34 +8,28 @@ import { organizationJsonLd } from "@/lib/seo";
 import { siteUrl } from "@/lib/env";
 import { site } from "@/data/site";
 
+// Inter and Plus Jakarta Sans are variable fonts: one file covers every weight.
 const display = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
 const sans = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const ui = Inter({
-  variable: "--font-inter-ui",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
+// Decorative faces used in single sections: not preloaded, so they never compete with LCP.
 const serif = Instrument_Serif({
   variable: "--font-instrument",
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
   display: "swap",
+  preload: false,
 });
 
 const onest = Onest({
@@ -43,6 +37,7 @@ const onest = Onest({
   subsets: ["latin"],
   weight: ["600"],
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -121,7 +116,7 @@ export default function RootLayout({
       lang="en"
       data-theme="orange"
       suppressHydrationWarning
-      className={`${display.variable} ${sans.variable} ${ui.variable} ${serif.variable} ${onest.variable} h-full`}
+      className={`${display.variable} ${sans.variable} ${serif.variable} ${onest.variable} h-full`}
     >
       <head>
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
