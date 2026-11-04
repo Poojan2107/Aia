@@ -25,7 +25,8 @@ export const explicitLegacyRedirects: RedirectRule[] = [
   { from: "/commitee_of_board/audit-committee", to: "/company/board-committees#audit-committee", status: 301 },
   { from: "/commitee_of_board/nomination-remuneration-committee", to: "/company/board-committees#nomination-remuneration-committee", status: 301 },
   { from: "/commitee_of_board/stakeholders-relationship-committee", to: "/company/board-committees#stakeholders-relationship-committee", status: 301 },
-  { from: "/commitee_of_board/csr-committee", to: "/company/board-committees#csr-committee", status: 301 },
+  { from: "/commitee_of_board/corporate-social-responsibility-committee", to: "/company/board-committees#corporate-social-responsibility-committee", status: 301 },
+  { from: "/commitee_of_board/csr-committee", to: "/company/board-committees#corporate-social-responsibility-committee", status: 301 },
   { from: "/commitee_of_board/risk-management-committee", to: "/company/board-committees#risk-management-committee", status: 301 },
 
   // Directors (canonical and duplicates from WordPress inventory)

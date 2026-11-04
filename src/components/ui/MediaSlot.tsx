@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "@/lib/motion";
 
 type Playback = "ambient" | "click";
 
@@ -54,11 +55,7 @@ export function MediaSlot({
   const [videoReady, setVideoReady] = useState(false);
   const [internalActive, setInternalActive] = useState(false);
   const [started, setStarted] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
+  const reducedMotion = useReducedMotion();
 
   const isActive = active ?? internalActive;
   const allowAmbient = Boolean(src) && !clickMode && !reducedMotion;

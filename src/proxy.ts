@@ -5,24 +5,40 @@ import { legacyRedirects, type RedirectRule } from "@/lib/redirects/legacy";
 
 const redirectMap = new Map<string, RedirectRule>();
 
-function normalisePath(raw: string) {
-  const decoded = decodeURIComponent(raw).trim().toLowerCase();
-  if (decoded === "/" || decoded === "") return "/";
-  return decoded.replace(/\/+$/, "");
+function safeDecode(raw: string): string | null {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+}
+
+function normalisePath(decoded: string) {
+  const trimmed = decoded.trim().toLowerCase();
+  if (trimmed === "/" || trimmed === "") return "/";
+  return trimmed.replace(/\/+$/, "");
 }
 
 for (const rule of legacyRedirects) {
-  redirectMap.set(normalisePath(rule.from), rule);
+  const decoded = safeDecode(rule.from) ?? rule.from;
+  redirectMap.set(normalisePath(decoded), rule);
 }
 
 const LOCALE_REGEX = /^\/(cn|fr|ru|es)(\/.*)?$/i;
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const normalised = normalisePath(pathname);
+  const decoded = safeDecode(pathname);
+
+  // Return 400 Bad Request on malformed URI escape sequences instead of 500 crash
+  if (decoded === null) {
+    return new NextResponse("Bad Request: Malformed URI", { status: 400 });
+  }
+
+  const normalised = normalisePath(decoded);
 
   // 1. Language copies (/cn/..., /fr/..., /ru/..., /es/...): 302 to English equivalent
-  const localeMatch = pathname.match(LOCALE_REGEX);
+  const localeMatch = decoded.match(LOCALE_REGEX);
   if (localeMatch) {
     const rawEnglishPath = localeMatch[2] || "/";
     const englishNormalised = normalisePath(rawEnglishPath);
@@ -33,7 +49,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 302);
   }
 
-  // 2. Legacy redirects (Phase 2 mapping)
+  // 2. Legacy redirects (Phase 2 mapping) — handles trailing slash in a single hop
   const legacyMatch = redirectMap.get(normalised);
   if (legacyMatch) {
     if (legacyMatch.status === 410) {
@@ -44,7 +60,14 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url, legacyMatch.status);
   }
 
-  // 3. Home-only preview guard
+  // 3. Normalise trailing slash on canonical routes (308 permanent redirect)
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    const url = new URL(normalised, request.url);
+    url.search = request.nextUrl.search;
+    return NextResponse.redirect(url, 308);
+  }
+
+  // 4. Home-only preview guard
   if (homeOnly) {
     if (pathname === "/" || pathname === "") {
       return NextResponse.next();

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "@/lib/motion";
 
 type Props = {
   value: string;
@@ -41,30 +42,19 @@ export function CountUp({
   play,
 }: Props) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [shown, setShown] = useState(() => format(value, 0));
-  const [started, setStarted] = useState(false);
+  const reduced = useReducedMotion();
+  const [inView, setInView] = useState(false);
+  const [shown, setShown] = useState(() => (reduced ? value : format(value, 0)));
 
+  // Intersection observer when play is not controlled by parent
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setShown(value);
-      return;
-    }
-    if (play === false) {
-      setStarted(false);
-      setShown(format(value, 0));
-      return;
-    }
-    if (play === true) {
-      setStarted(true);
-      return;
-    }
+    if (reduced || play !== undefined) return;
     const el = ref.current;
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setStarted(true);
+          setInView(true);
           io.disconnect();
         }
       },
@@ -72,15 +62,15 @@ export function CountUp({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [value, play]);
+  }, [reduced, play]);
+
+  const active = play ?? inView;
 
   useEffect(() => {
-    if (!started) return;
+    if (!active || reduced) return;
     const parts = split(value);
-    if (!parts || !Number.isFinite(parts.target)) {
-      setShown(value);
-      return;
-    }
+    if (!parts || !Number.isFinite(parts.target)) return;
+
     let frame = 0;
     let start = 0;
     const wait = window.setTimeout(() => {
@@ -93,15 +83,16 @@ export function CountUp({
       };
       frame = requestAnimationFrame(tick);
     }, delay);
+
     return () => {
       window.clearTimeout(wait);
       cancelAnimationFrame(frame);
     };
-  }, [started, value, duration, delay]);
+  }, [active, reduced, value, duration, delay]);
 
   return (
     <span ref={ref} className={`tabular-nums ${className}`}>
-      {shown}
+      {reduced ? value : shown}
     </span>
   );
 }

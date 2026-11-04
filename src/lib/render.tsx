@@ -62,7 +62,7 @@ const solutionContentMap = {
   "thermal-power": { content: thermalSolutions, label: "Thermal Power Solutions", industry: "thermal-power" },
 };
 
-export function renderRoute(route: RouteEntry, searchParams?: { industry?: string }) {
+export function renderRoute(route: RouteEntry) {
   let content: React.ReactNode;
 
   switch (route.template) {
@@ -257,7 +257,7 @@ export function renderRoute(route: RouteEntry, searchParams?: { industry?: strin
     }
 
     case "contact": {
-      content = <ContactPage route={route} initialIndustry={searchParams?.industry} />;
+      content = <ContactPage route={route} />;
       break;
     }
 

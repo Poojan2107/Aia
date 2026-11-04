@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
+import { useReducedMotion } from "@/lib/motion";
 
 type Props = {
   children: ReactNode;
@@ -20,20 +21,13 @@ export function Reveal({
   from = "up",
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
-  const [inView, setInView] = useState(true);
+  const reduced = useReducedMotion();
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setInView(true);
-      return;
-    }
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 100 && rect.bottom > -100) {
-      setInView(true);
-    }
+    if (!el || reduced) return;
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -45,14 +39,15 @@ export function Reveal({
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [reduced]);
 
   const Comp = Tag as ElementType;
+  const isVisible = reduced || inView;
 
   return (
     <Comp
       ref={ref}
-      className={`reveal ${from === "right" ? "from-right" : ""} ${inView ? "is-in" : ""} ${className}`}
+      className={`reveal ${from === "right" ? "from-right" : ""} ${isVisible ? "is-in" : ""} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

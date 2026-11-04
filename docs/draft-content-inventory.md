@@ -80,3 +80,4 @@ This inventory lists all content items currently marked with `status: "draft"` a
 | Careers | Forging Consultant | `draft` | Consultancy engagement scope |
 | Legal | Terms of Use (`/policies`) | `draft` | Terms to be approved by Legal (REQ-63) |
 | Legal | Privacy Policy (`/privacy-policy`) | `draft` | DPDP Act compliance review |
+

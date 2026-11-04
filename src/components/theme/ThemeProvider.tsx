@@ -6,13 +6,12 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import {
   THEME_STORAGE_KEY,
   type ThemeId,
-  isThemeId,
   resolveTheme,
 } from "@/lib/theme";
 
@@ -24,24 +23,48 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function applyTheme(theme: ThemeId) {
-  document.documentElement.dataset.theme = theme;
+  if (typeof document !== "undefined") {
+    document.documentElement.dataset.theme = theme;
+  }
+}
+
+function subscribeTheme(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("storage", callback);
+  window.addEventListener("popstate", callback);
+  window.addEventListener("themechange", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("popstate", callback);
+    window.removeEventListener("themechange", callback);
+  };
+}
+
+function getThemeSnapshot(): ThemeId {
+  if (typeof window === "undefined") return "orange";
+  const params = new URLSearchParams(window.location.search);
+  return resolveTheme(
+    params.get("theme"),
+    window.localStorage.getItem(THEME_STORAGE_KEY),
+  );
+}
+
+function getThemeServerSnapshot(): ThemeId {
+  return "orange";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>("orange");
+  const theme = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    getThemeServerSnapshot,
+  );
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const next = resolveTheme(
-      params.get("theme"),
-      window.localStorage.getItem(THEME_STORAGE_KEY),
-    );
-    setThemeState(next);
-    applyTheme(next);
-  }, []);
+    applyTheme(theme);
+  }, [theme]);
 
   const setTheme = useCallback((next: ThemeId) => {
-    setThemeState(next);
     applyTheme(next);
     window.localStorage.setItem(THEME_STORAGE_KEY, next);
 
@@ -52,19 +75,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       url.searchParams.set("theme", next);
     }
     window.history.replaceState({}, "", url.toString());
-  }, []);
-
-  useEffect(() => {
-    const onPopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      const fromUrl = params.get("theme");
-      if (isThemeId(fromUrl)) {
-        setThemeState(fromUrl);
-        applyTheme(fromUrl);
-      }
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
+    window.dispatchEvent(new Event("themechange"));
   }, []);
 
   const value = useMemo(() => ({ theme, setTheme }), [theme, setTheme]);

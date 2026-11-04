@@ -10,7 +10,7 @@ import {
 import { industries } from "@/data/industries";
 import { IndustryCopy, IndustryMill } from "@/components/home/ModelShowcase";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { prefersReducedMotion } from "@/lib/motion";
+import { useReducedMotion } from "@/lib/motion";
 
 const COUNT = industries.length;
 const SEGMENTS = Math.max(1, COUNT - 1);
@@ -271,14 +271,10 @@ function IndustryStackDesktop({
  * Stacked cards below lg — no JS breakpoint needed.
  */
 export function IndustryStack() {
-  const [reduced, setReduced] = useState(false);
+  const reduced = useReducedMotion();
   const [focusById, setFocusById] = useState<Record<string, string | null>>(
     () => Object.fromEntries(industries.map((industry) => [industry.id, null])),
   );
-
-  useEffect(() => {
-    setReduced(prefersReducedMotion());
-  }, []);
 
   return (
     <>

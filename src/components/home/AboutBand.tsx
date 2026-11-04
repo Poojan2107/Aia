@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { footprint } from "@/data/site";
 import { CountUp } from "@/components/ui/CountUp";
 import { media } from "@/data/media";
 import { assets } from "@/data/assets";
-import { prefersReducedMotion, useScrollProgress } from "@/lib/motion";
+import { useReducedMotion, useScrollProgress } from "@/lib/motion";
 import { Reveal } from "@/components/ui/Reveal";
 
 function clamp01(n: number) {
@@ -26,11 +26,9 @@ export function AboutBand() {
   const track = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const progress = useScrollProgress(track);
-  const [reduced, setReduced] = useState(false);
+  const reduced = useReducedMotion();
 
-  useEffect(() => {
-    setReduced(prefersReducedMotion());
-  }, []);
+
 
   useEffect(() => {
     const video = videoRef.current;

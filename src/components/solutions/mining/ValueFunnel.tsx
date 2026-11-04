@@ -52,10 +52,9 @@ function HoverInfographic({ item }: { item: Offering }) {
   const [drawn, setDrawn] = useState(false);
 
   useEffect(() => {
-    setDrawn(false);
     const frame = requestAnimationFrame(() => setDrawn(true));
     return () => cancelAnimationFrame(frame);
-  }, [item.label]);
+  }, []);
 
   const r = 38;
   const length = Math.PI * r;
@@ -462,7 +461,7 @@ export function ValueFunnel() {
                 For clients
               </p>
             </div>
-            {active ? <HoverInfographic item={active} /> : null}
+            {active ? <HoverInfographic key={active.label} item={active} /> : null}
           </div>
         </div>
 

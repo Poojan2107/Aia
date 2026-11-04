@@ -1,8 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { Suspense, useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ENQUIRY_TYPES, submitContactForm, type ActionState, type EnquiryType } from "@/app/contact/actions";
+import { submitContactForm, type ActionState } from "@/app/contact/actions";
+import { ENQUIRY_TYPES, type EnquiryType } from "@/content/contact";
 
 const industryMap: Record<string, EnquiryType> = {
   mining: "Mining",
@@ -15,8 +17,13 @@ const industryMap: Record<string, EnquiryType> = {
   careers: "Careers",
 };
 
-export function ContactForm({ initialIndustry }: { initialIndustry?: string }) {
-  const defaultType = initialIndustry ? industryMap[initialIndustry.toLowerCase()] || "General" : "General";
+function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
+  const searchParams = useSearchParams();
+  const queryParam = searchParams?.get("industry") || undefined;
+  const effectiveIndustry = queryParam ?? initialIndustry;
+  const defaultType = effectiveIndustry
+    ? industryMap[effectiveIndustry.toLowerCase()] || "General"
+    : "General";
 
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
     submitContactForm,
@@ -258,6 +265,35 @@ export function ContactForm({ initialIndustry }: { initialIndustry?: string }) {
         </button>
       </div>
     </form>
+  );
+}
+
+function ContactFormFallback() {
+  return (
+    <div className="space-y-6 animate-pulse" aria-hidden="true">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="h-12 rounded-xl bg-aia-navy/5" />
+        <div className="h-12 rounded-xl bg-aia-navy/5" />
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="h-12 rounded-xl bg-aia-navy/5" />
+        <div className="h-12 rounded-xl bg-aia-navy/5" />
+      </div>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="h-12 rounded-xl bg-aia-navy/5" />
+        <div className="h-12 rounded-xl bg-aia-navy/5" />
+      </div>
+      <div className="h-28 rounded-xl bg-aia-navy/5" />
+      <div className="h-12 w-48 rounded-full bg-aia-navy/10" />
+    </div>
+  );
+}
+
+export function ContactForm({ initialIndustry }: { initialIndustry?: string }) {
+  return (
+    <Suspense fallback={<ContactFormFallback />}>
+      <ContactFormFields initialIndustry={initialIndustry} />
+    </Suspense>
   );
 }
 

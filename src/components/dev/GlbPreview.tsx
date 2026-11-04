@@ -19,13 +19,15 @@ const MODEL_VIEWER_SRC =
 
 export function GlbPreview({ models }: Props) {
   const [activeId, setActiveId] = useState(models[0]?.id ?? "");
-  const [scriptReady, setScriptReady] = useState(false);
+  const [scriptReady, setScriptReady] = useState(() => {
+    if (typeof window === "undefined" || typeof customElements === "undefined") return false;
+    return Boolean(customElements.get("model-viewer"));
+  });
   const [loadError, setLoadError] = useState<string | null>(null);
   const active = models.find((m) => m.id === activeId) ?? models[0];
 
   useEffect(() => {
-    if (customElements.get("model-viewer")) {
-      setScriptReady(true);
+    if (typeof customElements !== "undefined" && customElements.get("model-viewer")) {
       return;
     }
 
@@ -33,8 +35,9 @@ export function GlbPreview({ models }: Props) {
       `script[data-model-viewer="aia"]`,
     );
     if (existing) {
-      existing.addEventListener("load", () => setScriptReady(true));
-      return;
+      const onLoad = () => setScriptReady(true);
+      existing.addEventListener("load", onLoad);
+      return () => existing.removeEventListener("load", onLoad);
     }
 
     const script = document.createElement("script");

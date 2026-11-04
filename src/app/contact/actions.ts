@@ -3,18 +3,9 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { z } from "zod";
+import { ENQUIRY_TYPES, type EnquiryType } from "@/content/contact";
 
-export const ENQUIRY_TYPES = [
-  "Mining",
-  "Cement",
-  "Quarry",
-  "Thermal Power",
-  "Investor Relations",
-  "Careers",
-  "General",
-] as const;
-
-export type EnquiryType = (typeof ENQUIRY_TYPES)[number];
+export type { EnquiryType };
 
 const ContactSchema = z.object({
   name: z.string().trim().min(2, "Please enter your full name."),
@@ -29,7 +20,7 @@ const ContactSchema = z.object({
   consent: z.literal("on", {
     message: "Please accept the data processing terms.",
   }),
-  bot_trap: z.string().max(0, "Submission rejected.").optional().or(z.literal("")),
+  bot_trap: z.string().optional(),
 });
 
 export type ActionState = {
@@ -58,6 +49,12 @@ export async function submitContactForm(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  // Silent spam trap: if honeypot is filled, redirect to thank-you immediately without processing
+  const botTrap = formData.get("bot_trap");
+  if (botTrap && typeof botTrap === "string" && botTrap.trim().length > 0) {
+    redirect("/contact/thank-you");
+  }
+
   const headerList = await headers();
   const ip =
     headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -101,11 +98,6 @@ export async function submitContactForm(
 
   const data = parsed.data;
 
-  // Bot trap triggered silently
-  if (data.bot_trap) {
-    redirect("/contact/thank-you");
-  }
-
   // Route by enquiry type using env CONTACT_ROUTE_<TYPE> mailboxes (REQ-59)
   const envKey = `CONTACT_ROUTE_${data.enquiryType.toUpperCase().replace(/\s+/g, "_")}`;
   const routeMailbox =
@@ -114,7 +106,7 @@ export async function submitContactForm(
   const webhookUrl = process.env.CONTACT_WEBHOOK_URL;
   if (webhookUrl) {
     try {
-      await fetch(webhookUrl, {
+      const res = await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -124,18 +116,33 @@ export async function submitContactForm(
           ip,
         }),
       });
+      if (!res.ok) {
+        throw new Error(`Webhook responded with status ${res.status}`);
+      }
     } catch (err) {
-      console.error("Failed to forward contact submission to webhook:", err);
+      console.error(
+        "Failed to forward contact submission to webhook:",
+        err instanceof Error ? err.message : err,
+      );
+      return {
+        success: false,
+        message:
+          "We were unable to process your enquiry at this moment. Please try again or email us directly at info@aiaengineering.com.",
+      };
     }
+  } else if (process.env.NODE_ENV === "production") {
+    console.error("Contact form error: CONTACT_WEBHOOK_URL is not configured.");
+    return {
+      success: false,
+      message:
+        "Contact form submission is currently unavailable. Please email us directly at info@aiaengineering.com.",
+    };
   } else {
-    console.log("[Contact Submission Received]", {
-      name: data.name,
+    // Non-production development log (no sensitive PII logged in production)
+    console.log("[Contact Submission Received - Dev Mode]", {
       company: data.company,
-      email: data.email,
-      phone: data.phone,
       country: data.country,
       enquiryType: data.enquiryType,
-      message: data.message,
       routeMailbox,
     });
   }

@@ -12,13 +12,7 @@ const contactHero = {
   image: { src: "/images/hero-plate.jpg", alt: "AIA Engineering corporate and manufacturing support" },
 };
 
-export function ContactPage({
-  route,
-  initialIndustry,
-}: {
-  route: RouteEntry;
-  initialIndustry?: string;
-}) {
+export function ContactPage({ route }: { route: RouteEntry }) {
   return (
     <>
       <PageHero route={route} hero={contactHero} status="approved" size="compact" />
@@ -34,7 +28,7 @@ export function ContactPage({
               Complete the form below and the appropriate application engineering or corporate team will respond within two business days.
             </p>
             <div className="mt-8 rounded-2xl border border-aia-line bg-aia-surface-soft p-6 sm:p-10">
-              <ContactForm initialIndustry={initialIndustry} />
+              <ContactForm />
             </div>
           </div>
 

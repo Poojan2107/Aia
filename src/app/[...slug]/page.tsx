@@ -16,7 +16,6 @@ export async function generateStaticParams() {
 
 type Props = {
   params: Promise<{ slug: string[] }>;
-  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -28,9 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return metadataFor(route);
 }
 
-export default async function DynamicRoutePage({ params, searchParams }: Props) {
+export default async function DynamicRoutePage({ params }: Props) {
   const { slug } = await params;
-  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const path = "/" + slug.join("/");
   const route = routeByPath(path);
 
@@ -38,8 +36,5 @@ export default async function DynamicRoutePage({ params, searchParams }: Props) 
     notFound();
   }
 
-  const industry =
-    typeof resolvedSearchParams?.industry === "string" ? resolvedSearchParams.industry : undefined;
-
-  return renderRoute(route, { industry });
+  return renderRoute(route);
 }
