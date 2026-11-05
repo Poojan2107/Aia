@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { href } from "@/lib/routes";
 
 /**
@@ -67,7 +68,7 @@ export function Technology() {
 
       <div className="tech2-rows">
         {capabilities.map((cap, i) => (
-          <Reveal key={cap.id} as="article" className={`tech2-row ${i % 2 === 1 ? "is-flipped" : ""}`}>
+          <ScrollReveal key={cap.id} as="article" className={`tech2-row ${i % 2 === 1 ? "is-flipped" : ""}`}>
             <div className="tech2-media">
               <Image src={cap.image} alt={cap.alt} fill sizes="(max-width: 1024px) 92vw, 50vw" className="object-cover" />
             </div>
@@ -76,7 +77,7 @@ export function Technology() {
               <h3 className="tech2-title">{cap.title}</h3>
               <p className="tech2-row-body">{cap.body}</p>
             </div>
-          </Reveal>
+          </ScrollReveal>
         ))}
       </div>
     </section>

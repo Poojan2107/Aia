@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Hero } from "@/components/home/Hero";
 import { AiaVegaGlobeSection } from "@/components/home/AiaVegaGlobeSection";
 import { IndustryPanels } from "@/components/home/IndustryPanels";
+import { Materials } from "@/components/home/Materials";
 import { Services } from "@/components/home/Services";
 import { Technology } from "@/components/home/Technology";
 import { AboutBand } from "@/components/home/AboutBand";
@@ -30,6 +31,7 @@ export default function HomePage() {
         <Hero />
         <AiaVegaGlobeSection />
         <IndustryPanels />
+        <Materials />
         <Services />
         <Technology />
         <AboutBand />
