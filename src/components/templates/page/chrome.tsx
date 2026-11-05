@@ -98,7 +98,7 @@ export function PageHero({
           <h1 id="page-title" className="display text-[clamp(2.3rem,5.2vw,4.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em]">
             <span className="block text-white">{hero.line1}</span>
             {hero.line2 ? (
-              <span className="mt-2 block bg-gradient-to-r from-aia-accent via-[#ff7a3d] to-aia-accent bg-clip-text text-transparent">
+              <span className="mt-2 block bg-gradient-to-r from-aia-accent via-[#7dd3fc] to-aia-accent bg-clip-text text-transparent">
                 {hero.line2}
               </span>
             ) : null}

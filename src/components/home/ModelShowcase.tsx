@@ -200,7 +200,7 @@ export function IndustryMill({
                         ? "var(--aia-accent)"
                         : point.tone === "slate"
                           ? "#2a3238"
-                          : "#f0c424"
+                          : "var(--aia-accent)"
                     }
                     strokeWidth="1.15"
                     style={{ ["--i" as string]: i }}

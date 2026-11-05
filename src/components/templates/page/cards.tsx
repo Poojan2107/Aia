@@ -60,7 +60,7 @@ export function CardGrid({
               ) : (
                 <div
                   aria-hidden
-                  className="h-1.5 w-full bg-gradient-to-r from-aia-navy/30 via-aia-accent to-aia-navy/30 transition-all duration-300 group-hover:from-aia-accent group-hover:via-[#ff7a3d] group-hover:to-aia-accent"
+                  className="h-1.5 w-full bg-gradient-to-r from-aia-navy/30 via-aia-accent to-aia-navy/30 transition-all duration-300 group-hover:from-aia-accent group-hover:via-[#7dd3fc] group-hover:to-aia-accent"
                 />
               )}
               <div className="flex flex-1 flex-col p-6 sm:p-7">
