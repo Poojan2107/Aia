@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { href } from "@/lib/routes";
 
 /**
  * "Solutions by industry" — Figma 01Homepage (node 611:1848).
- * Centred intro, then four full-bleed photo panels (1920×1080) that stack as
- * the page scrolls: index, large title over a hairline, lead copy, an Explore
- * pill, and thumbnails linking to the other three industries.
+ * One pinned 100vh stage. As the visitor scrolls, the next industry's photo
+ * wipes up from the bottom with parallax; when its edge crosses the fixed
+ * split line, the copy hands over (old title lifts out, new one rises in).
  */
 
 type Industry = {
@@ -31,24 +31,59 @@ const industries: Industry[] = [
   { id: "thermal", index: "04", name: "Thermal", lead: ["Wear solutions for", "demanding coal", "grinding applications."], cta: "Explore thermal", route: "thermal-power", photo: "/images/design/ind-thermal.jpg", alt: "Thermal power station with cooling towers" },
 ];
 
-/** Drives --p (0→1 while a panel is on screen) for the photo zoom and text reveal. */
-function usePanelProgress(ref: React.RefObject<HTMLElement | null>) {
+/** Split line position as a fraction of the stage height (Figma: 426 / 1073). */
+const SPLIT = 0.4;
+const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
+
+export function IndustryPanels() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const layerRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const imgRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [active, setActive] = useState(0);
+
   useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el?.style.setProperty("--p", "1");
-      el?.classList.add("is-in");
-      return;
-    }
+    const track = trackRef.current;
+    if (!track) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
+    let last = -1;
+
     const update = () => {
       raf = 0;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 1.6)));
-      el.style.setProperty("--p", p.toFixed(3));
-      if (r.top < vh * 0.55) el.classList.add("is-in");
+      const r = track.getBoundingClientRect();
+      const range = Math.max(1, r.height - window.innerHeight);
+      // 0 → n-1 across the track; each unit is one industry handover.
+      const p = clamp01(-r.top / range) * (industries.length - 1);
+
+      industries.forEach((_, i) => {
+        const layer = layerRefs.current[i];
+        const img = imgRefs.current[i];
+        if (!layer || !img) return;
+        if (i === 0) {
+          // Base layer: slow drift while it is the visible photo.
+          img.style.transform = reduced ? "" : `translate3d(0, ${(-clamp01(p) * 6).toFixed(2)}%, 0) scale(1.12)`;
+          return;
+        }
+        const local = clamp01(p - (i - 1)); // 0 = waiting below, 1 = fully in
+        const wipe = reduced ? (local >= 1 - SPLIT ? 1 : 0) : ease(local);
+        layer.style.clipPath = `inset(${((1 - wipe) * 100).toFixed(2)}% 0 0 0)`;
+        // Parallax: the incoming photo travels slower than its wipe edge.
+        img.style.transform = reduced ? "" : `translate3d(0, ${((1 - wipe) * 22 - clamp01(p - i) * 6).toFixed(2)}%, 0) scale(1.12)`;
+      });
+
+      // Copy hands over when the incoming wipe edge crosses the split line.
+      let next = 0;
+      for (let i = 1; i < industries.length; i++) {
+        if (ease(clamp01(p - (i - 1))) >= 1 - SPLIT) next = i;
+      }
+      if (next !== last) {
+        last = next;
+        setActive(next);
+      }
+      track.style.setProperty("--ind-progress", (p / (industries.length - 1)).toFixed(4));
     };
+
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
@@ -60,54 +95,10 @@ function usePanelProgress(ref: React.RefObject<HTMLElement | null>) {
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [ref]);
-}
+  }, []);
 
-function Panel({ industry, z }: { industry: Industry; z: number }) {
-  const ref = useRef<HTMLElement>(null);
-  usePanelProgress(ref);
-  const others = industries.filter((i) => i.id !== industry.id);
-  const titleId = `inds-${industry.id}`;
+  const current = industries[active];
 
-  return (
-    <article ref={ref} className="inds-panel" style={{ zIndex: z }} aria-labelledby={titleId}>
-      <div className="inds-photo">
-        <Image src={industry.photo} alt={industry.alt} fill sizes="100vw" className="object-cover" priority={z === 1} />
-      </div>
-      <div aria-hidden className="inds-shade" />
-      <div className="inds-content">
-        <p className="inds-index inds-rise" style={{ "--d": "0ms" } as React.CSSProperties}>{industry.index}</p>
-        <span aria-hidden className="inds-rule" />
-        <div className="inds-row">
-          <h3 id={titleId} className="inds-title inds-rise" style={{ "--d": "80ms" } as React.CSSProperties}>{industry.name}</h3>
-          <div className="inds-side inds-rise" style={{ "--d": "180ms" } as React.CSSProperties}>
-            <p className="inds-lead">
-              {industry.lead.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
-            </p>
-            <Link href={href(industry.route)} className="inds-cta" data-magnetic="">
-              <span aria-hidden className="inds-cta-dot" />
-              {industry.cta}
-            </Link>
-          </div>
-        </div>
-        <ul className="inds-thumbs inds-rise" style={{ "--d": "280ms" } as React.CSSProperties} aria-label="Other industries">
-          {others.map((o) => (
-            <li key={o.id}>
-              <Link href={href(o.route)} className="inds-thumb" aria-label={`${o.name} solutions`}>
-                <Image src={o.photo} alt="" fill sizes="172px" className="object-cover" />
-                <span className="inds-thumb-label">{o.name}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </article>
-  );
-}
-
-export function IndustryPanels() {
   return (
     <section id="solutions" aria-labelledby="industries-heading" className="inds">
       <div className="inds-intro">
@@ -116,10 +107,85 @@ export function IndustryPanels() {
           Explore solutions for Mining, Cement, Quarry and Thermal Power applications.
         </h2>
       </div>
-      <div className="inds-stack">
-        {industries.map((industry, i) => (
-          <Panel key={industry.id} industry={industry} z={i + 1} />
-        ))}
+
+      <div ref={trackRef} className="inds-track" style={{ height: `${industries.length * 100}svh` }}>
+        <div className="inds-stage">
+          {industries.map((ind, i) => (
+            <div
+              key={ind.id}
+              ref={(el) => {
+                layerRefs.current[i] = el;
+              }}
+              className="inds-layer"
+              style={i === 0 ? undefined : { clipPath: "inset(100% 0 0 0)" }}
+              aria-hidden={i !== active}
+            >
+              <div
+                ref={(el) => {
+                  imgRefs.current[i] = el;
+                }}
+                className="inds-layer-img"
+              >
+                <Image src={ind.photo} alt={i === active ? ind.alt : ""} fill sizes="100vw" className="object-cover" priority={i === 0} />
+              </div>
+            </div>
+          ))}
+          <div aria-hidden className="inds-shade" />
+
+          <div className="inds-content">
+            <div className="inds-index-row">
+              <span className="inds-index-window" aria-hidden>
+                {industries.map((ind, i) => (
+                  <span key={ind.id} className={`inds-swap ${i === active ? "is-on" : i < active ? "is-past" : ""}`}>
+                    {ind.index}
+                  </span>
+                ))}
+              </span>
+              <span className="inds-count" aria-hidden>
+                / 0{industries.length}
+              </span>
+            </div>
+            <span aria-hidden className="inds-rule">
+              <span className="inds-rule-fill" />
+            </span>
+            <div className="inds-row">
+              <h3 className="inds-title-window" aria-live="polite">
+                {industries.map((ind, i) => (
+                  <span key={ind.id} className={`inds-title inds-swap ${i === active ? "is-on" : i < active ? "is-past" : ""}`} aria-hidden={i !== active}>
+                    {ind.name}
+                  </span>
+                ))}
+              </h3>
+              <div className="inds-side">
+                <div className="inds-lead-window">
+                  {industries.map((ind, i) => (
+                    <p key={ind.id} className={`inds-lead inds-fade ${i === active ? "is-on" : ""}`} aria-hidden={i !== active}>
+                      {ind.lead.map((line) => (
+                        <span key={line}>{line}</span>
+                      ))}
+                    </p>
+                  ))}
+                </div>
+                <Link href={href(current.route)} className="inds-cta" data-magnetic="">
+                  <span aria-hidden className="inds-cta-dot" />
+                  <span key={current.id} className="inds-cta-label">
+                    {current.cta}
+                  </span>
+                </Link>
+              </div>
+            </div>
+            <ul className="inds-thumbs" aria-label="All industries">
+              {industries.map((ind, i) => (
+                <li key={ind.id}>
+                  <Link href={href(ind.route)} className={`inds-thumb ${i === active ? "is-on" : ""}`} aria-label={`${ind.name} solutions`}>
+                    <Image src={ind.photo} alt="" fill sizes="172px" className="object-cover" />
+                    <span className="inds-thumb-label">{ind.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

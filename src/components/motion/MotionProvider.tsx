@@ -33,7 +33,8 @@ function prefersReducedMotion() {
 }
 
 function setupLenis() {
-  const instance = new Lenis({ lerp: 0.1, wheelMultiplier: 0.9, anchors: { offset: -80 }, autoRaf: false });
+  // Slightly lower lerp = silkier glide; touch keeps native momentum.
+  const instance = new Lenis({ lerp: 0.085, wheelMultiplier: 1, touchMultiplier: 1, syncTouch: false, anchors: { offset: -80 }, autoRaf: false });
   lenis = instance;
   instance.on("scroll", ScrollTrigger.update);
   const raf = (time: number) => instance.raf(time * 1000);

@@ -183,21 +183,21 @@ const CHAPTERS = [
     id: "engineered",
     kicker: "01 / AIA Engineering",
     title: "Engineered in India.",
-    body: "Four decades of metallurgy, design and manufacturing in Ahmedabad and Bengaluru turn wear science into high-chrome castings, liners and grinding media.",
+    body: "Four decades of metallurgy, design and manufacturing in Ahmedabad and Bengaluru, turning wear science into high-chrome castings, liners and media.",
     stat: { value: "45+", label: "Years of wear engineering" },
   },
   {
     id: "delivered",
     kicker: "02 / Vega Industries",
     title: "Delivered by Vega.",
-    body: "Vega Industries, AIA's wholly owned subsidiary, takes that engineering to mine sites worldwide through service centres and offices on every mining continent.",
+    body: "Vega Industries, AIA's wholly owned subsidiary, takes that engineering to mine sites on every mining continent.",
     stat: { value: "10+", label: "Global service centres" },
   },
   {
     id: "network",
     kicker: "03 / One network",
     title: "One partner, 120+ countries.",
-    body: "Manufacturing depth from AIA and field support from Vega work as one team, from first design to the last reline.",
+    body: "AIA's manufacturing depth and Vega's field support work as one team, from first design to the last reline.",
     stat: { value: "120+", label: "Countries served" },
   },
 ] as const;
@@ -263,6 +263,22 @@ const subscribeDesktop = (cb: () => void) => {
   return () => mq.removeEventListener("change", cb);
 };
 
+/** Beam from a partner card into the globe; draws in with --draw (0–1). */
+function Beam({ side, on, pulse }: { side: "aia" | "vega"; on: boolean; pulse: boolean }) {
+  const d = side === "aia" ? "M 120 50 C 420 50, 640 18, 1000 50" : "M 880 50 C 580 50, 360 18, 0 50";
+  return (
+    <svg className={`globe-beam is-${side} ${on ? "is-on" : ""} ${pulse ? "is-pulse" : ""}`} viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden>
+      <path d={d} className="globe-beam-track" pathLength={1} />
+      <path d={d} className="globe-beam-line" pathLength={1} />
+      {on ? (
+        <circle r="5" className="globe-beam-spark">
+          <animateMotion dur="2.4s" repeatCount="indefinite" path={d} />
+        </circle>
+      ) : null}
+    </svg>
+  );
+}
+
 export function AiaVegaGlobeSection() {
   const desktop = React.useSyncExternalStore(subscribeDesktop, () => window.matchMedia(desktopQuery).matches, () => true);
   const trackRef = React.useRef<HTMLDivElement>(null);
@@ -280,57 +296,77 @@ export function AiaVegaGlobeSection() {
   return (
     <section id="collaboration" className="globe-story" aria-labelledby="globe-story-heading">
       <div ref={trackRef} className="globe-track">
-        <div className="globe-stage">
-          <div className="globe-canvas">
-            <MeridianGlobe
-              style={{ width: "100%", height: "100%" }}
-              width="100%"
-              height="100%"
-              theme="custom"
-              palette={{
-                accent: "rgb(0, 110, 255)",
-                accentInk: "rgb(255, 255, 255)",
-                backdrop: "rgb(255, 255, 255)",
-                backFade: 0.1,
-                ink: "rgb(100, 116, 139)",
-                labelFill: "rgb(4, 29, 44)",
-                labelInk: "rgb(255, 255, 255)",
-                tint: "rgb(0, 110, 255)",
-              }}
-              places={scene.places}
-              customPairs={scene.pairs}
-              focusIndex={scene.focus}
-              placeStyle={{ cardWidth: 240, pinShape: "needle", placeLift: 0.18, placeMarker: "pin" }}
-              routes={{
-                dashCount: 18,
-                routeAltitude: 0.32,
-                routeDots: 80,
-                routeMode: "hub",
-                routeRest: 0.22,
-                routeSize: 5.5,
-                routesOn: chapter > 0,
-                routeSpeed: 0.28,
-                routeStyle: "comet",
-                routeTrail: 0.4,
-                routeWidth: 2,
-              }}
-              sphere={{ coastLift: 0.4, density: "dense", dotSize: 5.1, exactDots: 130000, sizeJitter: 0.35 }}
-              motion={{ allowTiltDrag: true, offsetX: desktop ? 0.5 : 0, offsetY: desktop ? -0.04 : 0, spin: 0.055, startLng: 55, tilt: 16, tiltRange: 60, zoom: (desktop ? 0.74 : 0.9) * (chapter === 0 ? 0.62 : 1) }}
-              entrance={{ entranceSeconds: 3.2, formation: "bloom", replayOnScroll: false }}
-              cursor={{ crest: 0.035, cursorDelay: 0, cursorMode: "halo", glow: 1, reach: 0.32, swell: 1.2, waveLength: 0.22, waveSpeed: 0.55 }}
-              advanced={{ calmMotion: true, editorPlayback: true, quality: "auto" }}
-            />
+        <div className={`globe-stage is-ch${chapter}`}>
+          <header className="globe-head">
+            <p className="section-label">[AIA Engineering × Vega Industries]</p>
+            <h2 id="globe-story-heading" className="globe-heading" data-no-split="">
+              Two companies. One global network.
+            </h2>
+          </header>
+
+          <div className="globe-center">
+            <div className="globe-halo" aria-hidden />
+            <div className="globe-canvas">
+              <MeridianGlobe
+                style={{ width: "100%", height: "100%" }}
+                width="100%"
+                height="100%"
+                theme="custom"
+                palette={{
+                  accent: "rgb(0, 110, 255)",
+                  accentInk: "rgb(255, 255, 255)",
+                  backdrop: "rgba(255, 255, 255, 0)",
+                  backFade: 0.12,
+                  ink: "rgb(71, 85, 105)",
+                  labelFill: "rgb(4, 29, 44)",
+                  labelInk: "rgb(255, 255, 255)",
+                  tint: "rgb(0, 110, 255)",
+                }}
+                places={scene.places}
+                customPairs={scene.pairs}
+                focusIndex={scene.focus}
+                placeStyle={{ cardWidth: 240, pinShape: "needle", placeLift: 0.16, placeMarker: "pin" }}
+                routes={{
+                  dashCount: 18,
+                  routeAltitude: 0.34,
+                  routeDots: 90,
+                  routeMode: "hub",
+                  routeRest: 0.26,
+                  routeSize: 5,
+                  routesOn: chapter > 0,
+                  routeSpeed: 0.24,
+                  routeStyle: "comet",
+                  routeTrail: 0.45,
+                  routeWidth: 2,
+                }}
+                sphere={{ coastLift: 0.45, density: "dense", dotSize: 4.6, exactDots: 130000, sizeJitter: 0.35 }}
+                motion={{ allowTiltDrag: true, offsetX: 0, offsetY: 0, spin: 0.04, startLng: 72, tilt: 14, tiltRange: 50, zoom: chapter === 0 ? 0.62 : 0.92 }}
+                entrance={{ entranceSeconds: 2.6, formation: "bloom", replayOnScroll: false }}
+                cursor={{ crest: 0.035, cursorDelay: 0, cursorMode: "sonar", glow: 1, reach: 0.34, swell: 1.1, waveLength: 0.22, waveSpeed: 0.5 }}
+                advanced={{ calmMotion: true, editorPlayback: true, quality: "auto" }}
+              />
+            </div>
           </div>
 
-          <div className="globe-copy">
-            <div className="globe-brands">
-              <Image src="/images/logo-aia-dark.png" alt="AIA Engineering Limited" width={820} height={272} className="globe-brand-aia" />
-              <span aria-hidden className="globe-brand-x">×</span>
-              <Image src="/images/logo-vega-dark.png" alt="Vega Industries" width={376} height={272} className="globe-brand-vega" />
-            </div>
-            <h2 id="globe-story-heading" className="sr-only">
-              AIA Engineering and Vega Industries: one global network
-            </h2>
+          <Beam side="aia" on={chapter >= 0} pulse={chapter === 2} />
+          <Beam side="vega" on={chapter >= 1} pulse={chapter === 2} />
+
+          <aside className={`globe-partner is-aia ${chapter === 0 || chapter === 2 ? "is-lit" : ""}`}>
+            <Image src="/images/logo-aia-dark.png" alt="AIA Engineering Limited" width={820} height={272} className="globe-partner-logo" />
+            <p className="globe-partner-role">Engineering &amp; manufacturing</p>
+            <p className="globe-partner-meta">
+              <span className="globe-dot is-aia" /> Ahmedabad · Bengaluru
+            </p>
+          </aside>
+          <aside className={`globe-partner is-vega ${chapter >= 1 ? "is-lit" : ""}`}>
+            <Image src="/images/logo-vega-dark.png" alt="Vega Industries" width={376} height={272} className="globe-partner-logo" />
+            <p className="globe-partner-role">Sales, service &amp; field support</p>
+            <p className="globe-partner-meta">
+              <span className="globe-dot is-vega" /> {counts.vega} hubs worldwide
+            </p>
+          </aside>
+
+          <div className="globe-foot">
             <div className="globe-chapters">
               {CHAPTERS.map((c, i) => (
                 <article key={c.id} className={`globe-chapter ${i === chapter ? "is-active" : ""}`} aria-hidden={desktop && i !== chapter}>
@@ -344,13 +380,11 @@ export function AiaVegaGlobeSection() {
                 </article>
               ))}
             </div>
-
             <div className="globe-progress" aria-hidden>
               {CHAPTERS.map((c, i) => (
                 <span key={c.id} className={i <= chapter ? "is-on" : ""} />
               ))}
             </div>
-
             <div className={`globe-filter ${chapter === 2 ? "is-live" : ""}`} role="group" aria-label="Show locations for">
               {FILTERS.map(([id, label]) => (
                 <button
@@ -368,15 +402,6 @@ export function AiaVegaGlobeSection() {
               ))}
             </div>
           </div>
-
-          <p className="globe-legend" aria-hidden>
-            <span>
-              <i style={{ background: AIA_BLUE }} /> AIA Engineering
-            </span>
-            <span>
-              <i style={{ background: VEGA_CYAN }} /> Vega Industries
-            </span>
-          </p>
         </div>
       </div>
     </section>
