@@ -1,76 +1,83 @@
+import Image from "next/image";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { MediaSlot } from "@/components/ui/MediaSlot";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
-import { technologyPillars } from "@/data/content";
+import { href } from "@/lib/routes";
 
-import { media } from "@/data/media";
+/**
+ * Technology and R&D — Figma "AIA Signature Blue" / 01Homepage.
+ * Intro row, then four simulation capabilities in alternating image/text rows.
+ */
 
-const posters = [
-  "/images/tech-material.png",
-  "/images/tech-research.png",
-  "/images/tech-performance.png",
-];
+const capabilities = [
+  {
+    id: "dem",
+    kicker: "01/Understanding wear before it happens.",
+    title: "Discrete Element Method (DEM)",
+    body: "We simulate charge motion inside the mill to study grinding media trajectories. Using DEM (Discrete Element Method), we analyze impact energy, wear patterns, and throughput (SPH) to optimize liner designs that improve grinding efficiency, extend liner wear life, and enhance overall mill performance.",
+    image: "/images/design/tech-dem.jpg",
+    alt: "DEM simulation of charge motion inside a mill",
+  },
+  {
+    id: "fea",
+    kicker: "02/Structural integrity in every design",
+    title: "Finite Element Analysis (FEA)",
+    body: "Using FEA (Finite Element Analysis), we replicate real operating conditions to evaluate the structural integrity of mill components. The simulation analyzes stress concentration, deformation, and load distribution, helping optimize liner profiles, weight, and material selection to reduce the risk of premature failure.",
+    image: "/images/design/tech-fea.jpg",
+    alt: "FEA stress map across a mill liner segment",
+  },
+  {
+    id: "magma",
+    kicker: "03/Solidification simulation for defect-free castings",
+    title: "MAGMA",
+    body: "Through casting process simulations, we identify potential casting defects before physical production begins. This enables us to refine the casting process, minimize metallurgical defects, and improve overall casting quality.",
+    image: "/images/design/tech-magma.jpg",
+    alt: "Casting solidification simulation of a liner mould",
+  },
+  {
+    id: "polyworks",
+    kicker: "04/Accuracy verified at every detail.",
+    title: "Polyworks",
+    body: "Using advanced 3D scanning techniques, we conduct high-precision quality inspections by comparing manufactured components with their original design models, ensuring dimensional accuracy and supporting seamless liner installation on-site.",
+    image: "/images/design/tech-polyworks.jpg",
+    alt: "3D scanner comparing a manufactured liner to its CAD model",
+  },
+] as const;
 
 export function Technology() {
   return (
-    <section className="bg-white text-aia-navy" aria-labelledby="tech-heading">
-      <Reveal className="tech-intro page-pad page-max grid gap-8 pt-[var(--section-y)] sm:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+    <section className="tech2 bg-white text-aia-navy" aria-labelledby="tech-heading">
+      <Reveal className="tech2-intro">
         <div>
-          <SectionLabel className="tech-label mb-6">Technology and R&D</SectionLabel>
-          <h2 id="tech-heading" className="tech-heading">
+          <SectionLabel className="tech2-label">Technology and R&D</SectionLabel>
+          <h2 id="tech-heading" className="tech2-heading">
             <span>Engineered for</span>
-            <span>what wear demands.</span>
+            <span className="text-aia-accent">what wear demands.</span>
           </h2>
         </div>
-        <div className="tech-copy">
-          <p className="tech-body">
-            <span>Every operating environment creates a different wear challenge. AIA</span>
-            <span>combines application knowledge, metallurgy and research to develop</span>
-            <span>materials and wear solutions around the conditions they are expected</span>
-            <span>to face.</span>
+        <div className="tech2-copy">
+          <p className="tech2-body">
+            Every operating environment creates a different wear challenge. AIA combines application knowledge, metallurgy and research to develop materials and wear solutions around the conditions they are expected to face.
           </p>
-          <CtaButton
-            href="/company/technology-and-infrastructure"
-            variant="solid"
-            className="tech-cta w-full justify-center sm:w-auto"
-          >
+          <CtaButton href={href("technology-infrastructure")} variant="solid" className="tech2-cta">
             Explore our technology
           </CtaButton>
         </div>
       </Reveal>
 
-      <div className="space-y-4 pb-[var(--section-y)] sm:space-y-8">
-        {technologyPillars.map((pillar, index) => {
-          const textLeft = index === 1;
-          const videoSrc = media.tech[pillar.index as keyof typeof media.tech];
-          return (
-            <Reveal key={pillar.index} as="article" delay={index * 80} className={`tech-pillar page-pad page-max grid items-start gap-6 pb-8 sm:gap-10 sm:pb-12 lg:gap-16${index === 0 ? " tech-first-window" : " pt-8 sm:pt-12"}${textLeft ? " is-text-left" : ""}`}>
-              <div
-                className={`tech-pillar-copy ${
-                  textLeft ? "order-2 lg:order-1" : "order-2 lg:order-2"
-                }`}
-              >
-                <p className="tech-kicker">
-                  {pillar.index} / {pillar.label}
-                </p>
-                <h3 className="tech-pillar-title">{pillar.title}</h3>
-                <p className="tech-pillar-body">{pillar.description}</p>
-              </div>
-              <MediaSlot
-                poster={posters[index] ?? posters[0]}
-                posterAlt={`${pillar.label} visual`}
-                src={videoSrc}
-                playback={videoSrc ? "click" : "ambient"}
-                film={Boolean(videoSrc)}
-                className={`tech-window order-1 rounded-[32px] bg-aia-surface-soft ${
-                  textLeft ? "lg:order-2" : "lg:order-1"
-                }`}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </Reveal>
-          );
-        })}
+      <div className="tech2-rows">
+        {capabilities.map((cap, i) => (
+          <Reveal key={cap.id} as="article" className={`tech2-row ${i % 2 === 1 ? "is-flipped" : ""}`}>
+            <div className="tech2-media">
+              <Image src={cap.image} alt={cap.alt} fill sizes="(max-width: 1024px) 92vw, 50vw" className="object-cover" />
+            </div>
+            <div className="tech2-text">
+              <p className="tech2-kicker">{cap.kicker}</p>
+              <h3 className="tech2-title">{cap.title}</h3>
+              <p className="tech2-row-body">{cap.body}</p>
+            </div>
+          </Reveal>
+        ))}
       </div>
     </section>
   );

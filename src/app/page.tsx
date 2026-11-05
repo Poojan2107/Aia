@@ -3,7 +3,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Hero } from "@/components/home/Hero";
 import { WhatWeSolve } from "@/components/home/WhatWeSolve";
-import { Industries } from "@/components/home/Industries";
+import { IndustryPanels } from "@/components/home/IndustryPanels";
 import { Services } from "@/components/home/Services";
 import { Technology } from "@/components/home/Technology";
 import { AboutBand } from "@/components/home/AboutBand";
@@ -29,7 +29,7 @@ export default function HomePage() {
       <main id="main">
         <Hero />
         <WhatWeSolve />
-        <Industries />
+        <IndustryPanels />
         <Services />
         <Technology />
         <AboutBand />

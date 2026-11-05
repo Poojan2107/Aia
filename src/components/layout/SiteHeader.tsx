@@ -2,15 +2,31 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { mainNav, type NavItem } from "@/data/nav";
+import { href } from "@/lib/routes";
 
 /**
- * Standard site navigation: logo, the six sitemap pillars with dropdowns on
- * desktop (hover, click or keyboard), and an accordion drawer on mobile.
- * Transparent over the dark page heroes, solid once the page scrolls.
+ * Site navigation (Figma "AIA Signature Blue" NAVBAR): AIA mark + Vega on the
+ * left, the main pillars in a dark glass pill, and Search + Contact Us in a
+ * second pill on the right. Careers sits inside the Company dropdown so every
+ * sitemap page stays reachable. Mobile keeps the full accordion drawer.
  */
+
+const PILL_IDS = ["company", "solutions", "investors", "knowledge-hub"] as const;
+
+/** Desktop pill items; Careers links are folded into Company. */
+const desktopNav: NavItem[] = PILL_IDS.flatMap((id) => {
+  const item = mainNav.find((n) => n.id === id);
+  if (!item) return [];
+  if (id !== "company") return [item];
+  const careers = mainNav.find((n) => n.id === "careers");
+  const careerLinks = careers?.groups?.flatMap((g) => g.links) ?? [];
+  const companyLinks = item.groups?.flatMap((g) => g.links) ?? [];
+  return [{ ...item, groups: [{ links: [...companyLinks, ...careerLinks] }] }];
+});
 
 function isCurrent(item: NavItem, pathname: string) {
   if (pathname === item.href || pathname.startsWith(`${item.href}/`)) return true;
@@ -41,9 +57,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
 }) {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelId = `nav-panel-${item.id}`;
-  const base = `flex h-11 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-[0.84rem] font-semibold transition-colors xl:px-4 xl:text-[0.88rem] ${
-    current ? "text-aia-accent" : "text-white hover:text-aia-accent"
-  }`;
+  const base = `nav-pill-item ${current ? "is-current" : ""}`;
 
   if (!item.groups) {
     return (
@@ -228,20 +242,17 @@ export function SiteHeader() {
         Skip to content
       </a>
       <header
-        className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
-          scrolled || openId
-            ? "border-b border-white/10 bg-aia-navy/95 shadow-[0_8px_30px_rgba(0,0,0,0.22)] backdrop-blur-md"
-            : "border-b border-transparent bg-transparent"
-        }`}
+        className={`site-nav fixed inset-x-0 top-0 z-40 ${scrolled ? "is-scrolled" : ""}`}
       >
-        <div className="page-pad mx-auto flex h-[var(--site-header-h)] max-w-[1440px] items-center justify-between gap-4">
-          <Link href="/" className="min-w-0 shrink-0" aria-label="AIA Engineering home">
-            <BrandLockup tone="light" compact />
+        <div className="site-nav-bar">
+          <Link href="/" className="site-nav-brand" aria-label="AIA Engineering home">
+            <Image src="/images/design/logo-aia-mark.png" alt="AIA Engineering Limited" width={182} height={152} className="site-nav-brand-aia" priority />
+            <Image src="/images/logo-vega-clean.png" alt="Vega Industries" width={376} height={272} className="site-nav-brand-vega" />
           </Link>
 
-          <nav ref={navRef} aria-label="Main" className="hidden lg:block">
+          <nav ref={navRef} aria-label="Main" className="site-nav-pill hidden lg:flex">
             <ul className="flex items-center">
-              {mainNav.map((item) => (
+              {desktopNav.map((item) => (
                 <DesktopItem
                   key={item.id}
                   item={item}
@@ -255,6 +266,19 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <div className="site-nav-actions hidden lg:flex">
+              <Link href={href("html-sitemap")} className="site-nav-search" aria-label="Search the site">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+                  <circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                  <path d="M12.6 12.6L16.5 16.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+                <span>Search</span>
+              </Link>
+              <Link href={href("contact")} className="site-nav-contact">
+                <span aria-hidden className="site-nav-contact-dot" />
+                Contact us
+              </Link>
+            </div>
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
