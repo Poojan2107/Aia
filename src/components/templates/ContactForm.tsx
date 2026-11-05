@@ -56,7 +56,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         {/* Name */}
         <div>
           <label htmlFor="name" className="block text-[0.82rem] font-bold uppercase tracking-[0.1em] text-aia-navy">
-            Full Name <span className="text-aia-orange">*</span>
+            Full Name <span className="text-aia-accent">*</span>
           </label>
           <input
             id="name"
@@ -67,7 +67,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? "name-error" : undefined}
             className={`mt-2 h-12 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:outline-none ${
-              errors.name ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-orange"
+              errors.name ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-accent"
             }`}
             placeholder="Jane Doe"
           />
@@ -81,7 +81,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         {/* Company */}
         <div>
           <label htmlFor="company" className="block text-[0.82rem] font-bold uppercase tracking-[0.1em] text-aia-navy">
-            Company / Organization <span className="text-aia-orange">*</span>
+            Company / Organization <span className="text-aia-accent">*</span>
           </label>
           <input
             id="company"
@@ -92,7 +92,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             aria-invalid={!!errors.company}
             aria-describedby={errors.company ? "company-error" : undefined}
             className={`mt-2 h-12 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:outline-none ${
-              errors.company ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-orange"
+              errors.company ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-accent"
             }`}
             placeholder="Mining / Processing Ltd."
           />
@@ -108,7 +108,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         {/* Email */}
         <div>
           <label htmlFor="email" className="block text-[0.82rem] font-bold uppercase tracking-[0.1em] text-aia-navy">
-            Work Email <span className="text-aia-orange">*</span>
+            Work Email <span className="text-aia-accent">*</span>
           </label>
           <input
             id="email"
@@ -119,7 +119,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "email-error" : undefined}
             className={`mt-2 h-12 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:outline-none ${
-              errors.email ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-orange"
+              errors.email ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-accent"
             }`}
             placeholder="jdoe@company.com"
           />
@@ -139,7 +139,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             id="phone"
             name="phone"
             type="tel"
-            className="mt-2 h-12 w-full rounded-xl border border-aia-line bg-white px-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:border-aia-orange focus:outline-none"
+            className="mt-2 h-12 w-full rounded-xl border border-aia-line bg-white px-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:border-aia-accent focus:outline-none"
             placeholder="+1 (555) 012-3456"
           />
         </div>
@@ -149,7 +149,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         {/* Country */}
         <div>
           <label htmlFor="country" className="block text-[0.82rem] font-bold uppercase tracking-[0.1em] text-aia-navy">
-            Country / Region <span className="text-aia-orange">*</span>
+            Country / Region <span className="text-aia-accent">*</span>
           </label>
           <input
             id="country"
@@ -160,7 +160,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             aria-invalid={!!errors.country}
             aria-describedby={errors.country ? "country-error" : undefined}
             className={`mt-2 h-12 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:outline-none ${
-              errors.country ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-orange"
+              errors.country ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-accent"
             }`}
             placeholder="e.g. Australia, Chile, India"
           />
@@ -174,7 +174,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         {/* Enquiry Type */}
         <div>
           <label htmlFor="enquiryType" className="block text-[0.82rem] font-bold uppercase tracking-[0.1em] text-aia-navy">
-            Enquiry Type <span className="text-aia-orange">*</span>
+            Enquiry Type <span className="text-aia-accent">*</span>
           </label>
           <select
             id="enquiryType"
@@ -185,7 +185,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             aria-invalid={!!errors.enquiryType}
             aria-describedby={errors.enquiryType ? "enquiry-type-error" : undefined}
             className={`mt-2 h-12 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-aia-navy transition focus:outline-none ${
-              errors.enquiryType ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-orange"
+              errors.enquiryType ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-accent"
             }`}
           >
             {ENQUIRY_TYPES.map((type) => (
@@ -205,7 +205,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
       {/* Message */}
       <div>
         <label htmlFor="message" className="block text-[0.82rem] font-bold uppercase tracking-[0.1em] text-aia-navy">
-          How can we help? <span className="text-aia-orange">*</span>
+          How can we help? <span className="text-aia-accent">*</span>
         </label>
         <textarea
           id="message"
@@ -216,7 +216,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? "message-error" : undefined}
           className={`mt-2 w-full rounded-xl border bg-white p-4 text-[0.95rem] text-aia-navy transition placeholder:text-aia-navy/35 focus:outline-none ${
-            errors.message ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-orange"
+            errors.message ? "border-red-500 focus:border-red-600" : "border-aia-line focus:border-aia-accent"
           }`}
           placeholder="Please describe your operational requirements, equipment types, mill specs or specific questions..."
         />
@@ -238,11 +238,11 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
             aria-required="true"
             aria-invalid={!!errors.consent}
             aria-describedby={errors.consent ? "consent-error" : undefined}
-            className="mt-1 size-4 rounded border-aia-line text-aia-orange focus:ring-aia-orange"
+            className="mt-1 size-4 rounded border-aia-line text-aia-accent focus:ring-aia-accent"
           />
           <span className="text-[0.85rem] leading-relaxed text-aia-navy/70">
             I consent to AIA Engineering and Vega Industries storing and processing my details to respond to this enquiry in accordance with the{" "}
-            <Link href="/privacy-policy" className="font-semibold text-aia-orange hover:underline">
+            <Link href="/privacy-policy" className="font-semibold text-aia-accent hover:underline">
               Privacy Policy
             </Link>
             .
@@ -259,7 +259,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         <button
           type="submit"
           disabled={isPending}
-          className="inline-flex h-12 items-center justify-center rounded-full bg-aia-orange px-8 font-[family-name:var(--font-ui)] text-[0.88rem] font-semibold tracking-wide text-white transition duration-300 hover:bg-[#d65217] disabled:opacity-50"
+          className="inline-flex h-12 items-center justify-center rounded-full bg-aia-accent px-8 font-[family-name:var(--font-ui)] text-[0.88rem] font-semibold tracking-wide text-white transition duration-300 hover:bg-[#d65217] disabled:opacity-50"
         >
           {isPending ? "Sending enquiry..." : "Submit Enquiry →"}
         </button>

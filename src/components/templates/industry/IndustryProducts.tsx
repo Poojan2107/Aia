@@ -19,7 +19,7 @@ function VariantChips({ variants }: { variants: string[] }) {
     <ul className="mt-6 flex flex-wrap gap-2">
       {variants.map((name) => (
         <li key={name}>
-          <span className="inline-flex rounded-full border border-aia-line bg-white px-3.5 py-1.5 text-[0.78rem] font-semibold text-aia-navy/70 transition duration-300 hover:border-aia-orange hover:bg-aia-orange hover:text-white">
+          <span className="inline-flex rounded-full border border-aia-line bg-white px-3.5 py-1.5 text-[0.78rem] font-semibold text-aia-navy/70 transition duration-300 hover:border-aia-accent hover:bg-aia-accent hover:text-white">
             {name}
           </span>
         </li>
@@ -35,7 +35,7 @@ function ProductCopy({ product }: { product: ProductItem }) {
         {product.title}
       </h3>
       <p className="mt-2 text-[1.02rem] font-semibold text-aia-navy/75">{product.subtitle}</p>
-      <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-orange" />
+      <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-accent" />
       <p className="mt-5 text-[0.95rem] leading-[1.75] text-aia-navy/65 md:text-[1.02rem]">{product.body}</p>
       <VariantChips variants={product.variants} />
     </div>
@@ -61,7 +61,7 @@ function ProductCard({ product }: { product: ProductItem }) {
   return (
     <article
       id={product.id}
-      className="group scroll-mt-28 h-full overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-orange/40 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+      className="group scroll-mt-28 h-full overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
     >
       <FeatureImage src={product.image.src} alt={product.image.alt} className="aspect-[16/10] w-full rounded-none" />
       <div className="p-6 sm:p-8">
@@ -90,7 +90,7 @@ function OverlayCard({ product }: { product: ProductItem }) {
           <h3 className="display text-[clamp(1.6rem,3vw,2.35rem)] font-extrabold leading-[1.02] tracking-[-0.03em]">
             {product.title}
           </h3>
-          <p className="mt-2 text-[0.95rem] font-semibold text-aia-orange">{product.subtitle}</p>
+          <p className="mt-2 text-[0.95rem] font-semibold text-aia-accent">{product.subtitle}</p>
           <p className="mt-4 max-w-[36rem] text-[0.92rem] leading-[1.7] text-white/75">{product.body}</p>
         </div>
       </div>
@@ -107,15 +107,15 @@ function VariantBoard({ product }: { product: ProductItem }) {
             {product.title}
           </h3>
           <p className="mt-2 text-[1.02rem] font-semibold text-aia-navy/75">{product.subtitle}</p>
-          <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-orange" />
+          <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-accent" />
           <p className="mt-5 text-[0.95rem] leading-[1.75] text-aia-navy/65 md:text-[1.02rem]">{product.body}</p>
         </Reveal>
         <Reveal delay={80}>
           <ul className="grid gap-3 sm:grid-cols-2">
             {product.variants.map((name, i) => (
               <li key={name}>
-                <p className="group flex min-h-[9.5rem] flex-col justify-end overflow-hidden rounded-2xl border border-aia-line bg-white px-5 py-5 transition duration-500 hover:-translate-y-1 hover:border-aia-orange hover:bg-aia-orange hover:shadow-[0_22px_50px_color-mix(in_srgb,var(--aia-orange)_28%,transparent)]">
-                  <span className="font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tabular-nums tracking-[0.16em] text-aia-orange transition-colors duration-500 group-hover:text-white">
+                <p className="group flex min-h-[9.5rem] flex-col justify-end overflow-hidden rounded-2xl border border-aia-line bg-white px-5 py-5 transition duration-500 hover:-translate-y-1 hover:border-aia-accent hover:bg-aia-accent hover:shadow-[0_22px_50px_color-mix(in_srgb,var(--aia-accent)_28%,transparent)]">
+                  <span className="font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tabular-nums tracking-[0.16em] text-aia-accent transition-colors duration-500 group-hover:text-white">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="mt-3 text-[1.05rem] font-semibold leading-snug text-aia-navy transition-colors duration-500 group-hover:text-white">
@@ -123,7 +123,7 @@ function VariantBoard({ product }: { product: ProductItem }) {
                   </span>
                   <span
                     aria-hidden
-                    className="mt-4 block h-[2px] w-8 bg-aia-orange transition-all duration-500 group-hover:w-12 group-hover:bg-white"
+                    className="mt-4 block h-[2px] w-8 bg-aia-accent transition-all duration-500 group-hover:w-12 group-hover:bg-white"
                   />
                 </p>
               </li>

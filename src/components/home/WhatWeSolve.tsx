@@ -108,7 +108,7 @@ export function WhatWeSolve() {
       const kpiIn = span(progress, 0.48, 0.78);
       kpi.style.opacity = String(kpiIn);
 
-      const locked = progress > 0.65;
+      const locked = progress > 0.72;
       if (locked !== lockedRef.current) {
         lockedRef.current = locked;
         setKpiLocked(locked);
@@ -160,18 +160,14 @@ export function WhatWeSolve() {
             />
           </div>
         </div>
-        <div className="relative h-[100svh] min-h-[32rem] overflow-hidden bg-[#1a2228]">
-          <Image
-            src="/images/plant-aerial-clean.jpg"
-            alt="AIA manufacturing and operations facility"
-            fill
+        <div className="relative h-[100svh] overflow-hidden bg-[#1a2228]">
+          <AmbientFilm
+            src={media.whatWeSolve}
+            poster={PLATE}
+            className="absolute inset-0"
+            position="center center"
+            coverBleed
             sizes="100vw"
-            className="object-cover object-[50%_42%]"
-            quality={90}
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,14,20,0.38)_0%,rgba(6,14,20,0.32)_42%,rgba(6,14,20,0.68)_100%)]"
           />
           <KpiOverlay play />
         </div>

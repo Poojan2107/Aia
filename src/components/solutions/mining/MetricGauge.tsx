@@ -17,7 +17,7 @@ export function MetricGauge({
   const filled = (Math.min(100, Math.max(0, percent)) / 100) * length;
   const offset = drawn ? length - filled : length;
   const d = `M 18 70 A ${r} ${r} 0 0 1 122 70`;
-  const stroke = "var(--aia-orange)";
+  const stroke = "var(--aia-accent)";
 
   return (
     <div className="flex h-full min-h-[9.5rem] w-full flex-col items-center justify-between rounded-xl border border-aia-line bg-aia-surface-soft px-3 py-3 text-center sm:min-h-[10.25rem] sm:px-4 sm:py-4">

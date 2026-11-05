@@ -54,9 +54,9 @@ export function IndustryHero({ hero, label, anchors }: { hero: Hero; label: stri
       />
       <div className="page-pad relative z-10 mx-auto flex h-full max-w-[1440px] flex-col justify-end pt-28 pb-14 sm:pb-16 lg:pb-20">
         <div className="animate-fade-up max-w-[58rem]">
-          <span aria-hidden className="mb-6 block h-[3px] w-16 bg-aia-orange sm:mb-8" />
+          <span aria-hidden className="mb-6 block h-[3px] w-16 bg-aia-accent sm:mb-8" />
           <h1 className="display text-[clamp(2.1rem,5.4vw,4.35rem)] font-extrabold leading-[0.96] tracking-[-0.035em] text-white">
-            <span className="block text-aia-orange">{hero.line1}</span>
+            <span className="block text-aia-accent">{hero.line1}</span>
             {hero.line2 ? <span className="mt-1 block">{hero.line2}</span> : null}
           </h1>
           {anchors.length ? (
@@ -92,8 +92,8 @@ export function SectionNav({ anchors, active, label }: { anchors: Anchor[]; acti
               aria-current={on ? "true" : undefined}
               className={`shrink-0 rounded-full border px-4 py-2 text-[0.78rem] font-semibold tracking-wide transition duration-300 ${
                 on
-                  ? "border-aia-orange bg-aia-orange text-white"
-                  : "border-aia-line bg-white text-aia-navy/70 hover:border-aia-orange hover:bg-aia-orange hover:text-white"
+                  ? "border-aia-accent bg-aia-accent text-white"
+                  : "border-aia-line bg-white text-aia-navy/70 hover:border-aia-accent hover:bg-aia-accent hover:text-white"
               }`}
             >
               {anchor.name}
@@ -126,7 +126,7 @@ export function FeatureImage({ src, alt, className = "" }: { src: string; alt: s
 export function SectionHeading({ id, index, note, title }: { id: string; index: number; note: string; title: string }) {
   return (
     <Reveal className="mb-12 sm:mb-16">
-      <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+      <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-accent">
         {String(index + 1).padStart(2, "0")} · {note}
       </p>
       <h2
@@ -168,7 +168,7 @@ export function CaseCards({ cases, headingId }: { cases: CaseCard[]; headingId: 
                     Know more
                   </span>
                 </div>
-                <h3 className="mb-2 text-[1.12rem] font-bold leading-snug text-aia-navy transition-colors group-hover:text-aia-orange md:text-[1.2rem]">
+                <h3 className="mb-2 text-[1.12rem] font-bold leading-snug text-aia-navy transition-colors group-hover:text-aia-accent md:text-[1.2rem]">
                   {item.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-aia-muted md:text-[0.95rem]">{item.body}</p>

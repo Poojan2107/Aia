@@ -26,7 +26,7 @@ export function PageShell({ route, children }: { route: RouteEntry; children: Re
 export function Breadcrumbs({ route, tone = "light" }: { route: RouteEntry; tone?: "light" | "dark" }) {
   const items = trail(route.id);
   const base = tone === "light" ? "text-white/60" : "text-aia-navy/55";
-  const hover = tone === "light" ? "hover:text-white" : "hover:text-aia-orange";
+  const hover = tone === "light" ? "hover:text-white" : "hover:text-aia-accent";
   return (
     <nav aria-label="Breadcrumb" className="mb-5">
       <ol className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.78rem] ${base}`}>
@@ -89,7 +89,7 @@ export function PageHero({
           <Breadcrumbs route={route} />
           {hero.eyebrow ? (
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 backdrop-blur-sm">
-              <span className="size-1.5 rounded-full bg-aia-orange" />
+              <span className="size-1.5 rounded-full bg-aia-accent" />
               <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-white/90">
                 {hero.eyebrow}
               </span>
@@ -98,7 +98,7 @@ export function PageHero({
           <h1 id="page-title" className="display text-[clamp(2.3rem,5.2vw,4.5rem)] font-extrabold leading-[0.98] tracking-[-0.035em]">
             <span className="block text-white">{hero.line1}</span>
             {hero.line2 ? (
-              <span className="mt-2 block bg-gradient-to-r from-aia-orange via-[#ff7a3d] to-aia-orange bg-clip-text text-transparent">
+              <span className="mt-2 block bg-gradient-to-r from-aia-accent via-[#ff7a3d] to-aia-accent bg-clip-text text-transparent">
                 {hero.line2}
               </span>
             ) : null}
@@ -111,7 +111,7 @@ export function PageHero({
           {status ? <DraftBadge status={status} /> : null}
         </div>
       </div>
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-aia-orange/60 to-transparent" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-aia-accent/60 to-transparent" />
     </section>
   );
 }
@@ -137,7 +137,7 @@ export function Bullets({ items }: { items: string[] }) {
     <ul className="space-y-3">
       {items.map((item) => (
         <li key={item} className="flex items-start gap-3">
-          <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange" />
+          <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-accent" />
           <span className="text-[1rem] leading-relaxed text-aia-navy/80">{item}</span>
         </li>
       ))}
@@ -152,7 +152,7 @@ export function LinkList({ links }: { links: LinkRef[] }) {
         <li key={link.href}>
           <Link
             href={link.href}
-            className="inline-flex rounded-full border border-aia-line px-4 py-2 text-[0.85rem] font-semibold text-aia-navy transition hover:border-aia-orange hover:bg-aia-orange hover:text-white"
+            className="inline-flex rounded-full border border-aia-line px-4 py-2 text-[0.85rem] font-semibold text-aia-navy transition hover:border-aia-accent hover:bg-aia-accent hover:text-white"
           >
             {link.label}
           </Link>
@@ -173,7 +173,7 @@ export function Sections({ sections }: { sections: Section[] }) {
               <h2 id={`${section.id}-h`} className="display text-[clamp(1.6rem,3.2vw,2.5rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-aia-navy">
                 {section.heading}
               </h2>
-              <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-orange" />
+              <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-accent" />
               <div className="mt-6 max-w-[48rem] space-y-6">
                 {section.body?.length ? <Paragraphs items={section.body} /> : null}
                 {section.bullets?.length ? <Bullets items={section.bullets} /> : null}

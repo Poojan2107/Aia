@@ -67,31 +67,31 @@ function HoverInfographic({ item }: { item: Offering }) {
         <line x1="100" y1="100" x2="100" y2="34" stroke="white" strokeOpacity="0.28" />
         <line x1="100" y1="100" x2="36" y2="112" stroke="white" strokeOpacity="0.28" />
         <line x1="100" y1="100" x2="164" y2="112" stroke="white" strokeOpacity="0.28" />
-        <circle cx="100" cy="100" r="11" fill="none" stroke="var(--aia-orange)" strokeOpacity="0.45" />
-        <circle cx="100" cy="100" r="4" fill="var(--aia-orange)" />
+        <circle cx="100" cy="100" r="11" fill="none" stroke="var(--aia-accent)" strokeOpacity="0.45" />
+        <circle cx="100" cy="100" r="4" fill="var(--aia-accent)" />
         <path d="M18 28 H32 M18 28 V42" fill="none" stroke="white" strokeOpacity="0.45" strokeWidth="1.2" />
         <path d="M182 28 H168 M182 28 V42" fill="none" stroke="white" strokeOpacity="0.45" strokeWidth="1.2" />
         <path d="M18 172 H32 M18 172 V158" fill="none" stroke="white" strokeOpacity="0.45" strokeWidth="1.2" />
         <path d="M182 172 H168 M182 172 V158" fill="none" stroke="white" strokeOpacity="0.45" strokeWidth="1.2" />
       </svg>
-      <div className="funnel-scan pointer-events-none absolute inset-x-[12%] h-px bg-[linear-gradient(90deg,transparent,color-mix(in_srgb,var(--aia-orange)_80%,white),transparent)]" />
+      <div className="funnel-scan pointer-events-none absolute inset-x-[12%] h-px bg-[linear-gradient(90deg,transparent,color-mix(in_srgb,var(--aia-accent)_80%,white),transparent)]" />
 
       <div className="absolute left-1/2 top-[9%] w-[9.5rem] -translate-x-1/2 animate-fade-up text-center">
-        <p className="font-[family-name:var(--font-ui)] text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+        <p className="font-[family-name:var(--font-ui)] text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-aia-accent">
           Improve the mill
         </p>
         <p className="mt-0.5 text-[0.8rem] font-semibold leading-tight">{item.machine}</p>
       </div>
 
       <div className="absolute left-[7%] top-[44%] w-[5.6rem] animate-fade-up text-left [animation-delay:80ms]">
-        <p className="font-[family-name:var(--font-ui)] text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+        <p className="font-[family-name:var(--font-ui)] text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-aia-accent">
           Apply
         </p>
         <p className="mt-0.5 text-[0.78rem] font-semibold leading-tight">{item.apply}</p>
       </div>
 
       <div className="absolute right-[7%] top-[44%] w-[5.6rem] animate-fade-up text-right [animation-delay:80ms]">
-        <p className="font-[family-name:var(--font-ui)] text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+        <p className="font-[family-name:var(--font-ui)] text-[0.5rem] font-semibold uppercase tracking-[0.16em] text-aia-accent">
           Client value
         </p>
         <p className="mt-0.5 text-[0.78rem] font-semibold leading-tight">{item.value}</p>
@@ -111,7 +111,7 @@ function HoverInfographic({ item }: { item: Offering }) {
               <path
                 d={gauge}
                 fill="none"
-                stroke="var(--aia-orange)"
+                stroke="var(--aia-accent)"
                 strokeWidth="7"
                 strokeLinecap="round"
                 strokeDasharray={length.toFixed(2)}
@@ -185,7 +185,7 @@ function Ring({
       </g>
 
       <path
-        className="text-aia-orange transition-[stroke-width,opacity] duration-500 ease-[var(--ease-out)]"
+        className="text-aia-accent transition-[stroke-width,opacity] duration-500 ease-[var(--ease-out)]"
         d={PROD_ARC}
         fill="none"
         stroke="currentColor"
@@ -195,7 +195,7 @@ function Ring({
         filter={prodHot ? `url(#${uid}-prod)` : undefined}
       />
       <path
-        className="text-aia-orange transition-[stroke-width,opacity] duration-500 ease-[var(--ease-out)]"
+        className="text-aia-accent transition-[stroke-width,opacity] duration-500 ease-[var(--ease-out)]"
         d={COST_ARC}
         fill="none"
         stroke="currentColor"
@@ -206,12 +206,12 @@ function Ring({
       />
 
       {prodHot ? (
-        <circle r="4.5" className="text-aia-orange" fill="currentColor">
+        <circle r="4.5" className="text-aia-accent" fill="currentColor">
           <animateMotion path={PROD_ARC} dur="2.1s" repeatCount="indefinite" />
         </circle>
       ) : null}
       {costHot ? (
-        <circle r="4.5" className="text-aia-orange" fill="currentColor">
+        <circle r="4.5" className="text-aia-accent" fill="currentColor">
           <animateMotion path={COST_ARC} dur="2.1s" repeatCount="indefinite" />
         </circle>
       ) : null}
@@ -248,7 +248,7 @@ function OfferList({
       onMouseEnter={onEnter}
       onFocus={onEnter}
     >
-      <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-aia-orange">
+      <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-aia-accent">
         {label}
       </p>
       <ul className="mt-3">
@@ -259,9 +259,9 @@ function OfferList({
             <li key={item.label} className="border-b border-aia-line last:border-b-0">
               <button
                 type="button"
-                className={`group/row relative -mx-2 flex w-full cursor-pointer items-baseline gap-3 rounded-md px-2 py-2.5 text-left hover:bg-[color-mix(in_srgb,var(--aia-orange)_8%,transparent)] ${
+                className={`group/row relative -mx-2 flex w-full cursor-pointer items-baseline gap-3 rounded-md px-2 py-2.5 text-left hover:bg-[color-mix(in_srgb,var(--aia-accent)_8%,transparent)] ${
                   active
-                    ? "bg-[color-mix(in_srgb,var(--aia-orange)_10%,transparent)]"
+                    ? "bg-[color-mix(in_srgb,var(--aia-accent)_10%,transparent)]"
                     : ""
                 }`}
                 onMouseEnter={() => onItemEnter(item)}
@@ -269,11 +269,11 @@ function OfferList({
               >
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 overflow-hidden rounded-md after:absolute after:inset-0 after:translate-x-[-120%] after:bg-[linear-gradient(90deg,transparent,color-mix(in_srgb,var(--aia-orange)_22%,transparent),transparent)] after:opacity-0 after:transition after:duration-700 after:ease-[var(--ease-out)] group-hover/row:after:translate-x-[120%] group-hover/row:after:opacity-100"
+                  className="pointer-events-none absolute inset-0 overflow-hidden rounded-md after:absolute after:inset-0 after:translate-x-[-120%] after:bg-[linear-gradient(90deg,transparent,color-mix(in_srgb,var(--aia-accent)_22%,transparent),transparent)] after:opacity-0 after:transition after:duration-700 after:ease-[var(--ease-out)] group-hover/row:after:translate-x-[120%] group-hover/row:after:opacity-100"
                 />
                 <span
                   aria-hidden
-                  className={`size-1.5 shrink-0 translate-y-[-1px] rounded-full bg-aia-orange transition duration-300 ease-[var(--ease-out)] group-hover/row:scale-[1.85] group-hover/row:shadow-[0_0_14px_color-mix(in_srgb,var(--aia-orange)_75%,transparent)] ${
+                  className={`size-1.5 shrink-0 translate-y-[-1px] rounded-full bg-aia-accent transition duration-300 ease-[var(--ease-out)] group-hover/row:scale-[1.85] group-hover/row:shadow-[0_0_14px_color-mix(in_srgb,var(--aia-accent)_75%,transparent)] ${
                     active ? "scale-[1.85]" : ""
                   }`}
                 />
@@ -376,11 +376,11 @@ export function ValueFunnel() {
             setFocus("production");
           }}
         >
-          <p className="text-center font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-aia-orange">
+          <p className="text-center font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-aia-accent">
             {funnel.production.title}
           </p>
           <div className="mt-2.5">
-            <DriverRow items={funnel.production.items} accentClass="text-aia-orange/55" />
+            <DriverRow items={funnel.production.items} accentClass="text-aia-accent/55" />
           </div>
         </div>
 
@@ -394,11 +394,11 @@ export function ValueFunnel() {
             aria-hidden
             className={`pointer-events-none absolute inset-[16%] rounded-full transition-shadow duration-500 ease-[var(--ease-out)] ${
               focus === "production"
-                ? "shadow-[inset_0_48px_70px_-28px_color-mix(in_srgb,var(--aia-orange)_35%,transparent)]"
+                ? "shadow-[inset_0_48px_70px_-28px_color-mix(in_srgb,var(--aia-accent)_35%,transparent)]"
                   : focus === "cost"
-                    ? "shadow-[inset_0_-48px_70px_-28px_color-mix(in_srgb,var(--aia-orange)_35%,transparent)]"
+                    ? "shadow-[inset_0_-48px_70px_-28px_color-mix(in_srgb,var(--aia-accent)_35%,transparent)]"
                     : focus === "core"
-                      ? "shadow-[inset_0_0_80px_color-mix(in_srgb,var(--aia-orange)_22%,transparent)]"
+                      ? "shadow-[inset_0_0_80px_color-mix(in_srgb,var(--aia-accent)_22%,transparent)]"
                     : ""
             }`}
           />
@@ -434,9 +434,9 @@ export function ValueFunnel() {
               }`}
             >
               <p className="font-[family-name:var(--font-ui)] text-[0.7rem] font-semibold uppercase tracking-[0.16em]">
-                <span className="text-aia-orange">Products</span>
+                <span className="text-aia-accent">Products</span>
                 <span className="mx-1.5 text-aia-navy/30">+</span>
-                <span className="text-aia-orange">Services</span>
+                <span className="text-aia-accent">Services</span>
               </p>
               <span
                 aria-hidden
@@ -445,9 +445,9 @@ export function ValueFunnel() {
               <p
                 className={`display text-[clamp(1.7rem,3.6vw,2.25rem)] leading-[0.92] ${
                   focus === "production"
-                    ? "text-aia-orange"
+                    ? "text-aia-accent"
                     : focus === "cost"
-                      ? "text-aia-orange"
+                      ? "text-aia-accent"
                       : "text-aia-navy"
                 }`}
               >
@@ -474,9 +474,9 @@ export function ValueFunnel() {
           }}
         >
           <div className="mt-4">
-            <DriverRow items={funnel.cost.items} accentClass="text-aia-orange/55" />
+            <DriverRow items={funnel.cost.items} accentClass="text-aia-accent/55" />
           </div>
-          <p className="mt-2.5 text-center font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-aia-orange">
+          <p className="mt-2.5 text-center font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-aia-accent">
             {funnel.cost.title}
           </p>
         </div>

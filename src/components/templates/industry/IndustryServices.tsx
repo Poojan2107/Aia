@@ -19,7 +19,7 @@ function ServiceCopy({ service }: { service: ServiceItem }) {
         {service.title}
       </h3>
       <p className="mt-2 text-[1.02rem] font-semibold text-aia-navy/75">{service.subtitle}</p>
-      <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-orange" />
+      <span aria-hidden className="mt-4 block h-[3px] w-12 bg-aia-accent" />
       <p className="mt-5 text-[0.95rem] leading-[1.75] text-aia-navy/65 md:text-[1.02rem]">{service.body}</p>
     </div>
   );
@@ -59,7 +59,7 @@ function OverlayCard({ service }: { service: ServiceItem }) {
           <h3 className="display text-[clamp(1.45rem,2.6vw,2.1rem)] font-extrabold leading-[1.05] tracking-[-0.03em]">
             {service.title}
           </h3>
-          <p className="mt-2 text-[0.9rem] font-semibold text-aia-orange">{service.subtitle}</p>
+          <p className="mt-2 text-[0.9rem] font-semibold text-aia-accent">{service.subtitle}</p>
           <p className="mt-3 max-w-[36rem] text-[0.9rem] leading-[1.65] text-white/75">{service.body}</p>
         </div>
       </div>
@@ -71,7 +71,7 @@ function HoverCard({ service }: { service: ServiceItem }) {
   return (
     <article
       id={service.id}
-      className="group scroll-mt-28 flex h-full flex-col overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-orange/40 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+      className="group scroll-mt-28 flex h-full flex-col overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
     >
       <FeatureImage src={service.image.src} alt={service.image.alt} className="aspect-[16/10] w-full rounded-none" />
       <div className="flex flex-1 flex-col p-6 sm:p-7">

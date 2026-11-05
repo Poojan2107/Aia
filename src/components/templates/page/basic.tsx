@@ -114,7 +114,7 @@ export function HtmlSitemapPage({ route }: { route: RouteEntry }) {
                 <ul className="space-y-2">
                   {items.map((entry) => (
                     <li key={entry.id}>
-                      <Link href={entry.path} className="text-[0.95rem] text-aia-navy/75 hover:text-aia-orange hover:underline">
+                      <Link href={entry.path} className="text-[0.95rem] text-aia-navy/75 hover:text-aia-accent hover:underline">
                         {entry.title}
                       </Link>
                     </li>

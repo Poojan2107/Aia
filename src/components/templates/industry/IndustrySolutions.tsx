@@ -47,7 +47,7 @@ export function IndustrySolutions({ content, label, contactHref, explore }: Prop
                 <li key={item.title}>
                   <Reveal delay={i * 80} className="h-full">
                     <div className="flex h-full flex-col rounded-2xl border border-aia-line bg-white p-6">
-                      <span className="font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tracking-[0.16em] text-aia-orange">
+                      <span className="font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tracking-[0.16em] text-aia-accent">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <h3 className="mt-3 text-[1.1rem] font-bold leading-snug">{item.title}</h3>
@@ -78,7 +78,7 @@ export function IndustrySolutions({ content, label, contactHref, explore }: Prop
                   <ul className="mt-6 space-y-3">
                     {area.points.map((point) => (
                       <li key={point} className="flex items-start gap-3">
-                        <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange" />
+                        <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-accent" />
                         <span className="text-[1rem] leading-relaxed text-aia-navy/80">{point}</span>
                       </li>
                     ))}
@@ -99,7 +99,7 @@ export function IndustrySolutions({ content, label, contactHref, explore }: Prop
             <ul className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
               {outcomes.map((outcome) => (
                 <li key={outcome} className="bg-aia-navy p-6 text-[1.05rem] font-semibold leading-snug">
-                  <span aria-hidden className="mb-4 block h-[3px] w-10 bg-aia-orange" />
+                  <span aria-hidden className="mb-4 block h-[3px] w-10 bg-aia-accent" />
                   {outcome}
                 </li>
               ))}
@@ -119,11 +119,11 @@ export function IndustrySolutions({ content, label, contactHref, explore }: Prop
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group flex flex-col justify-between rounded-2xl border border-aia-line p-8 transition duration-300 hover:border-aia-orange hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+                  className="group flex flex-col justify-between rounded-2xl border border-aia-line p-8 transition duration-300 hover:border-aia-accent hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
                 >
-                  <span className="text-[1.4rem] font-bold group-hover:text-aia-orange">{item.label}</span>
+                  <span className="text-[1.4rem] font-bold group-hover:text-aia-accent">{item.label}</span>
                   <span className="mt-3 text-[0.95rem] leading-[1.7] text-aia-navy/65">{item.description}</span>
-                  <span aria-hidden className="mt-6 text-aia-orange">→</span>
+                  <span aria-hidden className="mt-6 text-aia-accent">→</span>
                 </Link>
               ))}
             </div>

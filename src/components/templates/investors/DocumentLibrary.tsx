@@ -54,7 +54,7 @@ export function DocumentLibrary({ documents, hrefs, emptyMessage }: Props) {
             href="https://www.bseindia.com/corporates/ann.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.82rem] font-semibold text-aia-navy shadow-sm transition hover:border-aia-orange hover:text-aia-orange"
+            className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.82rem] font-semibold text-aia-navy shadow-sm transition hover:border-aia-accent hover:text-aia-accent"
           >
             <span>BSE Corporate Announcements</span>
             <span aria-hidden>↗</span>
@@ -63,7 +63,7 @@ export function DocumentLibrary({ documents, hrefs, emptyMessage }: Props) {
             href="https://www.nseindia.com/companies-listing/corporate-filings-announcements"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.82rem] font-semibold text-aia-navy shadow-sm transition hover:border-aia-orange hover:text-aia-orange"
+            className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.82rem] font-semibold text-aia-navy shadow-sm transition hover:border-aia-accent hover:text-aia-accent"
           >
             <span>NSE Corporate Filings</span>
             <span aria-hidden>↗</span>
@@ -74,7 +74,7 @@ export function DocumentLibrary({ documents, hrefs, emptyMessage }: Props) {
   }
 
   const selectClass =
-    "h-11 rounded-full border border-aia-line bg-white px-4 text-[0.9rem] text-aia-navy focus:border-aia-orange focus:outline-none";
+    "h-11 rounded-full border border-aia-line bg-white px-4 text-[0.9rem] text-aia-navy focus:border-aia-accent focus:outline-none";
 
   return (
     <div>
@@ -125,11 +125,11 @@ export function DocumentLibrary({ documents, hrefs, emptyMessage }: Props) {
               className="group flex flex-wrap items-center justify-between gap-4 p-5 transition-colors duration-200 hover:bg-aia-surface-soft/60 sm:px-6"
             >
               <div className="flex items-center gap-4 min-w-0 flex-1">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-aia-line/60 bg-aia-surface-soft text-[0.7rem] font-bold text-aia-orange transition-colors group-hover:border-aia-orange/40 group-hover:bg-aia-orange/10">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-aia-line/60 bg-aia-surface-soft text-[0.7rem] font-bold text-aia-accent transition-colors group-hover:border-aia-accent/40 group-hover:bg-aia-accent/10">
                   PDF
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="block text-[1.02rem] font-semibold text-aia-navy transition-colors group-hover:text-aia-orange">
+                  <span className="block text-[1.02rem] font-semibold text-aia-navy transition-colors group-hover:text-aia-accent">
                     {doc.title}
                   </span>
                   <span className="mt-1 block text-[0.82rem] text-aia-navy/55">
@@ -138,7 +138,7 @@ export function DocumentLibrary({ documents, hrefs, emptyMessage }: Props) {
                   </span>
                 </div>
               </div>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-aia-line/80 bg-white px-3.5 py-1.5 text-[0.8rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-orange group-hover:bg-aia-orange group-hover:text-white">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-aia-line/80 bg-white px-3.5 py-1.5 text-[0.8rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-accent group-hover:bg-aia-accent group-hover:text-white">
                 <span>Download</span>
                 <span aria-hidden className="text-[0.88rem]">↓</span>
               </span>

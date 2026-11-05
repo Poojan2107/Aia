@@ -21,7 +21,7 @@ function InvestorNav({ route }: { route: RouteEntry }) {
                 href={page.path}
                 aria-current={current ? "page" : undefined}
                 className={`block rounded-lg px-3 py-2 text-[0.9rem] transition ${
-                  current ? "bg-aia-navy font-semibold text-white" : "text-aia-navy/75 hover:bg-aia-surface-soft hover:text-aia-orange"
+                  current ? "bg-aia-navy font-semibold text-white" : "text-aia-navy/75 hover:bg-aia-surface-soft hover:text-aia-accent"
                 }`}
               >
                 {page.navLabel ?? page.title}
@@ -70,7 +70,7 @@ export function InvestorPage({
                       </p>
                     ))}
                     {contact.email ? (
-                      <a href={`mailto:${contact.email}`} className="mt-3 block text-[0.92rem] font-semibold text-aia-orange">
+                      <a href={`mailto:${contact.email}`} className="mt-3 block text-[0.92rem] font-semibold text-aia-accent">
                         {contact.email}
                       </a>
                     ) : null}
@@ -154,7 +154,7 @@ export function StockTickerPage({ route }: { route: RouteEntry }) {
                     href="https://www.nseindia.com/get-quotes/equity?symbol=AIAENG"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-aia-surface-soft px-3.5 py-1.5 text-[0.82rem] font-semibold text-aia-navy transition hover:border-aia-orange hover:bg-aia-orange hover:text-white"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-aia-surface-soft px-3.5 py-1.5 text-[0.82rem] font-semibold text-aia-navy transition hover:border-aia-accent hover:bg-aia-accent hover:text-white"
                   >
                     <span>View on NSE</span>
                     <span aria-hidden>↗</span>
@@ -163,7 +163,7 @@ export function StockTickerPage({ route }: { route: RouteEntry }) {
                     href="https://www.bseindia.com/stock-share-price/aia-engineering-ltd/aiaeng/532683/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-aia-surface-soft px-3.5 py-1.5 text-[0.82rem] font-semibold text-aia-navy transition hover:border-aia-orange hover:bg-aia-orange hover:text-white"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-aia-surface-soft px-3.5 py-1.5 text-[0.82rem] font-semibold text-aia-navy transition hover:border-aia-accent hover:bg-aia-accent hover:text-white"
                   >
                     <span>View on BSE</span>
                     <span aria-hidden>↗</span>

@@ -29,9 +29,9 @@ export function CareersPage({ route, jobs }: { route: RouteEntry; jobs: Job[] })
       <section className="border-b border-aia-line bg-aia-surface-soft py-14 sm:py-20" aria-label="Career pathways">
         <Container>
           <div className="grid gap-8 md:grid-cols-2">
-            <Reveal className="flex flex-col justify-between rounded-2xl border border-aia-line/80 bg-white p-8 sm:p-10 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-aia-orange/40 hover:shadow-[0_20px_45px_rgba(4,29,44,0.08)]">
+            <Reveal className="flex flex-col justify-between rounded-2xl border border-aia-line/80 bg-white p-8 sm:p-10 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_20px_45px_rgba(4,29,44,0.08)]">
               <div>
-                <p className="ui-caps text-[0.72rem] font-bold text-aia-orange tracking-[0.16em]">Culture & Development</p>
+                <p className="ui-caps text-[0.72rem] font-bold text-aia-accent tracking-[0.16em]">Culture & Development</p>
                 <h2 className="display mt-3 text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
                   Life at AIA
                 </h2>
@@ -46,9 +46,9 @@ export function CareersPage({ route, jobs }: { route: RouteEntry; jobs: Job[] })
               </div>
             </Reveal>
 
-            <Reveal delay={80} className="flex flex-col justify-between rounded-2xl border border-aia-line/80 bg-white p-8 sm:p-10 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-aia-orange/40 hover:shadow-[0_20px_45px_rgba(4,29,44,0.08)]">
+            <Reveal delay={80} className="flex flex-col justify-between rounded-2xl border border-aia-line/80 bg-white p-8 sm:p-10 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_20px_45px_rgba(4,29,44,0.08)]">
               <div>
-                <p className="ui-caps text-[0.72rem] font-bold text-aia-orange tracking-[0.16em]">Opportunities</p>
+                <p className="ui-caps text-[0.72rem] font-bold text-aia-accent tracking-[0.16em]">Opportunities</p>
                 <h2 className="display mt-3 text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
                   Open Positions
                 </h2>
@@ -70,14 +70,14 @@ export function CareersPage({ route, jobs }: { route: RouteEntry; jobs: Job[] })
       <Container className="py-16 sm:py-20 lg:py-24">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="ui-caps text-[0.72rem] font-bold text-aia-orange tracking-[0.16em]">Featured Openings</p>
+            <p className="ui-caps text-[0.72rem] font-bold text-aia-accent tracking-[0.16em]">Featured Openings</p>
             <h2 className="display mt-2 text-[clamp(1.6rem,3.2vw,2.4rem)] font-extrabold text-aia-navy">
               Current Vacancies
             </h2>
           </div>
           <Link
             href="/careers/open-positions"
-            className="inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-aia-orange hover:underline"
+            className="inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-aia-accent hover:underline"
           >
             <span>View all openings ({jobs.length})</span>
             <span aria-hidden>→</span>
@@ -96,16 +96,16 @@ export function CareersPage({ route, jobs }: { route: RouteEntry; jobs: Job[] })
                     <span className="rounded-full bg-aia-surface-soft px-2.5 py-0.5 text-[0.72rem] font-bold uppercase tracking-wider text-aia-navy/70 border border-aia-line/50">
                       {job.function}
                     </span>
-                    <span className="rounded-full bg-aia-surface-soft px-2.5 py-0.5 text-[0.72rem] font-bold uppercase tracking-wider text-aia-orange border border-aia-line/50">
+                    <span className="rounded-full bg-aia-surface-soft px-2.5 py-0.5 text-[0.72rem] font-bold uppercase tracking-wider text-aia-accent border border-aia-line/50">
                       {job.type}
                     </span>
                   </div>
-                  <h3 className="mt-2 text-[1.18rem] font-bold text-aia-navy transition-colors group-hover:text-aia-orange">
+                  <h3 className="mt-2 text-[1.18rem] font-bold text-aia-navy transition-colors group-hover:text-aia-accent">
                     {job.title}
                   </h3>
                   <p className="mt-1 text-[0.92rem] text-aia-navy/60">{job.location}</p>
                 </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.85rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-orange group-hover:bg-aia-orange group-hover:text-white">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.85rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-accent group-hover:bg-aia-accent group-hover:text-white">
                   <span>View position</span>
                   <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                 </span>
@@ -178,11 +178,11 @@ export function JobPage({ route, job }: { route: RouteEntry; job: Job }) {
               <h2 id="responsibilities-heading" className="display text-[clamp(1.4rem,2.6vw,1.9rem)] font-extrabold text-aia-navy">
                 Key Responsibilities
               </h2>
-              <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-orange" />
+              <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-accent" />
               <ul className="mt-5 space-y-3">
                 {job.responsibilities.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange" />
+                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-accent" />
                     <span className="text-[1rem] leading-relaxed text-aia-navy/80">{item}</span>
                   </li>
                 ))}
@@ -193,11 +193,11 @@ export function JobPage({ route, job }: { route: RouteEntry; job: Job }) {
               <h2 id="requirements-heading" className="display text-[clamp(1.4rem,2.6vw,1.9rem)] font-extrabold text-aia-navy">
                 Requirements & Qualifications
               </h2>
-              <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-orange" />
+              <span aria-hidden className="mt-3 block h-[3px] w-12 bg-aia-accent" />
               <ul className="mt-5 space-y-3">
                 {job.requirements.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-orange" />
+                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 bg-aia-accent" />
                     <span className="text-[1rem] leading-relaxed text-aia-navy/80">{item}</span>
                   </li>
                 ))}
@@ -251,7 +251,7 @@ export function JobPage({ route, job }: { route: RouteEntry; job: Job }) {
             <div className="p-2">
               <Link
                 href="/careers/open-positions"
-                className="text-[0.9rem] font-semibold text-aia-orange hover:underline"
+                className="text-[0.9rem] font-semibold text-aia-accent hover:underline"
               >
                 ← Back to all openings
               </Link>

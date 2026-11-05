@@ -8,7 +8,7 @@ await fs.mkdir(out, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1919, height: 1079 } });
 await page.emulateMedia({ reducedMotion: "no-preference" });
-await page.goto("http://127.0.0.1:3000/?theme=orange", {
+await page.goto("http://127.0.0.1:3000/", {
   waitUntil: "domcontentloaded",
 });
 await page.waitForTimeout(1500);

@@ -1,72 +1,52 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
 import { sites, type Site } from "@/data/locations";
 
 type Props = {
   className?: string;
-  defaultId?: string;
 };
 
-export function WorldMap({ className = "", defaultId = "uae" }: Props) {
-  const [activeId, setActiveId] = useState(defaultId);
-  const active = useMemo(
-    () => sites.find((site) => site.id === activeId) ?? sites[5],
-    [activeId],
-  );
+const OFFICE = "#f36500";
+const WAREHOUSE = "#006fff";
 
+function siteColor(site: Site) {
+  return site.kind === "warehouse" ? WAREHOUSE : OFFICE;
+}
+
+export function WorldMap({ className = "" }: Props) {
   return (
     <div className={`relative ${className}`}>
-      <div
-        className="relative overflow-hidden bg-white"
-        onMouseLeave={() => setActiveId(defaultId)}
-      >
+      <div className="relative overflow-visible bg-white">
         <Image
-          src="/images/world-map.jpg"
+          src="/images/world-map-v2.jpg"
           alt="AIA global presence map"
           width={1800}
           height={880}
-          className="block h-auto w-full scale-[1.06] select-none"
+          className="h-auto w-full select-none"
           quality={90}
           priority
         />
 
-        <p
-          key={active.id}
-          aria-live="polite"
-          className="caption-in pointer-events-none absolute left-4 top-3 z-[1] sm:left-5 sm:top-4"
-        >
-          <span className="display block text-[clamp(1.35rem,2.8vw,2.15rem)] leading-none tracking-[-0.04em] text-aia-navy/18">
-            {active.continent}
-          </span>
-        </p>
-
         {sites.map((site) => (
-          <MarkerButton
-            key={site.id}
-            site={site}
-            active={site.id === active.id}
-            onSelect={() => setActiveId(site.id)}
-          />
+          <MarkerButton key={site.id} site={site} />
         ))}
-
-        <Tooltip site={active} />
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
-        <p className="text-[0.78rem] text-aia-navy/60">
-          <span className="font-semibold text-aia-navy">{active.continent}</span>
-          {" — "}
-          {active.city}, {active.country}
-        </p>
-        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-medium tracking-[0.04em] text-aia-navy/70">
+      <div className="pointer-events-none absolute -bottom-5 left-4 z-[3] sm:-bottom-2 sm:left-6 lg:bottom-0 lg:left-86">
+        <ul className="flex flex-col gap-1.5 text-[0.6875rem] font-light tracking-[0.02em] text-black">
           <li className="flex items-center gap-2">
-            <span className="size-2 shrink-0 rounded-full bg-[#006fff] ring-2 ring-white" />
+            <span
+              className="size-2 shrink-0 rounded-full"
+              style={{ background: WAREHOUSE }}
+            />
             Logistic Warehouses
           </li>
           <li className="flex items-center gap-2">
-            <span className="size-2 shrink-0 rounded-full bg-aia-orange ring-2 ring-white" />
+            <span
+              className="size-2 shrink-0 rounded-full"
+              style={{ background: OFFICE }}
+            />
             Subsidiary and Representative Offices
           </li>
         </ul>
@@ -75,79 +55,81 @@ export function WorldMap({ className = "", defaultId = "uae" }: Props) {
   );
 }
 
-function MarkerButton({
-  site,
-  active,
-  onSelect,
-}: {
-  site: Site;
-  active: boolean;
-  onSelect: () => void;
-}) {
-  const color = site.kind === "warehouse" ? "#006fff" : "#f15a24";
+function MarkerButton({ site }: { site: Site }) {
+  const color = siteColor(site);
+  const flipDown = site.y < 28;
+  const gap = 12;
 
   return (
     <button
       type="button"
-      className="absolute z-[2] -translate-x-1/2 -translate-y-1/2 p-1.5"
+      className="map-pin group absolute z-[2] -translate-x-1/2 -translate-y-1/2 p-1.5"
       style={{ left: `${site.x}%`, top: `${site.y}%` }}
-      onMouseEnter={onSelect}
-      onFocus={onSelect}
-      aria-pressed={active}
       aria-label={`${site.city}, ${site.country}`}
     >
       <span
-        className={`block size-2 rounded-full ring-2 ring-white shadow-[0_1px_3px_rgba(0,0,0,0.28)] transition-transform duration-300 ${
-          active ? "scale-125" : "scale-100"
-        }`}
+        className="block size-[7px] rounded-full transition-transform duration-300 group-hover:scale-[1.15] group-focus-visible:scale-[1.15]"
         style={{ background: color }}
       />
-      {active ? (
-        <span
-          aria-hidden
-          className="hotspot-pulse absolute left-1/2 top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-          style={{ borderColor: color }}
-        />
-      ) : null}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[18px] -translate-x-1/2 -translate-y-1/2 rounded-full border opacity-0 transition-opacity duration-200 group-hover:opacity-[0.55] group-focus-visible:opacity-[0.55]"
+        style={{ borderColor: color }}
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[26px] -translate-x-1/2 -translate-y-1/2 rounded-full border opacity-0 transition-opacity duration-200 group-hover:opacity-[0.28] group-focus-visible:opacity-[0.28]"
+        style={{ borderColor: color }}
+      />
+
+      <aside
+        className="map-tooltip pointer-events-none absolute z-[5] hidden group-hover:block group-focus-visible:block"
+        style={{
+          left: "50%",
+          top: flipDown ? `calc(100% + ${gap - 6}px)` : "auto",
+          bottom: flipDown ? "auto" : `calc(100% + ${gap - 6}px)`,
+          transform: "translateX(-50%)",
+        }}
+      >
+        <div
+          className="relative whitespace-nowrap px-5 py-3.5 text-white"
+          style={{
+            background: color,
+            borderRadius: 12,
+            boxShadow: "0 8px 20px rgba(0, 0, 0, 0.14)",
+          }}
+        >
+          <p className="text-[1rem] font-medium leading-tight">
+            {site.short ?? site.country}
+          </p>
+          <p className="mt-1.5 text-[0.8125rem] font-normal leading-snug text-white/92">
+            Tel. {site.phone}
+          </p>
+          <p className="mt-0.5 text-[0.8125rem] font-normal leading-snug text-white/92">
+            Inquiry. {site.email}
+          </p>
+
+          <span
+            aria-hidden
+            className="absolute left-1/2 -translate-x-1/2"
+            style={
+              flipDown
+                ? {
+                    bottom: "100%",
+                    borderLeft: "7px solid transparent",
+                    borderRight: "7px solid transparent",
+                    borderBottom: `9px solid ${color}`,
+                  }
+                : {
+                    top: "100%",
+                    borderLeft: "7px solid transparent",
+                    borderRight: "7px solid transparent",
+                    borderTop: `9px solid ${color}`,
+                  }
+            }
+          />
+        </div>
+      </aside>
     </button>
-  );
-}
-
-function Tooltip({ site }: { site: Site }) {
-  const toLeft = site.x > 52;
-  const nudge = site.y < 30 ? 10 : site.y > 70 ? -10 : 0;
-
-  return (
-    <aside
-      key={site.id}
-      className="caption-in pointer-events-none absolute z-[5]"
-      style={{
-        left: `${site.x}%`,
-        top: `${site.y}%`,
-        transform: toLeft
-          ? `translate(calc(-100% - 12px), calc(-50% + ${nudge}px))`
-          : `translate(12px, calc(-50% + ${nudge}px))`,
-      }}
-    >
-      <div className="relative w-max max-w-[15.5rem] rounded-[3px] bg-aia-orange px-3 py-2 text-white shadow-[0_8px_20px_rgba(241,90,36,0.24)]">
-        <p className="text-[0.9rem] font-semibold leading-none">
-          {site.short ?? site.country}
-        </p>
-        <p className="mt-1.5 text-[0.7rem] leading-snug text-white/92">
-          Tel. {site.phone}
-        </p>
-        <p className="mt-0.5 text-[0.7rem] leading-snug text-white/92">
-          {site.email}
-        </p>
-        <span
-          aria-hidden
-          className={`absolute top-1/2 -translate-y-1/2 ${
-            toLeft
-              ? "left-full border-y-[6px] border-l-[7px] border-y-transparent border-l-aia-orange"
-              : "right-full border-y-[6px] border-r-[7px] border-y-transparent border-r-aia-orange"
-          }`}
-        />
-      </div>
-    </aside>
   );
 }

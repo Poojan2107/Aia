@@ -19,7 +19,7 @@ export function EmptyState({ title, body, action }: { title: string; body: strin
         <div className="mt-6">
           <Link
             href={action.href}
-            className="inline-flex items-center gap-2 rounded-full border border-aia-orange bg-aia-orange px-5 py-2 text-[0.85rem] font-semibold text-white shadow-sm transition hover:bg-[#d65217] hover:shadow"
+            className="inline-flex items-center gap-2 rounded-full border border-aia-accent bg-aia-accent px-5 py-2 text-[0.85rem] font-semibold text-white shadow-sm transition hover:bg-[#d65217] hover:shadow"
           >
             <span>{action.label}</span>
             <span aria-hidden>→</span>
@@ -45,7 +45,7 @@ export function CardGrid({
           <Reveal delay={(i % 3) * 80} className="h-full">
             <Link
               href={item.href}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-aia-line/80 bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-aia-orange/40 hover:shadow-[0_20px_45px_rgba(4,29,44,0.08)]"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-aia-line/80 bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-aia-accent/40 hover:shadow-[0_20px_45px_rgba(4,29,44,0.08)]"
             >
               {item.image ? (
                 <div className="relative aspect-[16/10] overflow-hidden bg-[#e8eaec]">
@@ -60,16 +60,16 @@ export function CardGrid({
               ) : (
                 <div
                   aria-hidden
-                  className="h-1.5 w-full bg-gradient-to-r from-aia-navy/30 via-aia-orange to-aia-navy/30 transition-all duration-300 group-hover:from-aia-orange group-hover:via-[#ff7a3d] group-hover:to-aia-orange"
+                  className="h-1.5 w-full bg-gradient-to-r from-aia-navy/30 via-aia-accent to-aia-navy/30 transition-all duration-300 group-hover:from-aia-accent group-hover:via-[#ff7a3d] group-hover:to-aia-accent"
                 />
               )}
               <div className="flex flex-1 flex-col p-6 sm:p-7">
                 {item.meta ? (
-                  <p className="font-[family-name:var(--font-ui)] text-[0.68rem] font-bold uppercase tracking-[0.16em] text-aia-orange">
+                  <p className="font-[family-name:var(--font-ui)] text-[0.68rem] font-bold uppercase tracking-[0.16em] text-aia-accent">
                     {item.meta}
                   </p>
                 ) : null}
-                <h3 className="mt-2 text-[1.18rem] font-bold leading-snug text-aia-navy transition-colors duration-200 group-hover:text-aia-orange">
+                <h3 className="mt-2 text-[1.18rem] font-bold leading-snug text-aia-navy transition-colors duration-200 group-hover:text-aia-accent">
                   {item.title}
                 </h3>
                 {item.body ? (
@@ -78,12 +78,12 @@ export function CardGrid({
                   </p>
                 ) : null}
                 <div className="mt-auto flex items-center justify-between border-t border-aia-line/60 pt-5">
-                  <span className="text-[0.82rem] font-semibold text-aia-navy/70 transition-colors duration-200 group-hover:text-aia-orange">
+                  <span className="text-[0.82rem] font-semibold text-aia-navy/70 transition-colors duration-200 group-hover:text-aia-accent">
                     Explore details
                   </span>
                   <span
                     aria-hidden
-                    className="flex size-7 items-center justify-center rounded-full bg-aia-surface-soft text-[0.85rem] font-bold text-aia-orange transition-all duration-300 group-hover:bg-aia-orange group-hover:text-white group-hover:translate-x-1"
+                    className="flex size-7 items-center justify-center rounded-full bg-aia-surface-soft text-[0.85rem] font-bold text-aia-accent transition-all duration-300 group-hover:bg-aia-accent group-hover:text-white group-hover:translate-x-1"
                   >
                     →
                   </span>

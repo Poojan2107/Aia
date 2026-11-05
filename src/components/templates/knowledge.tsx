@@ -108,7 +108,7 @@ export function CaseStudyPage({
           <div className="space-y-10">
             <section aria-labelledby="challenge-heading" className="rounded-2xl border border-aia-line/80 bg-white p-7 sm:p-9 shadow-xs">
               <div className="flex items-center gap-2 mb-3">
-                <span className="size-2 rounded-full bg-aia-orange" />
+                <span className="size-2 rounded-full bg-aia-accent" />
                 <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Problem Statement</span>
               </div>
               <h2 id="challenge-heading" className="display text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
@@ -119,7 +119,7 @@ export function CaseStudyPage({
 
             <section aria-labelledby="approach-heading" className="rounded-2xl border border-aia-line/80 bg-white p-7 sm:p-9 shadow-xs">
               <div className="flex items-center gap-2 mb-3">
-                <span className="size-2 rounded-full bg-aia-orange" />
+                <span className="size-2 rounded-full bg-aia-accent" />
                 <span className="ui-caps text-[0.72rem] font-bold tracking-[0.14em] text-aia-navy/60">Engineered Solution</span>
               </div>
               <h2 id="approach-heading" className="display text-[clamp(1.5rem,2.8vw,2.1rem)] font-extrabold text-aia-navy">
@@ -128,7 +128,7 @@ export function CaseStudyPage({
               <ul className="mt-6 space-y-3.5">
                 {caseStudy.approach.map((point) => (
                   <li key={point} className="flex items-start gap-3.5">
-                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 rounded-full bg-aia-orange" />
+                    <span aria-hidden className="mt-[0.55em] size-[7px] shrink-0 rounded-full bg-aia-accent" />
                     <span className="text-[1.02rem] leading-relaxed text-aia-navy/85">{point}</span>
                   </li>
                 ))}
@@ -165,7 +165,7 @@ export function CaseStudyPage({
                   <a
                     href={mediaHref(caseStudy.pdf)}
                     download
-                    className="inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full border border-aia-orange bg-aia-orange px-7 text-[14px] leading-8 font-semibold text-white transition hover:bg-[#d65217] shadow-sm"
+                    className="inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full border border-aia-accent bg-aia-accent px-7 text-[14px] leading-8 font-semibold text-white transition hover:bg-[#d65217] shadow-sm"
                   >
                     <span>Download PDF Report</span>
                     <span aria-hidden>↓</span>
@@ -206,10 +206,10 @@ export function CaseStudyPage({
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[0.9rem] font-semibold text-aia-navy transition hover:bg-aia-surface-soft hover:text-aia-orange"
+                        className="group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[0.9rem] font-semibold text-aia-navy transition hover:bg-aia-surface-soft hover:text-aia-accent"
                       >
                         <span>{link.label}</span>
-                        <span className="text-aia-orange transition-transform duration-200 group-hover:translate-x-1">→</span>
+                        <span className="text-aia-accent transition-transform duration-200 group-hover:translate-x-1">→</span>
                       </Link>
                     </li>
                   ))}
@@ -220,7 +220,7 @@ export function CaseStudyPage({
             <div className="px-2">
               <Link
                 href="/knowledge-hub/case-studies"
-                className="inline-flex items-center gap-1.5 text-[0.9rem] font-semibold text-aia-orange hover:underline"
+                className="inline-flex items-center gap-1.5 text-[0.9rem] font-semibold text-aia-accent hover:underline"
               >
                 <span>←</span>
                 <span>Back to all case studies</span>
@@ -317,7 +317,7 @@ export function ArticlePage({ route, article }: { route: RouteEntry; article: Ar
                       href={att.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-semibold text-aia-orange hover:underline"
+                      className="inline-flex items-center gap-2 font-semibold text-aia-accent hover:underline"
                     >
                       {att.label}
                     </a>
@@ -330,7 +330,7 @@ export function ArticlePage({ route, article }: { route: RouteEntry; article: Ar
           <div className="mt-12 border-t border-aia-line pt-8">
             <Link
               href="/knowledge-hub/news-and-insights"
-              className="text-[0.9rem] font-semibold text-aia-orange hover:underline"
+              className="text-[0.9rem] font-semibold text-aia-accent hover:underline"
             >
               ← Back to News & Insights
             </Link>
@@ -425,9 +425,9 @@ export function FaqsPage({ route, faqs }: { route: RouteEntry; faqs: Faq[] }) {
               <div className="divide-y divide-aia-line border-y border-aia-line">
                 {items.map((item) => (
                   <details key={item.question} className="group py-5 transition">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[1.05rem] font-bold text-aia-navy group-hover:text-aia-orange">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[1.05rem] font-bold text-aia-navy group-hover:text-aia-accent">
                       <span>{item.question}</span>
-                      <span aria-hidden className="shrink-0 text-xl font-light text-aia-orange transition duration-200 group-open:rotate-45">
+                      <span aria-hidden className="shrink-0 text-xl font-light text-aia-accent transition duration-200 group-open:rotate-45">
                         +
                       </span>
                     </summary>

@@ -47,7 +47,7 @@ export function ContactPage({ route }: { route: RouteEntry }) {
                 <div className="flex items-center gap-3">
                   <dt className="w-16 text-aia-navy/55">Phone</dt>
                   <dd>
-                    <a href={`tel:${site.phone.replace(/\s+/g, "")}`} className="font-semibold text-aia-navy hover:text-aia-orange">
+                    <a href={`tel:${site.phone.replace(/\s+/g, "")}`} className="font-semibold text-aia-navy hover:text-aia-accent">
                       {site.phone}
                     </a>
                   </dd>
@@ -59,7 +59,7 @@ export function ContactPage({ route }: { route: RouteEntry }) {
                 <div className="flex items-center gap-3">
                   <dt className="w-16 text-aia-navy/55">Email</dt>
                   <dd>
-                    <a href={`mailto:${site.email}`} className="font-semibold text-aia-orange hover:underline">
+                    <a href={`mailto:${site.email}`} className="font-semibold text-aia-accent hover:underline">
                       {site.email}
                     </a>
                   </dd>
@@ -74,9 +74,9 @@ export function ContactPage({ route }: { route: RouteEntry }) {
                 <li>
                   <Link
                     href="/company/global-presence"
-                    className="group block rounded-xl border border-aia-line p-4 transition hover:border-aia-orange hover:bg-aia-surface-soft"
+                    className="group block rounded-xl border border-aia-line p-4 transition hover:border-aia-accent hover:bg-aia-surface-soft"
                   >
-                    <p className="text-[0.95rem] font-bold text-aia-navy group-hover:text-aia-orange">
+                    <p className="text-[0.95rem] font-bold text-aia-navy group-hover:text-aia-accent">
                       Global Presence & Offices →
                     </p>
                     <p className="mt-1 text-[0.85rem] text-aia-navy/60">
@@ -87,9 +87,9 @@ export function ContactPage({ route }: { route: RouteEntry }) {
                 <li>
                   <Link
                     href="/investors/contact"
-                    className="group block rounded-xl border border-aia-line p-4 transition hover:border-aia-orange hover:bg-aia-surface-soft"
+                    className="group block rounded-xl border border-aia-line p-4 transition hover:border-aia-accent hover:bg-aia-surface-soft"
                   >
-                    <p className="text-[0.95rem] font-bold text-aia-navy group-hover:text-aia-orange">
+                    <p className="text-[0.95rem] font-bold text-aia-navy group-hover:text-aia-accent">
                       Investor Relations Contact →
                     </p>
                     <p className="mt-1 text-[0.85rem] text-aia-navy/60">
@@ -100,9 +100,9 @@ export function ContactPage({ route }: { route: RouteEntry }) {
                 <li>
                   <Link
                     href="/careers/open-positions"
-                    className="group block rounded-xl border border-aia-line p-4 transition hover:border-aia-orange hover:bg-aia-surface-soft"
+                    className="group block rounded-xl border border-aia-line p-4 transition hover:border-aia-accent hover:bg-aia-surface-soft"
                   >
-                    <p className="text-[0.95rem] font-bold text-aia-navy group-hover:text-aia-orange">
+                    <p className="text-[0.95rem] font-bold text-aia-navy group-hover:text-aia-accent">
                       Careers & Job Openings →
                     </p>
                     <p className="mt-1 text-[0.85rem] text-aia-navy/60">

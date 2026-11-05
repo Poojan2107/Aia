@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <main className="flex min-h-[100svh] flex-col items-center justify-center bg-aia-navy px-6 py-16 text-center text-white">
       <BrandLockup tone="light" className="mb-10" />
-      <p className="ui-caps mb-4 tracking-[0.16em] text-aia-orange font-semibold">404 — Page Not Found</p>
+      <p className="ui-caps mb-4 tracking-[0.16em] text-aia-accent font-semibold">404 — Page Not Found</p>
       <h1 className="display mb-6 text-[clamp(2rem,4vw,3.5rem)] font-extrabold text-white">
         We couldn&apos;t find that page
       </h1>
@@ -15,7 +15,7 @@ export default function NotFound() {
       <div className="flex flex-wrap items-center justify-center gap-4">
         <Link
           href="/"
-          className="ui-caps inline-flex h-[46px] items-center rounded-full bg-aia-orange px-6 text-sm font-semibold text-white transition hover:bg-[#d65217]"
+          className="ui-caps inline-flex h-[46px] items-center rounded-full bg-aia-accent px-6 text-sm font-semibold text-white transition hover:bg-[#d65217]"
         >
           Back to Home
         </Link>

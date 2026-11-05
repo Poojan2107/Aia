@@ -75,7 +75,7 @@ export function CaseStudies() {
               />
               <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.78rem] uppercase tracking-[0.16em] text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
                 Know More
-                <span className="flex size-8 items-center justify-center rounded-full bg-aia-orange text-base text-white">
+                <span className="flex size-8 items-center justify-center rounded-full bg-aia-accent text-base text-white">
                   →
                 </span>
               </span>
@@ -107,7 +107,7 @@ function NavArrow({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="size-8 text-[#c5c8cc] transition-colors duration-200 hover:text-[var(--aia-orange)]"
+      className="size-8 text-[#c5c8cc] transition-colors duration-200 hover:text-[var(--aia-accent)]"
     >
       <svg
         className={`size-8 ${reverse ? "rotate-180" : ""}`}

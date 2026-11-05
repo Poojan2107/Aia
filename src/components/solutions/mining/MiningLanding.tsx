@@ -34,17 +34,17 @@ export function MiningLanding() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(180deg,transparent,color-mix(in_srgb,var(--aia-orange)_18%,transparent)_100%)]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(180deg,transparent,color-mix(in_srgb,var(--aia-accent)_18%,transparent)_100%)]"
         />
 
         <div className="page-pad relative z-10 mx-auto flex h-full max-w-[1440px] flex-col justify-end pt-28 pb-14 sm:pb-16 lg:pb-20">
           <div className="animate-fade-up max-w-[58rem]">
             <span
               aria-hidden
-              className="mb-6 block h-[3px] w-16 bg-aia-orange sm:mb-8"
+              className="mb-6 block h-[3px] w-16 bg-aia-accent sm:mb-8"
             />
             <h1 className="display text-[clamp(2.1rem,5.4vw,4.35rem)] font-extrabold leading-[0.96] tracking-[-0.035em] text-white">
-              <span className="block text-aia-orange">{hero.line1}</span>
+              <span className="block text-aia-accent">{hero.line1}</span>
               <span className="mt-1 block">{hero.line2}</span>
             </h1>
             <ul className="mt-8 flex flex-wrap items-center gap-x-0 gap-y-3 sm:mt-10">
@@ -76,14 +76,14 @@ export function MiningLanding() {
             <ul className="grid gap-3 sm:grid-cols-3 sm:gap-4">
               {intro.pressures.map((item, i) => (
                 <li key={item}>
-                  <p className="group relative flex min-h-[8.5rem] flex-col justify-end overflow-hidden rounded-2xl border border-aia-line bg-aia-surface-soft px-5 py-5 transition duration-500 ease-[var(--ease-out)] hover:-translate-y-1 hover:border-aia-orange hover:bg-aia-orange hover:shadow-[0_22px_50px_color-mix(in_srgb,var(--aia-orange)_28%,transparent)] sm:min-h-[10rem] sm:px-6 sm:py-6">
+                  <p className="group relative flex min-h-[8.5rem] flex-col justify-end overflow-hidden rounded-2xl border border-aia-line bg-aia-surface-soft px-5 py-5 transition duration-500 ease-[var(--ease-out)] hover:-translate-y-1 hover:border-aia-accent hover:bg-aia-accent hover:shadow-[0_22px_50px_color-mix(in_srgb,var(--aia-accent)_28%,transparent)] sm:min-h-[10rem] sm:px-6 sm:py-6">
                     <span
                       aria-hidden
                       className="pointer-events-none absolute -right-2 -top-3 display text-[4.5rem] font-extrabold leading-none text-aia-navy/[0.06] transition-colors duration-500 group-hover:text-white/15 sm:text-[5.5rem]"
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="relative font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tabular-nums tracking-[0.16em] text-aia-orange transition-colors duration-500 group-hover:text-white">
+                    <span className="relative font-[family-name:var(--font-ui)] text-[0.62rem] font-semibold tabular-nums tracking-[0.16em] text-aia-accent transition-colors duration-500 group-hover:text-white">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="relative mt-3 text-[1.05rem] font-semibold leading-snug text-aia-navy transition-colors duration-500 group-hover:text-white sm:text-[1.15rem]">
@@ -91,7 +91,7 @@ export function MiningLanding() {
                     </span>
                     <span
                       aria-hidden
-                      className="relative mt-4 block h-[2px] w-8 bg-aia-orange transition-all duration-500 group-hover:w-14 group-hover:bg-white"
+                      className="relative mt-4 block h-[2px] w-8 bg-aia-accent transition-all duration-500 group-hover:w-14 group-hover:bg-white"
                     />
                   </p>
                 </li>
@@ -101,12 +101,12 @@ export function MiningLanding() {
 
           <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-2 lg:gap-16">
             <Reveal>
-              <p className="border-l-[3px] border-aia-orange pl-5 text-[0.98rem] leading-[1.8] text-aia-navy/75 md:pl-6 md:text-[1.05rem]">
+              <p className="border-l-[3px] border-aia-accent pl-5 text-[0.98rem] leading-[1.8] text-aia-navy/75 md:pl-6 md:text-[1.05rem]">
                 {intro.lead}
               </p>
             </Reveal>
             <Reveal delay={80}>
-              <p className="border-l-[3px] border-aia-orange/25 pl-5 text-[0.95rem] leading-[1.8] text-aia-navy/65 md:pl-6 md:text-[1.02rem]">
+              <p className="border-l-[3px] border-aia-accent/25 pl-5 text-[0.95rem] leading-[1.8] text-aia-navy/65 md:pl-6 md:text-[1.02rem]">
                 {intro.body}
               </p>
             </Reveal>
@@ -120,11 +120,11 @@ export function MiningLanding() {
               />
               <span
                 aria-hidden
-                className="outcome-track-fill pointer-events-none absolute top-[1.15rem] right-[8%] left-[8%] hidden h-px origin-left bg-aia-orange lg:block"
+                className="outcome-track-fill pointer-events-none absolute top-[1.15rem] right-[8%] left-[8%] hidden h-px origin-left bg-aia-accent lg:block"
               />
               <span
                 aria-hidden
-                className="outcome-bead pointer-events-none absolute top-[1.15rem] left-[8%] hidden size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-aia-orange lg:block"
+                className="outcome-bead pointer-events-none absolute top-[1.15rem] left-[8%] hidden size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-aia-accent lg:block"
               />
               {intro.outcomes.map((item, i) => (
                 <li
@@ -132,15 +132,15 @@ export function MiningLanding() {
                   className="outcome-step group relative text-center"
                   style={{ ["--step" as string]: i }}
                 >
-                  <span className="outcome-node relative z-[1] mx-auto flex size-[2.35rem] items-center justify-center rounded-full border border-aia-line bg-white font-[family-name:var(--font-ui)] text-[0.72rem] font-semibold tabular-nums text-aia-orange shadow-[0_0_0_6px_white] transition duration-300 group-hover:border-aia-orange group-hover:bg-aia-orange group-hover:text-white">
+                  <span className="outcome-node relative z-[1] mx-auto flex size-[2.35rem] items-center justify-center rounded-full border border-aia-line bg-white font-[family-name:var(--font-ui)] text-[0.72rem] font-semibold tabular-nums text-aia-accent shadow-[0_0_0_6px_white] transition duration-300 group-hover:border-aia-accent group-hover:bg-aia-accent group-hover:text-white">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <p className="outcome-copy mt-4 text-[0.98rem] font-semibold leading-snug text-aia-navy transition-colors duration-300 group-hover:text-aia-orange">
+                  <p className="outcome-copy mt-4 text-[0.98rem] font-semibold leading-snug text-aia-navy transition-colors duration-300 group-hover:text-aia-accent">
                     {item}
                   </p>
                   <span
                     aria-hidden
-                    className="mx-auto mt-3 block h-[2px] w-8 origin-center scale-x-0 bg-aia-orange transition duration-300 group-hover:scale-x-100"
+                    className="mx-auto mt-3 block h-[2px] w-8 origin-center scale-x-0 bg-aia-accent transition duration-300 group-hover:scale-x-100"
                   />
                 </li>
               ))}
@@ -189,7 +189,7 @@ export function MiningLanding() {
                         className="object-cover object-center transition duration-500 group-hover:scale-[1.04]"
                       />
                     </div>
-                    <h3 className="mb-2 min-h-[3rem] text-[1.12rem] font-bold leading-snug text-aia-navy group-hover:text-aia-orange md:text-[1.2rem]">
+                    <h3 className="mb-2 min-h-[3rem] text-[1.12rem] font-bold leading-snug text-aia-navy group-hover:text-aia-accent md:text-[1.2rem]">
                       {item.title}
                     </h3>
                     <p className="text-sm leading-relaxed text-aia-muted md:text-[0.95rem]">

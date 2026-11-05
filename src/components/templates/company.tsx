@@ -81,7 +81,7 @@ export function BoardPage({ route, directors }: { route: RouteEntry; directors: 
                     <Reveal delay={(i % 4) * 60}>
                       <Link href={`${route.path}/${director.slug}`} className="group block">
                         <Portrait director={director} size="card" />
-                        <p className="mt-4 text-[1.02rem] font-bold leading-snug text-aia-navy group-hover:text-aia-orange">{director.name}</p>
+                        <p className="mt-4 text-[1.02rem] font-bold leading-snug text-aia-navy group-hover:text-aia-accent">{director.name}</p>
                         <p className="mt-1 text-[0.88rem] text-aia-navy/60">{director.role}</p>
                       </Link>
                     </Reveal>
@@ -143,7 +143,7 @@ export function CommitteesPage({ route, committees }: { route: RouteEntry; commi
               aria-labelledby={`${committee.slug}-h`}
             >
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-aia-line/60 bg-aia-surface-soft px-3 py-0.5 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-aia-navy/70">
-                <span className="size-1.5 rounded-full bg-aia-orange" />
+                <span className="size-1.5 rounded-full bg-aia-accent" />
                 <span>Statutory Committee</span>
               </div>
               <h2 id={`${committee.slug}-h`} className="display text-[clamp(1.4rem,2.6vw,2.1rem)] font-extrabold text-aia-navy">
@@ -201,9 +201,9 @@ export function CsrListingPage({
           {csrFocusAreas.map((item) => (
             <li
               key={item.area}
-              className="rounded-2xl border border-aia-line/80 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-aia-orange/40 hover:shadow-[0_16px_36px_rgba(4,29,44,0.06)]"
+              className="rounded-2xl border border-aia-line/80 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_16px_36px_rgba(4,29,44,0.06)]"
             >
-              <span aria-hidden className="mb-4 block h-[3px] w-10 bg-aia-orange" />
+              <span aria-hidden className="mb-4 block h-[3px] w-10 bg-aia-accent" />
               <p className="text-[1.1rem] font-bold text-aia-navy">{item.area}</p>
               <p className="mt-2 text-[0.92rem] leading-[1.7] text-aia-navy/70">{item.body}</p>
             </li>

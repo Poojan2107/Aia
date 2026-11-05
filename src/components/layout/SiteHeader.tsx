@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
-import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { mainNav, type NavItem } from "@/data/nav";
 
 /**
@@ -43,7 +42,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelId = `nav-panel-${item.id}`;
   const base = `flex h-11 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-[0.84rem] font-semibold transition-colors xl:px-4 xl:text-[0.88rem] ${
-    current ? "text-aia-orange" : "text-white hover:text-aia-orange"
+    current ? "text-aia-accent" : "text-white hover:text-aia-accent"
   }`;
 
   if (!item.groups) {
@@ -90,7 +89,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
           <Link
             href={item.href}
             onClick={onClose}
-            className="group mb-4 flex items-center justify-between border-b border-aia-line pb-3 text-[0.76rem] font-bold uppercase tracking-[0.14em] text-aia-orange hover:text-[#d65217]"
+            className="group mb-4 flex items-center justify-between border-b border-aia-line pb-3 text-[0.76rem] font-bold uppercase tracking-[0.14em] text-aia-accent hover:text-[#d65217]"
           >
             <span>{item.label} Overview</span>
             <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
@@ -107,10 +106,10 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
                       <Link
                         href={link.href}
                         onClick={onClose}
-                        className="group flex items-center justify-between whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[0.88rem] font-medium text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-orange"
+                        className="group flex items-center justify-between whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[0.88rem] font-medium text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-accent"
                       >
                         <span>{link.label}</span>
-                        <span className="text-[0.75rem] opacity-0 transition-opacity group-hover:opacity-100 text-aia-orange">→</span>
+                        <span className="text-[0.75rem] opacity-0 transition-opacity group-hover:opacity-100 text-aia-accent">→</span>
                       </Link>
                     </li>
                   ))}
@@ -165,7 +164,7 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
                   <Chevron open={open} />
                 </button>
                 <div id={`m-${item.id}`} hidden={!open} className="pb-4">
-                  <Link href={item.href} onClick={onClose} className="mb-2 block text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-aia-orange">
+                  <Link href={item.href} onClick={onClose} className="mb-2 block text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-aia-accent">
                     {item.label} overview
                   </Link>
                   {item.groups.map((group, gi) => (
@@ -174,7 +173,7 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
                       <ul>
                         {group.links.map((link) => (
                           <li key={link.href}>
-                            <Link href={link.href} onClick={onClose} className="block py-1.5 text-[0.98rem] text-white/80 hover:text-aia-orange">
+                            <Link href={link.href} onClick={onClose} className="block py-1.5 text-[0.98rem] text-white/80 hover:text-aia-accent">
                               {link.label}
                             </Link>
                           </li>
@@ -187,9 +186,6 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
             );
           })}
         </ul>
-        <div className="mt-8 flex items-center gap-4">
-          <ThemeToggle />
-        </div>
       </nav>
     </div>
   );
@@ -259,9 +255,6 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="hidden xl:block">
-              <ThemeToggle />
-            </div>
             <button
               type="button"
               onClick={() => setMobileOpen(true)}

@@ -197,7 +197,7 @@ export function IndustryMill({
                     y2={`${ly}%`}
                     stroke={
                       active
-                        ? "var(--aia-orange)"
+                        ? "var(--aia-accent)"
                         : point.tone === "slate"
                           ? "#2a3238"
                           : "#f0c424"

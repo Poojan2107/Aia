@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Instrument_Serif, Onest } from "next/font/google";
 import "./globals.css";
 import { HomeOnlyGuard } from "@/components/navigation/HomeOnlyGuard";
-import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd } from "@/lib/seo";
 import { siteUrl } from "@/lib/env";
@@ -114,29 +113,22 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="orange"
       suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${serif.variable} ${onest.variable} h-full`}
     >
-      <head>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="/theme-boot.js" />
-      </head>
       <body
         className="min-h-full bg-aia-surface text-aia-navy antialiased"
         suppressHydrationWarning
       >
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-aia-orange focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-aia-accent focus:px-4 focus:py-2 focus:text-white"
         >
           Skip to content
         </a>
         <JsonLd data={organizationJsonLd} />
-        <ThemeProvider>
-          <HomeOnlyGuard />
-          {children}
-        </ThemeProvider>
+        <HomeOnlyGuard />
+        {children}
       </body>
     </html>
   );

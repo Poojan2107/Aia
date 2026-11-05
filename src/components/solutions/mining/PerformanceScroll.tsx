@@ -46,7 +46,7 @@ function MetricHero({ metric, delay }: { metric: Metric; delay: number }) {
             className="metric-arc"
             d={d}
             fill="none"
-            stroke="var(--aia-orange)"
+            stroke="var(--aia-accent)"
             strokeWidth="9"
             strokeLinecap="round"
             strokeDasharray={length.toFixed(2)}
@@ -101,10 +101,10 @@ function Chapter({
             className="display scroll-mt-24 text-[clamp(2rem,5vw,3.75rem)] font-extrabold uppercase leading-[0.88] tracking-[-0.035em]"
           >
             <span className="block text-aia-navy">{pillar.line1}</span>
-            <span className="block text-aia-orange">{pillar.line2}</span>
+            <span className="block text-aia-accent">{pillar.line2}</span>
           </h2>
           <p className="font-[family-name:var(--font-ui)] text-[0.72rem] font-semibold tabular-nums tracking-[0.16em] text-aia-navy/35">
-            <span className="text-aia-orange">{step}</span>
+            <span className="text-aia-accent">{step}</span>
             <span className="mx-1.5 text-aia-line">/</span>
             {String(total).padStart(2, "0")}
           </p>
@@ -112,7 +112,7 @@ function Chapter({
 
         <div className="mt-10 grid items-center gap-10 lg:mt-12 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16">
           <Reveal>
-            <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+            <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-accent">
               {pillar.productsHeading}
             </p>
             <p className="mt-4 max-w-[36rem] text-[0.95rem] leading-[1.75] text-aia-navy/65 md:text-[1.02rem]">
@@ -128,7 +128,7 @@ function Chapter({
         </div>
 
         <Reveal delay={160} className="mt-12 lg:mt-14">
-          <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-orange">
+          <p className="font-[family-name:var(--font-ui)] text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-aia-accent">
             {pillar.servicesHeading}
           </p>
           <ol className="mt-5 grid gap-px overflow-hidden rounded-2xl bg-aia-line sm:grid-cols-3">
@@ -137,7 +137,7 @@ function Chapter({
                 key={service.title}
                 className="group bg-white px-5 py-5 transition duration-300 hover:bg-aia-surface-soft sm:px-6 sm:py-6"
               >
-                <h3 className="text-[1rem] font-semibold text-aia-navy group-hover:text-aia-orange">
+                <h3 className="text-[1rem] font-semibold text-aia-navy group-hover:text-aia-accent">
                   {service.title}
                 </h3>
                 <p className="mt-2 text-[0.86rem] leading-[1.6] text-aia-navy/55">

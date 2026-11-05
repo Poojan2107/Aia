@@ -22,7 +22,7 @@ function FilterButtons({ label, options, value, onChange }: { label: string; opt
             className={`rounded-full px-5 py-2 text-[0.85rem] font-semibold transition ${
               active
                 ? "bg-aia-navy text-white shadow-sm"
-                : "border border-aia-line bg-white text-aia-navy/70 hover:border-aia-orange hover:text-aia-navy"
+                : "border border-aia-line bg-white text-aia-navy/70 hover:border-aia-accent hover:text-aia-navy"
             }`}
           >
             {option.label}
@@ -80,7 +80,7 @@ export function FilteredJobList({ jobs }: { jobs: JobRow[] }) {
               >
                 <div className="max-w-[48rem]">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-aia-orange/10 px-3 py-1 font-[family-name:var(--font-ui)] text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-aia-orange">
+                    <span className="rounded-full bg-aia-accent/10 px-3 py-1 font-[family-name:var(--font-ui)] text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-aia-accent">
                       {job.function}
                     </span>
                     <span className="rounded-full bg-aia-surface-soft px-2.5 py-0.5 text-[0.75rem] font-medium text-aia-navy/70 border border-aia-line/50">
@@ -91,10 +91,10 @@ export function FilteredJobList({ jobs }: { jobs: JobRow[] }) {
                     </span>
                     <span className="text-[0.85rem] font-medium text-aia-navy/60">{job.location}</span>
                   </div>
-                  <h3 className="mt-3 text-[1.25rem] font-bold text-aia-navy transition-colors group-hover:text-aia-orange">{job.title}</h3>
+                  <h3 className="mt-3 text-[1.25rem] font-bold text-aia-navy transition-colors group-hover:text-aia-accent">{job.title}</h3>
                   <p className="mt-2 text-[0.95rem] leading-[1.7] text-aia-navy/70">{job.summary}</p>
                 </div>
-                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.85rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-orange group-hover:bg-aia-orange group-hover:text-white">
+                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-aia-line bg-white px-4 py-2 text-[0.85rem] font-semibold text-aia-navy shadow-xs transition-all duration-200 group-hover:border-aia-accent group-hover:bg-aia-accent group-hover:text-white">
                   <span>View role</span>
                   <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                 </span>
@@ -119,7 +119,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
   const embed = item.src && /youtube\.com|youtube-nocookie\.com|vimeo\.com/.test(item.src);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-aia-line/80 bg-white shadow-xs transition-all duration-300 hover:shadow-md hover:border-aia-orange/40">
+    <article className="overflow-hidden rounded-2xl border border-aia-line/80 bg-white shadow-xs transition-all duration-300 hover:shadow-md hover:border-aia-accent/40">
       <div className="relative aspect-[16/9] w-full bg-[#111]">
         {playing && item.src ? (
           embed ? (
@@ -151,7 +151,7 @@ export function VideoCard({ item }: { item: MediaItem }) {
             />
             <span aria-hidden className="absolute inset-0 bg-black/35 transition group-hover:bg-black/20" />
             <span aria-hidden className="absolute inset-0 flex items-center justify-center">
-              <span className="flex size-14 items-center justify-center rounded-full bg-aia-orange text-white shadow-lg transition group-hover:scale-110">
+              <span className="flex size-14 items-center justify-center rounded-full bg-aia-accent text-white shadow-lg transition group-hover:scale-110">
                 ▶
               </span>
             </span>
