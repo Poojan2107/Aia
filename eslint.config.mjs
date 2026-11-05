@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored Framer export (MeridianGlobe) — compiled code, not hand-written.
+    "src/components/ui/AtomicGlobe.jsx",
+    "src/components/ui/AtomicGlobe.d.ts",
   ]),
 ]);
 

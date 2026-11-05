@@ -81,7 +81,10 @@ export type GlobeProps = {
     routeDots?: number;
     routeSize?: number;
     routeRest?: number;
+    customPairs?: [number, number][];
+    [key: string]: any;
   };
+  customPairs?: [number, number][];
   advanced?: {
     quality?: "auto" | "high" | "low";
     editorPlayback?: boolean;
