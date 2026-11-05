@@ -4123,3 +4123,40 @@ button.solve-cta > span:last-child {
   border-radius: 999px;
   background: currentColor;
 }
+
+/* ── Footer (Figma 01Homepage, 1920 frame) ────────────────────────────── */
+.foot { position: relative; isolation: isolate; overflow: hidden; color: #fff; background: #05121c; }
+.foot-bg { z-index: -2; object-fit: cover; }
+.foot-scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(4, 18, 30, 0.82), rgba(4, 18, 30, 0.6) 50%, rgba(4, 18, 30, 0.85)); }
+.foot-inner { margin-inline: auto; max-width: 1920px; padding: clamp(4rem, 6.8vw, 130px) clamp(1rem, 7vw, 134px) 0; }
+.foot-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem; }
+.foot-tagline { font-family: var(--font-haas); font-size: clamp(1.6rem, 2.3vw, 44px); font-weight: 500; line-height: 1.12; }
+.foot-logos { height: clamp(52px, 4.4vw, 84px); width: auto; }
+.foot-panel { margin: clamp(2.5rem, 3.6vw, 70px) auto 0; max-width: 1310px; background: var(--aia-accent); padding: clamp(2rem, 4.2vw, 80px); }
+.foot-grid { display: grid; gap: 2.5rem 2rem; }
+.foot-heading { margin-bottom: 0.9rem; font-family: var(--font-haas); font-size: clamp(1.05rem, 1.05vw, 20px); font-weight: 500; }
+.foot-links { display: grid; gap: 0.15rem; }
+.foot-links a, .foot-address { font-size: 14px; line-height: 1.9; color: rgba(255, 255, 255, 0.82); }
+.foot-links a:hover, .foot-address a:hover { color: #fff; text-decoration: underline; }
+.foot-address { font-style: normal; line-height: 1.55; }
+.foot-investor-cols { display: grid; gap: 0 2rem; }
+.foot-linkedin { margin-top: 1rem; display: inline-flex; color: #fff; }
+.foot-ctas { margin-top: clamp(2.5rem, 3.6vw, 70px); display: grid; border-top: 1px solid rgba(255, 255, 255, 0.15); }
+.foot-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: clamp(2rem, 3vw, 56px) clamp(0rem, 3.4vw, 66px); }
+.foot-cta p { font-family: var(--font-haas); font-size: clamp(1.15rem, 1.25vw, 24px); font-weight: 500; line-height: 1.2; }
+.foot-pill { display: inline-flex; height: 44px; align-items: center; gap: 10px; border-radius: 999px; background: #fff; padding-inline: 1.3rem; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--aia-navy); transition: background-color 200ms, color 200ms; }
+.foot-pill:hover { background: var(--aia-accent); color: #fff; }
+.foot-pill-dot { height: 6px; width: 6px; border-radius: 999px; background: var(--aia-accent); }
+.foot-pill:hover .foot-pill-dot { background: #fff; }
+.foot-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-block: 1.75rem; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+.foot-legal { display: flex; gap: 1.75rem; }
+.foot-legal a:hover { color: #fff; }
+.foot-credit { display: inline-flex; align-items: center; gap: 8px; }
+.foot-credit-logo { height: 16px; width: auto; }
+@media (min-width: 768px) {
+  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .foot-investors { grid-column: span 2; }
+  .foot-investor-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot-ctas { grid-template-columns: 1fr 1fr; margin-inline: auto; max-width: 1310px; }
+  .foot-cta + .foot-cta { border-left: 1px solid rgba(255, 255, 255, 0.15); }
+}
