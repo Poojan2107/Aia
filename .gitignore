@@ -51,3 +51,43 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 qa/
+
+# Client deliverables and source material: kept outside the repository
+/*.pdf
+/*.docx
+/*.xlsx
+/*.pptx
+/*.jpeg
+/*.jpg
+/*.png
+/Mill assemblies/
+/Product 3D file/
+/docs/*.pdf
+/docs/*.docx
+/docs/*.txt
+/docs/*.jpg
+/docs/docx_inspect/
+/docs/PLATFORM-FOUNDATION-PLAN.md
+
+# Machine-local assets (symlinks, references, recordings)
+/public/models/aia
+/public/keyword/
+/public/screenshots/
+/public/screenshots (2)/
+/public/videos/20260821-*.mp4
+/public/videos/Screen Recording*.mp4
+
+# Document generators for client deliverables and the AIA Assistant (separate repo)
+/scripts/generate*.py
+/scripts/generate-*.py
+/scripts/build_assistant_diagrams.py
+/scripts/convert_*
+/scripts/test_docx.py
+/scripts/verify_*.py
+/scripts/_brand/
+/scripts/_diagram_cache/
+__pycache__/
+/public/file.svg
+/public/globe.svg
+/public/vercel.svg
+/public/window.svg
