@@ -259,7 +259,7 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
         <button
           type="submit"
           disabled={isPending}
-          className="inline-flex h-12 items-center justify-center rounded-full bg-aia-accent px-8 font-[family-name:var(--font-ui)] text-[0.88rem] font-semibold tracking-wide text-white transition duration-300 hover:bg-[#d65217] disabled:opacity-50"
+          className="inline-flex h-12 items-center justify-center rounded-full bg-aia-accent px-8 font-[family-name:var(--font-ui)] text-[0.88rem] font-semibold tracking-wide text-white transition duration-300 hover:bg-aia-accent-deep disabled:opacity-50"
         >
           {isPending ? "Sending enquiry..." : "Submit Enquiry →"}
         </button>

@@ -16,7 +16,7 @@ export type Site = {
 
 /**
  * Homepage map markers — positions match the global-presence reference.
- * Blue = warehouse (left in pairs), orange = office (right in pairs).
+ * Blue = warehouse (left in pairs), navy = office (right in pairs).
  */
 export const sites: Site[] = [
   // North America — west coast pair
@@ -54,7 +54,7 @@ export const sites: Site[] = [
     phone: "+51 1 555 0198",
     email: "latam@aiaengineering.com",
   },
-  // South America — southern pair (blue SW / orange NE — match reference frame)
+  // South America — southern pair (blue SW / navy NE — match reference frame)
   {
     id: "cl-wh",
     city: "Santiago",

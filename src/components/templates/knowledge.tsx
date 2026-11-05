@@ -165,7 +165,7 @@ export function CaseStudyPage({
                   <a
                     href={mediaHref(caseStudy.pdf)}
                     download
-                    className="inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full border border-aia-accent bg-aia-accent px-7 text-[14px] leading-8 font-semibold text-white transition hover:bg-[#d65217] shadow-sm"
+                    className="inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full border border-aia-accent bg-aia-accent px-7 text-[14px] leading-8 font-semibold text-white transition hover:bg-aia-accent-deep shadow-sm"
                   >
                     <span>Download PDF Report</span>
                     <span aria-hidden>↓</span>

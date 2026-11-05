@@ -15,7 +15,7 @@ export default function NotFound() {
       <div className="flex flex-wrap items-center justify-center gap-4">
         <Link
           href="/"
-          className="ui-caps inline-flex h-[46px] items-center rounded-full bg-aia-accent px-6 text-sm font-semibold text-white transition hover:bg-[#d65217]"
+          className="ui-caps inline-flex h-[46px] items-center rounded-full bg-aia-accent px-6 text-sm font-semibold text-white transition hover:bg-aia-accent-deep"
         >
           Back to Home
         </Link>

@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-const OFFICE = "#f36500";
+const OFFICE = "#041d2c";
 const WAREHOUSE = "#006fff";
 
 function siteColor(site: Site) {

@@ -89,7 +89,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
           <Link
             href={item.href}
             onClick={onClose}
-            className="group mb-4 flex items-center justify-between border-b border-aia-line pb-3 text-[0.76rem] font-bold uppercase tracking-[0.14em] text-aia-accent hover:text-[#d65217]"
+            className="group mb-4 flex items-center justify-between border-b border-aia-line pb-3 text-[0.76rem] font-bold uppercase tracking-[0.14em] text-aia-accent hover:text-aia-accent-deep"
           >
             <span>{item.label} Overview</span>
             <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>

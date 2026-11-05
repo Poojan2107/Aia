@@ -19,7 +19,7 @@ export function EmptyState({ title, body, action }: { title: string; body: strin
         <div className="mt-6">
           <Link
             href={action.href}
-            className="inline-flex items-center gap-2 rounded-full border border-aia-accent bg-aia-accent px-5 py-2 text-[0.85rem] font-semibold text-white shadow-sm transition hover:bg-[#d65217] hover:shadow"
+            className="inline-flex items-center gap-2 rounded-full border border-aia-accent bg-aia-accent px-5 py-2 text-[0.85rem] font-semibold text-white shadow-sm transition hover:bg-aia-accent-deep hover:shadow"
           >
             <span>{action.label}</span>
             <span aria-hidden>→</span>
