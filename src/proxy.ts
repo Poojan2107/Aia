@@ -72,7 +72,7 @@ export function proxy(request: NextRequest) {
     if (pathname === "/" || pathname === "") {
       return NextResponse.next();
     }
-    if (pathname === "/dev/models" || pathname.startsWith("/dev/models/")) {
+    if (pathname.startsWith("/dev/")) {
       return NextResponse.next();
     }
     const url = request.nextUrl.clone();
