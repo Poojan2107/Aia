@@ -159,117 +159,224 @@ const AIA_VEGA_ROUTES: [number, number][] = [
   [9, 11], // Australia <-> Indonesia (Asia-Pacific route)
 ];
 
+/* ------------------------------------------------------------------ *
+ * Story: three scroll chapters drive what the globe shows.
+ * ------------------------------------------------------------------ */
+
+const AIA_BLUE = "#006eff";
+const VEGA_CYAN = "#16a5ee";
+const AIA_IDS = new Set(["loc-ahmedabad", "loc-bengaluru"]);
+
+type Owner = "aia" | "vega";
+const owner = (id: string): Owner => (AIA_IDS.has(id) ? "aia" : "vega");
+
+/** Locations tinted by company. */
+const TINTED = AIA_VEGA_LOCATIONS.map((loc) => ({
+  ...loc,
+  accent: owner(loc.id) === "aia" ? AIA_BLUE : VEGA_CYAN,
+}));
+
+type Filter = "both" | "aia" | "vega";
+
+const CHAPTERS = [
+  {
+    id: "engineered",
+    kicker: "01 / AIA Engineering",
+    title: "Engineered in India.",
+    body: "Four decades of metallurgy, design and manufacturing in Ahmedabad and Bengaluru turn wear science into high-chrome castings, liners and grinding media.",
+    stat: { value: "45+", label: "Years of wear engineering" },
+  },
+  {
+    id: "delivered",
+    kicker: "02 / Vega Industries",
+    title: "Delivered by Vega.",
+    body: "Vega Industries, AIA's wholly owned subsidiary, takes that engineering to mine sites worldwide through service centres and offices on every mining continent.",
+    stat: { value: "10+", label: "Global service centres" },
+  },
+  {
+    id: "network",
+    kicker: "03 / One network",
+    title: "One partner, 120+ countries.",
+    body: "Manufacturing depth from AIA and field support from Vega work as one team, from first design to the last reline.",
+    stat: { value: "120+", label: "Countries served" },
+  },
+] as const;
+
+/** Rebuilds places and route pairs for a chapter / filter, re-indexing pairs. */
+function sceneFor(chapter: number, filter: Filter) {
+  const keep = (id: string) =>
+    chapter === 0 ? owner(id) === "aia" : filter === "both" || owner(id) === filter;
+  const places = TINTED.filter((p) => keep(p.id));
+  const index = new Map(places.map((p, i) => [p.id, i]));
+  const pairs: [number, number][] = [];
+  if (chapter > 0) {
+    for (const [a, b] of AIA_VEGA_ROUTES) {
+      if (chapter === 1 && a !== 0) continue; // chapter 2: radial routes from HQ only
+      const ia = index.get(AIA_VEGA_LOCATIONS[a].id);
+      const ib = index.get(AIA_VEGA_LOCATIONS[b].id);
+      if (ia !== undefined && ib !== undefined) pairs.push([ia, ib]);
+    }
+  }
+  return { places, pairs, focus: chapter === 0 ? (index.get("loc-ahmedabad") ?? -1) : -1 };
+}
+
+/** Which chapter the pinned stage is on, from scroll position through the track. */
+function useChapter(trackRef: React.RefObject<HTMLDivElement | null>) {
+  const [chapter, setChapter] = React.useState(0);
+  React.useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const range = Math.max(1, r.height - window.innerHeight);
+      const p = Math.min(1, Math.max(0, -r.top / range));
+      el.style.setProperty("--story", p.toFixed(3));
+      setChapter(p < 0.34 ? 0 : p < 0.67 ? 1 : 2);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [trackRef]);
+  return chapter;
+}
+
+const FILTERS: ReadonlyArray<readonly [Filter, string]> = [
+  ["both", "Both"],
+  ["aia", "AIA"],
+  ["vega", "Vega"],
+];
+
+const desktopQuery = "(min-width: 1024px)";
+const subscribeDesktop = (cb: () => void) => {
+  const mq = window.matchMedia(desktopQuery);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+
 export function AiaVegaGlobeSection() {
+  const desktop = React.useSyncExternalStore(subscribeDesktop, () => window.matchMedia(desktopQuery).matches, () => true);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+  const scrolled = useChapter(trackRef);
+  // Phones get the stacked story with the full network on the globe.
+  const chapter = desktop ? scrolled : 2;
+  const [filter, setFilter] = React.useState<Filter>("both");
+  const scene = React.useMemo(() => sceneFor(chapter, filter), [chapter, filter]);
+  const counts: Record<Filter, number> = {
+    both: TINTED.length,
+    aia: TINTED.filter((p) => owner(p.id) === "aia").length,
+    vega: TINTED.filter((p) => owner(p.id) === "vega").length,
+  };
+
   return (
-    <section
-      id="collaboration"
-      className="relative w-full overflow-hidden bg-white select-none"
-      aria-label="AIA Engineering & Vega Industries Global Presence"
-    >
-      <div className="relative w-full h-[1051px]">
-        {/* Globe Component */}
-        <MeridianGlobe
-          style={{ width: "100%", height: "100%" }}
-          width="100%"
-          height="100%"
-          theme="custom"
-          palette={{
-            accent: "rgb(0, 110, 255)", // Brand Blue (#006eff)
-            accentInk: "rgb(255, 255, 255)",
-            backdrop: "rgb(255, 255, 255)", // Pure white background
-            backFade: 0.1, // Clean subtle back-hemisphere fade
-            ink: "rgb(100, 116, 139)", // Refined slate grey (#64748b) - lighter & greyer to match website
-            labelFill: "rgb(4, 29, 44)", // AIA Deep Navy (#041d2c)
-            labelInk: "rgb(255, 255, 255)",
-            tint: "rgb(0, 110, 255)", // Brand Blue cursor interaction
-          }}
-          places={AIA_VEGA_LOCATIONS}
-          customPairs={AIA_VEGA_ROUTES}
-          placeStyle={{
-            cardWidth: 240,
-            pinShape: "needle",
-            placeLift: 0.18,
-            placeMarker: "pin",
-          }}
-          routes={{
-            dashCount: 18,
-            routeAltitude: 0.32,
-            routeDots: 80,
-            routeMode: "hub",
-            routeRest: 0.22, // Translucent resting arc in brand blue
-            routeSize: 5.5,
-            routesOn: true,
-            routeSpeed: 0.28, // Moving, dynamic, attractive flow
-            routeStyle: "comet", // Luminous comet packets moving across great circles
-            routeTrail: 0.4, // Graceful glowing comet tail
-            routeWidth: 2,
-          }}
-          sphere={{
-            coastLift: 0.4,
-            density: "dense",
-            dotSize: 5.1,
-            exactDots: 130000,
-            sizeJitter: 0.35,
-          }}
-          motion={{
-            allowTiltDrag: true,
-            offsetX: 0,
-            offsetY: -0.25,
-            spin: 0.055,
-            startLng: 55, // Faces India, Middle East, Europe & Africa on initial entrance
-            tilt: 16,
-            tiltRange: 60,
-            zoom: 1,
-          }}
-          entrance={{
-            entranceSeconds: 5.5,
-            formation: "bloom",
-            replayOnScroll: true,
-          }}
-          cursor={{
-            crest: 0.035,
-            cursorDelay: 0,
-            cursorMode: "halo",
-            glow: 1,
-            reach: 0.32,
-            swell: 1.2,
-            waveLength: 0.22,
-            waveSpeed: 0.55,
-          }}
-          advanced={{
-            calmMotion: true,
-            editorPlayback: true,
-            quality: "auto",
-          }}
-        />
+    <section id="collaboration" className="globe-story" aria-labelledby="globe-story-heading">
+      <div ref={trackRef} className="globe-track">
+        <div className="globe-stage">
+          <div className="globe-canvas">
+            <MeridianGlobe
+              style={{ width: "100%", height: "100%" }}
+              width="100%"
+              height="100%"
+              theme="custom"
+              palette={{
+                accent: "rgb(0, 110, 255)",
+                accentInk: "rgb(255, 255, 255)",
+                backdrop: "rgb(255, 255, 255)",
+                backFade: 0.1,
+                ink: "rgb(100, 116, 139)",
+                labelFill: "rgb(4, 29, 44)",
+                labelInk: "rgb(255, 255, 255)",
+                tint: "rgb(0, 110, 255)",
+              }}
+              places={scene.places}
+              customPairs={scene.pairs}
+              focusIndex={scene.focus}
+              placeStyle={{ cardWidth: 240, pinShape: "needle", placeLift: 0.18, placeMarker: "pin" }}
+              routes={{
+                dashCount: 18,
+                routeAltitude: 0.32,
+                routeDots: 80,
+                routeMode: "hub",
+                routeRest: 0.22,
+                routeSize: 5.5,
+                routesOn: chapter > 0,
+                routeSpeed: 0.28,
+                routeStyle: "comet",
+                routeTrail: 0.4,
+                routeWidth: 2,
+              }}
+              sphere={{ coastLift: 0.4, density: "dense", dotSize: 5.1, exactDots: 130000, sizeJitter: 0.35 }}
+              motion={{ allowTiltDrag: true, offsetX: desktop ? 0.5 : 0, offsetY: desktop ? -0.04 : 0, spin: 0.055, startLng: 55, tilt: 16, tiltRange: 60, zoom: (desktop ? 0.74 : 0.9) * (chapter === 0 ? 0.62 : 1) }}
+              entrance={{ entranceSeconds: 3.2, formation: "bloom", replayOnScroll: false }}
+              cursor={{ crest: 0.035, cursorDelay: 0, cursorMode: "halo", glow: 1, reach: 0.32, swell: 1.2, waveLength: 0.22, waveSpeed: 0.55 }}
+              advanced={{ calmMotion: true, editorPlayback: true, quality: "auto" }}
+            />
+          </div>
 
-        {/* Brand Logos on Both Sides */}
-        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between px-6 sm:px-10 lg:px-16 xl:px-24">
-          {/* Left Side: AIA Engineering Dark Logo */}
-          <div className="pointer-events-auto flex items-center">
-            <div className="relative h-14 w-48 sm:h-16 sm:w-56 lg:h-20 lg:w-64 transition-transform duration-300 hover:scale-105">
-              <Image
-                src="/images/logo-aia-dark.png"
-                alt="AIA Engineering Limited"
-                fill
-                className="object-contain object-left"
-                priority
-              />
+          <div className="globe-copy">
+            <div className="globe-brands">
+              <Image src="/images/logo-aia-dark.png" alt="AIA Engineering Limited" width={820} height={272} className="globe-brand-aia" />
+              <span aria-hidden className="globe-brand-x">×</span>
+              <Image src="/images/logo-vega-dark.png" alt="Vega Industries" width={376} height={272} className="globe-brand-vega" />
+            </div>
+            <h2 id="globe-story-heading" className="sr-only">
+              AIA Engineering and Vega Industries: one global network
+            </h2>
+            <div className="globe-chapters">
+              {CHAPTERS.map((c, i) => (
+                <article key={c.id} className={`globe-chapter ${i === chapter ? "is-active" : ""}`} aria-hidden={desktop && i !== chapter}>
+                  <p className="globe-kicker">{c.kicker}</p>
+                  <h3 className="globe-title">{c.title}</h3>
+                  <p className="globe-body">{c.body}</p>
+                  <p className="globe-stat">
+                    <span className="globe-stat-value">{c.stat.value}</span>
+                    <span className="globe-stat-label">{c.stat.label}</span>
+                  </p>
+                </article>
+              ))}
+            </div>
+
+            <div className="globe-progress" aria-hidden>
+              {CHAPTERS.map((c, i) => (
+                <span key={c.id} className={i <= chapter ? "is-on" : ""} />
+              ))}
+            </div>
+
+            <div className={`globe-filter ${chapter === 2 ? "is-live" : ""}`} role="group" aria-label="Show locations for">
+              {FILTERS.map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  aria-pressed={filter === id}
+                  className={`globe-chip is-${id}`}
+                  onClick={() => setFilter(id)}
+                  tabIndex={chapter === 2 ? 0 : -1}
+                >
+                  <span aria-hidden className="globe-chip-dot" />
+                  {label}
+                  <span className="globe-chip-n">{counts[id]}</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Right Side: Vega Industries Dark Logo */}
-          <div className="pointer-events-auto flex items-center">
-            <div className="relative h-14 w-32 sm:h-16 sm:w-40 lg:h-20 lg:w-48 transition-transform duration-300 hover:scale-105">
-              <Image
-                src="/images/logo-vega-dark.png"
-                alt="Vega Industries"
-                fill
-                className="object-contain object-right"
-                priority
-              />
-            </div>
-          </div>
+          <p className="globe-legend" aria-hidden>
+            <span>
+              <i style={{ background: AIA_BLUE }} /> AIA Engineering
+            </span>
+            <span>
+              <i style={{ background: VEGA_CYAN }} /> Vega Industries
+            </span>
+          </p>
         </div>
       </div>
     </section>

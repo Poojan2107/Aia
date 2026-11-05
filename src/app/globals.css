@@ -4261,3 +4261,154 @@ button.solve-cta > span:last-child {
 [data-reveal="pending"] .tech2-media { clip-path: inset(0 0 100% 0); }
 [data-reveal="pending"] .tech2-media img { transform: scale(1.15); }
 [data-reveal="pending"] .tech2-text { opacity: 0; transform: translateY(24px); }
+
+/* ── Motion layer: Lenis, split lines, parallax, page transitions ─────── */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.split-line { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+[data-parallax] { scale: 1.16; will-change: transform; }
+[data-magnetic] { will-change: transform; }
+
+/* Route change: the old page lifts and fades, the new one wipes up. */
+::view-transition-old(.aia-page) {
+  animation: aia-page-out 360ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(.aia-page) {
+  animation: aia-page-in 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes aia-page-out {
+  to { opacity: 0; transform: translateY(-3%); }
+}
+@keyframes aia-page-in {
+  from { clip-path: inset(100% 0 0 0); transform: translateY(4%); }
+  to { clip-path: inset(0); transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(.aia-page),
+  ::view-transition-new(.aia-page) { animation: none; }
+  [data-parallax] { scale: 1; }
+}
+
+/* ── AIA × Vega globe story (pinned, three scroll chapters) ───────────── */
+.globe-story { position: relative; background: #fff; }
+.globe-track { position: relative; }
+.globe-stage { position: relative; overflow: hidden; }
+.globe-canvas { position: relative; height: clamp(360px, 92vw, 640px); }
+.globe-copy {
+  position: relative;
+  z-index: 2;
+  padding: 2rem clamp(1rem, 7vw, 134px) 3rem;
+}
+.globe-brands { display: flex; align-items: center; gap: 14px; }
+.globe-brand-aia { height: clamp(40px, 3.6vw, 64px); width: auto; }
+.globe-brand-vega { height: clamp(40px, 3.6vw, 64px); width: auto; }
+.globe-brand-x { font-family: var(--font-haas); font-size: 28px; font-weight: 300; color: #94a3b8; }
+.globe-chapters { margin-top: clamp(1.75rem, 3vw, 56px); display: grid; gap: 2.5rem; }
+.globe-kicker {
+  font-family: var(--font-sinteca);
+  font-size: clamp(0.8rem, 0.83vw, 16px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--aia-accent);
+}
+.globe-title {
+  margin-top: 14px;
+  font-family: var(--font-haas);
+  font-size: clamp(2rem, 3.23vw, 62px);
+  font-weight: 500;
+  line-height: 1.05;
+  color: var(--aia-navy);
+}
+.globe-body {
+  margin-top: 18px;
+  max-width: 30em;
+  font-family: var(--font-haas);
+  font-size: clamp(1rem, 1.15vw, 22px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: #5b6470;
+}
+.globe-stat { margin-top: 26px; display: flex; align-items: baseline; gap: 14px; }
+.globe-stat-value { font-family: var(--font-haas); font-size: clamp(2.25rem, 3.3vw, 64px); font-weight: 500; color: var(--aia-accent); }
+.globe-stat-label { font-size: 14px; color: #6b7280; }
+.globe-progress { display: none; }
+.globe-filter { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 10px; }
+.globe-chip {
+  display: inline-flex;
+  height: 42px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 99px;
+  border: 1px solid #d9dee5;
+  background: #fff;
+  padding-inline: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--aia-navy);
+  transition: border-color 250ms, background-color 250ms, color 250ms, transform 250ms var(--ease-out);
+}
+.globe-chip:hover { border-color: var(--aia-accent); transform: translateY(-1px); }
+.globe-chip[aria-pressed="true"] { border-color: var(--aia-navy); background: var(--aia-navy); color: #fff; }
+.globe-chip-dot { height: 8px; width: 8px; border-radius: 99px; background: linear-gradient(90deg, #006eff 50%, #16a5ee 50%); }
+.globe-chip.is-aia .globe-chip-dot { background: #006eff; }
+.globe-chip.is-vega .globe-chip-dot { background: #16a5ee; }
+.globe-chip-n { font-size: 11px; opacity: 0.6; }
+.globe-legend {
+  display: flex;
+  gap: 18px;
+  padding: 0 clamp(1rem, 7vw, 134px) 2.5rem;
+  font-size: 12px;
+  color: #6b7280;
+}
+.globe-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.globe-legend i { display: inline-block; height: 8px; width: 8px; border-radius: 99px; }
+
+@media (min-width: 1024px) {
+  .globe-track { height: 320vh; }
+  .globe-stage { position: sticky; top: 0; height: 100svh; min-height: 640px; }
+  .globe-canvas { position: absolute; inset: 0; height: auto; }
+  .globe-copy {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: min(46vw, 760px);
+    transform: translateY(-46%);
+    padding: 0 0 0 clamp(1rem, 7vw, 134px);
+    pointer-events: none;
+  }
+  .globe-copy :is(a, button) { pointer-events: auto; }
+  .globe-chapters { display: grid; gap: 0; }
+  .globe-chapter {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(36px);
+    filter: blur(6px);
+    transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out), filter 700ms var(--ease-out);
+  }
+  .globe-chapter.is-active { opacity: 1; transform: none; filter: none; transition-delay: 120ms; }
+  .globe-progress { margin-top: 2.25rem; display: flex; gap: 8px; }
+  .globe-progress span { height: 3px; width: 44px; border-radius: 3px; background: #e2e6ec; transition: background-color 500ms; }
+  .globe-progress span.is-on { background: var(--aia-accent); }
+  .globe-filter { opacity: 0; transform: translateY(12px); transition: opacity 500ms, transform 500ms var(--ease-out); }
+  .globe-filter.is-live { opacity: 1; transform: none; }
+  .globe-legend { position: absolute; right: clamp(1rem, 7vw, 134px); bottom: 2.5rem; padding: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .globe-chapter { transition: none; filter: none; }
+}
+@media (min-width: 1024px) {
+  .globe-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    width: 52%;
+    pointer-events: none;
+    background: linear-gradient(90deg, #fff 0%, #fff 62%, rgba(255, 255, 255, 0.85) 80%, rgba(255, 255, 255, 0) 100%);
+  }
+}
+.globe-canvas { z-index: 0; }

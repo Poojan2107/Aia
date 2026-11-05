@@ -43,7 +43,7 @@ function LinkList({ links }: { links: FooterLink[] }) {
 
 function Pill({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <Link href={to} className="foot-pill">
+    <Link href={to} className="foot-pill" data-magnetic="">
       <span aria-hidden className="foot-pill-dot" />
       {children}
     </Link>
@@ -53,7 +53,7 @@ function Pill({ to, children }: { to: string; children: React.ReactNode }) {
 export function SiteFooter() {
   return (
     <footer className="foot">
-      <Image src="/images/design/footer-bg.jpg" alt="" fill sizes="100vw" className="foot-bg" />
+      <Image src="/images/design/footer-bg.jpg" alt="" fill sizes="100vw" className="foot-bg" data-parallax="14" />
       <div aria-hidden className="foot-scrim" />
 
       <div className="foot-inner">

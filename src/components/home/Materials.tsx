@@ -126,7 +126,7 @@ export function Materials() {
             {material.body.map((p) => (
               <p key={p} className="mats-body">{p}</p>
             ))}
-            <Link href={href(industry.route)} className="mats-cta">
+            <Link href={href(industry.route)} className="mats-cta" data-magnetic="">
               <span aria-hidden className="mats-cta-dot" />
               {industry.cta}
             </Link>

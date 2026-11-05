@@ -85,6 +85,8 @@ export type GlobeProps = {
     [key: string]: any;
   };
   customPairs?: [number, number][];
+  /** Controlled focus: index into places to zoom to, -1 for none. */
+  focusIndex?: number;
   advanced?: {
     quality?: "auto" | "high" | "low";
     editorPlayback?: boolean;

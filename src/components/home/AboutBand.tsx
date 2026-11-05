@@ -15,7 +15,7 @@ export function AboutBand() {
     <section aria-labelledby="about-heading" className="bg-white">
       <div className="about2">
         <div className="about2-plate">
-          <Image src="/images/plant-aerial-clean.jpg" alt="AIA manufacturing and operations facility from above" fill sizes="(max-width: 1024px) 92vw, 63vw" className="object-cover" />
+          <Image src="/images/plant-aerial-clean.jpg" alt="AIA manufacturing and operations facility from above" fill sizes="(max-width: 1024px) 92vw, 63vw" className="object-cover" data-parallax="12" />
           <div aria-hidden className="about2-scrim" />
           <p className="about2-copy">
             Across mining, cement, quarry and thermal power, we design and manufacture wear solutions for grinding and other demanding applications. Our expertise in metallurgy, engineering and manufacturing helps extend component life, improve equipment reliability and support better operating performance.

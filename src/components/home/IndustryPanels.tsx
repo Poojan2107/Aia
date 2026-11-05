@@ -86,7 +86,7 @@ function Panel({ industry, z }: { industry: Industry; z: number }) {
                 <span key={line}>{line}</span>
               ))}
             </p>
-            <Link href={href(industry.route)} className="inds-cta">
+            <Link href={href(industry.route)} className="inds-cta" data-magnetic="">
               <span aria-hidden className="inds-cta-dot" />
               {industry.cta}
             </Link>

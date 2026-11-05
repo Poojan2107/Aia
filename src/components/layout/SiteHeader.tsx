@@ -152,7 +152,7 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
           </svg>
         </button>
       </div>
-      <nav aria-label="Main" className="flex-1 overflow-y-auto px-5 pb-10">
+      <nav aria-label="Main" data-lenis-prevent="" className="flex-1 overflow-y-auto px-5 pb-10">
         <ul className="divide-y divide-white/10 border-y border-white/10">
           {mainNav.map((item) => {
             const open = expanded === item.id;
@@ -274,7 +274,7 @@ export function SiteHeader() {
                 </svg>
                 <span>Search</span>
               </Link>
-              <Link href={href("contact")} className="site-nav-contact">
+              <Link href={href("contact")} className="site-nav-contact" data-magnetic="">
                 <span aria-hidden className="site-nav-contact-dot" />
                 Contact us
               </Link>
