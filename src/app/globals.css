@@ -4910,12 +4910,12 @@ button.solve-cta > span:last-child {
 
 /* ── Motion: scroll reveals (ScrollReveal sets data-reveal) ──────────── */
 [data-reveal] .tech2-media { transition: clip-path 1200ms var(--ease-out); }
-[data-reveal] .tech2-media img { transition: transform 1600ms var(--ease-out); }
+[data-reveal] .tech2-media video { transition: transform 1600ms var(--ease-out); }
 [data-reveal] .tech2-text {
   transition: opacity 900ms var(--ease-out) 250ms, transform 900ms var(--ease-out) 250ms;
 }
 [data-reveal="pending"] .tech2-media { clip-path: inset(0 0 100% 0); }
-[data-reveal="pending"] .tech2-media img { transform: scale(1.15); }
+[data-reveal="pending"] .tech2-media video { transform: scale(1.15); }
 [data-reveal="pending"] .tech2-text { opacity: 0; transform: translateY(24px); }
 
 /* ── Motion layer: Lenis, split lines, parallax, page transitions ─────── */
