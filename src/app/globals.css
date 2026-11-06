@@ -5116,48 +5116,19 @@ html.lenis body { height: auto; }
   margin-inline: auto;
 }
 
-/* Atmospheric cloud/mist fade at bottom of portrait */
-.lead-plate::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 24%;
-  background: linear-gradient(to top, #f7f7f7 0%, rgba(247, 247, 247, 0.8) 45%, transparent 100%);
-  pointer-events: none;
-  z-index: 2;
-}
+/* The portrait fades out through .lead-portrait-mask; no full-width mist band, so shards stay crisp. */
 
-.lead-shard {
+/* Static blue shards (Figma 710:1584), drawn in plate units by Vision.tsx. */
+.lead-shards {
   position: absolute;
   inset: 0;
-  background: #006eff;
-  pointer-events: none;
   z-index: 0;
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
-
-/* 1:1 Exact Triangles for Mr. Bhadresh Kantilal Shah */
-.lead-shard-a {
-  clip-path: polygon(0% 53.4%, 30.4% 63.5%, 0% 70.3%);
-}
-.lead-shard-b {
-  clip-path: polygon(42.8% 16.2%, 50.4% 16.2%, 43.5% 42%, 38.3% 69.7%);
-}
-.lead-shard-c {
-  clip-path: polygon(69.6% 36%, 88.3% 22.2%, 75% 42.3%);
-}
-
-/* 1:1 Exact Triangles for Mr. Sumit Mitra (.is-flipped) */
-.is-flipped .lead-shard-a {
-  clip-path: polygon(12.2% 24.2%, 36.1% 43.5%, 22% 60.4%);
-}
-.is-flipped .lead-shard-b {
-  clip-path: polygon(56% 14%, 64.6% 14%, 66.5% 31.6%);
-}
-.is-flipped .lead-shard-c {
-  clip-path: polygon(75.2% 59%, 100% 50.7%, 100% 66.9%);
-}
+.lead-shards polygon { fill: #0066ff; }
 
 .lead-portrait {
   position: absolute;
