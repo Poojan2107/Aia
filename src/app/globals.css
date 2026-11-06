@@ -1764,7 +1764,7 @@ video.film-cover {
 @media (min-width: 1024px) {
   .services-heading {
     font-size: 2.75rem; /* 44px */
-    line-height: 2.95rem; /* ~47px */
+    line-height: 1.18; /* ~52px */
   }
 
   .services-heading span {
@@ -1796,7 +1796,7 @@ button.services-cta .hero-cta-label {
 .services-tabs {
   display: flex;
   align-items: flex-end;
-  gap: 1.25rem;
+  gap: clamp(2.5rem, 4vw, 4.5rem);
   margin-bottom: 0;
   border-bottom: 1px solid #e4e6e8;
 }
@@ -1805,7 +1805,7 @@ button.services-cta .hero-cta-label {
   position: relative;
   display: inline-block;
   width: max-content;
-  padding: 0 0 0.85rem;
+  padding: 0 0.25rem 1rem;
   border: 0;
   background: transparent;
   font-family: var(--font-inter), Inter, sans-serif;
@@ -1818,26 +1818,6 @@ button.services-cta .hero-cta-label {
   text-align: left;
   color: #090909;
   transition: color 0.3s ease;
-}
-
-.services-tab:hover {
-  color: var(--aia-accent);
-}
-
-.services-tab.is-active {
-  color: var(--aia-accent);
-  font-weight: 400;
-}
-
-.services-tab.is-active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 100%;
-  right: auto;
-  bottom: -1px;
-  height: 2px;
-  background: var(--aia-accent);
 }
 
 .services-tab:hover {
