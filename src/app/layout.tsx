@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Instrument_Serif, Onest } from "next/font/google";
 import "./globals.css";
+import { ViewTransition } from "react";
 import { HomeOnlyGuard } from "@/components/navigation/HomeOnlyGuard";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { organizationJsonLd } from "@/lib/seo";
 import { siteUrl } from "@/lib/env";
@@ -128,7 +130,8 @@ export default function RootLayout({
         </a>
         <JsonLd data={organizationJsonLd} />
         <HomeOnlyGuard />
-        {children}
+        <MotionProvider />
+        <ViewTransition default="aia-page">{children}</ViewTransition>
       </body>
     </html>
   );

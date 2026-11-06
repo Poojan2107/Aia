@@ -78,6 +78,7 @@ export function CtaButton({
         href={href}
         className={`group ${classes}`}
         style={style}
+        data-magnetic=""
         aria-disabled={locked || undefined}
         tabIndex={locked ? -1 : undefined}
         data-home-only={locked ? "disabled" : "allowed"}
@@ -88,7 +89,7 @@ export function CtaButton({
   }
 
   return (
-    <button type="button" className={`group ${classes}`} style={style} {...rest}>
+    <button type="button" data-magnetic="" className={`group ${classes}`} style={style} {...rest}>
       {content}
     </button>
   );

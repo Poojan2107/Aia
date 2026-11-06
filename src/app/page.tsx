@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Hero } from "@/components/home/Hero";
-import { WhatWeSolve } from "@/components/home/WhatWeSolve";
-import { Industries } from "@/components/home/Industries";
+import { AiaVegaGlobeSection } from "@/components/home/AiaVegaGlobeSection";
+import { IndustryPanels } from "@/components/home/IndustryPanels";
+import { Materials } from "@/components/home/Materials";
 import { Services } from "@/components/home/Services";
 import { Technology } from "@/components/home/Technology";
 import { AboutBand } from "@/components/home/AboutBand";
@@ -28,8 +29,9 @@ export default function HomePage() {
       <SiteHeader />
       <main id="main">
         <Hero />
-        <WhatWeSolve />
-        <Industries />
+        <AiaVegaGlobeSection />
+        <IndustryPanels />
+        <Materials />
         <Services />
         <Technology />
         <AboutBand />

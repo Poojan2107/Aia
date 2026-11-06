@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { WorldMap } from "@/components/ui/WorldMap";
 import { Reveal } from "@/components/ui/Reveal";
@@ -13,6 +14,10 @@ export function GlobalMap() {
       </h2>
       <div className="page-pad page-max grid gap-12 lg:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)] lg:items-center lg:gap-14">
         <Reveal>
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#006eff]/10 px-3 py-1 text-xs font-semibold text-[#006eff]">
+            <span className="h-2 w-2 rounded-full bg-[#006eff] animate-pulse" />
+            AIA Engineering × Vega Industries
+          </div>
           <p className="global-map-lead">
             Our offices, production facilities,
             <br className="hidden lg:inline" />
@@ -29,13 +34,22 @@ export function GlobalMap() {
             <br className="hidden lg:inline" />
             on our interactive map.
           </p>
-          <CtaButton
-            href="/company/global-presence"
-            variant="outline"
-            className="global-map-cta justify-center sm:w-auto"
-          >
-            Find AIA near you
-          </CtaButton>
+          <div className="flex flex-wrap items-center gap-3">
+            <CtaButton
+              href="/company/global-presence"
+              variant="outline"
+              className="global-map-cta justify-center sm:w-auto"
+            >
+              Find AIA near you
+            </CtaButton>
+            <Link
+              href="/dev/global-presence"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#006eff] bg-[#006eff] px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-[#0056d6] transition-all"
+            >
+              <span className="h-2 w-2 rounded-full bg-white animate-ping" />
+              Launch Atomic Globe →
+            </Link>
+          </div>
         </Reveal>
 
         <Reveal delay={80} className="min-w-0">

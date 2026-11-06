@@ -1,204 +1,125 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BrandLockup } from "@/components/brand/BrandLockup";
-import { footerNav } from "@/data/nav";
-import { site } from "@/data/site";
+import { href } from "@/lib/routes";
 
-const headingClass = "footer-h";
-const linkClass = "footer-a";
+/**
+ * Footer — Figma "AIA Signature Blue" / 01Homepage: tagline and logos over a
+ * dark plant photo, the blue link panel, two CTA cells and the bottom bar.
+ */
 
-function FooterCol({
-  title,
-  links,
-}: {
-  title: string;
-  links: readonly { label: string; href: string }[];
-}) {
+type FooterLink = [label: string, routeId: string];
+
+const columns: { title: string; links: FooterLink[] }[] = [
+  {
+    title: "Solutions",
+    links: [["Mining", "mining"], ["Cement", "cement"], ["Quarry", "quarry-products"], ["Thermal Power", "thermal-power"], ["Services & Optimisation", "mining-services"]],
+  },
+  {
+    title: "Company",
+    links: [["About AIA", "about"], ["Board of Directors", "board-of-directors"], ["Technology & Infrastructure", "technology-infrastructure"], ["Global Presence", "global-presence"], ["Sustainability", "sustainability"], ["CSR Initiatives", "csr"], ["Memorandum of Association", "memorandum-of-association"], ["Careers", "careers"], ["Contact us", "contact"]],
+  },
+  {
+    title: "Resources hub",
+    links: [["Success Stories", "case-studies"], ["Blogs & Insights", "news-insights"], ["News & Events", "news-insights"], ["Videos / Media", "videos-media"], ["Downloads", "downloads"], ["FAQs", "faqs"]],
+  },
+];
+
+const investorLinks: FooterLink[][] = [
+  [["Financials", "investor-financials"], ["Shareholding", "investor-shareholding"], ["KYC", "investor-kyc"], ["Reports & Presentations", "investor-reports"], ["Corporate Governance", "investor-governance"], ["Policies", "investor-policies"], ["IEPF", "investor-iepf"], ["Code of Conduct", "investor-code-of-conduct"]],
+  [["List of Stock Exchanges", "investor-stock-exchanges"], ["Scheme of Amalgamation", "investor-amalgamation"], ["Corporate Announcement & Disclosure", "investor-announcements"], ["Investor Regulation 46 (LODR)", "investor-regulation-46"], ["Investor Contact us", "investor-contact"]],
+];
+
+function LinkList({ links }: { links: FooterLink[] }) {
   return (
-    <div>
-      <p className={headingClass}>{title}</p>
-      <ul>
-        {links.map((link) => (
-          <li key={`${title}-${link.label}`}>
-            <Link href={link.href} className={linkClass}>
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="foot-links">
+      {links.map(([label, id]) => (
+        <li key={label}>
+          <Link href={href(id)}>{label}</Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 
-function LinkedInIcon() {
+function Pill({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
-      <rect width="28" height="28" rx="3" fill="white" />
-      <path
-        d="M8.2 11.4h2.35v8.4H8.2v-8.4Zm1.17-3.75c.76 0 1.38.62 1.38 1.38 0 .77-.62 1.39-1.38 1.39a1.39 1.39 0 0 1 0-2.77ZM12.35 11.4h2.25v1.15h.03c.31-.59 1.08-1.21 2.22-1.21 2.38 0 2.82 1.56 2.82 3.59v4.87h-2.35v-4.32c0-1.03-.02-2.35-1.43-2.35-1.43 0-1.65 1.12-1.65 2.28v4.39h-2.35v-8.4Z"
-        fill="var(--aia-accent)"
-      />
-    </svg>
+    <Link href={to} className="foot-pill" data-magnetic="">
+      <span aria-hidden className="foot-pill-dot" />
+      {children}
+    </Link>
   );
 }
 
 export function SiteFooter() {
   return (
-    <footer id="site-footer" className="site-footer">
-      <Image
-        src="/images/footer-bg.jpg"
-        alt=""
-        fill
-        sizes="100vw"
-        className="object-cover object-[center_30%]"
-        aria-hidden
-        priority={false}
-      />
-      <div aria-hidden className="site-footer-scrim" />
+    <footer className="foot">
+      <Image src="/images/design/footer-bg.jpg" alt="" fill sizes="100vw" className="foot-bg" data-parallax="14" />
+      <div aria-hidden className="foot-scrim" />
 
-      <div className="page-pad page-max site-footer-inner">
-        <div className="site-footer-brand">
-          <p className="site-footer-lead">
+      <div className="foot-inner">
+        <div className="foot-top">
+          <p className="foot-tagline">
             Engineering wear solutions.
             <br />
             Supporting operations worldwide.
           </p>
-          <BrandLockup tone="light" className="site-footer-logos" />
+          <Image src="/images/design/logo-aia-vega-white.png" alt="AIA Engineering Limited and Vega Industries" width={418} height={163} className="foot-logos" />
         </div>
 
-        <div className="site-footer-panel-wrap">
-          <div aria-hidden className="site-footer-rule" />
-          <div className="site-footer-shell">
-            <div className="site-footer-panel">
-              <div className="site-footer-grid">
-                <FooterCol title="Our Solutions" links={footerNav.solutions} />
-                <FooterCol title="Company" links={footerNav.company} />
-                <FooterCol title="Knowledge Hub" links={footerNav.resources} />
-
-                <div className="site-footer-invest">
-                  <p className={headingClass}>Investors &amp; Connect</p>
-                  <div className="site-footer-invest-cols">
-                    <ul>
-                      {footerNav.investorsLeft.map((link) => (
-                        <li key={link.label}>
-                          <Link href={link.href} className={linkClass}>
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                    <ul>
-                      {footerNav.investorsRight.map((link) => (
-                        <li key={`r-${link.label}`}>
-                          <Link href={link.href} className={linkClass}>
-                            {link.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="site-footer-office">
-                  <p className={headingClass}>{site.address.label}</p>
-                  <address className="not-italic">
-                    <p className="footer-a footer-address">
-                      {site.address.lines.join(" ")}
-                    </p>
-                    <dl className="footer-contact">
-                      <div>
-                        <dt>M</dt>
-                        <dd>
-                          <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
-                            {site.phone}
-                          </a>
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>F</dt>
-                        <dd>{site.fax}</dd>
-                      </div>
-                      <div>
-                        <dt>E</dt>
-                        <dd>
-                          <a href={`mailto:${site.email}`}>{site.email}</a>
-                        </dd>
-                      </div>
-                    </dl>
-                  </address>
-                  <a
-                    href="https://www.linkedin.com"
-                    className="site-footer-li"
-                    aria-label="AIA on LinkedIn"
-                  >
-                    <LinkedInIcon />
-                  </a>
-                </div>
+        <div className="foot-panel">
+          <div className="foot-grid">
+            {columns.map((col) => (
+              <div key={col.title}>
+                <h2 className="foot-heading">{col.title}</h2>
+                <LinkList links={col.links} />
+              </div>
+            ))}
+            <div className="foot-investors">
+              <h2 className="foot-heading">Investors &amp; Connect</h2>
+              <div className="foot-investor-cols">
+                {investorLinks.map((links, i) => (
+                  <LinkList key={i} links={links} />
+                ))}
               </div>
             </div>
-
-            <div aria-hidden className="site-footer-rule site-footer-rule--mid" />
-
-            <div className="site-footer-cta">
-              <div className="site-footer-cta-cell">
-                <div className="site-footer-cta-inner">
-                  <p>
-                    Have a wear or
-                    <br />
-                    performance challenge?
-                  </p>
-                  <Link href="/contact" className="site-footer-btn">
-                    <span aria-hidden />
-                    Talk to an expert
-                  </Link>
-                </div>
-              </div>
-              <div className="site-footer-cta-cell">
-                <div className="site-footer-cta-inner">
-                  <p>
-                    Find AIA offices, representatives
-                    <br />
-                    <span className="site-footer-cta-nowrap">
-                      and support across global markets.
-                    </span>
-                  </p>
-                  <Link
-                    href="/company/global-presence"
-                    className="site-footer-btn"
-                  >
-                    <span aria-hidden />
-                    Explore global presence
-                  </Link>
-                </div>
-              </div>
+            <div>
+              <h2 className="foot-heading">India · Corporate Office</h2>
+              <address className="foot-address">
+                <p>11-12, Sigma Corporates, B/h. HOF Showroom, Sindhubhavan Road, Bodakdev, Ahmedabad – 380054, India.</p>
+                <p className="mt-3">M: <a href="tel:+917966047800">+91 79 6604 7800</a></p>
+                <p>F: +91 79 6604 7848</p>
+                <p>E: <a href="mailto:info@aiaengineering.com">info@aiaengineering.com</a></p>
+              </address>
+              <a href="https://www.linkedin.com/company/aia-engineering-ltd/" className="foot-linkedin" aria-label="AIA Engineering on LinkedIn" rel="noopener noreferrer" target="_blank">
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden>
+                  <path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+                </svg>
+              </a>
             </div>
-
-            <div aria-hidden className="site-footer-rule site-footer-rule--bottom" />
           </div>
         </div>
 
-        <div className="site-footer-legal">
-          <p>© 2026 {site.legalName}. All Rights Reserved.</p>
-          <nav>
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <Link href="/policies">Policies</Link>
-            <Link href="/sitemap">Sitemap</Link>
-            <span>
-              En
-              <svg width="8" height="4" viewBox="0 0 8 4" aria-hidden>
-                <path d="M0 0l4 4 4-4" fill="currentColor" />
-              </svg>
-            </span>
+        <div className="foot-ctas">
+          <div className="foot-cta">
+            <p>Have a wear or<br />performance challenge?</p>
+            <Pill to={href("contact")}>Talk to an expert</Pill>
+          </div>
+          <div className="foot-cta">
+            <p>Find AIA offices, representatives<br />and support across global markets.</p>
+            <Pill to={href("global-presence")}>Explore global presence</Pill>
+          </div>
+        </div>
+
+        <div className="foot-bottom">
+          <p>© 2026 AIA Engineering Limited, All Rights Reserved.</p>
+          <nav aria-label="Legal" className="foot-legal">
+            <Link href={href("privacy-policy")}>Privacy Policy</Link>
+            <Link href={href("html-sitemap")}>Sitemap</Link>
+            <span>En</span>
           </nav>
-          <p className="site-footer-by">
-            Site by{" "}
-            <Image
-              src="/images/13.png"
-              alt="I3"
-              width={20}
-              height={20}
-              className="site-footer-by-logo"
-            />
+          <p className="foot-credit">
+            Site by
+            <Image src="/images/design/logo-13utopia.png" alt="13UTOPIA" width={423} height={168} className="foot-credit-logo" />
           </p>
         </div>
       </div>
