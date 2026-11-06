@@ -46,8 +46,8 @@ const ARCS: Arc[] = SITES.filter((s) => s.id !== "ahmedabad").map((s, i) => ({
   order: i,
 }));
 
-const VIEW_INDIA = { lat: 18, lng: 74, altitude: 1.9 };
-const VIEW_NETWORK = { lat: 14, lng: 52, altitude: 2.25 };
+const VIEW_INDIA = { lat: 20, lng: 78, altitude: 1.72 };
+const VIEW_NETWORK = { lat: 16, lng: 56, altitude: 2.0 };
 
 /** 0 = waiting, 1 = heading, 2 = globe up, 3 = columns, 4 = network. */
 type Stage = 0 | 1 | 2 | 3 | 4;
@@ -55,16 +55,29 @@ type Stage = 0 | 1 | 2 | 3 | 4;
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
+/** Hub tag: a stem from the location up to a card with the company badge. */
 function chipElement(site: Site) {
-  const el = document.createElement("div");
-  el.className = `gsq-chip is-${site.company.toLowerCase()}`;
-  const label = `${site.country === "India" ? site.city : site.country} / ${site.company === "AIA" ? "AIA" : "Vega"}`;
-  const dot = document.createElement("span");
-  dot.className = "gsq-chip-dot";
+  const isAia = site.company === "AIA";
+  const root = document.createElement("div");
+  root.className = `gsq-tag ${isAia ? "is-aia" : "is-vega"}`;
+  const stem = document.createElement("span");
+  stem.className = "gsq-tag-stem";
+  const card = document.createElement("span");
+  card.className = "gsq-tag-card";
+  const badge = document.createElement("img");
+  badge.className = "gsq-tag-badge";
+  badge.alt = "";
+  badge.src = isAia ? "/images/design/logo-aia-mark-blue.webp" : "/images/design/logo-vega-color.webp";
   const text = document.createElement("span");
-  text.textContent = label;
-  el.append(dot, text);
-  return el;
+  text.className = "gsq-tag-text";
+  const city = document.createElement("strong");
+  city.textContent = isAia ? `${site.city}, India` : `${site.city}, ${site.country}`;
+  const org = document.createElement("small");
+  org.textContent = isAia ? "AIA Engineering · HQ" : "Vega Industries";
+  text.append(city, org);
+  card.append(badge, text);
+  root.append(stem, card);
+  return root;
 }
 
 const SCRUB_QUERY = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
@@ -82,6 +95,7 @@ export function AiaVegaGlobeSection() {
   const worldRef = useRef<GlobeInstance | null>(null);
   const [stage, setStage] = useState<Stage>(0);
   const [ready, setReady] = useState(false);
+  const indiaRef = useRef<{ features: object[]; lift: number }>({ features: [], lift: 0 });
   const scrubbed = useSyncExternalStore(subscribeScrub, getScrub, () => false);
 
   /* ---------- globe setup (client only) ---------- */
@@ -93,6 +107,11 @@ export function AiaVegaGlobeSection() {
     let visible = true;
     let io: IntersectionObserver | null = null;
     let ro: ResizeObserver | null = null;
+    let indiaFeatures: object[] = [];
+    const applyIndia = () => {
+      indiaRef.current.features = indiaFeatures;
+      worldRef.current?.polygonsData(indiaFeatures).polygonAltitude(indiaRef.current.lift);
+    };
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
@@ -138,6 +157,28 @@ export function AiaVegaGlobeSection() {
       };
       raf = requestAnimationFrame(spin);
 
+      // India, lit in gold (official boundary, simplified).
+      const indiaMaterial = new THREE.MeshLambertMaterial({
+        color: "#ffb43a",
+        emissive: "#ff8a00",
+        emissiveIntensity: 0.55,
+        transparent: true,
+        opacity: 0.82,
+      });
+      world
+        .polygonCapMaterial(() => indiaMaterial)
+        .polygonSideColor(() => "rgba(255, 170, 40, 0.35)")
+        .polygonStrokeColor(() => "#ffe2a3")
+        .polygonsTransitionDuration(1400);
+      fetch("/geo/india.json")
+        .then((r) => r.json())
+        .then((geo: { features: object[] }) => {
+          if (disposed) return;
+          indiaFeatures = geo.features;
+          applyIndia();
+        })
+        .catch(() => undefined);
+
       // Layer styling; the data itself is fed in per stage.
       world
         .ringColor(() => (t: number) => `rgba(255, 196, 92, ${1 - t})`)
@@ -155,7 +196,7 @@ export function AiaVegaGlobeSection() {
         .arcDashInitialGap((d) => 1 + (d as Arc).order * 0.12)
         .arcDashAnimateTime(reduced ? 0 : 2600)
         .htmlElement((d) => chipElement(d as Site))
-        .htmlAltitude(0.03)
+        .htmlAltitude(0.015)
         .htmlElementVisibilityModifier((el, isVisible) => {
           el.style.opacity = isVisible ? "" : "0";
         });
@@ -170,6 +211,7 @@ export function AiaVegaGlobeSection() {
       ro.observe(host);
       setReady(true);
     })();
+
 
     return () => {
       disposed = true;
@@ -191,6 +233,8 @@ export function AiaVegaGlobeSection() {
     const world = worldRef.current;
     if (!world || !ready) return;
     if (stage >= 2) world.pointOfView(VIEW_INDIA, 1600);
+    indiaRef.current.lift = stage >= 3 ? 0.028 : stage >= 2 ? 0.008 : 0.002;
+    world.polygonsData(indiaRef.current.features).polygonAltitude(indiaRef.current.lift);
     if (stage >= 4) {
       world.pointsData(SITES).ringsData([AHMEDABAD]).arcsData(ARCS).htmlElementsData(SITES.filter((s) => s.chip));
       const t = window.setTimeout(() => world.pointOfView(VIEW_NETWORK, 2400), 900);
