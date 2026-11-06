@@ -50,6 +50,11 @@ const arcFor = (s: Site, i: number, kind: Arc["kind"]): Arc => ({
 });
 type Ring = { lat: number; lng: number; hq: boolean };
 
+/** Kept as constants so the globe keeps the same ring/tag across stages instead of restarting them. */
+const HQ_RING: Ring = { lat: AHMEDABAD.lat, lng: AHMEDABAD.lng, hq: true };
+const AIA_SITES = SITES.filter((s) => s.company === "AIA");
+const CHIP_SITES = SITES.filter((s) => s.chip);
+
 const VIEW_INDIA = { lat: 20, lng: 78, altitude: 1.72 };
 const VIEW_NETWORK = { lat: 16, lng: 56, altitude: 2.0 };
 
@@ -100,6 +105,7 @@ export function AiaVegaGlobeSection() {
   const [stage, setStage] = useState<Stage>(0);
   const [ready, setReady] = useState(false);
   const indiaRef = useRef<{ features: object[]; lift: number }>({ features: [], lift: 0 });
+  const viewRef = useRef<{ key: string; timer: number }>({ key: "", timer: 0 });
   const scrubbed = useSyncExternalStore(subscribeScrub, getScrub, () => false);
 
   /* ---------- globe setup (client only) ---------- */
@@ -216,15 +222,24 @@ export function AiaVegaGlobeSection() {
         else world.pauseAnimation();
       });
       io.observe(host);
-      ro = new ResizeObserver(() => world.width(host.clientWidth).height(host.clientHeight));
+      // Only touch the renderer when the box really changes size; a no-op setSize still clears the canvas.
+      let size = `${host.clientWidth}x${host.clientHeight}`;
+      ro = new ResizeObserver(() => {
+        const next = `${host.clientWidth}x${host.clientHeight}`;
+        if (next === size || !host.clientWidth || !host.clientHeight) return;
+        size = next;
+        world.width(host.clientWidth).height(host.clientHeight);
+      });
       ro.observe(host);
       setReady(true);
     })();
 
 
+    const view = viewRef.current;
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
+      window.clearTimeout(view.timer);
       io?.disconnect();
       ro?.disconnect();
       const world = worldRef.current;
@@ -241,17 +256,32 @@ export function AiaVegaGlobeSection() {
   useEffect(() => {
     const world = worldRef.current;
     if (!world || !ready) return;
-    if (stage >= 2) world.pointOfView(VIEW_INDIA, 1600);
+    // Camera: one tween per view change, with auto-rotate paused so the two never fight.
+    const flyTo = (key: string, pov: typeof VIEW_INDIA, ms: number) => {
+      const view = viewRef.current;
+      if (view.key === key) return;
+      view.key = key;
+      const controls = world.controls();
+      const rotate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      controls.autoRotate = false;
+      world.pointOfView(pov, ms);
+      window.clearTimeout(view.timer);
+      view.timer = window.setTimeout(() => {
+        controls.autoRotate = rotate;
+      }, ms + 120);
+    };
+    if (stage >= 4) flyTo("network", VIEW_NETWORK, 2200);
+    else if (stage >= 2) flyTo("india", VIEW_INDIA, 1600);
+
     indiaRef.current.lift = stage >= 3 ? 0.028 : stage >= 2 ? 0.008 : 0.002;
     world.polygonsData(indiaRef.current.features).polygonAltitude(indiaRef.current.lift);
     if (stage >= 4) {
       // Routes launch one by one: trail grows in, pulse starts, a ring blooms on arrival.
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const hq: Ring = { lat: AHMEDABAD.lat, lng: AHMEDABAD.lng, hq: true };
       const arcs: Arc[] = [];
-      const rings: Ring[] = [hq];
+      const rings: Ring[] = [HQ_RING];
       const timers: number[] = [];
-      world.pointsData(SITES).ringsData(rings).htmlElementsData(SITES.filter((s) => s.chip));
+      world.pointsData(SITES).ringsData(rings).htmlElementsData(CHIP_SITES);
       const step = reducedMotion ? 0 : 170;
       ROUTES.forEach((site, i) => {
         timers.push(
@@ -267,12 +297,11 @@ export function AiaVegaGlobeSection() {
           }, i * step + (reducedMotion ? 0 : 1000)),
         );
       });
-      timers.push(window.setTimeout(() => world.pointOfView(VIEW_NETWORK, 2400), 700));
       return () => timers.forEach((t) => window.clearTimeout(t));
     }
     world
-      .pointsData(stage >= 3 ? SITES.filter((s) => s.company === "AIA") : [])
-      .ringsData(stage >= 3 ? [{ lat: AHMEDABAD.lat, lng: AHMEDABAD.lng, hq: true }] : [])
+      .pointsData(stage >= 3 ? AIA_SITES : [])
+      .ringsData(stage >= 3 ? [HQ_RING] : [])
       .arcsData([])
       .htmlElementsData(stage >= 3 ? [AHMEDABAD] : []);
   }, [stage, ready]);
@@ -317,7 +346,11 @@ export function AiaVegaGlobeSection() {
       stageEl.style.setProperty("--g-globe", easeOut(clamp01((p - 0.1) / 0.3)).toFixed(3));
       stageEl.style.setProperty("--g-cols", easeOut(clamp01((p - 0.38) / 0.2)).toFixed(3));
       stageEl.style.setProperty("--g-net", clamp01((p - 0.58) / 0.2).toFixed(3));
-      const next: Stage = p > 0.58 ? 4 : p > 0.38 ? 3 : p > 0.12 ? 2 : p > 0.01 ? 1 : 0;
+      // Hysteresis: a stage only drops back once the scroll is clearly below its threshold,
+      // so tiny wheel/trackpad jitter at a boundary can't replay the globe's transitions.
+      const at = (q: number) => (q > 0.58 ? 4 : q > 0.38 ? 3 : q > 0.12 ? 2 : q > 0.01 ? 1 : 0) as Stage;
+      const forward = at(p);
+      const next: Stage = forward >= last ? forward : Math.max(forward, at(p + 0.03)) as Stage;
       if (next !== last) {
         last = next;
         setStage(next);

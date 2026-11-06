@@ -22,13 +22,19 @@ const SOLVE_BODY_LINES = [
   "and support better operating performance.",
 ] as const;
 
-function SolveBody() {
+/** Figma 710:1584: body copy with the CTA under it, centred against the film. */
+function SolveAside() {
   return (
-    <p className="solve-body">
-      {SOLVE_BODY_LINES.map((line) => (
-        <span key={line}>{line}</span>
-      ))}
-    </p>
+    <div className="solve-aside">
+      <p className="solve-body">
+        {SOLVE_BODY_LINES.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </p>
+      <CtaButton href="#solutions" variant="solid" className="solve-cta">
+        Explore solutions by industry
+      </CtaButton>
+    </div>
   );
 }
 
@@ -55,8 +61,8 @@ function trackProgress(el: HTMLElement) {
 }
 
 /**
- * Film sits in the 864×486 slot showing the full frame, then grows
- * to fill the viewport on scroll (same video, no crop in the window).
+ * Film sits in the Figma 1002×564 slot (at 1920), then grows to fill the
+ * whole viewport on scroll.
  */
 export function WhatWeSolve() {
   const slotRef = useRef<HTMLDivElement>(null);
@@ -80,33 +86,47 @@ export function WhatWeSolve() {
     const kpi = kpiRef.current;
     if (!slot || !track || !sticky || !fly || !plate || !kpi) return;
 
-    let raf = 0;
+    // The film layer always covers the whole stage; it is scaled and clipped down to the
+    // slot, so the grow is transform + clip-path only (no layout or video resize per frame).
+    let slot0 = { x: 0, y: 0, w: 0, h: 0 };
+    let stageW = 0;
+    let stageH = 0;
+    const measure = () => {
+      const st = sticky.getBoundingClientRect();
+      const sl = slot.getBoundingClientRect();
+      stageW = st.width;
+      stageH = st.height;
+      slot0 = { x: sl.left - st.left, y: sl.top - st.top, w: sl.width, h: sl.height };
+    };
 
+    let lastKey = "";
     const apply = () => {
-      raf = 0;
       const progress = trackProgress(track);
       const t = easeOutCubic(span(progress, 0.04, 0.62));
-      const stickyBox = sticky.getBoundingClientRect();
-      const slotBox = slot.getBoundingClientRect();
+      if (!stageW || !stageH) return;
 
-      const top = lerp(slotBox.top - stickyBox.top, 0, t);
-      const left = lerp(slotBox.left - stickyBox.left, 0, t);
-      const width = lerp(slotBox.width, stickyBox.width, t);
-      const height = lerp(slotBox.height, stickyBox.height, t);
-
-      fly.style.top = `${top}px`;
-      fly.style.left = `${left}px`;
-      fly.style.width = `${width}px`;
-      fly.style.height = `${height}px`;
+      const x = lerp(slot0.x, 0, t);
+      const y = lerp(slot0.y, 0, t);
+      const w = lerp(slot0.w, stageW, t);
+      const h = lerp(slot0.h, stageH, t);
+      const s = Math.max(w / stageW, h / stageH);
+      const insetX = (stageW - w / s) / 2;
+      const insetY = (stageH - h / s) / 2;
+      const tx = x + w / 2 - stageW / 2;
+      const ty = y + h / 2 - stageH / 2;
+      const key = `${tx.toFixed(1)}|${ty.toFixed(1)}|${s.toFixed(4)}|${insetX.toFixed(1)}|${insetY.toFixed(1)}`;
+      if (key !== lastKey) {
+        lastKey = key;
+        fly.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0) scale(${s.toFixed(5)})`;
+        fly.style.clipPath = t >= 1 ? "none" : `inset(${insetY.toFixed(2)}px ${insetX.toFixed(2)}px)`;
+      }
       fly.style.opacity = "1";
-      fly.style.clipPath = "none";
 
       const plateOut = span(progress, 0.12, 0.48);
       plate.style.opacity = String(1 - plateOut);
       plate.style.pointerEvents = plateOut > 0.6 ? "none" : "auto";
 
-      const kpiIn = span(progress, 0.48, 0.78);
-      kpi.style.opacity = String(kpiIn);
+      kpi.style.opacity = String(span(progress, 0.48, 0.78));
 
       const locked = progress > 0.72;
       if (locked !== lockedRef.current) {
@@ -115,17 +135,21 @@ export function WhatWeSolve() {
       }
     };
 
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(apply);
+    const remeasure = () => {
+      measure();
+      lastKey = "";
+      apply();
     };
 
-    apply();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    remeasure();
+    const ro = new ResizeObserver(remeasure);
+    ro.observe(sticky);
+    ro.observe(slot);
+    // Lenis emits scroll once per animation frame, so apply in the same frame.
+    window.addEventListener("scroll", apply, { passive: true });
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      ro.disconnect();
+      window.removeEventListener("scroll", apply);
     };
   }, [reduced]);
 
@@ -144,11 +168,8 @@ export function WhatWeSolve() {
               <span>AIA been engineering longer life into</span>
               <span>the parts that keep industry moving.</span>
             </h2>
-            <CtaButton href="/solutions/mining" variant="solid" className="solve-cta">
-              See how we solve wear
-            </CtaButton>
           </div>
-          <SolveBody />
+          <SolveAside />
           <div className="solve-film">
             <AmbientFilm
               src={media.whatWeSolve}
@@ -156,7 +177,7 @@ export function WhatWeSolve() {
               className="absolute inset-0"
               position="center center"
               coverBleed
-              sizes="(max-width: 1024px) 100vw, 864px"
+              sizes="(max-width: 1024px) 100vw, 1002px"
             />
           </div>
         </div>
@@ -194,18 +215,15 @@ export function WhatWeSolve() {
                 <span>AIA been engineering longer life into</span>
                 <span>the parts that keep industry moving.</span>
               </h2>
-              <CtaButton href="/solutions/mining" variant="solid" className="solve-cta">
-                See how we solve wear
-              </CtaButton>
             </div>
-            <SolveBody />
+            <SolveAside />
             {/* Slot sizes the film; poster shows until the fly layer covers it */}
             <div ref={slotRef} className="solve-film solve-film-slot" aria-hidden>
               <Image
                 src={PLATE}
                 alt=""
                 fill
-                sizes="(max-width: 1024px) 100vw, 864px"
+                sizes="(max-width: 1024px) 100vw, 1002px"
                 className="object-cover object-center"
               />
             </div>
@@ -214,7 +232,7 @@ export function WhatWeSolve() {
           <div
             ref={flyRef}
             id="solve-film-fly"
-            className="solve-film-fly absolute z-[3] overflow-hidden bg-[#1a242c] opacity-0 will-change-[top,left,width,height]"
+            className="solve-film-fly absolute inset-0 z-[3] overflow-hidden bg-[#1a242c] opacity-0"
             aria-hidden
           >
             <AmbientFilm
