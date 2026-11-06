@@ -133,7 +133,7 @@ export const mainNav: NavItem[] = [
       {
         links: [
           { label: "Careers Overview", href: href("careers") },
-          { label: "Career Details", href: href("career-details") },
+          { label: "Career Details Page", href: href("career-details") },
           { label: "Open Positions", href: href("open-positions") },
         ],
       },

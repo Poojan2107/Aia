@@ -6,27 +6,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { mainNav, type NavItem } from "@/data/nav";
-import { href } from "@/lib/routes";
 
 /**
- * Site navigation (Figma "AIA Signature Blue" NAVBAR): AIA mark + Vega on the
- * left, the main pillars in a dark glass pill, and Search + Contact Us in a
- * second pill on the right. Careers sits inside the Company dropdown so every
- * sitemap page stays reachable. Mobile keeps the full accordion drawer.
+ * Site navigation: AIA mark + Vega on the left, and the sitemap pillars in one
+ * menu — Company, Our Solutions, Investors, Knowledge Hub, Careers, Contact Us.
+ * Mobile keeps the full accordion drawer.
  */
-
-const PILL_IDS = ["company", "solutions", "investors", "knowledge-hub"] as const;
-
-/** Desktop pill items; Careers links are folded into Company. */
-const desktopNav: NavItem[] = PILL_IDS.flatMap((id) => {
-  const item = mainNav.find((n) => n.id === id);
-  if (!item) return [];
-  if (id !== "company") return [item];
-  const careers = mainNav.find((n) => n.id === "careers");
-  const careerLinks = careers?.groups?.flatMap((g) => g.links) ?? [];
-  const companyLinks = item.groups?.flatMap((g) => g.links) ?? [];
-  return [{ ...item, groups: [{ links: [...companyLinks, ...careerLinks] }] }];
-});
 
 function isCurrent(item: NavItem, pathname: string) {
   if (pathname === item.href || pathname.startsWith(`${item.href}/`)) return true;
@@ -35,7 +20,7 @@ function isCurrent(item: NavItem, pathname: string) {
 
 function Chevron({ open }: { open: boolean }) {
   return (
-    <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}>
+    <svg width="12" height="8" viewBox="0 0 10 6" aria-hidden className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}>
       <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   );
@@ -93,14 +78,6 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
         className={`absolute top-full pt-2.5 ${wide ? "left-1/2 -translate-x-1/2" : "left-0"} animate-in fade-in-0 zoom-in-95 duration-150`}
       >
         <div className={`rounded-2xl border border-aia-line/80 bg-white/98 p-6 text-aia-navy shadow-[0_24px_60px_rgba(4,29,44,0.16)] backdrop-blur-md ${wide ? "w-max max-w-[min(92vw,58rem)]" : "w-72"}`}>
-          <Link
-            href={item.href}
-            onClick={onClose}
-            className="group mb-4 flex items-center justify-between border-b border-aia-line pb-3 text-[0.76rem] font-bold uppercase tracking-[0.14em] text-aia-accent hover:text-aia-accent-deep"
-          >
-            <span>{item.label} Overview</span>
-            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-          </Link>
           <div className={wide ? `grid gap-x-10 gap-y-6 ${item.groups.length > 2 ? "grid-cols-4" : "grid-cols-2"}` : ""}>
             {item.groups.map((group, gi) => (
               <div key={group.title ?? gi}>
@@ -171,9 +148,6 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
                   <Chevron open={open} />
                 </button>
                 <div id={`m-${item.id}`} hidden={!open} className="pb-4">
-                  <Link href={item.href} onClick={onClose} className="mb-2 block text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-aia-accent">
-                    {item.label} overview
-                  </Link>
                   {item.groups.map((group, gi) => (
                     <div key={group.title ?? gi} className="mt-3">
                       {group.title ? <p className="mb-1 text-[0.72rem] uppercase tracking-[0.12em] text-white/45">{group.title}</p> : null}
@@ -202,62 +176,10 @@ export function SiteHeader() {
   const pathname = usePathname() ?? "/";
   const [openId, setOpenId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [hidden, setHidden] = useState(false);
+  const [solid, setSolid] = useState(false);
   const navRef = useRef<HTMLElement>(null);
-
-  // Hide navbar on scroll down after initial scroll, reveal on scroll up or at top
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-    let ticking = false;
-
-    const updateScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // When at the very top of the page, always show navbar
-      if (currentScrollY <= 24) {
-        setScrolled(false);
-        setVisible(true);
-      } else {
-        setScrolled(true);
-        // Scrolling down after initial scroll -> slide up out of view
-        if (currentScrollY > lastScrollY + 6) {
-          setVisible(false);
-        }
-        // Scrolling up -> user indicates intent to navigate -> slide back down
-        else if (currentScrollY < lastScrollY - 6) {
-          setVisible(true);
-        }
-      }
-
-      lastScrollY = Math.max(0, currentScrollY);
-      ticking = false;
-    };
-
-    const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScroll);
-        ticking = true;
-      }
-    };
-
-    updateScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // When user moves mouse near the top edge of viewport (within 40px), bring navbar back
-  useEffect(() => {
-    const onMouseMove = (e: MouseEvent) => {
-      if (e.clientY <= 40) {
-        setVisible(true);
-      }
-    };
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMouseMove);
-  }, []);
-
-  const isHidden = !visible && !mobileOpen && openId === null;
+  const lastY = useRef(0);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -283,16 +205,38 @@ export function SiteHeader() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    lastY.current = window.scrollY;
+    setSolid(window.scrollY > window.innerHeight * 0.82);
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY.current;
+      setSolid(y > window.innerHeight * 0.82);
+
+      if (y < 24 || openId || mobileOpen) {
+        setHidden(false);
+        lastY.current = y;
+        return;
+      }
+
+      if (Math.abs(delta) < 6) return;
+
+      setHidden(delta > 0);
+      lastY.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [openId, mobileOpen]);
+
   return (
     <>
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-aia-navy">
         Skip to content
       </a>
       <header
-        className={`site-nav fixed inset-x-0 top-0 z-40 ${scrolled ? "is-scrolled" : ""} ${
-          isHidden ? "is-hidden" : ""
-        }`}
-        onFocusCapture={() => setVisible(true)}
+        className={`site-nav fixed inset-x-0 top-0 z-40${solid ? " is-solid" : ""}${hidden ? " is-hidden" : ""}`}
       >
         <div className="site-nav-bar">
           <Link href="/" className="site-nav-brand" aria-label="AIA Engineering home">
@@ -302,12 +246,15 @@ export function SiteHeader() {
 
           <nav ref={navRef} aria-label="Main" className="site-nav-pill hidden lg:flex">
             <ul className="flex items-center">
-              {desktopNav.map((item) => (
+              {mainNav.map((item) => (
                 <DesktopItem
                   key={item.id}
                   item={item}
                   open={openId === item.id}
-                  onOpen={() => setOpenId(item.id)}
+                  onOpen={() => {
+                    setHidden(false);
+                    setOpenId(item.id);
+                  }}
                   onClose={() => setOpenId((id) => (id === item.id ? null : id))}
                   current={isCurrent(item, pathname)}
                 />
@@ -315,20 +262,7 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
-            <div className="site-nav-actions hidden lg:flex">
-              <Link href={href("html-sitemap")} className="site-nav-search" aria-label="Search the site">
-                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-                  <circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-                  <path d="M12.6 12.6L16.5 16.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                </svg>
-                <span>Search</span>
-              </Link>
-              <Link href={href("contact")} className="site-nav-contact" data-magnetic="">
-                <span aria-hidden className="site-nav-contact-dot" />
-                Contact us
-              </Link>
-            </div>
+          <div className="flex items-center gap-2 lg:hidden">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}

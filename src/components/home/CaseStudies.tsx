@@ -1,17 +1,66 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type TransitionEvent } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { caseStudies } from "@/data/content";
 
+const COPIES = 4;
+
 export function CaseStudies() {
-  const [offset, setOffset] = useState(0);
-  const ordered = [
-    ...caseStudies.slice(offset),
-    ...caseStudies.slice(0, offset),
-  ];
+  const count = caseStudies.length;
+  const strip = Array.from({ length: COPIES }, () => [...caseStudies]).flat();
+  const [index, setIndex] = useState(count + (count - 1));
+  const [x, setX] = useState(0);
+  const [motion, setMotion] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+  const offset = (index + 1) % count;
+  const ordered = [...caseStudies.slice(offset), ...caseStudies.slice(0, offset)];
+
+  const place = (value: number) => {
+    const row = rowRef.current;
+    const card = row?.querySelector<HTMLElement>(".cases-card");
+    const stage = row?.parentElement;
+    if (!row || !card || !stage) return 0;
+    const gap = Number.parseFloat(getComputedStyle(row).gap) || 0;
+    const width = card.offsetWidth;
+    const group = width * 3 + gap * 2;
+    const firstLeft = (stage.clientWidth - group) / 2;
+    return firstLeft - (value + 1) * (width + gap);
+  };
+
+  useLayoutEffect(() => {
+    setX(place(index));
+  }, [index]);
+
+  useEffect(() => {
+    if (motion) return;
+    const id = requestAnimationFrame(() => setMotion(true));
+    return () => cancelAnimationFrame(id);
+  }, [motion, index]);
+
+  useEffect(() => {
+    const onResize = () => setX(place(indexRef.current));
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const shift = (dir: number) => {
+    setMotion(true);
+    setIndex((value) => value + dir);
+  };
+
+  const settle = (event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+    const value = indexRef.current;
+    if (value >= count * 2 || value < count) {
+      setMotion(false);
+      setIndex(value >= count * 2 ? value - count : value + count);
+    }
+  };
 
   return (
     <section
@@ -40,56 +89,79 @@ export function CaseStudies() {
             <NavArrow
               label="Previous case studies"
               reverse
-              onClick={() =>
-                setOffset(
-                  (v) => (v - 1 + caseStudies.length) % caseStudies.length,
-                )
-              }
+              onClick={() => shift(-1)}
             />
             <NavArrow
               label="Next case studies"
-              onClick={() => setOffset((v) => (v + 1) % caseStudies.length)}
+              onClick={() => shift(1)}
             />
           </div>
         </div>
       </div>
 
-      <div
-        key={offset}
-        className="stagger-in page-pad page-max grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7"
-      >
-        {ordered.map((item, i) => (
-          <a
-            key={item.href}
-            href={item.href}
-            className="group block min-w-0"
-            style={{ ["--i" as string]: i }}
-          >
-            <div className="relative mb-5 aspect-[532/395] w-full overflow-hidden rounded-[1.25rem] bg-[#e8eaec]">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 532px"
-                className="object-cover transition duration-500 group-hover:scale-[1.03] group-hover:blur-[2px]"
-              />
-              <span className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.78rem] uppercase tracking-[0.16em] text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
-                Know More
-                <span className="flex size-8 items-center justify-center rounded-full bg-aia-accent text-base text-white">
-                  →
-                </span>
-              </span>
-            </div>
-            <h3 className="mb-2 text-[1.2rem] font-semibold leading-snug text-aia-navy sm:text-[1.35rem]">
-              {item.title}
-            </h3>
-            <p className="text-sm text-aia-muted sm:text-[0.98rem]">
-              {item.meta}
-            </p>
-          </a>
+      <div className="cases-grid page-pad page-max grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
+        {ordered.map((item) => (
+          <CaseCard key={item.href} item={item} />
         ))}
       </div>
+
+      <div className="cases-stage">
+        <div
+          ref={rowRef}
+          className={`cases-row${motion ? "" : " is-instant"}`}
+          style={{ transform: `translate3d(${x}px, 0, 0)` }}
+          onTransitionEnd={settle}
+        >
+          {strip.map((item, position) => (
+            <CaseCard
+              key={`${item.href}-${position}`}
+              item={item}
+              featured={position === index + 2}
+              peek={position === index ? "left" : position === index + 4 ? "right" : undefined}
+            />
+          ))}
+        </div>
+      </div>
     </section>
+  );
+}
+
+function CaseCard({
+  item,
+  featured = false,
+  peek,
+}: {
+  item: (typeof caseStudies)[number];
+  featured?: boolean;
+  peek?: "left" | "right";
+}) {
+  return (
+    <a
+      href={item.href}
+      className={`cases-card group block min-w-0${featured ? " is-focus" : ""}${peek ? ` is-peek is-peek-${peek}` : ""}`}
+      aria-hidden={peek ? true : undefined}
+      tabIndex={peek ? -1 : undefined}
+    >
+      <div className="cases-media relative mb-5 aspect-[532/395] w-full overflow-hidden rounded-[1.25rem] bg-[#e8eaec]">
+        <Image
+          src={item.image}
+          alt={peek ? "" : item.title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 532px"
+          className="object-cover transition duration-500 group-hover:scale-[1.03] group-hover:blur-[2px]"
+        />
+        <span className="cases-more absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.78rem] uppercase tracking-[0.16em] text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
+          Know More
+          <span className="flex size-8 items-center justify-center rounded-full bg-aia-accent text-base text-white">
+            →
+          </span>
+        </span>
+      </div>
+      <h3 className="mb-2 text-[1.2rem] font-semibold leading-snug text-aia-navy sm:text-[1.35rem]">
+        {item.title}
+      </h3>
+      <p className="text-sm text-aia-muted sm:text-[0.98rem]">{item.meta}</p>
+    </a>
   );
 }
 

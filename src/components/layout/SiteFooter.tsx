@@ -119,7 +119,9 @@ export function SiteFooter() {
           </nav>
           <p className="foot-credit">
             Site by
-            <Image src="/images/design/logo-13utopia.png" alt="13UTOPIA" width={423} height={168} className="foot-credit-logo" />
+            <a href="https://13utopia.com" target="_blank" rel="noopener noreferrer" className="foot-credit-link" aria-label="13UTOPIA, opens in a new tab">
+              <Image src="/images/design/logo-13utopia.png" alt="" width={423} height={168} className="foot-credit-logo" />
+            </a>
           </p>
         </div>
       </div>

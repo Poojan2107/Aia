@@ -81,7 +81,6 @@ export function IndustryPanels() {
         last = next;
         setActive(next);
       }
-      track.style.setProperty("--ind-progress", (p / (industries.length - 1)).toFixed(4));
     };
 
     const onScroll = () => {
@@ -141,13 +140,8 @@ export function IndustryPanels() {
                   </span>
                 ))}
               </span>
-              <span className="inds-count" aria-hidden>
-                / 0{industries.length}
-              </span>
             </div>
-            <span aria-hidden className="inds-rule">
-              <span className="inds-rule-fill" />
-            </span>
+            <span aria-hidden className="inds-rule" />
             <div className="inds-row">
               <h3 className="inds-title-window" aria-live="polite">
                 {industries.map((ind, i) => (
