@@ -42,7 +42,7 @@ const leaders: Leader[] = [
       "At Vega Industries, we help customers worldwide maximise mill throughput, improve efficiency, and increase equipment uptime. Combining technical expertise with advanced manufacturing, we deliver tailored solutions and responsive local support that drive measurable value and long-term performance.",
     portrait: { src: "/images/ceo/sumit-mitra.webp", width: 1100, height: 1243 },
     brand: { src: "/images/design/logo-vega-color.webp", alt: "Vega Industries", width: 200, height: 145, className: "lead-brand-vega" },
-    accentColor: "#ea580c",
+    accentColor: "#006eff",
     flip: true,
   },
 ];
