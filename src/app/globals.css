@@ -2409,14 +2409,7 @@ button.solve-cta > span:last-child {
   pointer-events: none;
 }
 
-/* Crop baked-in letterbox/pillarbox; window size stays 864×486 */
-.solve-film video,
-.solve-film img,
-.solve-film-fly video,
-.solve-film-fly img {
-  transform: scale(1.2);
-  transform-origin: center center;
-}
+/* The film is encoded without letterbox bars, so it simply covers the window. */
 
 .solve-pin {
   height: 100%;

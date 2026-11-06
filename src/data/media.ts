@@ -4,7 +4,7 @@
  */
 export const media = {
   hero: "/videos/hero.mp4",
-  whatWeSolve: "/videos/corporate.mp4",
+  whatWeSolve: "/videos/what-we-solve.mp4",
   whatWeSolveBand: "/videos/corporate.mp4",
   about: "/videos/corporate.mp4",
   sustainability: "/videos/mill.mp4",

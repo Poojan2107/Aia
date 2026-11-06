@@ -10,7 +10,7 @@ import { media } from "@/data/media";
 import { stats } from "@/data/site";
 import { useReducedMotion } from "@/lib/motion";
 
-const PLATE = "/images/what-we-solve.jpg";
+const PLATE = "/images/what-we-solve-poster.webp";
 
 const SOLVE_BODY_LINES = [
   "Across mining, cement, quarry and thermal",
@@ -176,7 +176,6 @@ export function WhatWeSolve() {
               poster={PLATE}
               className="absolute inset-0"
               position="center center"
-              coverBleed
               sizes="(max-width: 1024px) 100vw, 1002px"
             />
           </div>
@@ -187,7 +186,6 @@ export function WhatWeSolve() {
             poster={PLATE}
             className="absolute inset-0"
             position="center center"
-            coverBleed
             sizes="100vw"
           />
           <KpiOverlay play />
@@ -240,7 +238,6 @@ export function WhatWeSolve() {
               poster={PLATE}
               className="absolute inset-0"
               position="center center"
-              coverBleed
               sizes="100vw"
             />
           </div>
