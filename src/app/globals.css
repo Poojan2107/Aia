@@ -4887,7 +4887,7 @@ button.solve-cta > span:last-child {
 .foot-investor-cols { display: grid; gap: 0 2rem; }
 .foot-linkedin { margin-top: 1rem; display: inline-flex; color: #fff; }
 .foot-ctas { display: grid; border-block: 1px solid #fff; margin-inline: calc(-1 * clamp(1rem, 7vw, 134px)); padding-inline: clamp(1rem, 7vw, 134px); }
-.foot-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: clamp(2rem, 3vw, 56px) clamp(0rem, 3.4vw, 66px); }
+.foot-cta { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1.25rem; padding: clamp(2rem, 3vw, 56px) clamp(0rem, 3.4vw, 66px); }
 .foot-cta p { font-family: var(--font-haas); font-size: clamp(1.15rem, 1.25vw, 24px); font-weight: 500; line-height: 1.2; }
 .foot-pill { display: inline-flex; height: 44px; align-items: center; gap: 10px; border-radius: 999px; background: #fff; padding-inline: 1.3rem; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--aia-navy); transition: background-color 200ms, color 200ms; }
 .foot-pill:hover { background: var(--aia-accent); color: #fff; }
