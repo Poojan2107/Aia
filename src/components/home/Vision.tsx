@@ -1,119 +1,89 @@
-"use client";
-
 import Image from "next/image";
-import { useEffect, useRef, useState, type RefObject } from "react";
-import { Reveal } from "@/components/ui/Reveal";
-import { useReducedMotion } from "@/lib/motion";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
-function clamp01(n: number) {
-  return Math.min(1, Math.max(0, n));
-}
+/**
+ * Leadership — Figma 01Homepage (node 685:7): two alternating rows.
+ * AIA's Managing Director, then Vega's CEO, each with a cut-out portrait over
+ * blue shards (which drift with the scroll), a brand mark, a heading, the
+ * quote and the attribution.
+ */
 
-function smooth(t: number) {
-  const x = clamp01(t);
-  return x * x * x * (x * (x * 6 - 15) + 10);
-}
+type Leader = {
+  id: string;
+  name: string;
+  role: string;
+  heading: [string, string];
+  quote: string;
+  portrait: { src: string; width: number; height: number };
+  brand: { src: string; alt: string; width: number; height: number; className: string };
+  flip: boolean;
+};
 
-function useEnterProgress(ref: RefObject<HTMLElement | null>) {
-  const [progress, setProgress] = useState(0);
-  const reduced = useReducedMotion();
+const leaders: Leader[] = [
+  {
+    id: "aia",
+    name: "Mr. Bhadresh Kantilal Shah",
+    role: "(Managing Director - AIA Engineering)",
+    heading: ["A vision that", "continues to guide us."],
+    quote:
+      "Customer Excellence is our philosophy. Our focus remains on improving productivity while reducing environmental impact. We promise to deliver value through ethical, sustainable, and profitable means.",
+    portrait: { src: "/images/design/leader-bhadresh-shah.webp", width: 323, height: 305 },
+    brand: { src: "/images/design/logo-aia-mark-blue.webp", alt: "AIA Engineering", width: 899, height: 764, className: "lead-brand-aia" },
+    flip: false,
+  },
+  {
+    id: "vega",
+    name: "Mr. Sumit Mitra",
+    role: "(CEO - Vega Industries)",
+    heading: ["Delivering Excellence", "Across Borders."],
+    quote:
+      "At Vega Industries, we help customers worldwide maximise mill throughput, improve efficiency, and increase equipment uptime. Combining technical expertise with advanced manufacturing, we deliver tailored solutions and responsive local support that drive measurable value and long-term performance.",
+    portrait: { src: "/images/design/leader-sumit-mitra.webp", width: 353, height: 279 },
+    brand: { src: "/images/design/logo-vega-color.webp", alt: "Vega Industries", width: 200, height: 145, className: "lead-brand-vega" },
+    flip: true,
+  },
+];
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || reduced) return;
-
-    const update = () => {
-      const rect = el.getBoundingClientRect();
-      const start = window.innerHeight * 1.05;
-      const end = window.innerHeight * 0.12;
-      setProgress(clamp01((start - rect.top) / (start - end)));
-    };
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, [ref, reduced]);
-
-  return reduced ? 1 : progress;
-}
-
-export function Vision() {
-  const plate = useRef<HTMLDivElement>(null);
-  const progress = useEnterProgress(plate);
-  const rise = smooth(clamp01((progress - 0.08) / 0.7));
-  const plateSrc = "/images/vision-plate-hq-white.webp";
-
+function LeaderRow({ leader }: { leader: Leader }) {
+  const headingId = `lead-${leader.id}`;
   return (
-    <section
-      className="relative overflow-hidden bg-white py-[var(--section-y)]"
-      aria-labelledby="vision-heading"
-    >
-      <div className="page-pad page-max grid items-center gap-10 lg:grid-cols-[minmax(0,0.56fr)_minmax(0,0.44fr)] lg:gap-8 xl:gap-10">
-        <div ref={plate} className="vision-plate relative w-full">
-          <div className="vision-plate-stage relative aspect-[3624/2288] overflow-hidden bg-white">
-            <div
-              className="absolute inset-0 will-change-transform"
-              style={{
-                opacity: rise,
-                transform: `translate3d(0, ${(1 - rise) * 12}%, 0)`,
-              }}
-            >
-              <Image
-                key={plateSrc}
-                src={plateSrc}
-                alt="Mr. Bhadresh Kantilal Shah, Managing Director"
-                fill
-                sizes="(max-width: 1024px) 100vw, 52vw"
-                className="object-contain object-left"
-                quality={95}
-                priority
-              />
-            </div>
-          </div>
+    <ScrollReveal as="article" className={`lead-row ${leader.flip ? "is-flipped" : ""}`}>
+      <div className="lead-plate" aria-hidden>
+        <span className="lead-shard-wrap" data-parallax="22"><span className="lead-shard lead-shard-a" /></span>
+        <span className="lead-shard-wrap" data-parallax="34"><span className="lead-shard lead-shard-b" /></span>
+        <span className="lead-shard-wrap" data-parallax="14"><span className="lead-shard lead-shard-c" /></span>
+        <div className="lead-portrait">
+          <Image src={leader.portrait.src} alt="" width={leader.portrait.width} height={leader.portrait.height} sizes="(max-width: 1024px) 80vw, 34vw" />
         </div>
-
-        <Reveal delay={120} className="vision-copy relative lg:max-w-[34rem] lg:pl-1">
-          <QuoteMark />
-          <h2 id="vision-heading" className="vision-heading">
-            A vision that
-            <br />
-            <span className="vision-heading-line">continues to guide us.</span>
-          </h2>
-          <p className="vision-body">
-            Customer Excellence is our philosophy. Our focus remains on
-            improving productivity while reducing environmental impact. We
-            promise to deliver value through ethical, sustainable, and
-            profitable means.
-          </p>
-          <div className="vision-attr">
-            <div className="vision-attr-name">
-              <span aria-hidden className="vision-attr-dot" />
-              <p>MR. BHADRESH KANTILAL SHAH</p>
-            </div>
-            <p className="vision-attr-role">
-              (MANAGING DIRECTOR - AIA ENGINEERING)
-            </p>
-          </div>
-        </Reveal>
       </div>
-    </section>
+
+      <div className="lead-copy" aria-labelledby={headingId}>
+        <Image src="/images/vision-quote-v2.png" alt="" aria-hidden width={223} height={163} className="lead-quote-mark" />
+        <Image src={leader.brand.src} alt={leader.brand.alt} width={leader.brand.width} height={leader.brand.height} className={`lead-brand ${leader.brand.className}`} />
+        <h2 id={headingId} className="lead-heading">
+          {leader.heading[0]}
+          <br />
+          {leader.heading[1]}
+        </h2>
+        <blockquote className="lead-quote">
+          <p>{leader.quote}</p>
+        </blockquote>
+        <p className="lead-name">
+          <span aria-hidden className="lead-dot" />
+          {leader.name}
+        </p>
+        <p className="lead-role">{leader.role}</p>
+      </div>
+    </ScrollReveal>
   );
 }
 
-function QuoteMark() {
+export function Vision() {
   return (
-    <Image
-      src="/images/vision-quote-v2.png"
-      alt=""
-      aria-hidden
-      width={223}
-      height={163}
-      className="vision-quote"
-      priority={false}
-    />
+    <section className="lead" aria-label="Leadership">
+      {leaders.map((leader) => (
+        <LeaderRow key={leader.id} leader={leader} />
+      ))}
+    </section>
   );
 }

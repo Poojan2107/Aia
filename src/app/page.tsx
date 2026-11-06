@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Hero } from "@/components/home/Hero";
 import { AiaVegaGlobeSection } from "@/components/home/AiaVegaGlobeSection";
+import { WhatWeSolve } from "@/components/home/WhatWeSolve";
 import { IndustryPanels } from "@/components/home/IndustryPanels";
 import { Materials } from "@/components/home/Materials";
 import { Services } from "@/components/home/Services";
@@ -30,6 +31,7 @@ export default function HomePage() {
       <main id="main">
         <Hero />
         <AiaVegaGlobeSection />
+        <WhatWeSolve />
         <IndustryPanels />
         <Materials />
         <Services />
