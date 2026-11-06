@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { mainNav, type NavItem } from "@/data/nav";
 import { href } from "@/lib/routes";
@@ -32,13 +32,6 @@ function isCurrent(item: NavItem, pathname: string) {
   if (pathname === item.href || pathname.startsWith(`${item.href}/`)) return true;
   return (item.groups ?? []).some((g) => g.links.some((l) => pathname === l.href || pathname.startsWith(`${l.href}/`)));
 }
-
-function subscribeScroll(callback: () => void) {
-  window.addEventListener("scroll", callback, { passive: true });
-  return () => window.removeEventListener("scroll", callback);
-}
-const getScrolled = () => window.scrollY > 24;
-const getScrolledServer = () => false;
 
 function Chevron({ open }: { open: boolean }) {
   return (
@@ -209,10 +202,62 @@ export function SiteHeader() {
   const pathname = usePathname() ?? "/";
   const [openId, setOpenId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const scrolled = useSyncExternalStore(subscribeScroll, getScrolled, getScrolledServer);
+  const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
   const navRef = useRef<HTMLElement>(null);
-  const lastY = useRef(0);
+
+  // Hide navbar on scroll down after initial scroll, reveal on scroll up or at top
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const updateScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // When at the very top of the page, always show navbar
+      if (currentScrollY <= 24) {
+        setScrolled(false);
+        setVisible(true);
+      } else {
+        setScrolled(true);
+        // Scrolling down after initial scroll -> slide up out of view
+        if (currentScrollY > lastScrollY + 6) {
+          setVisible(false);
+        }
+        // Scrolling up -> user indicates intent to navigate -> slide back down
+        else if (currentScrollY < lastScrollY - 6) {
+          setVisible(true);
+        }
+      }
+
+      lastScrollY = Math.max(0, currentScrollY);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScroll);
+        ticking = true;
+      }
+    };
+
+    updateScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // When user moves mouse near the top edge of viewport (within 40px), bring navbar back
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (e.clientY <= 40) {
+        setVisible(true);
+      }
+    };
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, []);
+
+  const isHidden = !visible && !mobileOpen && openId === null;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -238,36 +283,16 @@ export function SiteHeader() {
     };
   }, [mobileOpen]);
 
-  useEffect(() => {
-    lastY.current = window.scrollY;
-
-    const onScroll = () => {
-      const y = window.scrollY;
-      const delta = y - lastY.current;
-
-      if (y < 24 || openId || mobileOpen) {
-        setHidden(false);
-        lastY.current = y;
-        return;
-      }
-
-      if (Math.abs(delta) < 6) return;
-
-      setHidden(delta > 0);
-      lastY.current = y;
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [openId, mobileOpen]);
-
   return (
     <>
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-aia-navy">
         Skip to content
       </a>
       <header
-        className={`site-nav fixed inset-x-0 top-0 z-40 ${scrolled ? "is-scrolled" : ""}${hidden ? " is-hidden" : ""}`}
+        className={`site-nav fixed inset-x-0 top-0 z-40 ${scrolled ? "is-scrolled" : ""} ${
+          isHidden ? "is-hidden" : ""
+        }`}
+        onFocusCapture={() => setVisible(true)}
       >
         <div className="site-nav-bar">
           <Link href="/" className="site-nav-brand" aria-label="AIA Engineering home">
@@ -282,10 +307,7 @@ export function SiteHeader() {
                   key={item.id}
                   item={item}
                   open={openId === item.id}
-                  onOpen={() => {
-                    setHidden(false);
-                    setOpenId(item.id);
-                  }}
+                  onOpen={() => setOpenId(item.id)}
                   onClose={() => setOpenId((id) => (id === item.id ? null : id))}
                   current={isCurrent(item, pathname)}
                 />

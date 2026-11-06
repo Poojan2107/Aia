@@ -44,6 +44,7 @@ yarn-error.log*
 
 # IDE & temporary
 .cursor/
+.claude/
 *.bak
 *.bak.*
 
