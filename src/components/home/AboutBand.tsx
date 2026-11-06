@@ -82,11 +82,18 @@ export function AboutBand() {
 
     gsap.set(plate, { scale: 1, transformOrigin: "center center", force3D: true });
     gsap.set([left, right], { x: 0, autoAlpha: 1, force3D: true });
-    gsap.set(copy, { xPercent: -50, y: 0 });
+    // Phones: the copy waits above the CTA and fades in once the film covers the screen.
+    const phone = window.matchMedia("(max-width: 767px)").matches;
     tween.to(plate, { scale: cover, duration: 1 }, 0);
     tween.to(left, { x: () => place().left, duration: 0.85 }, 0);
     tween.to(right, { x: () => place().right, duration: 0.85 }, 0);
-    tween.to(copy, { y: sink, duration: 1 }, 0);
+    if (phone) {
+      gsap.set(copy, { y: 0, autoAlpha: 0 });
+      tween.to(copy, { autoAlpha: 1, duration: 0.3 }, 0.65);
+    } else {
+      gsap.set(copy, { y: 0, autoAlpha: 1 });
+      tween.to(copy, { y: sink, duration: 1 }, 0);
+    }
 
     ScrollTrigger.refresh();
     return () => {

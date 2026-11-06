@@ -542,6 +542,13 @@ video.film-cover {
   }
 }
 
+@media (max-width: 767px) {
+  /* Keep the hero CTA clear of the fixed assistant button (60px + 24px inset). */
+  .hero-lockup {
+    bottom: calc(60px + max(1.5rem, env(safe-area-inset-bottom)) + 1rem);
+  }
+}
+
 @media (max-width: 1023px) {
   .hero-headline,
   .hero-rail {
@@ -556,6 +563,13 @@ video.film-cover {
   .hero-lede {
     font-size: 13px;
     line-height: 20px;
+  }
+
+  .hero-lede span {
+    display: inline;
+  }
+  .hero-lede span::after {
+    content: " ";
   }
 }
 
@@ -2409,7 +2423,11 @@ button.tech-cta .hero-cta-label {
   }
 
   .solve-body span {
+    display: inline;
     white-space: normal;
+  }
+  .solve-body span::after {
+    content: " ";
   }
 }
 
@@ -5265,10 +5283,11 @@ button.solve-cta > span:last-child {
 .about2-copy {
   position: absolute;
   z-index: 4;
-  left: 50%;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   width: min(78%, 46rem);
   bottom: calc(50% - min(90vw, 108vh) * 0.28 + 1.35rem);
-  transform: translateX(-50%);
   text-align: center;
   font-size: clamp(0.72rem, 0.78vw, 15px);
   line-height: 1.5;
@@ -5309,8 +5328,18 @@ button.solve-cta > span:last-child {
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: #fff;
   transition: background-color 200ms, color 200ms;
+}
+@media (max-width: 767px) {
+  /* Phones: both title words must fit side by side on a 375px screen. */
+  .about2-word.ft { --ft-floor: 0.34; white-space: nowrap; }
+  /* Phones: the copy sits just above the CTA and fades in as the film fills the screen. */
+  .about2-copy {
+    width: calc(100% - 2.5rem);
+    bottom: calc(clamp(1.25rem, 4vh, 2.75rem) + 48px + 1.25rem);
+  }
 }
 .about2-cta:hover {
   background: #fff;

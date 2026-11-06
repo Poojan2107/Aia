@@ -42,14 +42,14 @@ export function Sustainability() {
 
             <div className="ft ft-body28 text-white">
               <p className="mb-0">
-                Yes, we believe it can. By using resources more efficiently,
+                Yes, we believe it can. By using resources more efficiently,{" "}
                 <br className="hidden lg:block" />
                 reducing waste and embracing reuse and recycling,
               </p>
               <p className="mt-5 mb-0 sm:mt-6">
-                we&apos;re working to lower the environmental impact of our
+                we&apos;re working to lower the environmental impact of our{" "}
                 <br className="hidden lg:block" />
-                operations while continuing to deliver the performance
+                operations while continuing to deliver the performance{" "}
                 <br className="hidden lg:block" />
                 industry depends on.
               </p>
@@ -117,10 +117,8 @@ export function Faq() {
             id="faq-heading"
             className="display ft ft-h62t mb-6 text-aia-navy lg:mb-7"
           >
-            <span className="lg:block lg:whitespace-nowrap">Here are the essentials </span>
-            <span className="lg:block lg:whitespace-nowrap">about AIA, what we make, </span>
-            <span className="lg:block lg:whitespace-nowrap">and how our solutions </span>
-            <span className="lg:block lg:whitespace-nowrap">support your operations.</span>
+            Here are the essentials about AIA, what we make, and how our
+            solutions support your operations.
           </h2>
           <div className="flex flex-wrap items-center gap-2.5 self-start">
             <CtaButton
