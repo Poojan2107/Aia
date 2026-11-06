@@ -17,7 +17,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
  * Phones and reduced motion get the same beats without the pin.
  */
 
-type Site = { id: string; city: string; country: string; lat: number; lng: number; company: "AIA" | "Vega"; chip?: boolean };
+type Site = { id: string; city: string; country: string; lat: number; lng: number; company: "AIA" | "Vega"; chip?: boolean; below?: boolean };
 
 const AHMEDABAD: Site = { id: "ahmedabad", city: "Ahmedabad", country: "India", lat: 23.0225, lng: 72.5714, company: "AIA", chip: true };
 
@@ -26,7 +26,7 @@ const SITES: Site[] = [
   { id: "bengaluru", city: "Bengaluru", country: "India", lat: 12.9716, lng: 77.5946, company: "AIA" },
   { id: "brentwood", city: "Nashville", country: "USA", lat: 36.0331, lng: -86.7828, company: "Vega", chip: true },
   { id: "brampton", city: "Toronto", country: "Canada", lat: 43.7315, lng: -79.7624, company: "Vega" },
-  { id: "london", city: "London", country: "UK", lat: 51.5806, lng: -0.3417, company: "Vega", chip: true },
+  { id: "london", city: "London", country: "UK", lat: 51.5806, lng: -0.3417, company: "Vega", chip: true, below: true },
   { id: "dubai", city: "Dubai", country: "UAE", lat: 25.2048, lng: 55.2708, company: "Vega" },
   { id: "johannesburg", city: "Johannesburg", country: "South Africa", lat: -26.2041, lng: 28.0473, company: "Vega", chip: true },
   { id: "accra", city: "Accra", country: "Ghana", lat: 5.6037, lng: -0.187, company: "Vega" },
@@ -37,14 +37,18 @@ const SITES: Site[] = [
   { id: "jakarta", city: "Jakarta", country: "Indonesia", lat: -6.2088, lng: 106.8456, company: "Vega" },
 ];
 
-type Arc = { startLat: number; startLng: number; endLat: number; endLng: number; order: number };
-const ARCS: Arc[] = SITES.filter((s) => s.id !== "ahmedabad").map((s, i) => ({
+/** Each route is drawn twice: a faint trail that grows in, and a bright pulse that travels it. */
+type Arc = { startLat: number; startLng: number; endLat: number; endLng: number; order: number; kind: "trail" | "pulse" };
+const ROUTES = SITES.filter((s) => s.id !== "ahmedabad");
+const arcFor = (s: Site, i: number, kind: Arc["kind"]): Arc => ({
   startLat: AHMEDABAD.lat,
   startLng: AHMEDABAD.lng,
   endLat: s.lat,
   endLng: s.lng,
   order: i,
-}));
+  kind,
+});
+type Ring = { lat: number; lng: number; hq: boolean };
 
 const VIEW_INDIA = { lat: 20, lng: 78, altitude: 1.72 };
 const VIEW_NETWORK = { lat: 16, lng: 56, altitude: 2.0 };
@@ -59,7 +63,7 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 function chipElement(site: Site) {
   const isAia = site.company === "AIA";
   const root = document.createElement("div");
-  root.className = `gsq-tag ${isAia ? "is-aia" : "is-vega"}`;
+  root.className = `gsq-tag ${isAia ? "is-aia" : "is-vega"}${site.below ? " is-below" : ""}`;
   const stem = document.createElement("span");
   stem.className = "gsq-tag-stem";
   const card = document.createElement("span");
@@ -181,20 +185,25 @@ export function AiaVegaGlobeSection() {
 
       // Layer styling; the data itself is fed in per stage.
       world
-        .ringColor(() => (t: number) => `rgba(255, 196, 92, ${1 - t})`)
-        .ringMaxRadius(6)
-        .ringPropagationSpeed(2.4)
-        .ringRepeatPeriod(1100)
+        .ringColor((d: object) => ((d as Ring).hq ? (t: number) => `rgba(255, 186, 70, ${1 - t})` : (t: number) => `rgba(60, 150, 255, ${0.9 * (1 - t)})`))
+        .ringMaxRadius((d) => ((d as Ring).hq ? 7 : 3.2))
+        .ringPropagationSpeed((d) => ((d as Ring).hq ? 2.6 : 1.6))
+        .ringRepeatPeriod((d) => ((d as Ring).hq ? 1000 : 2200))
         .pointColor((d) => ((d as Site).company === "AIA" ? "#ffc65c" : "#4da3ff"))
         .pointAltitude(0.012)
         .pointRadius((d) => ((d as Site).company === "AIA" ? 0.55 : 0.4))
-        .arcColor(() => ["rgba(255, 190, 70, 1)", "rgba(40, 140, 255, 1)"])
-        .arcStroke(1.05)
-        .arcAltitudeAutoScale(0.42)
-        .arcDashLength(0.62)
-        .arcDashGap(0.55)
-        .arcDashInitialGap((d) => 1 + (d as Arc).order * 0.12)
-        .arcDashAnimateTime(reduced ? 0 : 2600)
+        .arcColor((d: object) =>
+          (d as Arc).kind === "trail"
+            ? ["rgba(255, 186, 70, 0.55)", "rgba(40, 140, 255, 0.45)"]
+            : ["rgba(255, 236, 190, 1)", "rgba(255, 176, 50, 1)", "rgba(60, 160, 255, 1)"],
+        )
+        .arcStroke((d) => ((d as Arc).kind === "trail" ? 0.42 : 1.15))
+        .arcAltitudeAutoScale(0.45)
+        .arcDashLength((d) => ((d as Arc).kind === "trail" ? 1 : 0.22))
+        .arcDashGap((d) => ((d as Arc).kind === "trail" ? 0 : 1.4))
+        .arcDashInitialGap((d) => ((d as Arc).kind === "trail" ? 0 : ((d as Arc).order % 4) * 0.35))
+        .arcDashAnimateTime((d) => ((d as Arc).kind === "trail" || reduced ? 0 : 2400 + ((d as Arc).order % 3) * 300))
+        .arcsTransitionDuration(reduced ? 0 : 1100)
         .htmlElement((d) => chipElement(d as Site))
         .htmlAltitude(0.015)
         .htmlElementVisibilityModifier((el, isVisible) => {
@@ -236,13 +245,34 @@ export function AiaVegaGlobeSection() {
     indiaRef.current.lift = stage >= 3 ? 0.028 : stage >= 2 ? 0.008 : 0.002;
     world.polygonsData(indiaRef.current.features).polygonAltitude(indiaRef.current.lift);
     if (stage >= 4) {
-      world.pointsData(SITES).ringsData([AHMEDABAD]).arcsData(ARCS).htmlElementsData(SITES.filter((s) => s.chip));
-      const t = window.setTimeout(() => world.pointOfView(VIEW_NETWORK, 2400), 900);
-      return () => window.clearTimeout(t);
+      // Routes launch one by one: trail grows in, pulse starts, a ring blooms on arrival.
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const hq: Ring = { lat: AHMEDABAD.lat, lng: AHMEDABAD.lng, hq: true };
+      const arcs: Arc[] = [];
+      const rings: Ring[] = [hq];
+      const timers: number[] = [];
+      world.pointsData(SITES).ringsData(rings).htmlElementsData(SITES.filter((s) => s.chip));
+      const step = reducedMotion ? 0 : 170;
+      ROUTES.forEach((site, i) => {
+        timers.push(
+          window.setTimeout(() => {
+            arcs.push(arcFor(site, i, "trail"), arcFor(site, i, "pulse"));
+            world.arcsData([...arcs]);
+          }, i * step),
+        );
+        timers.push(
+          window.setTimeout(() => {
+            rings.push({ lat: site.lat, lng: site.lng, hq: false });
+            world.ringsData([...rings]);
+          }, i * step + (reducedMotion ? 0 : 1000)),
+        );
+      });
+      timers.push(window.setTimeout(() => world.pointOfView(VIEW_NETWORK, 2400), 700));
+      return () => timers.forEach((t) => window.clearTimeout(t));
     }
     world
       .pointsData(stage >= 3 ? SITES.filter((s) => s.company === "AIA") : [])
-      .ringsData(stage >= 3 ? [AHMEDABAD] : [])
+      .ringsData(stage >= 3 ? [{ lat: AHMEDABAD.lat, lng: AHMEDABAD.lng, hq: true }] : [])
       .arcsData([])
       .htmlElementsData(stage >= 3 ? [AHMEDABAD] : []);
   }, [stage, ready]);
@@ -322,6 +352,7 @@ export function AiaVegaGlobeSection() {
             </h2>
           </header>
 
+          <div className="gsq-main">
           <div className="gsq-globe">
             <span aria-hidden className="gsq-globe-glow" />
             <div
@@ -347,6 +378,7 @@ export function AiaVegaGlobeSection() {
               Vega Industries is a wholly owned subsidiary of AIA Engineering Limited. As its international marketing arm, Vega extends AIA&apos;s application expertise to the international markets. Through its 10+ service centers and an established global supply chain network, Vega acts as an end-to-end technical partner in helping customers across 120+ countries improve their grinding operations.
             </p>
           </article>
+          </div>
 
           <p className="gsq-foot">
             <span className="section-label">[Engineered in India. Connected worldwide.]</span>

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Inter_Tight, Plus_Jakarta_Sans, Instrument_Serif, Onest } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Instrument_Serif, Onest } from "next/font/google";
 import "./globals.css";
 import { ViewTransition } from "react";
 import { HomeOnlyGuard } from "@/components/navigation/HomeOnlyGuard";
@@ -22,15 +22,6 @@ const sans = Inter({
   style: ["normal", "italic"],
   display: "swap",
 });
-
-// Closest free match to the design's Neue Haas Grotesk Display (used where Haas isn't installed).
-const haasFallback = Inter_Tight({
-  variable: "--font-inter-tight",
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
 // Decorative faces used in single sections: not preloaded, so they never compete with LCP.
 const serif = Instrument_Serif({
   variable: "--font-instrument",
@@ -124,7 +115,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${display.variable} ${sans.variable} ${haasFallback.variable} ${serif.variable} ${onest.variable} h-full`}
+      className={`${display.variable} ${sans.variable} ${serif.variable} ${onest.variable} h-full`}
     >
       <body
         className="min-h-full bg-aia-surface text-aia-navy antialiased"
