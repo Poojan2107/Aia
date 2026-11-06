@@ -4,7 +4,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 /**
  * Leadership — Figma 01Homepage (node 685:7): two alternating rows.
  * AIA's Managing Director, then Vega's CEO, each with a cut-out portrait over
- * blue shards (which drift with the scroll), a brand mark, a heading, the
+ * static blue shards, a brand mark, a heading, the
  * quote and the attribution.
  */
 
@@ -27,7 +27,7 @@ const leaders: Leader[] = [
     heading: ["A vision that", "continues to guide us."],
     quote:
       "Customer Excellence is our philosophy. Our focus remains on improving productivity while reducing environmental impact. We promise to deliver value through ethical, sustainable, and profitable means.",
-    portrait: { src: "/images/design/leader-bhadresh-shah.webp", width: 323, height: 305 },
+    portrait: { src: "/images/ceo/bhadresh-shah.webp", width: 1100, height: 1380 },
     brand: { src: "/images/design/logo-aia-mark-blue.webp", alt: "AIA Engineering", width: 899, height: 764, className: "lead-brand-aia" },
     flip: false,
   },
@@ -38,7 +38,7 @@ const leaders: Leader[] = [
     heading: ["Delivering Excellence", "Across Borders."],
     quote:
       "At Vega Industries, we help customers worldwide maximise mill throughput, improve efficiency, and increase equipment uptime. Combining technical expertise with advanced manufacturing, we deliver tailored solutions and responsive local support that drive measurable value and long-term performance.",
-    portrait: { src: "/images/design/leader-sumit-mitra.webp", width: 353, height: 279 },
+    portrait: { src: "/images/ceo/sumit-mitra.webp", width: 1100, height: 1243 },
     brand: { src: "/images/design/logo-vega-color.webp", alt: "Vega Industries", width: 200, height: 145, className: "lead-brand-vega" },
     flip: true,
   },
@@ -49,9 +49,9 @@ function LeaderRow({ leader }: { leader: Leader }) {
   return (
     <ScrollReveal as="article" className={`lead-row ${leader.flip ? "is-flipped" : ""}`}>
       <div className="lead-plate" aria-hidden>
-        <span className="lead-shard-wrap" data-parallax="22"><span className="lead-shard lead-shard-a" /></span>
-        <span className="lead-shard-wrap" data-parallax="34"><span className="lead-shard lead-shard-b" /></span>
-        <span className="lead-shard-wrap" data-parallax="14"><span className="lead-shard lead-shard-c" /></span>
+        <span className="lead-shard lead-shard-a" />
+        <span className="lead-shard lead-shard-b" />
+        <span className="lead-shard lead-shard-c" />
         <div className="lead-portrait">
           <Image src={leader.portrait.src} alt="" width={leader.portrait.width} height={leader.portrait.height} sizes="(max-width: 1024px) 80vw, 34vw" />
         </div>
