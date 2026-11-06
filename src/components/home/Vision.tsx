@@ -36,7 +36,7 @@ const leaders: Leader[] = [
   {
     id: "vega",
     name: "MR. SUMIT MITRA",
-    role: "(CEO - VEGA INDUSTRY)",
+    role: "(CEO - VEGA INDUSTRIES)",
     heading: ["Delivering excellence", "across borders."],
     quote:
       "At Vega Industries, we help customers worldwide maximise mill throughput, improve efficiency, and increase equipment uptime. Combining technical expertise with advanced manufacturing, we deliver tailored solutions and responsive local support that drive measurable value and long-term performance.",
@@ -103,16 +103,16 @@ function LeaderRow({ leader }: { leader: Leader }) {
           height={leader.brand.height}
           className={`lead-brand ${leader.brand.className}`}
         />
-        <h2 id={headingId} className="lead-heading">
+        <h2 id={headingId} className="lead-heading ft ft-h62">
           {leader.heading[0]}
           <br />
           {leader.heading[1]}
         </h2>
         <blockquote className="lead-quote">
-          <p>{leader.quote}</p>
+          <p className="ft ft-quote28">{leader.quote}</p>
         </blockquote>
         <p
-          className="lead-name"
+          className="lead-name ft ft-name"
           style={{ color: leader.accentColor }}
         >
           <span
@@ -122,7 +122,7 @@ function LeaderRow({ leader }: { leader: Leader }) {
           />
           {leader.name}
         </p>
-        <p className="lead-role">{leader.role}</p>
+        <p className="lead-role ft ft-role">{leader.role}</p>
       </div>
     </ScrollReveal>
   );

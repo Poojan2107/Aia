@@ -1,21 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { services } from "@/data/content";
+import { href } from "@/lib/routes";
 
 const tabs = [
-  { id: "mining", label: "For Mining" },
-  { id: "cement", label: "For Cement" },
+  { id: "mining", label: "For Mining", cta: "Explore mining services", route: "mining-services" },
+  { id: "cement", label: "For Cement", cta: "Explore cement services", route: "cement-services" },
 ] as const;
 
 export function Services() {
   const [tab, setTab] = useState<(typeof tabs)[number]["id"]>("mining");
-  const filtered = useMemo(
-    () => services.filter((s) => s.audience === tab),
-    [tab],
-  );
+  const current = tabs.find((t) => t.id === tab) ?? tabs[0];
+  const filtered = services.filter((s) => s.audience === tab);
 
   return (
     <section
@@ -28,16 +27,16 @@ export function Services() {
           <SectionLabel className="services-label mb-7">
             Services & support
           </SectionLabel>
-          <h2 id="services-heading" className="services-heading">
+          <h2 id="services-heading" className="services-heading ft ft-h62">
             <span>We don&apos;t just supply.</span>
             <span>We help you perform.</span>
           </h2>
           <CtaButton
-            href="/contact"
+            href={href(current.route)}
             variant="solid"
             className="services-cta"
           >
-            Talk to an expert
+            {current.cta}
           </CtaButton>
         </div>
 
@@ -56,7 +55,7 @@ export function Services() {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setTab(item.id)}
-                  className={`services-tab${active ? " is-active" : ""}`}
+                  className={`services-tab ft ft-tab${active ? " is-active" : ""}`}
                 >
                   {item.label}
                 </button>
@@ -71,8 +70,8 @@ export function Services() {
                 className="services-row"
                 style={{ ["--i" as string]: i }}
               >
-                <h3 className="services-row-title">{service.title}</h3>
-                <p className="services-row-body">{service.description}</p>
+                <h3 className="services-row-title ft ft-title24">{service.title}</h3>
+                <p className="services-row-body ft ft-body24">{service.description}</p>
               </li>
             ))}
           </ul>

@@ -200,7 +200,7 @@ export const insights = [
 
 export const caseStudies = [
   {
-    title: "40ft SAG mill in latin america",
+    title: "40ft SAG mill in Latin America",
     meta: "Life improvement - Throughput Increase - Power Reduction",
     href: "/knowledge-hub/case-studies/40ft-sag-mill-in-latin-america",
     image: "/images/case-1.png",

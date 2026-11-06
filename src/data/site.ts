@@ -32,10 +32,11 @@ export const site = {
   },
 } as const;
 
+/** What We Solve KPI band (Figma 02Homepage). */
 export const stats = [
-  { value: "+32 %", label: "Longer Wear Life*" },
-  { value: "-24 %", label: "Unplanned Downtime*" },
-  { value: "+5 X", label: "Improved Throughput*" },
+  { value: "6", label: "Manufacturing Clusters" },
+  { value: "4,00,000+", label: "Sq. Mt. of manufacturing space" },
+  { value: "4,50,000", label: "MT. of Production Capacity" },
 ] as const;
 
 export const footprint = [

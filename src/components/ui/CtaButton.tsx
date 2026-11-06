@@ -57,7 +57,7 @@ export function CtaButton({
         />
       ) : null}
       <span
-        className={`hero-cta-label transition-colors duration-300 ${
+        className={`hero-cta-label ft ft-cta transition-colors duration-300 ${
           isFilled
             ? "text-white"
             : isOutlineLight

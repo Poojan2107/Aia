@@ -25,7 +25,7 @@ type Industry = {
 };
 
 const industries: Industry[] = [
-  { id: "mining", index: "01", name: "Mining", lead: ["Wear solutions", "engineered for critical-", "grinding applications."], cta: "Explore mining", route: "mining", photo: "/images/design/ind-mining.jpg", alt: "Excavator loading a haul truck at a mine" },
+  { id: "mining", index: "01", name: "Mining", lead: ["Wear solutions", "engineered for critical-", "grinding applications."], cta: "Explore mining", route: "mining", photo: "/images/design/ind-mining-figma.jpg", alt: "Grinding mill and conveyor at a mineral processing plant" },
   { id: "cement", index: "02", name: "Cement", lead: ["Wear solutions", "for demanding", "grinding applications."], cta: "Explore cement", route: "cement", photo: "/images/design/ind-cement.jpg", alt: "Cement plant with preheater tower" },
   { id: "quarry", index: "03", name: "Quarry", lead: ["Wear protection", "for crushing", "applications."], cta: "Explore quarry", route: "quarry-products", photo: "/images/design/ind-quarry.jpg", alt: "Mobile crusher and conveyor at a quarry" },
   { id: "thermal", index: "04", name: "Thermal", lead: ["Wear solutions for", "demanding coal", "grinding applications."], cta: "Explore thermal", route: "thermal-power", photo: "/images/design/ind-thermal.jpg", alt: "Thermal power station with cooling towers" },
@@ -102,7 +102,7 @@ export function IndustryPanels() {
     <section id="solutions" aria-labelledby="industries-heading" className="inds">
       <div className="inds-intro">
         <SectionLabel className="inds-intro-label">Solutions by industry</SectionLabel>
-        <h2 id="industries-heading" className="inds-intro-heading">
+        <h2 id="industries-heading" className="inds-intro-heading ft ft-h62">
           Explore solutions for Mining, Cement, Quarry and Thermal Power applications.
         </h2>
       </div>
@@ -133,7 +133,7 @@ export function IndustryPanels() {
 
           <div className="inds-content">
             <div className="inds-index-row">
-              <span className="inds-index-window" aria-hidden>
+              <span className="inds-index-window ft ft-index32" aria-hidden>
                 {industries.map((ind, i) => (
                   <span key={ind.id} className={`inds-swap ${i === active ? "is-on" : i < active ? "is-past" : ""}`}>
                     {ind.index}
@@ -143,9 +143,9 @@ export function IndustryPanels() {
             </div>
             <span aria-hidden className="inds-rule" />
             <div className="inds-row">
-              <h3 className="inds-title-window" aria-live="polite">
+              <h3 className="inds-title-window ft ft-h100" aria-live="polite">
                 {industries.map((ind, i) => (
-                  <span key={ind.id} className={`inds-title inds-swap ${i === active ? "is-on" : i < active ? "is-past" : ""}`} aria-hidden={i !== active}>
+                  <span key={ind.id} className={`inds-title ft ft-h100 inds-swap ${i === active ? "is-on" : i < active ? "is-past" : ""}`} aria-hidden={i !== active}>
                     {ind.name}
                   </span>
                 ))}
@@ -153,7 +153,7 @@ export function IndustryPanels() {
               <div className="inds-side">
                 <div className="inds-lead-window">
                   {industries.map((ind, i) => (
-                    <p key={ind.id} className={`inds-lead inds-fade ${i === active ? "is-on" : ""}`} aria-hidden={i !== active}>
+                    <p key={ind.id} className={`inds-lead ft ft-lead40 inds-fade ${i === active ? "is-on" : ""}`} aria-hidden={i !== active}>
                       {ind.lead.map((line) => (
                         <span key={line}>{line}</span>
                       ))}
@@ -162,7 +162,7 @@ export function IndustryPanels() {
                 </div>
                 <Link href={href(current.route)} className="inds-cta" data-magnetic="">
                   <span aria-hidden className="inds-cta-dot" />
-                  <span key={current.id} className="inds-cta-label">
+                  <span key={current.id} className="inds-cta-label ft ft-cta">
                     {current.cta}
                   </span>
                 </Link>

@@ -71,10 +71,10 @@ export function CaseStudies() {
         <Reveal>
           <h2
             id="cases-heading"
-            className="display max-w-[828px] text-[clamp(1.55rem,2.6vw,2.75rem)] !font-bold leading-[1.05] text-aia-navy lg:text-[2.75rem] lg:leading-[2.9rem]"
+            className="display ft ft-h62t text-aia-navy"
           >
-            <span className="block">When the challenge is real,</span>
-            <span className="block">performance has to be proven.</span>
+            <span className="block lg:whitespace-nowrap">When the challenge is real,</span>
+            <span className="block lg:whitespace-nowrap">performance has to be proven.</span>
           </h2>
         </Reveal>
         <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">
@@ -83,7 +83,7 @@ export function CaseStudies() {
             variant="solid"
             className="!h-9 !gap-2 !px-5 !text-[11px] !leading-none [&>span:first-child]:!size-1.5"
           >
-            View case study
+            Explore case study
           </CtaButton>
           <div className="flex gap-2.5">
             <NavArrow
@@ -150,17 +150,17 @@ function CaseCard({
           sizes="(max-width: 1024px) 100vw, 532px"
           className="object-cover transition duration-500 group-hover:scale-[1.03] group-hover:blur-[2px]"
         />
-        <span className="cases-more absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-[0.78rem] uppercase tracking-[0.16em] text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
-          Know More
+        <span className="cases-more absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
+          <span className="ft ft-read22 underline underline-offset-4">Read Case Study</span>
           <span className="flex size-8 items-center justify-center rounded-full bg-aia-accent text-base text-white">
             →
           </span>
         </span>
       </div>
-      <h3 className="mb-2 text-[1.2rem] font-semibold leading-snug text-aia-navy sm:text-[1.35rem]">
+      <h3 className="ft ft-h30 mb-2 text-aia-navy">
         {item.title}
       </h3>
-      <p className="text-sm text-aia-muted sm:text-[0.98rem]">{item.meta}</p>
+      <p className="ft ft-meta22 text-aia-muted">{item.meta}</p>
     </a>
   );
 }

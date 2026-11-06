@@ -7,10 +7,17 @@ import { media } from "@/data/media";
 /** Hero plate from Figma "AIA Signature Blue" / 01Homepage (mill hall still). */
 const HERO_PLATE = "/images/design/hero-mill-hall.jpg";
 
+/** Banner slots for the Figma pager; the banners themselves are added later. */
+const BANNER_COUNT = 4;
+
+/** Dun & Bradstreet ESG Registered seal (Figma 02Homepage, bottom-right of the hero). */
+const ESG_BADGE = "/images/design/esg-dnb-badge.png";
+
 /** Full-viewport plate + ambient film + Figma Present lockup (90/95 type, 134px inset). */
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
+  const [banner, setBanner] = useState(0);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -70,14 +77,14 @@ export function Hero() {
 
       <div className="hero-copy z-10" data-hero-lock="figma-1920">
         <div className="hero-lockup">
-          <h1 className="hero-enter hero-headline">
+          <h1 className="hero-enter hero-headline ft ft-hero">
             <span>WE ENGINEER FOR</span>
             <span>THE HOURS YOU</span>
             <span>CAN&apos;T AFFORD TO LOSE.</span>
           </h1>
 
           <div className="hero-enter-late hero-rail">
-            <p className="hero-lede">
+            <p className="hero-lede ft ft-lede">
               <span>Advanced wear solutions engineered to extend component</span>
               <span>life, improve equipment availability and keep critical</span>
               <span>operations performing.</span>
@@ -87,11 +94,36 @@ export function Hero() {
               variant="solid"
               className="hero-cta !h-[40px] !px-[1.4rem] !text-[11px] !gap-2"
             >
-              Explore wear solutions
+              Explore solutions by industry
             </CtaButton>
           </div>
         </div>
       </div>
+
+      {/* Figma vertical pager; each dot will select a banner once they are in. */}
+      <div className="hero-pager z-10" role="group" aria-label="Hero banners">
+        {Array.from({ length: BANNER_COUNT }, (_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`hero-pager-dot${i === banner ? " is-active" : ""}`}
+            aria-label={`Show banner ${i + 1} of ${BANNER_COUNT}`}
+            aria-current={i === banner ? "true" : undefined}
+            onClick={() => setBanner(i)}
+          >
+            <span aria-hidden />
+          </button>
+        ))}
+      </div>
+
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={ESG_BADGE}
+        alt="Dun & Bradstreet ESG Registered"
+        width={375}
+        height={322}
+        className="hero-esg"
+      />
     </section>
   );
 }

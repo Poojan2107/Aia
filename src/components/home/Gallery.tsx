@@ -111,11 +111,11 @@ export function Gallery() {
     >
       <Reveal from="right" className="page-pad mb-12 text-center sm:mb-16">
         <SectionLabel className="gallery-label mb-6">Gallery</SectionLabel>
-        <h2 id="gallery-heading" className="gallery-heading">
+        <h2 id="gallery-heading" className="gallery-heading ft ft-h72">
           <span>See what better</span>
           <span>performance looks like.</span>
         </h2>
-        <p className="gallery-support">
+        <p className="gallery-support ft ft-copy18">
           <span>
             Explore AIA solutions, applications and engineering through videos that
             show
@@ -195,9 +195,9 @@ export function Gallery() {
                 </MediaSlot>
               </div>
               {featured ? (
-                <p className="caption-in mt-4 flex items-center justify-center gap-2.5 text-[0.95rem] text-aia-navy/70">
+                <p className="caption-in mt-4 flex items-center justify-center gap-2.5 text-aia-navy/70">
                   <YouTubeMark />
-                  {card.title}
+                  <span className="ft ft-film24">{card.title}</span>
                 </p>
               ) : null}
             </figure>

@@ -17,7 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * About band. The film starts large and centred. Scroll zooms it until it
  * fills the screen, while "About" and "AIA Engineering" meet in the centre.
- * The description and Discover AIA stay visible.
+ * The description and About AIA Engineering stay visible.
  */
 export function AboutBand() {
   const reduced = useReducedMotion();
@@ -110,22 +110,22 @@ export function AboutBand() {
               <div aria-hidden className="about2-scrim" />
             </div>
             <h2 id="about-heading" ref={titleRef} className="about2-title" data-no-split="">
-              <span ref={leftRef} className="about2-word about2-word-left">About</span>
-              <span ref={rightRef} className="about2-word about2-word-right">AIA Engineering</span>
+              <span ref={leftRef} className="about2-word about2-word-left ft ft-h72x">About</span>
+              <span ref={rightRef} className="about2-word about2-word-right ft ft-h72x">AIA Engineering</span>
             </h2>
           </div>
-          <p ref={copyRef} className="about2-copy">
+          <p ref={copyRef} className="about2-copy ft ft-copy18">
             Across mining, cement, quarry and thermal power, we design and manufacture wear solutions for grinding and other demanding applications. Our expertise in metallurgy, engineering and manufacturing helps extend component life, improve equipment reliability and support better operating performance.
           </p>
           <Link ref={ctaRef} href={href("about")} className="about2-cta">
             <span aria-hidden className="about2-cta-dot" />
-            Discover AIA
+            <span className="ft ft-cta">About AIA Engineering</span>
           </Link>
         </div>
       </div>
 
       <div className="about-footprint-band">
-        <div className="page-pad page-max">
+        <div className="w-full">
           <div className="about-footprint">
             {footprint.map((item, i) => (
               <Reveal
@@ -133,10 +133,10 @@ export function AboutBand() {
                 delay={i * 70}
                 className="about-footprint-item"
               >
-                <p className="about-footprint-value">
+                <p className="about-footprint-value ft ft-stat">
                   <CountUp value={item.value} duration={1500} />
                 </p>
-                <p className="about-footprint-label">{item.label}</p>
+                <p className="about-footprint-label ft ft-label32">{item.label}</p>
               </Reveal>
             ))}
           </div>

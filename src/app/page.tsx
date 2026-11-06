@@ -9,7 +9,6 @@ import { Materials } from "@/components/home/Materials";
 import { Services } from "@/components/home/Services";
 import { Technology } from "@/components/home/Technology";
 import { AboutBand } from "@/components/home/AboutBand";
-import { GlobalMap } from "@/components/home/GlobalMap";
 import { Vision } from "@/components/home/Vision";
 import { Gallery } from "@/components/home/Gallery";
 import { CaseStudies } from "@/components/home/CaseStudies";
@@ -37,7 +36,6 @@ export default function HomePage() {
         <Services />
         <Technology />
         <AboutBand />
-        <GlobalMap />
         <Vision />
         <Gallery />
         <CaseStudies />

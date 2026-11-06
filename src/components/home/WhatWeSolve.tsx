@@ -26,7 +26,7 @@ const SOLVE_BODY_LINES = [
 function SolveAside() {
   return (
     <div className="solve-aside">
-      <p className="solve-body">
+      <p className="solve-body ft ft-body28">
         {SOLVE_BODY_LINES.map((line) => (
           <span key={line}>{line}</span>
         ))}
@@ -163,10 +163,9 @@ export function WhatWeSolve() {
         <div className="solve-plate">
           <SectionLabel className="solve-label">What we solve</SectionLabel>
           <div className="solve-main">
-            <h2 id="what-we-solve-heading" className="solve-heading">
-              <span>For over four decades,</span>
-              <span>AIA been engineering longer life into</span>
-              <span>the parts that keep industry moving.</span>
+            <h2 id="what-we-solve-heading" className="solve-heading ft ft-h56">
+              For over four decades, AIA has been engineering longer life into
+              the parts that keep industry moving.
             </h2>
           </div>
           <SolveAside />
@@ -208,10 +207,9 @@ export function WhatWeSolve() {
           <div ref={plateRef} className="solve-plate solve-pin relative z-[2]">
             <SectionLabel className="solve-label">What we solve</SectionLabel>
             <div className="solve-main">
-              <h2 id="what-we-solve-heading" className="solve-heading">
-                <span>For over four decades,</span>
-                <span>AIA been engineering longer life into</span>
-                <span>the parts that keep industry moving.</span>
+              <h2 id="what-we-solve-heading" className="solve-heading ft ft-h56">
+                For over four decades, AIA has been engineering longer life
+                into the parts that keep industry moving.
               </h2>
             </div>
             <SolveAside />
@@ -265,12 +263,12 @@ function KpiOverlay({ play }: { play: boolean }) {
         <div className={`kpi-lockup ${play ? "is-in" : ""}`}>
           <div className="kpi-rule" />
           <div className="kpi-row">
-            <p className="kpi-brand">AIA Engineering</p>
+            <p className="kpi-brand ft ft-h40">AIA Engineering</p>
             <div className="kpi-metrics">
               {stats.map((stat, i) => (
                 <div key={stat.label} className="kpi-stat">
                   <div className="kpi-value-block">
-                    <p className="kpi-value">
+                    <p className="kpi-value ft ft-kpi">
                       <CountUp
                         value={stat.value}
                         duration={1600}
@@ -280,7 +278,7 @@ function KpiOverlay({ play }: { play: boolean }) {
                     </p>
                     <span className="kpi-stat-rule" aria-hidden />
                   </div>
-                  <p className="kpi-caption">{stat.label}</p>
+                  <p className="kpi-caption ft ft-kpicap">{stat.label}</p>
                 </div>
               ))}
             </div>

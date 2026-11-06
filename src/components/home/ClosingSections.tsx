@@ -6,6 +6,7 @@ import { CtaButton } from "@/components/ui/CtaButton";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { faqs, insights } from "@/data/content";
 import { CountUp } from "@/components/ui/CountUp";
+import { href } from "@/lib/routes";
 
 export function Sustainability() {
   return (
@@ -30,18 +31,18 @@ export function Sustainability() {
         />
 
         <div className="page-pad page-max relative z-10 flex min-h-[100svh] items-center py-16 sm:py-20 lg:absolute lg:inset-0 lg:min-h-0 lg:py-0">
-          <div className="w-full max-w-[36rem] xl:max-w-[38rem]">
+          <div className="w-full max-w-[min(100%,52rem)]">
             <h2
               id="sustain-heading"
-              className="display mb-6 text-[clamp(2rem,4vw,3.5rem)] !font-semibold leading-[1.05] lg:mb-7 lg:text-[3.5rem]"
+              className="display ft ft-h72 mb-6 lg:mb-7"
             >
               <span className="block lg:whitespace-nowrap">Can heavy industry</span>
               <span className="block lg:whitespace-nowrap">think lighter?</span>
             </h2>
 
-            <div className="max-w-[36rem] text-[1.05rem] font-light leading-[1.55] text-white sm:text-[1.2rem] sm:leading-[1.5] lg:text-[1.35rem] lg:leading-[1.48]">
+            <div className="ft ft-body28 text-white">
               <p className="mb-0">
-                YES, We believe it can. By using resources more efficiently,
+                Yes, we believe it can. By using resources more efficiently,
                 <br className="hidden lg:block" />
                 reducing waste and embracing reuse and recycling,
               </p>
@@ -55,21 +56,22 @@ export function Sustainability() {
             </div>
 
             <div className="my-8 border-y border-white/[0.08] py-7 sm:my-9 sm:py-8">
-              <div className="grid max-w-[32rem] grid-cols-2 gap-6 sm:gap-10">
+              <div className="grid max-w-[min(100%,48rem)] grid-cols-2 gap-6 sm:gap-10 lg:grid-cols-[auto_auto] lg:justify-start lg:gap-x-[clamp(2.5rem,7vw,8.5rem)]">
                 <div>
-                  <p className="display text-[clamp(1.85rem,3.5vw,2.6rem)] !font-bold leading-none tracking-tight">
+                  <p className="display ft ft-stat">
                     <CountUp value="1,00,000+" duration={1600} delay={0} />
                   </p>
-                  <p className="mt-2.5 text-[0.95rem] leading-snug text-white/85 sm:text-[1.15rem] lg:whitespace-nowrap">
+                  <p className="ft ft-statcap mt-2.5 text-white/85 lg:whitespace-nowrap">
                     Tree plantation during the year
                   </p>
                 </div>
                 <div>
-                  <p className="display text-[clamp(1.85rem,3.5vw,2.6rem)] !font-bold leading-none tracking-tight">
+                  <p className="display ft ft-stat">
                     <CountUp value="30%" duration={1400} delay={90} />
                   </p>
-                  <p className="mt-2.5 max-w-[16rem] text-[1.05rem] leading-snug text-white/85 sm:text-[1.15rem]">
-                    Energy comes from the renewable energy resources
+                  <p className="ft ft-statcap mt-2.5 text-white/85">
+                    <span className="lg:whitespace-nowrap">Energy comes from the</span>{" "}
+                    <span className="lg:block lg:whitespace-nowrap">renewable energy resources</span>
                   </p>
                 </div>
               </div>
@@ -88,7 +90,7 @@ export function Sustainability() {
                 variant="outline-light"
                 className="!h-9 w-full justify-center !gap-2 !border-white/90 !px-4 !text-[10px] !leading-none sm:w-auto [&>span:first-child]:!size-1"
               >
-                Social responsibility
+                Explore our CSR initiatives
               </CtaButton>
             </div>
           </div>
@@ -108,25 +110,34 @@ export function Faq() {
     >
       <div className="faq-grid grid border-y border-[#d6d6d6] lg:h-[550px] lg:grid-cols-2 lg:items-stretch">
         <div className="faq-left flex flex-col justify-center py-14 sm:py-16 lg:border-r lg:border-[#d6d6d6] lg:py-0">
-          <SectionLabel className="mb-4 !text-[13px] !leading-5 !font-medium">
-            Frequently Asked Question
+          <SectionLabel className="mb-4">
+            Frequently Asked Questions
           </SectionLabel>
           <h2
             id="faq-heading"
-            className="display mb-6 text-[clamp(1.5rem,3.2vw,2.5rem)] !font-bold leading-[1.1] tracking-[-0.01em] text-aia-navy lg:mb-7 lg:text-[2.5rem]"
+            className="display ft ft-h62t mb-6 text-aia-navy lg:mb-7"
           >
             <span className="lg:block lg:whitespace-nowrap">Here are the essentials </span>
             <span className="lg:block lg:whitespace-nowrap">about AIA, what we make, </span>
             <span className="lg:block lg:whitespace-nowrap">and how our solutions </span>
             <span className="lg:block lg:whitespace-nowrap">support your operations.</span>
           </h2>
-          <CtaButton
-            href="/contact"
-            variant="solid"
-            className="!h-[38px] w-fit !gap-1.5 !px-[18px] !text-[9px] !leading-none self-start [&>span:first-child]:!size-1.5"
-          >
-            Ask an expert
-          </CtaButton>
+          <div className="flex flex-wrap items-center gap-2.5 self-start">
+            <CtaButton
+              href="/contact"
+              variant="solid"
+              className="!h-[38px] w-fit !gap-1.5 !px-[18px] !text-[9px] !leading-none [&>span:first-child]:!size-1.5"
+            >
+              Ask an expert
+            </CtaButton>
+            <CtaButton
+              href={href("faqs")}
+              variant="outline"
+              className="!h-[38px] w-fit !gap-1.5 !px-[18px] !text-[9px] !leading-none [&>span:first-child]:!size-1.5"
+            >
+              View all FAQs
+            </CtaButton>
+          </div>
         </div>
 
         <div className="faq-right flex min-h-0 min-w-0 flex-col divide-y divide-[#d6d6d6] max-lg:border-t max-lg:border-[#d6d6d6] lg:h-full">
@@ -146,10 +157,10 @@ export function Faq() {
                   onClick={() => setOpen(isOpen ? -1 : index)}
                 >
                   <span
-                    className={`min-w-0 flex-1 text-[1.1rem] leading-[1.4] sm:text-[1.1875rem] ${
+                    className={`ft min-w-0 flex-1 ${
                       isOpen
-                        ? "font-medium text-aia-accent"
-                        : "font-normal text-[#111]"
+                        ? "ft-title24b text-aia-accent"
+                        : "ft-title24 text-[#090909]"
                     }`}
                   >
                     {item.question}
@@ -186,7 +197,7 @@ export function Faq() {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-7 pb-6 text-[0.875rem] font-normal leading-[1.55] text-[#5a5d63] sm:px-8 sm:pb-7 sm:text-[0.9375rem] sm:leading-[1.6] lg:pr-10">
+                    <p className="ft ft-faqa px-7 pb-6 text-[#242424] sm:px-8 sm:pb-7 lg:pr-10">
                       {item.answer}
                     </p>
                   </div>
@@ -217,20 +228,21 @@ export function Insights() {
       <div className="page-max">
         <h2
           id="insights-heading"
-          className="display text-center text-[clamp(1.65rem,2.8vw,3rem)] !font-bold leading-[1] text-aia-navy lg:text-[3rem] lg:leading-[3rem]"
+          className="display ft ft-h62t text-center text-aia-navy"
         >
           Ideas & Insights from AIA
         </h2>
 
         <div className="mt-8 sm:mt-10">
-          <div className="-mx-1 overflow-x-auto overscroll-x-contain">
+          <div className="flex flex-col-reverse items-start gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+          <div className="-mx-1 min-w-0 max-w-full overflow-x-auto overflow-y-hidden overscroll-x-contain sm:flex-1">
             <div className="flex min-w-min gap-8 border-b border-[#ececec] px-1 sm:gap-10">
               {tabs.map((item) => (
                 <button
                   key={item}
                   type="button"
                   onClick={() => setTab(item)}
-                  className={`-mb-px shrink-0 border-b-2 pb-3 text-sm transition-colors sm:text-[15px] ${
+                  className={`ft ft-tabr -mb-px shrink-0 border-b-2 pb-3 transition-colors ${
                     item === tab
                       ? "border-aia-accent text-aia-accent"
                       : "border-transparent text-aia-navy"
@@ -240,6 +252,14 @@ export function Insights() {
                 </button>
               ))}
             </div>
+          </div>
+          <CtaButton
+            href={href("news-insights")}
+            variant="outline"
+            className="!h-[38px] w-fit shrink-0 !gap-1.5 !px-[18px] !text-[9px] !leading-none sm:mb-2 [&>span:first-child]:!size-1.5"
+          >
+            Explore news &amp; insights
+          </CtaButton>
           </div>
 
           <div
@@ -257,19 +277,19 @@ export function Insights() {
                   className="group grid items-start gap-6 px-4 py-12 sm:gap-8 sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)_auto] lg:items-center lg:gap-10 lg:px-8 lg:py-16"
                   style={{ ["--i" as string]: i }}
                 >
-                  <div className="order-2 flex max-w-[22rem] flex-col items-start lg:order-1 xl:max-w-[24rem]">
+                  <div className="order-2 flex max-w-[36rem] flex-col items-start lg:order-1 lg:max-w-[calc(560/1920*100vw)]">
                     <time
                       dateTime={item.date}
-                      className="-mt-6 mb-[30px] block font-[family-name:var(--font-sinteca)] text-[13px] font-normal leading-[22px] tracking-normal text-[#888888]"
+                      className="ft ft-date18 -mt-6 mb-[30px] block text-[#999999]"
                     >
                       {item.date}
                     </time>
-                    <h3 className="display mb-0 line-clamp-3 text-[clamp(1.35rem,2.4vw,2rem)] !font-bold leading-[1.2] tracking-[-0.01em] text-aia-navy">
+                    <h3 className="display ft ft-h40 mb-0 line-clamp-3 text-[#0E1D35]">
                       {item.title}
                     </h3>
                     <a
                       href={item.href}
-                      className="ui-caps mt-14 inline-flex items-center gap-1.5 !text-[10px] !font-normal !leading-none text-aia-accent hover:opacity-80 sm:mt-16"
+                      className="ui-caps ft ft-read14 mt-14 inline-flex items-center gap-1.5 text-aia-accent hover:opacity-80 sm:mt-16"
                     >
                       Read article <span aria-hidden>›</span>
                     </a>

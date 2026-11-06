@@ -54,13 +54,13 @@ export function Technology() {
       <Reveal className="tech2-intro">
         <div>
           <SectionLabel className="tech2-label">Technology and R&D</SectionLabel>
-          <h2 id="tech-heading" className="tech2-heading">
+          <h2 id="tech-heading" className="tech2-heading ft ft-h62">
             <span>Engineered for</span>
             <span className="text-aia-accent">what wear demands.</span>
           </h2>
         </div>
         <div className="tech2-copy">
-          <p className="tech2-body">
+          <p className="tech2-body ft ft-body28">
             Every operating environment creates a different wear challenge. AIA combines application knowledge, metallurgy and research to develop materials and wear solutions around the conditions they are expected to face.
           </p>
           <CtaButton href={href("technology-infrastructure")} variant="solid" className="tech2-cta">
@@ -86,9 +86,12 @@ export function Technology() {
               />
             </div>
             <div className="tech2-text">
-              <p className="tech2-kicker">{cap.kicker}</p>
-              <h3 className="tech2-title">{cap.title}</h3>
-              <p className="tech2-row-body">{cap.body}</p>
+              <p className="tech2-kicker">
+                <span className="ft ft-num18">{cap.kicker.split("/")[0]} /</span>{" "}
+                <span className="ft ft-kicker18">{cap.kicker.split("/").slice(1).join("/")}</span>
+              </p>
+              <h3 className="tech2-title ft ft-h32">{cap.title}</h3>
+              <p className="tech2-row-body ft ft-body24">{cap.body}</p>
             </div>
           </ScrollReveal>
         ))}

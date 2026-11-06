@@ -11,7 +11,7 @@ export function SectionLabel({
   brackets = true,
 }: Props) {
   return (
-    <p className={`section-label ${className}`}>
+    <p className={`section-label ft ft-label ${className}`}>
       {brackets ? <>[{children}]</> : children}
     </p>
   );

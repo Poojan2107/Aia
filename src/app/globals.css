@@ -241,8 +241,76 @@ video.film-cover {
   width: 100%;
   height: 100svh;
   min-height: 100svh;
-  /* Contain film-drift scale + absolute copy so they cannot widen the page */
-  overflow: hidden;
+  /* Contain film-drift scale + absolute copy so they cannot widen the page.
+     The film layer clips itself; y stays visible so the ESG seal can sit
+     across the bottom edge as in Figma. */
+  overflow-x: clip;
+  overflow-y: visible;
+  z-index: 2;
+}
+
+/* Figma vertical banner pager: right edge, just above centre. */
+.hero-pager {
+  position: absolute;
+  top: 46%;
+  right: clamp(0.75rem, 5.2vw, 6.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  transform: translateY(-50%);
+}
+
+.hero-pager-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.hero-pager-dot > span {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.72);
+  transition: background-color 0.3s ease;
+}
+
+.hero-pager-dot:hover > span,
+.hero-pager-dot.is-active > span {
+  background: #ffffff;
+}
+
+.hero-pager-dot.is-active {
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-pager-dot:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Dun & Bradstreet ESG seal: bottom-right, straddling into the next section. */
+.hero-esg {
+  position: absolute;
+  right: clamp(0.75rem, 2.2vw, 2.75rem);
+  bottom: calc(clamp(64px, 7.5vw, 144px) * -0.36);
+  z-index: 20;
+  width: clamp(64px, 7.5vw, 144px);
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 1023px) {
+  .hero-pager {
+    top: 38%;
+  }
 }
 
 /*
@@ -2530,6 +2598,26 @@ button.solve-cta > span:last-child {
   padding-top: clamp(0.9rem, 1.6vh, 1.25rem);
 }
 
+/* Figma 1920: brand at x134, metrics span x658 → x1786 */
+@media (min-width: 1024px) {
+  .kpi-row {
+    grid-template-columns: calc(524 / 1920 * 100vw) minmax(0, 1fr);
+    column-gap: 0;
+  }
+  .kpi-row .kpi-metrics {
+    justify-content: space-between;
+    justify-self: stretch;
+    gap: clamp(1.5rem, 2.4vw, 46px);
+  }
+}
+/* Narrow desktops: the Figma column offset no longer fits, so the brand sizes to its text. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .kpi-row {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 2rem;
+  }
+}
+
 .kpi-brand {
   margin: 0;
   padding-top: 0.35em;
@@ -2556,9 +2644,9 @@ button.solve-cta > span:last-child {
 .kpi-stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   width: max-content;
-  text-align: center;
+  text-align: left;
   opacity: 0;
   transform: translate3d(0, 0.85rem, 0);
 }
@@ -2597,7 +2685,7 @@ button.solve-cta > span:last-child {
   line-height: 1;
   letter-spacing: -0.01em;
   color: #fff;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
 }
 
@@ -2610,7 +2698,7 @@ button.solve-cta > span:last-child {
   margin: 0.5rem 0 0.6rem;
   background: rgba(255, 255, 255, 0.12);
   transform: scaleX(0);
-  transform-origin: center center;
+  transform-origin: left center;
 }
 
 .kpi-lockup.is-in .kpi-stat-rule {
@@ -2627,7 +2715,7 @@ button.solve-cta > span:last-child {
   line-height: 1.3;
   letter-spacing: 0;
   color: #fff;
-  text-align: center;
+  text-align: left;
   white-space: nowrap;
 }
 
@@ -4383,7 +4471,8 @@ button.solve-cta > span:last-child {
 .inds-title-window {
   position: relative;
   display: block;
-  height: 1.16em;
+  /* Figma title box: 100/150 */
+  height: 1.5em;
   min-width: min(100%, 7ch);
   flex: 1 1 auto;
   overflow: hidden;
@@ -4405,7 +4494,8 @@ button.solve-cta > span:last-child {
 }
 .inds-swap.is-past { transform: translateY(-105%); }
 .inds-swap.is-on { transform: none; opacity: 1; transition-delay: 80ms; }
-.inds-side { width: min(100%, 354px); }
+.inds-side { width: max-content; max-width: 100%; }
+@media (min-width: 1024px) { .inds-lead span { white-space: nowrap; } }
 .inds-lead-window { display: grid; }
 .inds-lead {
   grid-area: 1 / 1;
@@ -5571,6 +5661,12 @@ html.lenis body { height: auto; }
   max-width: 38rem;
 }
 
+/* Figma 1920: copy column x974 → x1786 (812px); heading keeps its two lines */
+@media (min-width: 1024px) {
+  .lead-copy { max-width: min(100%, calc(812 / 1920 * 100vw)); }
+  .lead-heading { white-space: nowrap; }
+}
+
 .lead-quote-mark {
   position: absolute;
   right: 0;
@@ -5843,3 +5939,68 @@ html.lenis body { height: auto; }
 a[data-home-only="disabled"] {
   cursor: default;
 }
+
+/* ==========================================================================
+ Figma type system: "02Homepage - FINAL EDITION" (771:2487), docs/figma-typography.json.
+ Every value is exact at a 1920px viewport and scales with the viewport below it
+ (never under the per-size floor). Line height is the Figma ratio, tracking in em.
+ :not(#ft) lifts specificity to id level so these beat the older per-section
+ rules without !important. Never put Tailwind "!" type utilities on .ft elements.
+ ========================================================================== */
+.ft:not(#ft) {
+  font-family: var(--ft-family);
+  font-weight: var(--ft-weight);
+  font-style: normal;
+  font-size: clamp(calc(var(--ft-size) * var(--ft-floor) * 1px), calc(var(--ft-size) * 100vw / 1920), calc(var(--ft-size) * 1px));
+  line-height: calc(var(--ft-lh) / var(--ft-size));
+  letter-spacing: var(--ft-ls);
+  font-synthesis: none;
+}
+
+.ft-hero { --ft-family: var(--font-haas); --ft-weight: 700; --ft-size: 90; --ft-lh: 95; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h56 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 56; --ft-lh: 60; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h62 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 62; --ft-lh: 65; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h62t { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 62; --ft-lh: 62; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h72 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 72; --ft-lh: 72; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h72x { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 72; --ft-lh: 82; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h100 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 100; --ft-lh: 150; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h48 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 48; --ft-lh: 58; --ft-ls: 0em; --ft-floor: 0.5; }
+.ft-h40 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 40; --ft-lh: 40; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-h32 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 32; --ft-lh: 42; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-h32t { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 32; --ft-lh: 32; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-h30 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 30; --ft-lh: 30; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-h28 { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 28; --ft-lh: 28; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-kpi { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 80; --ft-lh: 84.52; --ft-ls: -0.01em; --ft-floor: 0.5; }
+.ft-stat { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 64; --ft-lh: 74; --ft-ls: -0.01em; --ft-floor: 0.5; }
+.ft-lead40 { --ft-family: var(--font-haas); --ft-weight: 500; --ft-size: 40; --ft-lh: 40; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-title24 { --ft-family: var(--font-haas); --ft-weight: 500; --ft-size: 24; --ft-lh: 26; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-title24b { --ft-family: var(--font-haas); --ft-weight: 600; --ft-size: 24; --ft-lh: 26; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-contact22 { --ft-family: var(--font-haas); --ft-weight: 500; --ft-size: 22; --ft-lh: 26; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-body28 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 28; --ft-lh: 38; --ft-ls: 0.0144em; --ft-floor: 0.6; }
+.ft-quote28 { --ft-family: var(--font-haas); --ft-weight: 300; --ft-size: 28; --ft-lh: 38; --ft-ls: 0.0144em; --ft-floor: 0.6; }
+.ft-body24 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 24; --ft-lh: 34; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-film24 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 24; --ft-lh: 34; --ft-ls: 0.01em; --ft-floor: 0.72; }
+.ft-body22 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 22; --ft-lh: 32; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-link22 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 22; --ft-lh: 24; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-addr22 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 22; --ft-lh: 26; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-legal22 { --ft-family: var(--font-haas); --ft-weight: 300; --ft-size: 22; --ft-lh: 24; --ft-ls: 0.0144em; --ft-floor: 0.72; }
+.ft-meta22 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 22; --ft-lh: 22; --ft-ls: 0em; --ft-floor: 0.72; }
+.ft-label32 { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 32; --ft-lh: 32; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-faqa { --ft-family: var(--font-haas); --ft-weight: 400; --ft-size: 18; --ft-lh: 28; --ft-ls: 0.0144em; --ft-floor: 0.86; }
+.ft-label { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 18; --ft-lh: 28; --ft-ls: 0.08em; --ft-floor: 0.86; }
+.ft-kicker20 { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 20; --ft-lh: 24; --ft-ls: 0.08em; --ft-floor: 0.72; }
+.ft-num18 { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 18; --ft-lh: 42; --ft-ls: 0em; --ft-floor: 0.86; }
+.ft-kicker18 { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 18; --ft-lh: 18; --ft-ls: 0.08em; --ft-floor: 0.86; }
+.ft-name { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 18; --ft-lh: 28; --ft-ls: 0.08em; --ft-floor: 0.86; }
+.ft-role { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 14; --ft-lh: 28; --ft-ls: 0.08em; --ft-floor: 0.86; }
+.ft-tab { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 20; --ft-lh: 30; --ft-ls: 0em; --ft-floor: 0.72; }
+.ft-tabr { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 20; --ft-lh: 30; --ft-ls: 0em; --ft-floor: 0.72; }
+.ft-index32 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 32; --ft-lh: 42; --ft-ls: 0em; --ft-floor: 0.6; }
+.ft-kpicap { --ft-family: var(--font-sinteca); --ft-weight: 600; --ft-size: 24; --ft-lh: 34; --ft-ls: 0em; --ft-floor: 0.55; }
+.ft-statcap { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 24; --ft-lh: 32; --ft-ls: 0em; --ft-floor: 0.72; }
+.ft-lede { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 18; --ft-lh: 28; --ft-ls: 0em; --ft-floor: 0.86; }
+.ft-copy18 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 18; --ft-lh: 28; --ft-ls: -0.005em; --ft-floor: 0.86; }
+.ft-date18 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 18; --ft-lh: 30; --ft-ls: 0em; --ft-floor: 0.86; }
+.ft-read22 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 22; --ft-lh: 26; --ft-ls: 0em; --ft-floor: 0.72; }
+.ft-cta { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 14; --ft-lh: 32; --ft-ls: 0em; --ft-floor: 0.86; }
+.ft-read14 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 14; --ft-lh: 32; --ft-ls: 0.04em; --ft-floor: 0.86; }
