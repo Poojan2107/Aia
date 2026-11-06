@@ -253,7 +253,7 @@ export function Insights() {
             ) : (
               filtered.map((item, i) => (
                 <article
-                  key={item.href}
+                  key={`${item.date}-${item.title}`}
                   className="group grid items-start gap-6 px-4 py-12 sm:gap-8 sm:px-6 sm:py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)_auto] lg:items-center lg:gap-10 lg:px-8 lg:py-16"
                   style={{ ["--i" as string]: i }}
                 >

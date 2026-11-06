@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { industries } from "@/data/industries";
 import { IndustryCopy, IndustryMill } from "@/components/home/ModelShowcase";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -49,14 +43,10 @@ function IndustryHead({ headingId }: { headingId?: string }) {
 
 function IndustryCard({
   industry,
-  focus,
-  setFocus,
   priority,
   interactive = true,
 }: {
   industry: (typeof industries)[number];
-  focus: string | null;
-  setFocus: (id: string | null) => void;
   priority?: boolean;
   interactive?: boolean;
 }) {
@@ -65,8 +55,6 @@ function IndustryCard({
       <div className="industry-copy relative min-h-0">
         <IndustryCopy
           industry={industry}
-          activeId={focus}
-          onActive={setFocus}
           interactive={interactive}
           overlay={false}
         />
@@ -76,8 +64,7 @@ function IndustryCard({
         <div className="mill-well relative flex h-full min-h-0 w-full items-center justify-center overflow-visible sm:min-h-[28svh] lg:min-h-0 lg:items-start lg:justify-end">
           <IndustryMill
             industry={industry}
-            activeId={interactive ? focus : null}
-            onActive={setFocus}
+            activeId={null}
             priority={priority}
             inspect={false}
             overlay={false}
@@ -89,13 +76,7 @@ function IndustryCard({
 }
 
 /** Stacked cards for tablet/phone — no 100svh pin (avoids clipping). */
-function IndustryStackStatic({
-  focusById,
-  setFocusById,
-}: {
-  focusById: Record<string, string | null>;
-  setFocusById: Dispatch<SetStateAction<Record<string, string | null>>>;
-}) {
+function IndustryStackStatic() {
   return (
     <section
       className="industry-stack lg:hidden"
@@ -108,14 +89,7 @@ function IndustryStackStatic({
           id={industry.id}
           className="industry-card-static border-b border-aia-line/60"
         >
-          <IndustryCard
-            industry={industry}
-            focus={focusById[industry.id] ?? null}
-            setFocus={(id) =>
-              setFocusById((prev) => ({ ...prev, [industry.id]: id }))
-            }
-            priority={i === 0}
-          />
+          <IndustryCard industry={industry} priority={i === 0} />
         </div>
       ))}
     </section>
@@ -125,15 +99,7 @@ function IndustryStackStatic({
 /**
  * Desktop scroll-pin stage. Hidden below lg so PC layout stays unchanged.
  */
-function IndustryStackDesktop({
-  focusById,
-  setFocusById,
-  reduced,
-}: {
-  focusById: Record<string, string | null>;
-  setFocusById: Dispatch<SetStateAction<Record<string, string | null>>>;
-  reduced: boolean;
-}) {
+function IndustryStackDesktop({ reduced }: { reduced: boolean }) {
   const trackRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
   const [pinMode, setPinMode] = useState<PinMode>("before");
@@ -194,14 +160,7 @@ function IndustryStackDesktop({
             id={`desktop-${industry.id}`}
             className="industry-card-static border-b border-aia-line/60"
           >
-            <IndustryCard
-              industry={industry}
-              focus={focusById[industry.id] ?? null}
-              setFocus={(id) =>
-                setFocusById((prev) => ({ ...prev, [industry.id]: id }))
-              }
-              priority={i === 0}
-            />
+            <IndustryCard industry={industry} priority={i === 0} />
           </div>
         ))}
       </section>
@@ -250,10 +209,6 @@ function IndustryStackDesktop({
               >
                 <IndustryCard
                   industry={industry}
-                  focus={focusById[industry.id] ?? null}
-                  setFocus={(id) =>
-                    setFocusById((prev) => ({ ...prev, [industry.id]: id }))
-                  }
                   priority={i === 0}
                   interactive={on}
                 />
@@ -272,21 +227,11 @@ function IndustryStackDesktop({
  */
 export function IndustryStack() {
   const reduced = useReducedMotion();
-  const [focusById, setFocusById] = useState<Record<string, string | null>>(
-    () => Object.fromEntries(industries.map((industry) => [industry.id, null])),
-  );
 
   return (
     <>
-      <IndustryStackStatic
-        focusById={focusById}
-        setFocusById={setFocusById}
-      />
-      <IndustryStackDesktop
-        focusById={focusById}
-        setFocusById={setFocusById}
-        reduced={reduced}
-      />
+      <IndustryStackStatic />
+      <IndustryStackDesktop reduced={reduced} />
     </>
   );
 }

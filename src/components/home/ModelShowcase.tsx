@@ -6,8 +6,6 @@ import type { Industry } from "@/data/industries";
 
 type CopyProps = {
   industry: Industry;
-  activeId: string | null;
-  onActive: (id: string | null) => void;
   interactive?: boolean;
   overlay?: boolean;
   className?: string;
@@ -16,8 +14,6 @@ type CopyProps = {
 
 export function IndustryCopy({
   industry,
-  activeId,
-  onActive,
   interactive = true,
   overlay = true,
   className = "",
@@ -49,51 +45,6 @@ export function IndustryCopy({
           {expanded ? "Read less" : "Read more"}
         </button>
       </div>
-
-      <ul
-        className="industry-solutions"
-        onMouseLeave={() => interactive && onActive(null)}
-      >
-        {industry.solutions.map((solution) => {
-          const isActive = activeId === solution.id;
-          return (
-            <li key={solution.id} className="industry-solution">
-              <button
-                type="button"
-                tabIndex={interactive ? 0 : -1}
-                className={`industry-solution-btn group ${isActive ? "is-active" : ""}`}
-                onClick={() => onActive(solution.id)}
-                onMouseEnter={() => interactive && onActive(solution.id)}
-                onFocus={() => interactive && onActive(solution.id)}
-                onBlur={() => interactive && onActive(null)}
-                aria-pressed={isActive}
-              >
-                <span className="industry-solution-label">{solution.label}</span>
-                <span aria-hidden className="industry-solution-mark">
-                  <svg width="11" height="11" viewBox="0 0 10 10" fill="none">
-                    <path
-                      d="M2 8L8 2M8 2H3.5M8 2V6.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-
-      <a
-        href={industry.href}
-        tabIndex={interactive ? 0 : -1}
-        className="industry-cta"
-      >
-        Explore {industry.name}
-        <span aria-hidden>›</span>
-      </a>
     </div>
   );
 }
@@ -257,17 +208,10 @@ export function ModelShowcase({
   priority = false,
   compact = false,
 }: Props) {
-  const [active, setActive] = useState<string | null>(null);
-
   return (
     <div className="grid w-full items-center gap-8 lg:grid-cols-[minmax(0,0.4fr)_minmax(0,0.6fr)] lg:gap-16 xl:gap-20">
       <div className="relative order-2 min-h-[28rem] lg:order-1">
-        <IndustryCopy
-          industry={industry}
-          activeId={active}
-          onActive={setActive}
-          overlay={false}
-        />
+        <IndustryCopy industry={industry} overlay={false} />
       </div>
       <div className="order-1 lg:order-2">
         <div
@@ -277,8 +221,7 @@ export function ModelShowcase({
         >
           <IndustryMill
             industry={industry}
-            activeId={active}
-            onActive={setActive}
+            activeId={null}
             priority={priority}
             inspect={false}
           />
