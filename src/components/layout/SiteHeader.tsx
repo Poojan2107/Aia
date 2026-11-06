@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { BrandLockup } from "@/components/brand/BrandLockup";
 import { mainNav, type NavItem } from "@/data/nav";
 
 /**
@@ -114,7 +113,14 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
     <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col bg-aia-navy text-white lg:hidden" role="dialog" aria-modal="true" aria-label="Site navigation">
       <div className="flex items-center justify-between px-5 py-4">
         <Link href="/" onClick={onClose} aria-label="AIA Engineering home">
-          <BrandLockup tone="light" compact />
+          <Image
+            src="/images/design/logo-aia-vega-white.png"
+            alt="AIA Engineering Limited and Vega Industries"
+            width={418}
+            height={163}
+            className="h-10 w-auto object-contain"
+            priority
+          />
         </Link>
         <button type="button" onClick={onClose} className="flex size-11 items-center justify-center rounded-full border border-white/25" aria-label="Close menu">
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden>
@@ -240,8 +246,14 @@ export function SiteHeader() {
       >
         <div className="site-nav-bar">
           <Link href="/" className="site-nav-brand" aria-label="AIA Engineering home">
-            <Image src="/images/design/logo-aia-mark.png" alt="AIA Engineering Limited" width={182} height={152} className="site-nav-brand-aia" priority />
-            <Image src="/images/logo-vega-clean.png" alt="Vega Industries" width={376} height={272} className="site-nav-brand-vega" />
+            <Image
+              src="/images/design/logo-aia-vega-white.png"
+              alt="AIA Engineering Limited and Vega Industries"
+              width={418}
+              height={163}
+              className="site-nav-brand-logo"
+              priority
+            />
           </Link>
 
           <nav ref={navRef} aria-label="Main" className="site-nav-pill hidden lg:flex">

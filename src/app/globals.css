@@ -4309,6 +4309,12 @@ button.solve-cta > span:last-child {
   align-items: center;
   gap: clamp(0.9rem, 1.5vw, 1.75rem);
 }
+.site-nav-brand-logo {
+  height: clamp(40px, 3.5vw, 56px);
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
 .site-nav-brand-aia {
   height: clamp(42px, 3.5vw, 62px);
   width: auto;
