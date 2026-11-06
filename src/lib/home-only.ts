@@ -12,7 +12,7 @@ export function isHomeOnlyAllowedHref(href: string | null | undefined): boolean 
   // Relative app paths
   if (value.startsWith("/")) {
     const path = value.split(/[?#]/)[0] ?? "/";
-    return path === "/" || path === "" || path.startsWith("/dev/");
+    return path === "/" || path === "";
   }
 
   // Absolute same-origin checked at runtime in HomeOnlyGuard

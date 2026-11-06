@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { allRoutes } from "@/lib/routes";
 import { absolute } from "@/lib/seo";
+import { homeOnly } from "@/lib/env";
 import { caseStudies } from "@/content/knowledge/case-studies";
 import { articles } from "@/content/knowledge/articles";
 import { jobs } from "@/content/careers/jobs";
@@ -29,6 +30,7 @@ function getModifiedDate(routeId: string): Date {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (homeOnly) return [{ url: absolute("/"), lastModified: new Date("2026-11-06T00:00:00Z"), priority: 1 }];
   const routes = allRoutes().filter((entry) => entry.indexable !== false);
 
   return routes.map((route) => {

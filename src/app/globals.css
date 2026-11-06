@@ -5483,3 +5483,8 @@ html.lenis body { height: auto; }
   .globe-logo.is-aia { transform: translateX(-22vw) scale(0.46); }
   .globe-logo.is-vega { transform: translateX(22vw) scale(0.46); }
 }
+
+/* Home-only lock: links to other pages look the same but do nothing. */
+a[data-home-only="disabled"] {
+  cursor: default;
+}

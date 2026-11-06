@@ -35,6 +35,16 @@ export function proxy(request: NextRequest) {
     return new NextResponse("Bad Request: Malformed URI", { status: 400 });
   }
 
+  // 0. Home-only lock: every page except "/" goes straight home (one hop, no legacy chains).
+  if (homeOnly) {
+    if (pathname === "/") return NextResponse.next();
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.search = "";
+    url.hash = "";
+    return NextResponse.redirect(url, 307);
+  }
+
   const normalised = normalisePath(decoded);
 
   // 1. Language copies (/cn/..., /fr/..., /ru/..., /es/...): 302 to English equivalent
@@ -65,20 +75,6 @@ export function proxy(request: NextRequest) {
     const url = new URL(normalised, request.url);
     url.search = request.nextUrl.search;
     return NextResponse.redirect(url, 308);
-  }
-
-  // 4. Home-only preview guard
-  if (homeOnly) {
-    if (pathname === "/" || pathname === "") {
-      return NextResponse.next();
-    }
-    if (pathname.startsWith("/dev/")) {
-      return NextResponse.next();
-    }
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    url.search = request.nextUrl.search;
-    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();

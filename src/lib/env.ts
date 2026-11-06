@@ -18,8 +18,12 @@ export const isProduction = siteEnv === "production";
 /** Media CDN root (S3 behind CloudFront) for investor PDFs, videos and 3D models. */
 export const mediaUrl = trimSlash(process.env.NEXT_PUBLIC_MEDIA_URL ?? "/media");
 
-/** Locks a client preview to the home page. Off unless explicitly enabled. */
-export const homeOnly = process.env.NEXT_PUBLIC_HOME_ONLY === "true";
+/**
+ * Locks the whole site to the home page: every other route redirects to "/" and
+ * links to other pages are inert. ON by default; set NEXT_PUBLIC_HOME_ONLY=false
+ * to open the full site again.
+ */
+export const homeOnly = process.env.NEXT_PUBLIC_HOME_ONLY !== "false";
 
 export const showDraftBadges = !isProduction;
 
