@@ -1,10 +1,42 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { media } from "@/data/media";
 
 /** Hero plate from Figma "AIA Signature Blue" / 01Homepage (mill hall still). */
 const HERO_PLATE = "/images/design/hero-mill-hall.jpg";
 
-/** Full-viewport plate + Figma Present lockup (90/95 type, 134px inset). */
+/** Full-viewport plate + ambient film + Figma Present lockup (90/95 type, 134px inset). */
 export function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+
+    const tryPlay = () => {
+      video.muted = true;
+      void video.play().then(() => setReady(true)).catch(() => undefined);
+    };
+
+    tryPlay();
+    video.addEventListener("canplay", tryPlay);
+    video.addEventListener("loadeddata", tryPlay);
+    return () => {
+      video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("loadeddata", tryPlay);
+    };
+  }, []);
+
   return (
     <section
       className="hero-viewport relative isolate w-full bg-black"
@@ -16,7 +48,22 @@ export function Hero() {
           src={HERO_PLATE}
           alt=""
           fetchPriority="high"
-          className="hero-film object-cover object-[center_45%] brightness-[0.84] contrast-[1.04]"
+          className={`hero-film object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${
+            ready ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <video
+          ref={videoRef}
+          className="hero-film film-drift object-cover object-[center_45%] brightness-[0.84] contrast-[1.04]"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={HERO_PLATE}
+          src={media.hero}
+          onPlaying={() => setReady(true)}
+          disablePictureInPicture
         />
         <div className="hero-scrim" aria-hidden />
       </div>

@@ -151,6 +151,7 @@ export function MediaSlot({
           } ${videoReady ? "opacity-100" : "opacity-0"} transition-opacity duration-700`}
           muted={!clickMode}
           playsInline
+          autoPlay={clickMode ? isActive : true}
           loop={shouldLoop}
           controls={clickMode && isActive}
           preload={clickMode ? "none" : "auto"}
