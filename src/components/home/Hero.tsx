@@ -1,5 +1,5 @@
-"use client";
 
+"use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 
@@ -63,7 +63,7 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "ngds",
-    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM (NGDS)."],
+    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM", "(NGDS)."],
     lede: [
       "Proprietary mill discharge design eliminating slurry pooling,",
       "maximizing grinding throughput, and dramatically extending liner life.",
@@ -174,92 +174,90 @@ export function Hero() {
 
   return (
     <div ref={trackRef} className="hero-track">
-    <section
-      className="hero-viewport relative isolate w-full bg-black"
-      aria-label="Hero"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      <div className="absolute inset-0 overflow-hidden" aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={current.poster}
-          alt=""
-          fetchPriority="high"
-          className={`hero-film object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${
-            ready ? "opacity-0" : "opacity-100"
-          }`}
-        />
-        <video
-          ref={videoRef}
-          key={current.video}
-          className={`hero-film film-drift object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${
-            ready ? "opacity-100" : "opacity-0"
-          }`}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster={current.poster}
-          src={current.video}
-          onPlaying={() => setReady(true)}
-          disablePictureInPicture
-        />
-        <div className="hero-scrim" aria-hidden />
-      </div>
+      <section
+        className="hero-viewport relative isolate w-full bg-black"
+        aria-label="Hero"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div className="absolute inset-0 overflow-hidden" aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={current.poster}
+            alt=""
+            fetchPriority="high"
+            className={`hero-film object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${ready ? "opacity-0" : "opacity-100"
+              }`}
+          />
+          <video
+            ref={videoRef}
+            key={current.video}
+            className={`hero-film film-drift object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"
+              }`}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={current.poster}
+            src={current.video}
+            onPlaying={() => setReady(true)}
+            disablePictureInPicture
+          />
+          <div className="hero-scrim" aria-hidden />
+        </div>
 
-      <div className="hero-copy z-10" data-hero-lock="figma-1920">
-        <div key={current.id} className="hero-lockup animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <h1 className="hero-enter hero-headline ft ft-hero">
-            {current.tagline.map((line, idx) => (
-              <span key={idx}>{line}</span>
-            ))}
-          </h1>
-
-          <div className="hero-enter-late hero-rail">
-            <p className="hero-lede ft ft-lede">
-              {current.lede.map((line, idx) => (
+        <div className="hero-copy z-10" data-hero-lock="figma-1920">
+          <div key={current.id} className="hero-lockup animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <h1 className="hero-enter hero-headline ft ft-hero">
+              {current.tagline.map((line, idx) => (
                 <span key={idx}>{line}</span>
               ))}
-            </p>
-            <CtaButton
-              href={current.ctaHref}
-              variant="solid"
-              className="hero-cta !h-[40px] !px-[1.4rem] !text-[11px] !gap-2"
-            >
-              {current.ctaText}
-            </CtaButton>
+            </h1>
+
+            <div className="hero-enter-late hero-rail">
+              <p className="hero-lede ft ft-lede">
+                {current.lede.map((line, idx) => (
+                  <span key={idx}>{line}</span>
+                ))}
+              </p>
+              <CtaButton
+                href={current.ctaHref}
+                variant="solid"
+                className="hero-cta !h-[40px] !px-[1.4rem] !text-[11px] !gap-2"
+              >
+                {current.ctaText}
+              </CtaButton>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* 5 Banners vertical pager: each dot selects the matching banner */}
-      <div className="hero-pager z-10" role="group" aria-label="Hero banners">
-        {BANNERS.map((item, i) => (
-          <button
-            key={item.id}
-            type="button"
-            className={`hero-pager-dot${i === banner ? " is-active" : ""}`}
-            aria-label={`Show banner ${i + 1} of ${BANNERS.length}: ${item.tagline.join(" ")}`}
-            aria-current={i === banner ? "true" : undefined}
-            onClick={() => selectBanner(i)}
-          >
-            <span aria-hidden />
-          </button>
-        ))}
-      </div>
+        {/* 5 Banners vertical pager: each dot selects the matching banner */}
+        <div className="hero-pager z-10" role="group" aria-label="Hero banners">
+          {BANNERS.map((item, i) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`hero-pager-dot${i === banner ? " is-active" : ""}`}
+              aria-label={`Show banner ${i + 1} of ${BANNERS.length}: ${item.tagline.join(" ")}`}
+              aria-current={i === banner ? "true" : undefined}
+              onClick={() => selectBanner(i)}
+            >
+              <span aria-hidden />
+            </button>
+          ))}
+        </div>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={ESG_BADGE}
-        alt="Dun & Bradstreet ESG Registered"
-        width={375}
-        height={322}
-        className="hero-esg"
-      />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={ESG_BADGE}
+          alt="Dun & Bradstreet ESG Registered"
+          width={375}
+          height={322}
+          className="hero-esg"
+        />
 
-    </section>
+      </section>
     </div>
   );
 }

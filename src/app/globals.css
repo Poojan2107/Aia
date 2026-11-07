@@ -471,9 +471,8 @@ video.film-cover {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    justify-content: flex-start;
-    /* nudge rail slightly right of Figma 78px gap */
-    gap: min(5.5vw, 6.5rem);
+    justify-content: space-between;
+    gap: clamp(2rem, 4vw, 5rem);
   }
 
   .hero-headline {
@@ -4268,17 +4267,17 @@ button.solve-cta > span:last-child {
   gap: clamp(0.9rem, 1.5vw, 1.75rem);
 }
 .site-nav-brand-logo {
-  height: clamp(40px, 3.5vw, 56px);
+  height: clamp(44px, 3.8vw, 60px);
   width: auto;
   object-fit: contain;
   display: block;
 }
 .site-nav-brand-aia {
-  height: clamp(42px, 3.5vw, 62px);
+  height: clamp(44px, 3.8vw, 64px);
   width: auto;
 }
 .site-nav-brand-vega {
-  height: clamp(42px, 3.6vw, 64px);
+  height: clamp(44px, 3.9vw, 66px);
   width: auto;
 }
 .site-nav-pill,
@@ -4292,13 +4291,13 @@ button.solve-cta > span:last-child {
 }
 .nav-pill-item {
   display: flex;
-  height: 2.45rem;
+  height: 2.6rem;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   white-space: nowrap;
   border-radius: 8px;
-  padding-inline: clamp(0.6rem, 0.85vw, 0.95rem);
-  font-size: clamp(0.95rem, 1.05vw, 1.12rem);
+  padding-inline: clamp(0.75rem, 0.95vw, 1.1rem);
+  font-size: clamp(1.02rem, 1.12vw, 1.2rem);
   font-weight: 500;
   color: #fff;
   transition: color 200ms, background-color 200ms;
@@ -4686,6 +4685,44 @@ button.solve-cta > span:last-child {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.mats-3d-container.is-locked {
+  cursor: pointer;
+}
+.mats-3d-container.is-locked .mats-model-viewer {
+  cursor: pointer;
+}
+.mats-click-hint {
+  position: absolute;
+  top: clamp(1.25rem, 2.5vw, 40px);
+  left: clamp(1.25rem, 2.5vw, 40px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 110, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 110, 255, 0.12);
+  font-family: var(--font-sinteca, sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: #006fff;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  animation: mats-pulse-hint 2.4s ease-in-out infinite;
+}
+@keyframes mats-pulse-hint {
+  0%, 100% {
+    transform: translateY(0);
+    box-shadow: 0 4px 16px rgba(0, 110, 255, 0.12);
+  }
+  50% {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 110, 255, 0.22);
+  }
 }
 .mats-model-viewer {
   width: 100%;

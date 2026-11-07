@@ -56,14 +56,17 @@ export function MaterialViewer3D({
   const [hasError, setHasError] = useState(false);
   const [hotspotOpen, setHotspotOpen] = useState(true);
   const [autoRotateActive, setAutoRotateActive] = useState(false);
+  const [isInteractive, setIsInteractive] = useState(false);
   const viewerRef = useRef<HTMLElement | null>(null);
 
   const defaultOrbit = cameraOrbit || "0deg 85deg 115%";
 
-  const handleToggle360 = () => {
+  const handleToggle360 = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
     const el = viewerRef.current as unknown as { cameraOrbit?: string; autoRotate?: boolean };
     if (!el) return;
     if (!autoRotateActive) {
+      setIsInteractive(true);
       setAutoRotateActive(true);
     } else {
       setAutoRotateActive(false);
@@ -71,6 +74,13 @@ export function MaterialViewer3D({
       if (typeof el.cameraOrbit !== "undefined") {
         el.cameraOrbit = defaultOrbit;
       }
+      setIsInteractive(false);
+    }
+  };
+
+  const handleActivateInteractive = () => {
+    if (!isInteractive) {
+      setIsInteractive(true);
     }
   };
 
@@ -102,11 +112,13 @@ export function MaterialViewer3D({
     document.head.appendChild(script);
   }, []);
 
-  // Reset loading state on model src change
+  // Reset loading & interactive state on model src change
   useEffect(() => {
     if (src) {
       setIsLoading(true);
       setHasError(false);
+      setIsInteractive(false);
+      setAutoRotateActive(false);
     }
   }, [src]);
 
@@ -315,7 +327,10 @@ export function MaterialViewer3D({
   }
 
   return (
-    <div className="mats-3d-container">
+    <div
+      className={`mats-3d-container ${!isInteractive ? "is-locked" : "is-interactive"}`}
+      onClick={handleActivateInteractive}
+    >
       {isLoading && (
         <div className="mats-3d-loading">
           <span className="mats-3d-spinner" aria-hidden="true" />
@@ -335,7 +350,7 @@ export function MaterialViewer3D({
           camera-target={cameraTarget || "auto auto auto"}
           camera-orbit={defaultOrbit}
           field-of-view={fieldOfView || "32deg"}
-          camera-controls
+          camera-controls={isInteractive ? true : undefined}
           auto-rotate={autoRotateActive ? "" : undefined}
           auto-rotate-delay={500}
           rotation-per-second="18deg"
@@ -358,7 +373,10 @@ export function MaterialViewer3D({
               <button
                 type="button"
                 className="mats-hotspot-pin"
-                onClick={() => setHotspotOpen(!hotspotOpen)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setHotspotOpen(!hotspotOpen);
+                }}
                 aria-label="Toggle material information"
               >
                 <span className="mats-pin-pulse" />
@@ -393,19 +411,39 @@ export function MaterialViewer3D({
         </div>
       )}
 
+      {src && !isInteractive && !isLoading && (
+        <div className="mats-click-hint" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+          </svg>
+          <span>Click to interact</span>
+        </div>
+      )}
+
       {src && (
         <button
           type="button"
-          onClick={handleToggle360}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isInteractive && !autoRotateActive) {
+              const el = viewerRef.current as unknown as { cameraOrbit?: string };
+              if (el && typeof el.cameraOrbit !== "undefined") {
+                el.cameraOrbit = defaultOrbit;
+              }
+              setIsInteractive(false);
+            } else {
+              handleToggle360(e);
+            }
+          }}
           className={`mats-360-pill ${autoRotateActive ? "mats-360-pill--active" : ""}`}
-          aria-label={autoRotateActive ? "Reset front view" : "Start 360 rotation"}
-          title={autoRotateActive ? "Click to reset to front view" : "Click to rotate 360°"}
+          aria-label={autoRotateActive ? "Reset front view" : isInteractive ? "Reset front view" : "Start 360 rotation"}
+          title={autoRotateActive || isInteractive ? "Click to reset to front view" : "Click to rotate 360°"}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
             <ellipse cx="12" cy="12" rx="10" ry="5" strokeDasharray="3 2" />
             <circle cx="12" cy="12" r="2.5" fill="currentColor" />
           </svg>
-          <span>{autoRotateActive ? "Reset front view" : "360 view"}</span>
+          <span>{autoRotateActive ? "Reset front view" : isInteractive ? "Reset front view" : "360 view"}</span>
         </button>
       )}
     </div>
