@@ -477,15 +477,13 @@ video.film-cover {
   }
 
   .hero-headline {
-    flex: 0 0 auto;
-    width: min(65.125rem, 54.271vw);
-    max-width: 65.125rem;
+    flex: 0 1 auto;
+    max-width: min(58rem, 52vw);
     height: auto;
-    min-height: min(17.8125rem, calc(54.271vw * 285 / 1042));
   }
 
   .hero-headline span {
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .hero-rail {

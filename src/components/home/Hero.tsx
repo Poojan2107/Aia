@@ -17,18 +17,17 @@ export interface HeroBanner {
 }
 
 /**
- * 5 Banners using the exact client video assets from:
- * DATA/13Utopia/All Pages/Home Page/Banners:
- * 1: Video - Engineering Excellence Banner.mp4
- * 2: Video - NGDS Banner.mp4
- * 3: Video - Services Banner.mp4
- * 4: Video - Manufacuring Banner.mp4
- * 5: Video - Logistics Banner.mp4
+ * Exact 5-Banner sequence matching 13Utopia client data order:
+ * 1: Banner 1 - Engineering Excellence
+ * 2: Banner 2 - Manufacturing
+ * 3: Banner 3 - Services
+ * 4: Banner 4 - NGDS
+ * 5: Banner 5 - Logistics
  */
 const BANNERS: HeroBanner[] = [
   {
     id: "engineering-excellence",
-    tagline: ["ENGINEERING EXCELLENCE", "IN EVERY SOLUTION."],
+    tagline: ["ENGINEERING", "EXCELLENCE IN", "EVERY SOLUTION."],
     lede: [
       "Combining proprietary metallurgy, advanced design modeling and deep",
       "application insights to optimize grinding circuits worldwide.",
@@ -39,20 +38,20 @@ const BANNERS: HeroBanner[] = [
     poster: "/images/design/hero-banner-engineering.jpg",
   },
   {
-    id: "ngds",
-    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM (NGDS)."],
+    id: "manufacturing-capacity",
+    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING", "CLUSTERS."],
     lede: [
-      "Proprietary mill discharge design eliminating slurry pooling,",
-      "maximizing grinding throughput, and dramatically extending liner life.",
+      "World-scale state-of-the-art foundries, ISO-certified manufacturing,",
+      "and automated heat treatment serving 4,000+ operations globally.",
     ],
-    ctaText: "Explore wear solutions",
-    ctaHref: "#materials",
-    video: "/videos/banners/hero-ngds.mp4",
-    poster: "/images/design/hero-banner-ngds.jpg",
+    ctaText: "Explore our technology",
+    ctaHref: "/technology-infrastructure",
+    video: "/videos/banners/hero-manufacturing.mp4",
+    poster: "/images/design/hero-banner-manufacturing.jpg",
   },
   {
     id: "services-support",
-    tagline: ["OPTIMIZE, MAINTAIN, EXCEL.", "END-TO-END SUPPORT."],
+    tagline: ["OPTIMIZE, MAINTAIN,", "EXCEL.", "END-TO-END SUPPORT."],
     lede: [
       "Comprehensive mill relining, wear monitoring, and continuous",
       "technical diagnostics to maximize grinding performance and uptime.",
@@ -63,16 +62,16 @@ const BANNERS: HeroBanner[] = [
     poster: "/images/design/hero-banner-services.jpg",
   },
   {
-    id: "manufacturing-capacity",
-    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING CLUSTERS."],
+    id: "ngds",
+    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM", "(NGDS)."],
     lede: [
-      "World-scale state-of-the-art foundries, ISO-certified manufacturing,",
-      "and automated heat treatment serving 4,000+ operations globally.",
+      "Proprietary mill discharge design eliminating slurry pooling,",
+      "maximizing grinding throughput, and dramatically extending liner life.",
     ],
-    ctaText: "Explore our technology",
-    ctaHref: "/technology-infrastructure",
-    video: "/videos/banners/hero-manufacturing.mp4",
-    poster: "/images/design/hero-banner-manufacturing.jpg",
+    ctaText: "Explore wear solutions",
+    ctaHref: "#materials",
+    video: "/videos/banners/hero-ngds.mp4",
+    poster: "/images/design/hero-banner-ngds.jpg",
   },
   {
     id: "global-logistics",
