@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type TransitionEvent } from "react";
 import { MediaSlot } from "@/components/ui/MediaSlot";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -42,21 +42,11 @@ const films: readonly Film[] = [
   },
 ];
 
-type Slot = "prev" | "center" | "next";
-
-function slotFor(index: number, active: number, count: number): Slot {
-  const rel = (index - active + count) % count;
-  if (rel === 0) return "center";
-  if (rel === 1) return "next";
-  return "prev";
-}
+const COPIES = 5;
 
 function BrandMarks() {
   return (
-    <div className="absolute left-3 top-3 z-10 flex items-center gap-2 sm:left-4 sm:top-4">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/logo-aia.png" alt="" className="h-5 w-auto brightness-0 invert" />
-      <span className="h-4 w-px bg-white/40" aria-hidden />
+    <div className="pointer-events-none absolute right-4 top-4 z-10 flex items-center gap-3 opacity-90 sm:right-6 sm:top-6">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/images/logo-vega.png" alt="" className="h-4 w-auto brightness-0 invert" />
     </div>
@@ -64,44 +54,116 @@ function BrandMarks() {
 }
 
 export function Gallery() {
-  const [offset, setOffset] = useState(0);
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const [jumpId, setJumpId] = useState<string | null>(null);
-  const jumpTimer = useRef<number | null>(null);
   const count = films.length;
+  const strip = Array.from({ length: COPIES }, () => [...films]).flat();
+  const [index, setIndex] = useState(count * 2);
+  const [x, setX] = useState(0);
+  const [motion, setMotion] = useState(false);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+
+  const rowRef = useRef<HTMLDivElement>(null);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+
+  const dragStartX = useRef<number | null>(null);
+  const dragStartY = useRef<number | null>(null);
+  const [dragDelta, setDragDelta] = useState(0);
+  const isDraggingRef = useRef(false);
+
+  const place = (value: number) => {
+    const row = rowRef.current;
+    const card = row?.querySelector<HTMLElement>(".gallery-card");
+    const stage = row?.parentElement;
+    if (!row || !card || !stage) return 0;
+    const gap = Number.parseFloat(getComputedStyle(row).gap) || 32;
+    const cardWidth = card.offsetWidth;
+    const centerOffset = (stage.clientWidth - cardWidth) / 2;
+    return centerOffset - value * (cardWidth + gap);
+  };
+
+  useLayoutEffect(() => {
+    setX(place(index));
+  }, [index]);
 
   useEffect(() => {
-    return () => {
-      if (jumpTimer.current) window.clearTimeout(jumpTimer.current);
-    };
+    if (motion) return;
+    const id = requestAnimationFrame(() => setMotion(true));
+    return () => cancelAnimationFrame(id);
+  }, [motion, index]);
+
+  useEffect(() => {
+    const onResize = () => setX(place(indexRef.current));
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const goTo = (next: number, direction: 1 | -1 | 0 = 0) => {
-    const target = ((next % count) + count) % count;
-    if (target === offset) return;
-
+  const shift = (dir: number) => {
     setPlayingId(null);
+    setMotion(true);
+    setIndex((value) => value + dir);
+  };
 
-    // The slide that wraps around the far edge should teleport, not fly across.
-    if (direction !== 0) {
-      const wrappingIndex =
-        direction > 0
-          ? (offset - 1 + count) % count
-          : (offset + 1) % count;
-      setJumpId(films[wrappingIndex].id);
-      if (jumpTimer.current) window.clearTimeout(jumpTimer.current);
-      jumpTimer.current = window.setTimeout(() => {
-        setJumpId(null);
-        jumpTimer.current = null;
-      }, 80);
+  const goTo = (targetFilmIndex: number) => {
+    setPlayingId(null);
+    const currentFilmIndex = ((index % count) + count) % count;
+    let diff = targetFilmIndex - currentFilmIndex;
+    if (diff > count / 2) diff -= count;
+    if (diff < -count / 2) diff += count;
+    setMotion(true);
+    setIndex((value) => value + diff);
+  };
+
+  const settle = (event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+    const value = indexRef.current;
+    if (value >= count * 3 || value < count) {
+      setMotion(false);
+      setIndex(value >= count * 3 ? value - count : value + count);
     }
-
-    setOffset(target);
   };
 
-  const rotate = (dir: 1 | -1) => {
-    goTo(offset + dir, dir);
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    dragStartX.current = e.clientX;
+    dragStartY.current = e.clientY;
+    isDraggingRef.current = false;
+    setDragDelta(0);
   };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (dragStartX.current === null) return;
+    const dx = e.clientX - dragStartX.current;
+    const dy = dragStartY.current !== null ? e.clientY - dragStartY.current : 0;
+    if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+      isDraggingRef.current = true;
+      setDragDelta(dx * 0.7);
+    }
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (dragStartX.current !== null) {
+      const dx = e.clientX - dragStartX.current;
+      dragStartX.current = null;
+      dragStartY.current = null;
+      setDragDelta(0);
+      if (Math.abs(dx) > 40) {
+        shift(dx > 0 ? -1 : 1);
+      }
+    }
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 80);
+  };
+
+  const onPointerCancel = () => {
+    dragStartX.current = null;
+    dragStartY.current = null;
+    setDragDelta(0);
+    isDraggingRef.current = false;
+  };
+
+  const activeIndex = ((index % count) + count) % count;
+  const activeFilm = films[activeIndex];
 
   return (
     <section
@@ -127,118 +189,106 @@ export function Gallery() {
         </p>
       </Reveal>
 
-      <div className="gallery-stage">
-        {films.map((card, index) => {
-          const slot = slotFor(index, offset, count);
-          const featured = slot === "center";
-          const playing = playingId === card.id;
-          const jumping = jumpId === card.id;
+      <div
+        className="gallery-stage"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+      >
+        <div
+          ref={rowRef}
+          className={`gallery-row${motion && dragDelta === 0 ? "" : " is-instant"}`}
+          style={{ transform: `translate3d(${x + dragDelta}px, 0, 0)` }}
+          onTransitionEnd={settle}
+        >
+          {strip.map((card, position) => {
+            const isCenter = position === index;
+            const playing = isCenter && playingId === card.id;
 
-          return (
-            <figure
-              key={card.id}
-              className={`gallery-slide gallery-slide--${slot}${
-                jumping ? " gallery-slide--jump" : ""
-              }`}
-            >
-              <div
-                role={!featured ? "button" : undefined}
-                tabIndex={!featured ? 0 : undefined}
-                onClick={() => {
-                  if (!featured) {
-                    const dir = slot === "next" ? 1 : -1;
-                    goTo(index, dir as 1 | -1);
-                  }
-                }}
-                onKeyDown={(event) => {
-                  if (featured) return;
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    const dir = slot === "next" ? 1 : -1;
-                    goTo(index, dir as 1 | -1);
-                  }
-                }}
-                className={!featured ? "cursor-pointer" : undefined}
-                aria-label={!featured ? `Show ${card.title}` : undefined}
+            return (
+              <figure
+                key={`${card.id}-${position}`}
+                className={`gallery-card ${isCenter ? "is-center" : "is-side"}`}
               >
-                <MediaSlot
-                  poster={card.poster}
-                  posterAlt={card.title}
-                  src={featured ? card.src : undefined}
-                  playback={featured ? "click" : "ambient"}
-                  film={featured}
-                  active={playing}
-                  onActiveChange={(next) =>
-                    setPlayingId(next ? card.id : null)
-                  }
-                  className="aspect-[16/10] bg-[#1a1f24]"
-                  sizes={
-                    featured ? "(max-width: 768px) 85vw, 46vw" : "37vw"
-                  }
+                <div
+                  role={!isCenter ? "button" : undefined}
+                  tabIndex={!isCenter ? 0 : undefined}
+                  onClick={() => {
+                    if (isDraggingRef.current) return;
+                    if (!isCenter) {
+                      setPlayingId(null);
+                      setMotion(true);
+                      setIndex(position);
+                    }
+                  }}
+                  onKeyDown={(event) => {
+                    if (isCenter) return;
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setPlayingId(null);
+                      setMotion(true);
+                      setIndex(position);
+                    }
+                  }}
+                  className={`rounded-[1.25rem] overflow-hidden${!isCenter ? " cursor-pointer" : ""}`}
+                  aria-label={!isCenter ? `Show ${card.title}` : undefined}
                 >
-                  {card.branded && !playing ? <BrandMarks /> : null}
-                  {!playing ? (
-                    <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                  ) : null}
-                  {!featured && !playing ? (
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-4 text-left sm:p-5">
-                      <p className="display text-[clamp(0.95rem,1.5vw,1.3rem)] uppercase leading-[0.95] text-white">
-                        {card.title}
-                      </p>
-                      {card.caption ? (
-                        <p className="mt-2 text-[12px] uppercase tracking-[0.12em] text-white/70">
-                          {card.caption}
-                        </p>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </MediaSlot>
-              </div>
-              {featured ? (
-                <p className="caption-in mt-4 flex items-center justify-center gap-2.5 text-aia-navy/70">
-                  <YouTubeMark />
-                  <span className="ft ft-film24">{card.title}</span>
-                </p>
-              ) : null}
-            </figure>
-          );
-        })}
+                  <MediaSlot
+                    poster={card.poster}
+                    posterAlt={card.title}
+                    src={isCenter ? card.src : undefined}
+                    playback={isCenter ? "click" : "ambient"}
+                    film={isCenter}
+                    active={playing}
+                    onActiveChange={(next) =>
+                      setPlayingId(next ? card.id : null)
+                    }
+                    className="aspect-[16/10] bg-[#1a1f24] rounded-[1.25rem] overflow-hidden shadow-sm"
+                    sizes={
+                      isCenter ? "(max-width: 768px) 85vw, 48vw" : "37vw"
+                    }
+                  >
+                    {card.branded && !playing ? <BrandMarks /> : null}
+                    {!playing ? (
+                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+                    ) : null}
+                  </MediaSlot>
+                </div>
+              </figure>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="mt-10 flex items-center justify-center gap-4">
+      <div className="mt-4 flex items-center justify-center gap-2.5 text-aia-navy/70">
+        <YouTubeMark />
+        <span className="ft ft-film24">{activeFilm.title}</span>
+      </div>
+
+      <div className="mt-8 flex items-center justify-center gap-5">
         <button
           type="button"
           aria-label="Previous film"
-          onClick={() => rotate(-1)}
-          className="gallery-nav-btn size-10 text-[#c5c8cc] transition-colors duration-200 hover:text-[var(--aia-accent)]"
+          onClick={() => shift(-1)}
+          className="gallery-nav-btn group size-10 text-[#c5c8cc] transition-all duration-300 hover:scale-105 active:scale-95 hover:text-[var(--aia-accent)]"
         >
-          <GalleryNavArrow className="size-10 rotate-180" />
+          <GalleryNavArrow className="size-10 rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5" />
         </button>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           {films.map((film, i) => {
-            const dist = Math.abs(i - offset);
-            const accent =
-              dist === 0 ? 100 : dist === 1 ? 45 : dist === 2 ? 22 : 10;
+            const active = activeIndex === i;
             return (
               <button
                 key={film.id}
                 type="button"
                 aria-label={`Show ${film.title}`}
-                aria-current={offset === i}
-                onClick={() => {
-                  const raw = i - offset;
-                  const dir =
-                    raw === 0
-                      ? 0
-                      : Math.abs(raw) <= count / 2
-                        ? (Math.sign(raw) as 1 | -1)
-                        : (Math.sign(-raw) as 1 | -1);
-                  goTo(i, dir);
-                }}
-                className="relative size-1.5 rounded-full transition-[background-color] duration-300 before:absolute before:-inset-[9px] before:content-['']"
-                style={{
-                  backgroundColor: `color-mix(in srgb, var(--aia-accent) ${accent}%, transparent)`,
-                }}
+                aria-current={active}
+                onClick={() => goTo(i)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${active
+                    ? "w-6 bg-[var(--aia-accent)] shadow-sm"
+                    : "w-1.5 bg-[#c5c8cc] hover:bg-[#8e959d]"
+                  }`}
               />
             );
           })}
@@ -246,10 +296,10 @@ export function Gallery() {
         <button
           type="button"
           aria-label="Next film"
-          onClick={() => rotate(1)}
-          className="gallery-nav-btn size-10 text-[#c5c8cc] transition-colors duration-200 hover:text-[var(--aia-accent)]"
+          onClick={() => shift(1)}
+          className="gallery-nav-btn group size-10 text-[#c5c8cc] transition-all duration-300 hover:scale-105 active:scale-95 hover:text-[var(--aia-accent)]"
         >
-          <GalleryNavArrow className="size-10" />
+          <GalleryNavArrow className="size-10 transition-transform duration-300 group-hover:translate-x-0.5" />
         </button>
       </div>
     </section>

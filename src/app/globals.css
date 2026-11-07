@@ -362,9 +362,9 @@ video.film-cover {
   font-family: var(--font-haas);
   font-weight: 700;
   font-style: normal;
-  font-size: clamp(1.75rem, 4.6875vw, 5.625rem);
-  line-height: calc(5.9375rem / 5.625rem);
-  letter-spacing: 0;
+  font-size: clamp(1.85rem, 3.4vw, 4.125rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #fff7e9;
   -webkit-text-fill-color: #fff7e9;
@@ -478,7 +478,7 @@ video.film-cover {
 
   .hero-headline {
     flex: 0 1 auto;
-    max-width: min(58rem, 52vw);
+    max-width: min(52rem, 48vw);
     height: auto;
   }
 
@@ -1122,6 +1122,12 @@ video.film-cover {
     --cases-card: calc((100vw - 2 * var(--cases-side) - 2 * var(--cases-gap)) / 3);
     display: block;
     overflow: hidden;
+    user-select: none;
+    touch-action: pan-y;
+    cursor: grab;
+  }
+  .cases-stage:active {
+    cursor: grabbing;
   }
   .cases-row {
     display: flex;
@@ -1129,18 +1135,19 @@ video.film-cover {
     gap: var(--cases-gap);
     width: max-content;
     will-change: transform;
-    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .cases-row.is-instant { transition: none; }
   .cases-stage .cases-card {
     width: var(--cases-card);
     flex: none;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   }
   .cases-card.is-peek {
-    opacity: 0.82;
+    opacity: 0.75;
     pointer-events: none;
   }
-  .cases-media { transition: box-shadow 0.9s ease; }
+  .cases-media { transition: box-shadow 0.6s ease, transform 0.6s ease; }
   .cases-card.is-focus .cases-media {
     box-shadow: 0 0 0 2px var(--aia-accent);
   }
@@ -3040,87 +3047,67 @@ button.solve-cta > span:last-child {
   margin-left: -1.5rem;
 }
 
-/* Sliding carousel — stable DOM, transform between slots */
+/* Continuous track gallery carousel */
 .gallery-stage {
-  --gallery-featured: min(42rem, 85vw);
-  --gallery-side: min(34rem, 72vw);
-  --gallery-gap: 1rem;
+  --gallery-card-w: min(85vw, 24rem);
+  --gallery-gap: 1.25rem;
   position: relative;
   width: 100%;
-  height: calc(var(--gallery-featured) * 10 / 16 + 3.25rem);
   overflow: hidden;
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+  padding: 1rem 0;
+}
+
+.gallery-stage:active {
+  cursor: grabbing;
 }
 
 @media (min-width: 768px) {
   .gallery-stage {
-    --gallery-featured: min(42rem, 46vw);
-    --gallery-side: min(34rem, 37vw);
-    --gallery-gap: 1.25rem;
+    --gallery-card-w: min(44rem, 48vw);
+    --gallery-gap: 2rem;
   }
 }
 
-.gallery-slide {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  margin: 0;
-  will-change: transform, width, opacity;
-  transition:
-    transform 0.55s var(--ease-out),
-    width 0.55s var(--ease-out),
-    opacity 0.45s var(--ease-out);
+.gallery-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gallery-gap);
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.gallery-slide--jump {
+.gallery-row.is-instant {
   transition: none !important;
 }
 
-.gallery-slide--center {
-  z-index: 2;
-  width: var(--gallery-featured);
+.gallery-card {
+  width: var(--gallery-card-w);
+  flex: none;
+  transform-origin: center center;
+  transition:
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.45s ease;
+}
+
+.gallery-card.is-center {
+  transform: scale(1);
   opacity: 1;
-  transform: translateX(-50%) scale(1);
+  z-index: 2;
 }
 
-.gallery-slide--prev,
-.gallery-slide--next {
+.gallery-card.is-side {
+  transform: scale(0.86);
+  opacity: 0.65;
   z-index: 1;
-  width: var(--gallery-side);
-  opacity: 0.7;
-  /* Sit lower so side frames center against the featured video, not the top */
-  --gallery-side-y: calc(
-    (var(--gallery-featured) - var(--gallery-side) * 0.96) * 5 / 16
-  );
 }
 
-.gallery-slide--prev {
-  transform: translateX(
-      calc(
-        -50% - (var(--gallery-featured) / 2) - var(--gallery-gap) -
-          (var(--gallery-side) / 2)
-      )
-    )
-    translateY(var(--gallery-side-y))
-    scale(0.96);
-}
-
-.gallery-slide--next {
-  transform: translateX(
-      calc(
-        -50% + (var(--gallery-featured) / 2) + var(--gallery-gap) +
-          (var(--gallery-side) / 2)
-      )
-    )
-    translateY(var(--gallery-side-y))
-    scale(0.96);
-}
-
-@media (max-width: 767px) {
-  .gallery-slide--prev,
-  .gallery-slide--next {
-    opacity: 0;
-    pointer-events: none;
-  }
+.gallery-card.is-side:hover {
+  opacity: 0.88;
+  transform: scale(0.88);
 }
 
 .gallery-label.section-label {
@@ -5039,6 +5026,7 @@ button.solve-cta > span:last-child {
   aspect-ratio: 480 / 296;
   overflow: hidden;
   background: #05080c;
+  border-radius: 1.25rem;
 }
 .tech2-kicker {
   font-size: clamp(0.72rem, 0.68vw, 13px);
@@ -5226,9 +5214,9 @@ button.solve-cta > span:last-child {
 .foot-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-block: 1.75rem; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
 .foot-legal { display: flex; gap: 1.75rem; }
 .foot-legal a:hover { color: #fff; }
-.foot-credit { display: inline-flex; align-items: center; gap: 8px; }
-.foot-credit-link { display: inline-flex; }
-.foot-credit-logo { height: 16px; width: auto; }
+.foot-credit { display: inline-flex; align-items: center; }
+.foot-credit-link { display: inline-flex; align-items: center; gap: 7px; }
+.foot-credit-logo { height: 21px; width: auto; }
 @media (min-width: 768px) {
   .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .foot-investors { grid-column: span 2; }
@@ -5394,22 +5382,22 @@ html.lenis body { height: auto; }
 .gsq-tag-text { display: flex; flex-direction: column; line-height: 1.15; }
 .gsq-tag-text strong { font-family: var(--font-haas); font-size: clamp(10px, 2.1cqw, 12.5px); font-weight: 500; color: var(--aia-navy); }
 .gsq-tag-text small { font-family: var(--font-sinteca); font-size: clamp(8px, 1.6cqw, 9.5px); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #6b7280; }
-.gsq-tag.is-aia .gsq-tag-card {
+.gsq-tag.is-hq .gsq-tag-card {
   border-color: rgba(255, 170, 40, 0.6);
   background: linear-gradient(135deg, #fff 0%, #fff6e3 100%);
   box-shadow: 0 12px 32px rgba(255, 150, 20, 0.26);
   bottom: 40px;
   padding: clamp(5px, 1.35cqw, 8px) clamp(9px, 2.2cqw, 13px) clamp(5px, 1.35cqw, 8px) clamp(6px, 1.5cqw, 9px);
 }
-.gsq-tag.is-aia .gsq-tag-stem { height: 40px; background: linear-gradient(180deg, #ffa21f, rgba(255, 162, 31, 0)); }
+.gsq-tag.is-hq .gsq-tag-stem { height: 40px; background: linear-gradient(180deg, #ffa21f, rgba(255, 162, 31, 0)); }
 /* Small globes (phones, laptops under ~1440): label the Ahmedabad HQ and the three key
    Vega hubs (Harrow, Randburg, Perth); every other location keeps its dot
    (gold = manufacturing, blue = service). All eight tags on a small globe collide. */
 @container (max-width: 460px) {
   .gsq-tag:not(.is-hq):not(.is-key) { display: none; }
 }
-.gsq-tag.is-aia .gsq-tag-badge { height: clamp(16px, 3.7cqw, 22px); }
-.gsq-tag.is-aia .gsq-tag-text strong { font-size: clamp(11px, 2.35cqw, 14px); }
+.gsq-tag.is-hq .gsq-tag-badge { height: clamp(16px, 3.7cqw, 22px); }
+.gsq-tag.is-hq .gsq-tag-text strong { font-size: clamp(11px, 2.35cqw, 14px); }
 @keyframes gsq-stem-in { from { transform: scaleY(0); } }
 @keyframes gsq-card-in { from { opacity: 0; transform: translate(-50%, 10px) scale(0.85); } }
 

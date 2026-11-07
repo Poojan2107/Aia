@@ -118,9 +118,21 @@ export function SiteFooter() {
             <span className="ft ft-legal22">En</span>
           </nav>
           <p className="foot-credit ft ft-legal22">
-            Site by
-            <a href="https://13utopia.com" target="_blank" rel="noopener noreferrer" className="foot-credit-link" aria-label="13UTOPIA, opens in a new tab">
-              <Image src="/images/design/logo-13utopia.png" alt="" width={423} height={168} className="foot-credit-logo" />
+            <a
+              href="https://13utopia.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="foot-credit-link text-white/70 transition-colors duration-200 hover:text-white"
+              aria-label="Site by 13UTOPIA, opens in a new tab"
+            >
+              <span>Site by</span>
+              <Image
+                src="/images/design/logo-13utopia.png"
+                alt="13UTOPIA"
+                width={423}
+                height={168}
+                className="foot-credit-logo transition-transform duration-200 hover:scale-105"
+              />
             </a>
           </p>
         </div>

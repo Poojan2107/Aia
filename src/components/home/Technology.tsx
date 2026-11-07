@@ -72,7 +72,7 @@ export function Technology() {
       <div className="tech2-rows">
         {capabilities.map((cap, i) => (
           <ScrollReveal key={cap.id} as="article" className={`tech2-row ${i % 2 === 1 ? "is-flipped" : ""}`}>
-            <div className="tech2-media">
+            <div className="tech2-media rounded-[1.25rem]">
               <video
                 src={cap.video}
                 poster={cap.poster}
@@ -82,7 +82,7 @@ export function Technology() {
                 loop
                 playsInline
                 preload="metadata"
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover rounded-[1.25rem]"
               >
                 <source src={cap.video} type={cap.video.endsWith(".mov") ? "video/quicktime" : "video/mp4"} />
               </video>

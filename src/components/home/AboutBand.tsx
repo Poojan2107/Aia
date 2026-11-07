@@ -70,14 +70,8 @@ export function AboutBand() {
     const sink = () => cta.offsetTop - 16 - copy.offsetHeight - copy.offsetTop;
 
     const tween = gsap.timeline({
+      paused: true,
       defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: track,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-      },
     });
 
     gsap.set(plate, { scale: 1, transformOrigin: "center center", force3D: true });
@@ -95,9 +89,40 @@ export function AboutBand() {
       tween.to(copy, { y: sink, duration: 1 }, 0);
     }
 
+    // Keep video scaled up and text in center on reverse scroll (never shrink or reverse)
+    let maxProgress = 0;
+
+    const st = ScrollTrigger.create({
+      trigger: track,
+      start: "top top",
+      end: "bottom bottom",
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        // Forward scroll: advance the zoom and text convergence smoothly with user scroll
+        if (self.direction === 1 && self.progress > maxProgress) {
+          maxProgress = self.progress;
+          gsap.to(tween, {
+            progress: maxProgress,
+            duration: 0.1,
+            ease: "none",
+            overwrite: "auto",
+          });
+        } else if (self.direction === -1) {
+          // Reverse scroll: do not apply any reverse effect!
+          // Keep the video scaled up and the text centered
+          if (maxProgress > 0.3) {
+            maxProgress = 1;
+            tween.progress(1);
+          } else {
+            tween.progress(maxProgress);
+          }
+        }
+      },
+    });
+
     ScrollTrigger.refresh();
     return () => {
-      tween.scrollTrigger?.kill();
+      st.kill();
       tween.kill();
     };
   }, [reduced]);

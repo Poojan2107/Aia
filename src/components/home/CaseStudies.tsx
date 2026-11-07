@@ -20,6 +20,11 @@ export function CaseStudies() {
   const offset = (index + 1) % count;
   const ordered = [...caseStudies.slice(offset), ...caseStudies.slice(0, offset)];
 
+  const dragStartX = useRef<number | null>(null);
+  const dragStartY = useRef<number | null>(null);
+  const [dragDelta, setDragDelta] = useState(0);
+  const isDraggingRef = useRef(false);
+
   const place = (value: number) => {
     const row = rowRef.current;
     const card = row?.querySelector<HTMLElement>(".cases-card");
@@ -62,6 +67,54 @@ export function CaseStudies() {
     }
   };
 
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0 && e.pointerType === "mouse") return;
+    dragStartX.current = e.clientX;
+    dragStartY.current = e.clientY;
+    isDraggingRef.current = false;
+    setDragDelta(0);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (dragStartX.current === null) return;
+    const dx = e.clientX - dragStartX.current;
+    const dy = dragStartY.current !== null ? e.clientY - dragStartY.current : 0;
+    if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+      isDraggingRef.current = true;
+      setDragDelta(dx * 0.7);
+    }
+  };
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (dragStartX.current !== null) {
+      const dx = e.clientX - dragStartX.current;
+      dragStartX.current = null;
+      dragStartY.current = null;
+      setDragDelta(0);
+      if (Math.abs(dx) > 40) {
+        shift(dx > 0 ? -1 : 1);
+      }
+    }
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 80);
+  };
+
+  const onPointerCancel = () => {
+    dragStartX.current = null;
+    dragStartY.current = null;
+    setDragDelta(0);
+    isDraggingRef.current = false;
+  };
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (isDraggingRef.current) {
+      e.preventDefault();
+    }
+  };
+
+  const activeNum = ((index % count) + count) % count + 1;
+
   return (
     <section
       className="bg-white py-[var(--section-y)]"
@@ -85,31 +138,42 @@ export function CaseStudies() {
           >
             Explore case study
           </CtaButton>
-          <div className="flex gap-2.5">
-            <NavArrow
-              label="Previous case studies"
-              reverse
-              onClick={() => shift(-1)}
-            />
-            <NavArrow
-              label="Next case studies"
-              onClick={() => shift(1)}
-            />
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-xs tracking-wider text-aia-muted/70 select-none">
+              0{activeNum} / 0{count}
+            </span>
+            <div className="flex gap-2">
+              <NavArrow
+                label="Previous case studies"
+                reverse
+                onClick={() => shift(-1)}
+              />
+              <NavArrow
+                label="Next case studies"
+                onClick={() => shift(1)}
+              />
+            </div>
           </div>
         </div>
       </div>
 
       <div className="cases-grid page-pad page-max grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
         {ordered.map((item) => (
-          <CaseCard key={item.href} item={item} />
+          <CaseCard key={item.href} item={item} onCardClick={handleCardClick} />
         ))}
       </div>
 
-      <div className="cases-stage">
+      <div
+        className="cases-stage select-none touch-pan-y"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+      >
         <div
           ref={rowRef}
-          className={`cases-row${motion ? "" : " is-instant"}`}
-          style={{ transform: `translate3d(${x}px, 0, 0)` }}
+          className={`cases-row${motion && dragDelta === 0 ? "" : " is-instant"}`}
+          style={{ transform: `translate3d(${x + dragDelta}px, 0, 0)` }}
           onTransitionEnd={settle}
         >
           {strip.map((item, position) => (
@@ -118,6 +182,7 @@ export function CaseStudies() {
               item={item}
               featured={position === index + 2}
               peek={position === index ? "left" : position === index + 4 ? "right" : undefined}
+              onCardClick={handleCardClick}
             />
           ))}
         </div>
@@ -130,34 +195,37 @@ function CaseCard({
   item,
   featured = false,
   peek,
+  onCardClick,
 }: {
   item: (typeof caseStudies)[number];
   featured?: boolean;
   peek?: "left" | "right";
+  onCardClick?: (e: React.MouseEvent) => void;
 }) {
   return (
     <a
       href={item.href}
-      className={`cases-card group block min-w-0${featured ? " is-focus" : ""}${peek ? ` is-peek is-peek-${peek}` : ""}`}
+      onClick={onCardClick}
+      className={`cases-card group block min-w-0 transition-transform duration-500 hover:-translate-y-1.5${featured ? " is-focus" : ""}${peek ? ` is-peek is-peek-${peek}` : ""}`}
       aria-hidden={peek ? true : undefined}
       tabIndex={peek ? -1 : undefined}
     >
-      <div className="cases-media relative mb-5 aspect-[532/395] w-full overflow-hidden rounded-[1.25rem] bg-[#e8eaec]">
+      <div className="cases-media relative mb-5 aspect-[532/395] w-full overflow-hidden rounded-[1.25rem] bg-[#e8eaec] shadow-sm transition-all duration-500 group-hover:shadow-md">
         <Image
           src={item.image}
           alt={peek ? "" : item.title}
           fill
           sizes="(max-width: 1024px) 100vw, 532px"
-          className="object-cover transition duration-500 group-hover:scale-[1.03] group-hover:blur-[2px]"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
-        <span className="cases-more absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-white opacity-0 transition duration-300 group-hover:bg-black/35 group-hover:opacity-100">
+        <span className="cases-more absolute inset-0 flex items-center justify-center gap-3 bg-black/0 text-white opacity-0 transition-all duration-300 group-hover:bg-black/35 group-hover:opacity-100">
           <span className="ft ft-read22 underline underline-offset-4">Read Case Study</span>
-          <span className="flex size-8 items-center justify-center rounded-full bg-aia-accent text-base text-white">
+          <span className="flex size-8 items-center justify-center rounded-full bg-aia-accent text-base text-white transition-transform duration-300 group-hover:translate-x-0.5">
             →
           </span>
         </span>
       </div>
-      <h3 className="ft ft-h30 mb-2 text-aia-navy">
+      <h3 className="ft ft-h30 mb-2 text-aia-navy transition-colors duration-200 group-hover:text-aia-accent">
         {item.title}
       </h3>
       <p className="ft ft-meta22 text-aia-muted">{item.meta}</p>
@@ -179,10 +247,10 @@ function NavArrow({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="size-8 text-[#c5c8cc] transition-colors duration-200 hover:text-[var(--aia-accent)]"
+      className="group size-8 text-[#c5c8cc] transition-all duration-300 hover:scale-110 active:scale-95 hover:text-[var(--aia-accent)]"
     >
       <svg
-        className={`size-8 ${reverse ? "rotate-180" : ""}`}
+        className={`size-8 transition-transform duration-300 ${reverse ? "rotate-180 group-hover:-translate-x-0.5" : "group-hover:translate-x-0.5"}`}
         width="32"
         height="32"
         viewBox="0 0 40 40"
