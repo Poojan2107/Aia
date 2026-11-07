@@ -339,8 +339,9 @@ export function AiaVegaGlobeSection() {
       raf = 0;
       const r = track.getBoundingClientRect();
       const range = Math.max(1, r.height - window.innerHeight);
-      // Start a little before the pin so the heading is already arriving.
-      const lead = window.innerHeight * 0.35;
+      // Start as soon as the section enters, so the heading and globe rise straight
+      // out of the hero's atmosphere gradient instead of after an empty grey screen.
+      const lead = window.innerHeight;
       const p = clamp01((-r.top + lead) / (range + lead));
       stageEl.style.setProperty("--g-head", easeOut(clamp01(p / 0.14)).toFixed(3));
       stageEl.style.setProperty("--g-globe", easeOut(clamp01((p - 0.1) / 0.3)).toFixed(3));
