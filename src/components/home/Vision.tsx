@@ -48,20 +48,22 @@ const leaders: Leader[] = [
 ];
 
 /**
- * Blue shards measured from the Figma (frame 710:1584), in plate units (0–100,
- * square plate, portrait 72% wide and bottom-centred). The long shard on each
- * row runs out past the plate towards the page edge, as in the design.
+ * Blue shards measured from the Figma (02Homepage frame 771:2487) against each
+ * portrait, in plate units (0–100, square plate, portrait 72% wide and
+ * bottom-centred). Corners that sit behind the portrait are placed inside its
+ * silhouette. The long shard on each row keeps its Figma angles and runs far
+ * past the plate; `.lead` clips it at the page edge, as in the design.
  */
 const SHARDS: Record<string, string[]> = {
   aia: [
-    "31.9,13.1 42.5,13.1 30.1,37.4",
-    "89.2,20.3 65.2,39.6 80.4,46.5",
-    "0,58.0 28.5,75.0 0,81.0",
+    "35.0,13.8 46.1,13.8 32.9,36.2",
+    "88.0,20.3 62.8,40.2 79.9,47.1",
+    "43.0,76.7 -160,9.3 -160,80.4",
   ],
   vega: [
-    "59.9,14.5 71.0,14.5 73.0,38.0",
-    "0,28.0 24.0,52.0 4.0,66.0",
-    "78.0,72.0 100,58.0 100,80.0",
+    "58.8,15.2 68.7,15.2 70.8,36.1",
+    "11.1,26.4 41.8,56.0 22.8,73.4",
+    "53.3,75.4 260,6.5 260,79.7",
   ],
 };
 

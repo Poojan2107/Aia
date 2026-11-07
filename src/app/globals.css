@@ -5512,7 +5512,7 @@ html.lenis body { height: auto; }
 }
 
 /* ── Leadership (Figma 01Homepage node 685:7: AIA MD + Vega CEO) ──────── */
-.lead { background: #f7f7f7; }
+.lead { background: #f7f7f7; overflow-x: clip; }
 .lead-row {
   margin-inline: auto;
   display: grid;
