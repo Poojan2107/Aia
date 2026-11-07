@@ -5324,7 +5324,7 @@ html.lenis body { height: auto; }
 }
 .gsq-globe-canvas { position: absolute; inset: 0; }
 /* globe.gl clips its HTML tag layer to the canvas box; let tags hang past the edge. */
-.gsq-globe-canvas > div { overflow: visible !important; }
+.gsq-globe-canvas div { overflow: visible !important; }
 .gsq-globe-canvas canvas { display: block; outline: none; }
 .gsq-globe-glow {
   position: absolute;
@@ -5402,11 +5402,11 @@ html.lenis body { height: auto; }
   padding: clamp(5px, 1.35cqw, 8px) clamp(9px, 2.2cqw, 13px) clamp(5px, 1.35cqw, 8px) clamp(6px, 1.5cqw, 9px);
 }
 .gsq-tag.is-aia .gsq-tag-stem { height: 40px; background: linear-gradient(180deg, #ffa21f, rgba(255, 162, 31, 0)); }
-/* Small globes (phones, 1024 laptops): label only the Ahmedabad HQ; every other
-   location keeps its dot (gold = manufacturing, blue = service). Eight tags on a
-   ~340px globe collide and run into the text columns. */
+/* Small globes (phones, laptops under ~1440): label the Ahmedabad HQ and the three key
+   Vega hubs (Harrow, Randburg, Perth); every other location keeps its dot
+   (gold = manufacturing, blue = service). All eight tags on a small globe collide. */
 @container (max-width: 460px) {
-  .gsq-tag:not(.is-hq) { display: none; }
+  .gsq-tag:not(.is-hq):not(.is-key) { display: none; }
 }
 .gsq-tag.is-aia .gsq-tag-badge { height: clamp(16px, 3.7cqw, 22px); }
 .gsq-tag.is-aia .gsq-tag-text strong { font-size: clamp(11px, 2.35cqw, 14px); }
@@ -5866,7 +5866,7 @@ a[data-home-only="disabled"] {
    Opening: the hero is pinned for one screen while the globe section slides up
    over it; the section's top is a curved sky (transparent → navy → AIA blue →
    bright core) that rises as --g-sky goes 0 → 1, resolving into #f5f5f5 just as
-   the heading arrives. Closure: the same curve reversed above the footer.
+   the heading arrives.
    ========================================================================== */
 .hero-track {
   position: relative;
@@ -5977,79 +5977,11 @@ a[data-home-only="disabled"] {
   .gsq-light { display: none; }
 }
 
-/* Closure (mirror of the opening): the last section pins at its end while the footer
-   slides up over it for one screen. The footer's top 60svh is a reversed curved sky,
-   transparent → white → AIA-blue arc → navy core, rising with --close (ClosureScene.tsx)
-   until the core meets the footer photo, right above the tagline. */
-.closure-scene { position: relative; padding-bottom: 100svh; }
-.closure-pin { position: sticky; top: var(--pin-top, 0px); z-index: 1; }
-.foot {
-  --zone: 60svh;
-  --close: 0;
-  z-index: 2;
-  margin-top: -100svh;
-  background: linear-gradient(180deg, transparent 0, transparent var(--zone), #05121c var(--zone));
-}
-.foot > .foot-bg,
-.foot > .foot-scrim {
-  top: var(--zone) !important;
-  height: calc(100% - var(--zone)) !important;
-}
-.foot-sky {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: -1;
-  height: var(--zone);
-  overflow: hidden;
-  pointer-events: none;
-}
-.foot-sky::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 300%;
-  background: radial-gradient(
-    125% 100% at 50% 100%,
-    #0d1f33 0%,
-    #0d1f33 58%,
-    #0b2a63 63%,
-    #0a4fd0 67.5%,
-    #006eff 71.5%,
-    #5aa2ff 75.5%,
-    #b3d4ff 80%,
-    #e3eeff 86%,
-    #ffffff 93%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: translate3d(0, calc(var(--close) * -66.6667%), 0);
-  will-change: transform;
-}
-.foot-inner { padding-top: calc(var(--zone) + clamp(3rem, 4.3vw, 82px)) !important; }
-/* Footer photo starts below the sky and melts into its navy core. */
-.foot::after {
-  content: "";
-  position: absolute;
-  top: var(--zone);
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: min(40%, 480px);
-  pointer-events: none;
-  background: linear-gradient(180deg, #0d1f33 0%, rgba(13, 31, 51, 0.6) 45%, rgba(13, 31, 51, 0) 100%);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  /* No pinning or overlap: both skies read as static transitions. */
+  /* No pinning or overlap: the sky reads as a static transition. */
   .hero-track { height: auto; }
   .hero-track > .hero-viewport { position: relative; }
   .gsq { margin-top: 0; }
-  .closure-scene { padding-bottom: 0; }
-  .closure-pin { position: relative; }
-  .foot { margin-top: 0; --close: 0.62; }
 }
 
 /* ==========================================================================

@@ -55,8 +55,6 @@ export function SiteFooter() {
     <footer className="foot">
       <Image src="/images/design/footer-bg.jpg" alt="" fill sizes="100vw" className="foot-bg" data-parallax="14" />
       <div aria-hidden className="foot-scrim" />
-      {/* Reversed curved sky: rises as the footer slides over the pinned last section. */}
-      <div aria-hidden className="foot-sky" />
 
       <div className="foot-inner">
         <div className="foot-top">
