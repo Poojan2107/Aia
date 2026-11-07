@@ -5423,6 +5423,11 @@ html.lenis body { height: auto; }
 /* Tags near the top of the globe hang below their point instead. */
 .gsq-tag.is-below .gsq-tag-stem { top: 0; bottom: auto; transform-origin: top; background: linear-gradient(0deg, rgba(4, 29, 44, 0.55), rgba(4, 29, 44, 0)); }
 .gsq-tag.is-below .gsq-tag-card { top: 30px; bottom: auto; }
+.gsq-tag.is-left .gsq-tag-card { transform: translateX(calc(-100% + 14px)); }
+.gsq-tag.is-right .gsq-tag-card { transform: translateX(-14px); }
+@container (min-width: 461px) {
+  .gsq-tag.is-left-lg .gsq-tag-card { transform: translateX(calc(-100% + 14px)); }
+}
 .gsq-tag-badge { height: clamp(13px, 3cqw, 18px); width: auto; }
 .gsq-tag-text { display: flex; flex-direction: column; line-height: 1.15; }
 .gsq-tag-text strong { font-family: var(--font-haas); font-size: clamp(10px, 2.1cqw, 12.5px); font-weight: 500; color: var(--aia-navy); }
@@ -5435,11 +5440,18 @@ html.lenis body { height: auto; }
   padding: clamp(5px, 1.35cqw, 8px) clamp(9px, 2.2cqw, 13px) clamp(5px, 1.35cqw, 8px) clamp(6px, 1.5cqw, 9px);
 }
 .gsq-tag.is-hq .gsq-tag-stem { height: 40px; background: linear-gradient(180deg, #ffa21f, rgba(255, 162, 31, 0)); }
-/* Small globes (phones, laptops under ~1440): label the Ahmedabad HQ and the three key
-   Vega hubs (Harrow, Randburg, Perth); every other location keeps its dot
-   (gold = manufacturing, blue = service). All eight tags on a small globe collide. */
+/* Every office is tagged. Small globes (phones, laptops under ~1440) use compact tags:
+   city only, smaller badge and stem, so neighbouring offices don't collide. */
 @container (max-width: 460px) {
-  .gsq-tag:not(.is-hq):not(.is-key) { display: none; }
+  .gsq-tag:not(.is-hq) .gsq-tag-text small { display: none; }
+  .gsq-tag:not(.is-hq) .gsq-tag-card { bottom: 18px; padding: 3px 7px 3px 5px; gap: 4px; border-radius: 8px; }
+  .gsq-tag:not(.is-hq) .gsq-tag-stem { height: 18px; }
+  .gsq-tag.is-below:not(.is-hq) .gsq-tag-card { top: 18px; bottom: auto; }
+  .gsq-tag:not(.is-hq) .gsq-tag-badge { height: 11px; }
+  .gsq-tag:not(.is-hq) .gsq-tag-text strong { font-size: 10px; }
+  /* Wuxi sits just above-right of the HQ tag: hang it below its point on small globes. */
+  .gsq-tag-wuxi .gsq-tag-stem { top: 0; bottom: auto; transform-origin: top; }
+  .gsq-tag-wuxi .gsq-tag-card { top: 18px; bottom: auto; }
 }
 .gsq-tag.is-hq .gsq-tag-badge { height: clamp(16px, 3.7cqw, 22px); }
 .gsq-tag.is-hq .gsq-tag-text strong { font-size: clamp(11px, 2.35cqw, 14px); }

@@ -29,6 +29,10 @@ type Site = {
   /** Second line of the hub tag. */
   org: string;
   chip?: boolean;
+  /** Card extends to this side of its point instead of centring (keeps close neighbours apart). */
+  side?: "left" | "right";
+  /** Same, on large globes only (phones keep it centred so it stays on screen). */
+  sideLg?: "left";
   /** Key Vega hubs: tagged on every globe size and from the columns beat onwards. */
   key?: boolean;
   below?: boolean;
@@ -42,16 +46,16 @@ const AHMEDABAD: Site = { id: "ahmedabad", city: "Ahmedabad", country: "India", 
 
 const SITES: Site[] = [
   AHMEDABAD, // 11-12 Sigma Corporates, Sindhubhavan Road, Bodakdev
-  { id: "accra", city: "Accra", country: "Ghana", lat: 5.6045, lng: -0.1832, company: "AIA", unit: "manufacturing", org: "AIA Ghana Ltd.", chip: true }, // Christman House, Kofi Annan Street
-  { id: "wuxi", city: "Wuxi", country: "China", lat: 31.5402, lng: 120.2968, company: "Vega", unit: "manufacturing", org: "Wuxi Vega Trade Co.", chip: true }, // Times Building, 655 Hubin Road
+  { id: "accra", city: "Accra", country: "Ghana", lat: 5.6045, lng: -0.1832, company: "AIA", unit: "manufacturing", org: "AIA Ghana Ltd.", chip: true, sideLg: "left" }, // Christman House, Kofi Annan Street
+  { id: "wuxi", city: "Wuxi", country: "China", lat: 31.5402, lng: 120.2968, company: "Vega", unit: "manufacturing", org: "Wuxi Vega Trade Co.", chip: true, side: "right" }, // Times Building, 655 Hubin Road
   { id: "brampton", city: "Brampton", country: "Canada", lat: 43.6855, lng: -79.7598, company: "Vega", unit: "service", org: "Vega USA (Canada Office)" }, // 10 Gillingham Drive
-  { id: "brentwood", city: "Brentwood", country: "USA", lat: 36.0236, lng: -86.7869, company: "Vega", unit: "service", org: "Vega Industries Ltd. USA", chip: true }, // 330 Franklin Road, TN
+  { id: "brentwood", city: "Brentwood", country: "USA", lat: 36.0236, lng: -86.7869, company: "Vega", unit: "service", org: "Vega Industries Ltd. USA", chip: true, below: true }, // 330 Franklin Road, TN
   { id: "lima", city: "Lima", country: "Peru", lat: -12.0966, lng: -77.0294, company: "Vega", unit: "service", org: "Vega Industries Peru Ltd." }, // Las Camelias 256, San Isidro
-  { id: "santiago", city: "Santiago", country: "Chile", lat: -33.4087, lng: -70.5715, company: "Vega", unit: "service", org: "Vega Industries SpA", chip: true }, // Av. Apoquindo 5950, Las Condes
+  { id: "santiago", city: "Santiago", country: "Chile", lat: -33.4087, lng: -70.5715, company: "Vega", unit: "service", org: "Vega Industries SpA", chip: true, below: true }, // Av. Apoquindo 5950, Las Condes
   { id: "harrow", city: "Harrow", country: "UK", lat: 51.5786, lng: -0.3346, company: "Vega", unit: "service", org: "Vega Industries Ltd. UK", chip: true, key: true, below: true }, // Congress House, 14 Lyon Road
   { id: "randburg", city: "Randburg", country: "South Africa", lat: -26.0936, lng: 28.0064, company: "Vega", unit: "service", org: "Vega Steel Industries", chip: true, key: true }, // Stabilitas House, Kent Avenue
-  { id: "ajman", city: "Ajman", country: "UAE", lat: 25.418, lng: 55.447, company: "Vega", unit: "service", org: "Vega Industries (Middle East)" }, // Ajman Free Zone
-  { id: "jakarta", city: "Jakarta", country: "Indonesia", lat: -6.2238, lng: 106.8226, company: "Vega", unit: "service", org: "PT Vega Industries Indonesia" }, // DBS Bank Tower, Jl. Prof. Dr. Satrio
+  { id: "ajman", city: "Ajman", country: "UAE", lat: 25.418, lng: 55.447, company: "Vega", unit: "service", org: "Vega Industries (Middle East)", below: true, side: "left" }, // Ajman Free Zone
+  { id: "jakarta", city: "Jakarta", country: "Indonesia", lat: -6.2238, lng: 106.8226, company: "Vega", unit: "service", org: "PT Vega Industries Indonesia", side: "right" }, // DBS Bank Tower, Jl. Prof. Dr. Satrio
   { id: "perth", city: "Perth", country: "Australia", lat: -31.9541, lng: 115.853, company: "Vega", unit: "service", org: "Vega Industries Australia", chip: true, key: true }, // 267 St Georges Terrace
 ];
 
@@ -71,9 +75,6 @@ type Ring = { lat: number; lng: number; hq: boolean };
 /** Kept as constants so the globe keeps the same ring/tag across stages instead of restarting them. */
 const HQ_RING: Ring = { lat: AHMEDABAD.lat, lng: AHMEDABAD.lng, hq: true };
 const AIA_SITES = SITES.filter((s) => s.company === "AIA");
-const CHIP_SITES = SITES.filter((s) => s.chip);
-/** HQ plus the key Vega hubs, tagged as soon as the columns arrive. */
-const KEY_SITES = SITES.filter((s) => s.id === "ahmedabad" || s.key);
 
 const VIEW_INDIA = { lat: 20, lng: 78, altitude: 1.72 };
 const VIEW_NETWORK = { lat: 16, lng: 56, altitude: 2.0 };
@@ -91,7 +92,7 @@ type Box = { cx: number; cy: number; w: number };
 function chipElement(site: Site) {
   const isAia = site.company === "AIA";
   const root = document.createElement("div");
-  root.className = `gsq-tag ${isAia ? "is-aia" : "is-vega"} is-${site.unit}${site.id === "ahmedabad" ? " is-hq" : ""}${site.key ? " is-key" : ""}${site.below ? " is-below" : ""}`;
+  root.className = `gsq-tag gsq-tag-${site.id} ${isAia ? "is-aia" : "is-vega"} is-${site.unit}${site.id === "ahmedabad" ? " is-hq" : ""}${site.key ? " is-key" : ""}${site.below ? " is-below" : ""}${site.side ? ` is-${site.side}` : ""}${site.sideLg ? ` is-${site.sideLg}-lg` : ""}`;
   const stem = document.createElement("span");
   stem.className = "gsq-tag-stem";
   const card = document.createElement("span");
@@ -345,7 +346,7 @@ export function AiaVegaGlobeSection() {
       const arcs: Arc[] = [];
       const rings: Ring[] = [HQ_RING];
       const timers: number[] = [];
-      world.pointsData(SITES).ringsData(rings).htmlElementsData(CHIP_SITES);
+      world.pointsData(SITES).ringsData(rings).htmlElementsData(SITES);
       const step = reducedMotion ? 0 : 170;
       ROUTES.forEach((site, i) => {
         timers.push(
@@ -367,7 +368,7 @@ export function AiaVegaGlobeSection() {
       .pointsData(stage >= 3 ? AIA_SITES : [])
       .ringsData(stage >= 3 ? [HQ_RING] : [])
       .arcsData([])
-      .htmlElementsData(stage >= 3 ? KEY_SITES : []);
+      .htmlElementsData(stage >= 3 ? SITES : []);
   }, [stage, ready]);
 
   /* ---------- scroll choreography ---------- */
