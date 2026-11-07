@@ -39,7 +39,7 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "manufacturing-capacity",
-    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING", "CLUSTERS."],
+    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING CLUSTERS."],
     lede: [
       "World-scale state-of-the-art foundries, ISO-certified manufacturing,",
       "and automated heat treatment serving 4,000+ operations globally.",
@@ -51,10 +51,10 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "services-support",
-    tagline: ["OPTIMIZE, MAINTAIN,", "EXCEL.", "END-TO-END SUPPORT."],
+    tagline: ["OPTIMIZE. MAINTAIN.", "EXCEL."],
     lede: [
-      "Comprehensive mill relining, wear monitoring, and continuous",
-      "technical diagnostics to maximize grinding performance and uptime.",
+      "End-to-end technical support, mill relining, wear monitoring,",
+      "and continuous diagnostics for your grinding operations worldwide.",
     ],
     ctaText: "Explore services & support",
     ctaHref: "#services",
@@ -63,7 +63,7 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "ngds",
-    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM", "(NGDS)."],
+    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM (NGDS)."],
     lede: [
       "Proprietary mill discharge design eliminating slurry pooling,",
       "maximizing grinding throughput, and dramatically extending liner life.",

@@ -466,11 +466,11 @@ video.film-cover {
 
 @media (min-width: 1024px) {
   .hero-lockup {
-    top: calc(100% * 729 / 1076);
-    bottom: auto;
+    top: auto;
+    bottom: clamp(2.5rem, 6vh, 5rem);
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: flex-start;
     /* nudge rail slightly right of Figma 78px gap */
     gap: min(5.5vw, 6.5rem);
@@ -490,8 +490,8 @@ video.film-cover {
     flex: 0 0 auto;
     width: min(32.75rem, 27.292vw);
     max-width: 32.75rem;
-    /* 748 − 729 = 19 */
-    margin-top: min(1.1875rem, 0.9896vw);
+    margin-top: 0;
+    margin-bottom: 0.35rem;
     margin-left: 0;
     align-items: flex-start;
     text-align: left;
