@@ -239,7 +239,9 @@ video.film-cover {
 */
 .hero-viewport {
   width: 100%;
+  height: 100vh;
   height: 100svh;
+  min-height: 100vh;
   min-height: 100svh;
   /* Contain film-drift scale + absolute copy so they cannot widen the page.
      The film layer clips itself; y stays visible so the ESG seal can sit
@@ -626,6 +628,7 @@ video.film-cover {
   top: 0;
   left: 0;
   width: 100%;
+  height: 100vh;
   height: 100svh;
   display: flex;
   flex-direction: column;
@@ -2550,6 +2553,7 @@ button.solve-cta > span:last-child {
   .solve-film {
     grid-area: film;
     justify-self: start;
+    width: min(52.1875vw, calc((100vh - 25rem) * 16 / 9));
     width: min(52.1875vw, calc((100svh - 25rem) * 16 / 9));
     max-width: none;
     height: auto;
@@ -3946,7 +3950,9 @@ button.solve-cta > span:last-child {
 .industry-band-static {
   position: relative;
   isolation: isolate;
+  height: 100vh;
   height: 100svh;
+  min-height: 100vh;
   min-height: 100svh;
   width: 100%;
   overflow: hidden;
@@ -4378,6 +4384,7 @@ button.solve-cta > span:last-child {
 .inds-stage {
   position: sticky;
   top: 0;
+  height: 100vh;
   height: 100svh;
   min-height: 600px;
   overflow: hidden;
@@ -5121,6 +5128,7 @@ button.solve-cta > span:last-child {
   top: 0;
   display: grid;
   place-items: center;
+  height: 100vh;
   height: 100svh;
   overflow: hidden;
   background: #bfc9d2;
@@ -5458,6 +5466,7 @@ html.lenis body { height: auto; }
     top: 0;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
+    height: 100vh;
     height: 100svh;
     min-height: 720px;
     padding: calc(var(--site-header-h) + 1.75rem) clamp(1rem, 7vw, 134px) clamp(1.25rem, 3.5vh, 40px);
@@ -5709,6 +5718,7 @@ html.lenis body { height: auto; }
 .globe-stage {
   position: sticky;
   top: 0;
+  height: 100vh;
   height: 100svh;
   padding: 0;
   overflow: hidden;
@@ -5790,6 +5800,7 @@ html.lenis body { height: auto; }
   left: 50%;
   top: 50%;
   z-index: 2;
+  width: min(92vw, 76vh, 680px);
   width: min(92vw, 76svh, 680px);
   aspect-ratio: 1;
   transform: translate(-50%, 70vh) scale(0.86);
@@ -5895,6 +5906,7 @@ a[data-home-only="disabled"] {
    ========================================================================== */
 .hero-track {
   position: relative;
+  height: 200vh;
   height: 200svh;
   --atmos: 0;
 }
@@ -5919,6 +5931,7 @@ a[data-home-only="disabled"] {
 /* Globe section rides over the pinned hero; its own sky replaces the flat grey. */
 .gsq {
   z-index: 3;
+  margin-top: -100vh;
   margin-top: -100svh;
   background: transparent;
 }
@@ -5979,6 +5992,7 @@ a[data-home-only="disabled"] {
 @media (max-width: 1023px) {
   /* Not pinned: a fixed curved band at the top of the section, heading on its core. */
   .gsq-sky {
+    height: 95vh;
     height: 95svh;
     background: radial-gradient(
       140% 100% at 50% 100%,
@@ -5995,7 +6009,9 @@ a[data-home-only="disabled"] {
     );
   }
   .gsq-stage {
+    padding-top: 72vh;
     padding-top: 72svh;
+    background: linear-gradient(180deg, transparent 0, transparent 90vh, #f5f5f5 90vh);
     background: linear-gradient(180deg, transparent 0, transparent 90svh, #f5f5f5 90svh);
   }
   /* The pale diagonal highlights would cut across the dark sky band as hard wedges. */
@@ -6073,3 +6089,19 @@ a[data-home-only="disabled"] {
 .ft-read22 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 22; --ft-lh: 26; --ft-ls: 0em; --ft-floor: 0.72; }
 .ft-cta { --ft-family: var(--font-sinteca); --ft-weight: 500; --ft-size: 14; --ft-lh: 32; --ft-ls: 0em; --ft-floor: 0.86; }
 .ft-read14 { --ft-family: var(--font-sinteca); --ft-weight: 400; --ft-size: 14; --ft-lh: 32; --ft-ls: 0.04em; --ft-floor: 0.86; }
+
+/* Globe fallback for machines without WebGL: the same earth texture on a CSS sphere. */
+.gsq-globe.is-fallback .gsq-globe-canvas { display: none; }
+.gsq-globe-fallback {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: url("/textures/globe/earth-blue-marble.webp") 0 50% / 200% 100% repeat-x;
+  box-shadow:
+    inset -28px -18px 60px rgba(2, 10, 30, 0.6),
+    inset 12px 10px 34px rgba(255, 255, 255, 0.14),
+    0 0 70px rgba(122, 184, 255, 0.45);
+  animation: gsq-fallback-spin 80s linear infinite;
+}
+@keyframes gsq-fallback-spin { to { background-position: 200% 50%; } }
+@media (prefers-reduced-motion: reduce) { .gsq-globe-fallback { animation: none; } }

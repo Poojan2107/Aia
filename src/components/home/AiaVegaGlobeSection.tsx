@@ -127,6 +127,8 @@ export function AiaVegaGlobeSection() {
   const worldRef = useRef<GlobeInstance | null>(null);
   const [stage, setStage] = useState<Stage>(0);
   const [ready, setReady] = useState(false);
+  // No WebGL (old GPU, blocklisted driver, hardware acceleration off) or a failed load: CSS globe instead.
+  const [failed, setFailed] = useState(false);
   const indiaRef = useRef<{ features: object[]; lift: number }>({ features: [], lift: 0 });
   const viewRef = useRef<{ key: string; timer: number }>({ key: "", timer: 0 });
   const scrubbed = useSyncExternalStore(subscribeScrub, getScrub, () => false);
@@ -148,7 +150,33 @@ export function AiaVegaGlobeSection() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-    (async () => {
+    const hasWebGL = (() => {
+      try {
+        const c = document.createElement("canvas");
+        return Boolean(c.getContext("webgl2") || c.getContext("webgl"));
+      } catch {
+        return false;
+      }
+    })();
+    if (!hasWebGL) {
+      queueMicrotask(() => setFailed(true));
+      return;
+    }
+
+    // Start the globe once the hero has had its bandwidth: on first scroll, or shortly after load.
+    let started = false;
+    let idle = 0;
+    const begin = () => {
+      if (started || disposed) return;
+      started = true;
+      window.removeEventListener("scroll", begin);
+      window.removeEventListener("load", onLoad);
+      boot();
+    };
+    const onLoad = () => {
+      idle = window.setTimeout(begin, 1200);
+    };
+    const boot = () => (async () => {
       const [{ default: Globe }, THREE] = await Promise.all([import("globe.gl"), import("three")]);
       if (disposed) return;
 
@@ -163,6 +191,9 @@ export function AiaVegaGlobeSection() {
         .height(host.clientHeight)
         .pointOfView({ lat: VIEW_INDIA.lat, lng: VIEW_INDIA.lng + 40, altitude: 2.4 }, 0);
       worldRef.current = world;
+      // Weak machines: fewer pixels to shade keeps scrolling smooth.
+      const weak = (navigator.hardwareConcurrency || 4) <= 4;
+      world.renderer().setPixelRatio(Math.min(window.devicePixelRatio || 1, weak ? 1.25 : 2));
 
       const controls = world.controls();
       controls.enableZoom = false;
@@ -172,6 +203,7 @@ export function AiaVegaGlobeSection() {
       controls.autoRotateSpeed = 0.35;
       const canvas = host.querySelector("canvas");
       if (canvas && !finePointer) canvas.style.touchAction = "pan-y";
+      canvas?.addEventListener("webglcontextlost", () => setFailed(true), { once: true });
 
       // Drifting cloud shell, as in the globe.gl clouds example.
       const radius = world.getGlobeRadius();
@@ -256,12 +288,20 @@ export function AiaVegaGlobeSection() {
       });
       ro.observe(host);
       setReady(true);
-    })();
+    })().catch(() => {
+      if (!disposed) setFailed(true);
+    });
+    window.addEventListener("scroll", begin, { passive: true });
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad);
 
 
     const view = viewRef.current;
     return () => {
       disposed = true;
+      window.clearTimeout(idle);
+      window.removeEventListener("scroll", begin);
+      window.removeEventListener("load", onLoad);
       cancelAnimationFrame(raf);
       window.clearTimeout(view.timer);
       io?.disconnect();
@@ -483,8 +523,9 @@ export function AiaVegaGlobeSection() {
           </header>
 
           <div className="gsq-main">
-          <div className="gsq-globe">
+          <div className={failed ? "gsq-globe is-fallback" : "gsq-globe"}>
             <span aria-hidden className="gsq-globe-glow" />
+            {failed && <span aria-hidden className="gsq-globe-fallback" />}
             <div
               ref={globeHostRef}
               className="gsq-globe-canvas"

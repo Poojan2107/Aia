@@ -87,7 +87,6 @@ export function AmbientFilm({
           loop
           playsInline
           preload="metadata"
-          poster={poster}
           src={src}
           onPlaying={() => setReady(true)}
           aria-hidden

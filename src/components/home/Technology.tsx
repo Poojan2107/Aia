@@ -3,6 +3,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { href } from "@/lib/routes";
+import { LazyVideo } from "@/components/ui/LazyVideo";
 
 /**
  * Technology and R&D — Figma "AIA Signature Blue" / 01Homepage.
@@ -15,7 +16,7 @@ const capabilities = [
     kicker: "01/Understanding wear before it happens.",
     title: "Discrete Element Method (DEM)",
     body: "We simulate charge motion inside the mill to study grinding media trajectories. Using DEM (Discrete Element Method), we analyze impact energy, wear patterns, and throughput (SPH) to optimize liner designs that improve grinding efficiency, extend liner wear life, and enhance overall mill performance.",
-    video: "/videos/DEM.mov",
+    video: "/videos/DEM.mp4",
     poster: "/images/design/tech-dem.jpg",
     alt: "DEM simulation of charge motion inside a mill",
   },
@@ -73,19 +74,12 @@ export function Technology() {
         {capabilities.map((cap, i) => (
           <ScrollReveal key={cap.id} as="article" className={`tech2-row ${i % 2 === 1 ? "is-flipped" : ""}`}>
             <div className="tech2-media rounded-[1.25rem]">
-              <video
+              <LazyVideo
                 src={cap.video}
                 poster={cap.poster}
-                aria-label={cap.alt}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
+                label={cap.alt}
                 className="absolute inset-0 h-full w-full object-cover rounded-[1.25rem]"
-              >
-                <source src={cap.video} type={cap.video.endsWith(".mov") ? "video/quicktime" : "video/mp4"} />
-              </video>
+              />
             </div>
             <div className="tech2-text">
               <p className="tech2-kicker">
