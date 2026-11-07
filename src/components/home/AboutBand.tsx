@@ -135,7 +135,7 @@ export function AboutBand() {
             <div ref={plateRef} className="about2-plate">
               <AmbientFilm
                 src={media.about}
-                poster="/images/plant-aerial-clean.jpg"
+                poster="/images/what-we-solve-poster.webp"
                 sizes="100vw"
                 coverBleed
               />
