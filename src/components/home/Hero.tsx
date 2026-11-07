@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { media } from "@/data/media";
 
 /** Dun & Bradstreet ESG Registered seal (Figma 02Homepage, bottom-right of the hero). */
 const ESG_BADGE = "/images/design/esg-dnb-badge.png";
@@ -18,12 +17,13 @@ export interface HeroBanner {
 }
 
 /**
- * 5 Banners based on official 13Utopia client data:
- * 1: Engineering Excellence (Banner 1)
- * 2: Brand Heritage ("We Engineer For The Hours You Can't Afford To Lose")
- * 3: Services ("Optimize, Maintain, Excel - End to End support", Banner 3)
- * 4: Manufacturing & Metallurgy (450,000 MT capacity, 6 clusters)
- * 5: Logistics ("A global Network delivering to 120+ countries", Banner 5)
+ * 5 Banners using the exact client video assets from:
+ * DATA/13Utopia/All Pages/Home Page/Banners:
+ * 1: Video - Engineering Excellence Banner.mp4
+ * 2: Video - NGDS Banner.mp4
+ * 3: Video - Services Banner.mp4
+ * 4: Video - Manufacuring Banner.mp4
+ * 5: Video - Logistics Banner.mp4
  */
 const BANNERS: HeroBanner[] = [
   {
@@ -35,21 +35,20 @@ const BANNERS: HeroBanner[] = [
     ],
     ctaText: "Explore solutions by industry",
     ctaHref: "#solutions",
-    video: "/videos/corporate.mp4",
-    poster: "/images/design/hero-banner-1.jpg",
+    video: "/videos/banners/hero-engineering-excellence.mp4",
+    poster: "/images/design/hero-banner-engineering.jpg",
   },
   {
-    id: "hours-you-cant-lose",
-    tagline: ["WE ENGINEER FOR", "THE HOURS YOU", "CAN'T AFFORD TO LOSE."],
+    id: "ngds",
+    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM (NGDS)."],
     lede: [
-      "Advanced wear solutions engineered to extend component",
-      "life, improve equipment availability and keep critical",
-      "operations performing.",
+      "Proprietary mill discharge design eliminating slurry pooling,",
+      "maximizing grinding throughput, and dramatically extending liner life.",
     ],
     ctaText: "Explore wear solutions",
     ctaHref: "#materials",
-    video: media.hero,
-    poster: "/images/design/hero-mill-hall.jpg",
+    video: "/videos/banners/hero-ngds.mp4",
+    poster: "/images/design/hero-banner-ngds.jpg",
   },
   {
     id: "services-support",
@@ -60,20 +59,20 @@ const BANNERS: HeroBanner[] = [
     ],
     ctaText: "Explore services & support",
     ctaHref: "#services",
-    video: "/videos/what-we-solve.mp4",
-    poster: "/images/design/hero-banner-3.jpg",
+    video: "/videos/banners/hero-services.mp4",
+    poster: "/images/design/hero-banner-services.jpg",
   },
   {
-    id: "capacity-clusters",
-    tagline: ["450,000 MT CAPACITY.", "6 GLOBAL CLUSTERS."],
+    id: "manufacturing-capacity",
+    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING CLUSTERS."],
     lede: [
       "World-scale state-of-the-art foundries, ISO-certified manufacturing,",
-      "and dedicated metallurgical research serving 4,000+ operations globally.",
+      "and automated heat treatment serving 4,000+ operations globally.",
     ],
     ctaText: "Explore our technology",
     ctaHref: "/technology-infrastructure",
-    video: "/videos/mill.mp4",
-    poster: "/images/design/hero-banner-4.jpg",
+    video: "/videos/banners/hero-manufacturing.mp4",
+    poster: "/images/design/hero-banner-manufacturing.jpg",
   },
   {
     id: "global-logistics",
@@ -84,8 +83,8 @@ const BANNERS: HeroBanner[] = [
     ],
     ctaText: "Explore global presence",
     ctaHref: "/global-presence",
-    video: "/videos/banner-logistics.mp4",
-    poster: "/images/design/hero-banner-5.jpg",
+    video: "/videos/banners/hero-logistics.mp4",
+    poster: "/images/design/hero-banner-logistics.jpg",
   },
 ];
 
