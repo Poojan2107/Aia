@@ -5320,8 +5320,11 @@ html.lenis body { height: auto; }
   margin-top: 0.5rem;
   aspect-ratio: 1;
   width: min(100vw, 600px);
+  container-type: inline-size;
 }
 .gsq-globe-canvas { position: absolute; inset: 0; }
+/* globe.gl clips its HTML tag layer to the canvas box; let tags hang past the edge. */
+.gsq-globe-canvas > div { overflow: visible !important; }
 .gsq-globe-canvas canvas { display: block; outline: none; }
 .gsq-globe-glow {
   position: absolute;
@@ -5378,7 +5381,8 @@ html.lenis body { height: auto; }
   border: 1px solid rgba(4, 29, 44, 0.08);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.97);
-  padding: 6px 11px 6px 7px;
+  padding: clamp(4px, 1cqw, 6px) clamp(7px, 1.8cqw, 11px) clamp(4px, 1cqw, 6px) clamp(5px, 1.2cqw, 7px);
+  gap: clamp(5px, 1.3cqw, 8px);
   white-space: nowrap;
   box-shadow: 0 10px 28px rgba(4, 29, 44, 0.16);
   animation: gsq-card-in 700ms cubic-bezier(0.34, 1.56, 0.64, 1) 180ms both;
@@ -5386,20 +5390,20 @@ html.lenis body { height: auto; }
 /* Tags near the top of the globe hang below their point instead. */
 .gsq-tag.is-below .gsq-tag-stem { top: 0; bottom: auto; transform-origin: top; background: linear-gradient(0deg, rgba(4, 29, 44, 0.55), rgba(4, 29, 44, 0)); }
 .gsq-tag.is-below .gsq-tag-card { top: 30px; bottom: auto; }
-.gsq-tag-badge { height: 18px; width: auto; }
+.gsq-tag-badge { height: clamp(13px, 3cqw, 18px); width: auto; }
 .gsq-tag-text { display: flex; flex-direction: column; line-height: 1.15; }
-.gsq-tag-text strong { font-family: var(--font-haas); font-size: 12.5px; font-weight: 500; color: var(--aia-navy); }
-.gsq-tag-text small { font-family: var(--font-sinteca); font-size: 9.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #6b7280; }
+.gsq-tag-text strong { font-family: var(--font-haas); font-size: clamp(10px, 2.1cqw, 12.5px); font-weight: 500; color: var(--aia-navy); }
+.gsq-tag-text small { font-family: var(--font-sinteca); font-size: clamp(8px, 1.6cqw, 9.5px); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #6b7280; }
 .gsq-tag.is-aia .gsq-tag-card {
   border-color: rgba(255, 170, 40, 0.6);
   background: linear-gradient(135deg, #fff 0%, #fff6e3 100%);
   box-shadow: 0 12px 32px rgba(255, 150, 20, 0.26);
   bottom: 40px;
-  padding: 8px 13px 8px 9px;
+  padding: clamp(5px, 1.35cqw, 8px) clamp(9px, 2.2cqw, 13px) clamp(5px, 1.35cqw, 8px) clamp(6px, 1.5cqw, 9px);
 }
 .gsq-tag.is-aia .gsq-tag-stem { height: 40px; background: linear-gradient(180deg, #ffa21f, rgba(255, 162, 31, 0)); }
-.gsq-tag.is-aia .gsq-tag-badge { height: 22px; }
-.gsq-tag.is-aia .gsq-tag-text strong { font-size: 14px; }
+.gsq-tag.is-aia .gsq-tag-badge { height: clamp(16px, 3.7cqw, 22px); }
+.gsq-tag.is-aia .gsq-tag-text strong { font-size: clamp(11px, 2.35cqw, 14px); }
 @keyframes gsq-stem-in { from { transform: scaleY(0); } }
 @keyframes gsq-card-in { from { opacity: 0; transform: translate(-50%, 10px) scale(0.85); } }
 
@@ -5436,6 +5440,7 @@ html.lenis body { height: auto; }
     display: grid;
     height: 100%;
     min-height: 0;
+    container-type: size;
     grid-template-columns: clamp(240px, 22vw, 420px) minmax(0, 1fr) clamp(240px, 22vw, 420px);
     grid-template-rows: minmax(0, 1fr);
     align-items: center;
@@ -5445,9 +5450,10 @@ html.lenis body { height: auto; }
     justify-self: center;
     align-self: center;
     margin: 0;
-    height: 100%;
-    max-height: 100%;
-    width: auto;
+    /* Always square: globe.gl fits the sphere to the box height, so a box taller than wide clipped its sides. */
+    width: min(100%, 100cqh);
+    height: auto;
+    max-height: none;
     max-width: 100%;
     opacity: var(--g-globe);
     transform: translateY(calc((1 - var(--g-globe)) * 55vh)) scale(calc(0.62 + var(--g-globe) * 0.38));
@@ -5809,6 +5815,44 @@ html.lenis body { height: auto; }
 /* Home-only lock: links to other pages look the same but do nothing. */
 a[data-home-only="disabled"] {
   cursor: default;
+}
+
+/* ==========================================================================
+   Phone & tablet polish (no Figma mobile frames; derived from the 1920 design).
+   Phones keep the fixed assistant chip bottom-right (52px, 1rem inset), so
+   bottom-anchored content clears a 52 + 16 + 12 = 80px zone.
+   ========================================================================== */
+@media (max-width: 767px) {
+  /* Hero: shorter headline wrap; ESG seal moves left, away from the chip. */
+  .hero-headline.ft { --ft-floor: 0.4; }
+  .hero-esg { right: auto; left: max(1rem, env(safe-area-inset-left)); }
+
+  /* Industries: title above the copy (side-by-side overlapped), thumbs above the chip. */
+  .inds-row { flex-direction: column; flex-wrap: nowrap; gap: 0.75rem; }
+  .inds-title-window { flex: none; width: 100%; }
+  .inds-thumbs { bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 64px); }
+
+  /* About: CTA above the chip zone; copy follows it. */
+  .about2-cta { bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 64px); }
+  .about2-copy { bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 64px + 48px + 1.25rem); }
+  .about2-copy.ft { --ft-floor: 0.78; }
+
+  /* Footer: last row clears the chip. */
+  .foot-bottom { padding-bottom: calc(1.75rem + 64px); }
+}
+
+/* Short phones: the industry shortcuts and the About copy (it repeats What we solve) don't fit,
+   and the hero headline steps down so the lockup clears both the header and the chip. */
+@media (max-width: 767px) and (max-height: 680px) {
+  .hero-headline.ft { --ft-floor: 0.34; }
+  .inds-thumbs { display: none; }
+  .about2-copy { display: none; }
+}
+
+@media (max-width: 1023px) {
+  /* Footer links: 32px+ tap targets. */
+  .foot-links { gap: 0; }
+  .foot-links a, .foot-address a, .foot-legal a { display: inline-block; padding-block: 6px; }
 }
 
 /* ==========================================================================

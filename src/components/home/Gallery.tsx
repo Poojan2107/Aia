@@ -186,7 +186,7 @@ export function Gallery() {
                         {card.title}
                       </p>
                       {card.caption ? (
-                        <p className="mt-2 text-[10px] uppercase tracking-[0.16em] text-white/70">
+                        <p className="mt-2 text-[12px] uppercase tracking-[0.12em] text-white/70">
                           {card.caption}
                         </p>
                       ) : null}
@@ -235,7 +235,7 @@ export function Gallery() {
                         : (Math.sign(-raw) as 1 | -1);
                   goTo(i, dir);
                 }}
-                className="size-1.5 rounded-full transition-[background-color] duration-300"
+                className="relative size-1.5 rounded-full transition-[background-color] duration-300 before:absolute before:-inset-[9px] before:content-['']"
                 style={{
                   backgroundColor: `color-mix(in srgb, var(--aia-accent) ${accent}%, transparent)`,
                 }}
