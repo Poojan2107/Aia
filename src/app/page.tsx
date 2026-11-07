@@ -43,6 +43,7 @@ export default function HomePage() {
         <Faq />
         <Insights />
       </main>
+      <div className="closure-sky" aria-hidden />
       <SiteFooter />
       <AssistChip />
     </>

@@ -259,8 +259,6 @@ export function Hero() {
         className="hero-esg"
       />
 
-      {/* Rising atmosphere (see the effect above); decorative only. */}
-      <div className="hero-atmos" aria-hidden />
     </section>
     </div>
   );

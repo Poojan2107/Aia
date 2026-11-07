@@ -5856,69 +5856,158 @@ a[data-home-only="disabled"] {
 }
 
 /* ==========================================================================
-   Hero atmosphere exit (feat/hero-atmosphere). The hero is sticky inside a
-   taller track; --atmos (0 → 1, set from scroll in Hero.tsx) raises a 300svh
-   gradient from below the fold until only its #f5f5f5 tail fills the screen,
-   matching the globe section that follows.
+   Atmosphere (feat/hero-atmosphere), after unitedcarriers.com.
+   Opening: the hero is pinned for one screen while the globe section slides up
+   over it; the section's top is a curved sky (transparent → navy → AIA blue →
+   bright core) that rises as --g-sky goes 0 → 1, resolving into #f5f5f5 just as
+   the heading arrives. Closure: the same curve reversed above the footer.
    ========================================================================== */
 .hero-track {
   position: relative;
-  height: 190svh;
+  height: 200svh;
   --atmos: 0;
 }
 .hero-track > .hero-viewport {
   position: sticky;
   top: 0;
 }
-.hero-atmos {
+/* Copy lifts and dissolves as the sky covers it; the film dims slightly. */
+.hero-track .hero-copy {
+  opacity: clamp(0, calc(1 - var(--atmos) * 1.7), 1);
+  transform: translate3d(0, calc(var(--atmos) * -120px), 0);
+  filter: blur(calc(var(--atmos) * 10px));
+}
+.hero-track .hero-pager,
+.hero-track .hero-esg {
+  opacity: clamp(0, calc(1 - var(--atmos) * 2.5), 1);
+}
+.hero-track .hero-film {
+  filter: brightness(calc(0.84 - var(--atmos) * 0.35)) contrast(1.04);
+}
+
+/* Globe section rides over the pinned hero; its own sky replaces the flat grey. */
+.gsq {
+  z-index: 3;
+  margin-top: -100svh;
+  background: transparent;
+}
+.gsq-stage {
+  background: transparent;
+  --g-sky: 1;
+}
+.gsq-sky {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
-  z-index: 30;
-  height: 300svh;
+  z-index: -2;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(4, 29, 44, 0) 0%,
-    rgba(4, 29, 44, 0.6) 4%,
-    #041d2c 10%,
-    #0b2a63 19%,
-    #0a4fd0 28%,
-    #006eff 34%,
-    #4d9dff 42%,
-    #a6cdff 50%,
-    #e2eeff 58%,
-    #f5f5f5 66%,
-    #f5f5f5 100%
+}
+@media (min-width: 1024px) {
+  /* 3 stage-heights tall; slides up two of them as --g-sky goes 0 → 1, so the
+     stage ends fully inside the #f5f5f5 core. Outside the ellipse is transparent,
+     which keeps the top corners open onto the hero, like a horizon. */
+  .gsq-sky {
+    height: 300%;
+    background: radial-gradient(
+      125% 100% at 50% 100%,
+      #f5f5f5 0%,
+      #f5f5f5 58%,
+      #e3eeff 62.5%,
+      #b3d4ff 66.5%,
+      #5aa2ff 70.5%,
+      #006eff 74.5%,
+      #0a4fd0 79%,
+      #0b2a63 85%,
+      #041d2c 92%,
+      rgba(4, 29, 44, 0) 100%
+    );
+    transform: translate3d(0, calc(var(--g-sky) * -66.6667%), 0);
+    will-change: transform;
+  }
+  .gsq-light { opacity: var(--g-head); }
+}
+@media (max-width: 1023px) {
+  /* Not pinned: a fixed curved band at the top of the section, heading on its core. */
+  .gsq-sky {
+    height: 95svh;
+    background: radial-gradient(
+      140% 100% at 50% 100%,
+      #f5f5f5 0%,
+      #f5f5f5 42%,
+      #e3eeff 47%,
+      #b3d4ff 54%,
+      #5aa2ff 61%,
+      #006eff 67%,
+      #0a4fd0 74%,
+      #0b2a63 82%,
+      #041d2c 90%,
+      rgba(4, 29, 44, 0) 100%
+    );
+  }
+  .gsq-stage {
+    padding-top: 72svh;
+    background: linear-gradient(180deg, transparent 0, transparent 90svh, #f5f5f5 90svh);
+  }
+  /* The pale diagonal highlights would cut across the dark sky band as hard wedges. */
+  .gsq-light { display: none; }
+}
+
+/* Closure: white page → dark dome rising from the bottom → the footer. */
+.closure-sky {
+  position: relative;
+  height: 70svh;
+  overflow: hidden;
+  background: #ffffff;
+}
+.closure-sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  background: radial-gradient(
+    160% 100% at 50% 100%,
+    #0c1e30 0%,
+    #0f2338 34%,
+    #0b2a63 44%,
+    #0a4fd0 54%,
+    #006eff 62%,
+    #5aa2ff 70%,
+    #b3d4ff 78%,
+    #e3eeff 86%,
+    #ffffff 94%
   );
-  transform: translate3d(0, calc(100svh - var(--atmos) * 300svh), 0);
-  will-change: transform;
 }
-/* Copy dissolves upward as the atmosphere reaches it. */
-.hero-track .hero-copy {
-  opacity: clamp(0, calc(1 - var(--atmos) * 2.4), 1);
-  transform: translate3d(0, calc(var(--atmos) * -90px), 0);
-  filter: blur(calc(var(--atmos) * 12px));
+/* Footer top melts into the closure's dark core (no seam over the footer photo). */
+.foot::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: -1;
+  height: min(42%, 520px);
+  pointer-events: none;
+  background: linear-gradient(180deg, #0d1f33 0%, rgba(13, 31, 51, 0.6) 45%, rgba(13, 31, 51, 0) 100%);
 }
-.hero-track .hero-pager,
-.hero-track .hero-esg {
-  opacity: clamp(0, calc(1 - var(--atmos) * 3.2), 1);
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The dome swells up as the band scrolls in (no JS; static where unsupported). */
+    .closure-sky::before {
+      animation: closure-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 55%;
+    }
+  }
 }
-@media (max-width: 767px) {
-  .hero-track { height: 170svh; }
+@keyframes closure-rise {
+  from { transform: scaleY(0.45); }
+  to { transform: scaleY(1); }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  /* No pinning: a static atmosphere band under the hero instead. */
+  /* No pinning or overlap: the hero ends, the sky band reads as a static transition. */
   .hero-track { height: auto; }
   .hero-track > .hero-viewport { position: relative; }
-  .hero-atmos { display: none; }
-  .hero-track::after {
-    content: "";
-    display: block;
-    height: 45svh;
-    background: linear-gradient(180deg, #041d2c 0%, #0a4fd0 30%, #006eff 42%, #a6cdff 70%, #f5f5f5 100%);
-  }
+  .gsq { margin-top: 0; }
 }
 
 /* ==========================================================================

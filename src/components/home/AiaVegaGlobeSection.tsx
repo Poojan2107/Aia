@@ -339,17 +339,23 @@ export function AiaVegaGlobeSection() {
       raf = 0;
       const r = track.getBoundingClientRect();
       const range = Math.max(1, r.height - window.innerHeight);
-      // Start as soon as the section enters, so the heading and globe rise straight
-      // out of the hero's atmosphere gradient instead of after an empty grey screen.
+      // The section slides up over the pinned hero (progress starts the moment it enters),
+      // carrying the sky's soft navy edge with it. Once it pins (pinP), the curved dome
+      // rises through the screen; the heading arrives as it turns light, then the globe,
+      // the columns and the network.
       const lead = window.innerHeight;
       const p = clamp01((-r.top + lead) / (range + lead));
-      stageEl.style.setProperty("--g-head", easeOut(clamp01(p / 0.14)).toFixed(3));
-      stageEl.style.setProperty("--g-globe", easeOut(clamp01((p - 0.1) / 0.3)).toFixed(3));
-      stageEl.style.setProperty("--g-cols", easeOut(clamp01((p - 0.38) / 0.2)).toFixed(3));
-      stageEl.style.setProperty("--g-net", clamp01((p - 0.58) / 0.2).toFixed(3));
+      const pinP = lead / (range + lead);
+      const after = (start: number, span: number) => clamp01((p - pinP - start) / span);
+      stageEl.style.setProperty("--g-sky", after(0, 0.17).toFixed(4));
+      stageEl.style.setProperty("--g-head", easeOut(after(0.1, 0.1)).toFixed(3));
+      stageEl.style.setProperty("--g-globe", easeOut(after(0.14, 0.17)).toFixed(3));
+      stageEl.style.setProperty("--g-cols", easeOut(after(0.27, 0.14)).toFixed(3));
+      stageEl.style.setProperty("--g-net", after(0.41, 0.16).toFixed(3));
       // Hysteresis: a stage only drops back once the scroll is clearly below its threshold,
       // so tiny wheel/trackpad jitter at a boundary can't replay the globe's transitions.
-      const at = (q: number) => (q > 0.58 ? 4 : q > 0.38 ? 3 : q > 0.12 ? 2 : q > 0.01 ? 1 : 0) as Stage;
+      const q0 = pinP;
+      const at = (q: number) => (q > q0 + 0.41 ? 4 : q > q0 + 0.27 ? 3 : q > q0 + 0.14 ? 2 : q > q0 + 0.01 ? 1 : 0) as Stage;
       const forward = at(p);
       const next: Stage = forward >= last ? forward : Math.max(forward, at(p + 0.03)) as Stage;
       if (next !== last) {
@@ -374,6 +380,8 @@ export function AiaVegaGlobeSection() {
     <section id="collaboration" className="gsq" aria-labelledby="gsq-heading">
       <div ref={trackRef} className="gsq-track">
         <div ref={stageRef} className={`gsq-stage is-s${stage} ${scrubbed ? "is-scrubbed" : ""}`}>
+          {/* Curved atmosphere: rises over the pinned hero and resolves into the section's grey. */}
+          <span aria-hidden className="gsq-sky" />
           <span aria-hidden className="gsq-light gsq-light-a" />
           <span aria-hidden className="gsq-light gsq-light-b" />
 
