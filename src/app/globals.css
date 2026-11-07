@@ -362,7 +362,7 @@ video.film-cover {
   font-family: var(--font-haas);
   font-weight: 700;
   font-style: normal;
-  font-size: clamp(1.85rem, 3.4vw, 4.125rem);
+  font-size: clamp(1.65rem, 2.75vw, 3.5rem);
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-transform: uppercase;
@@ -478,12 +478,12 @@ video.film-cover {
 
   .hero-headline {
     flex: 0 1 auto;
-    max-width: min(52rem, 48vw);
+    max-width: min(62rem, 58vw);
     height: auto;
   }
 
   .hero-headline span {
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .hero-rail {
@@ -2460,7 +2460,7 @@ button.solve-cta > span:last-child {
   max-width: min(54rem, 100%); /* 864 */
   aspect-ratio: 864 / 486;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 1.25rem;
   background: #d5d8da;
 }
 

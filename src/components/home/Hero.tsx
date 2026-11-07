@@ -39,7 +39,7 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "manufacturing-capacity",
-    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING CLUSTERS."],
+    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING", "CLUSTERS."],
     lede: [
       "World-scale state-of-the-art foundries, ISO-certified manufacturing,",
       "and automated heat treatment serving 4,000+ operations globally.",

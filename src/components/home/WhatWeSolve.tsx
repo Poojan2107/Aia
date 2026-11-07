@@ -114,11 +114,12 @@ export function WhatWeSolve() {
       const insetY = (stageH - h / s) / 2;
       const tx = x + w / 2 - stageW / 2;
       const ty = y + h / 2 - stageH / 2;
-      const key = `${tx.toFixed(1)}|${ty.toFixed(1)}|${s.toFixed(4)}|${insetX.toFixed(1)}|${insetY.toFixed(1)}`;
+      const r = Math.round(lerp(20, 0, t));
+      const key = `${tx.toFixed(1)}|${ty.toFixed(1)}|${s.toFixed(4)}|${insetX.toFixed(1)}|${insetY.toFixed(1)}|${r}`;
       if (key !== lastKey) {
         lastKey = key;
         fly.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0) scale(${s.toFixed(5)})`;
-        fly.style.clipPath = t >= 1 ? "none" : `inset(${insetY.toFixed(2)}px ${insetX.toFixed(2)}px)`;
+        fly.style.clipPath = t >= 1 ? "none" : `inset(${insetY.toFixed(2)}px ${insetX.toFixed(2)}px round ${r}px)`;
       }
       fly.style.opacity = "1";
 
@@ -169,11 +170,11 @@ export function WhatWeSolve() {
             </h2>
           </div>
           <SolveAside />
-          <div className="solve-film">
+          <div className="solve-film rounded-[1.25rem]">
             <AmbientFilm
               src={media.whatWeSolve}
               poster={PLATE}
-              className="absolute inset-0"
+              className="absolute inset-0 rounded-[1.25rem]"
               position="center center"
               sizes="(max-width: 1024px) 100vw, 1002px"
             />
@@ -214,13 +215,13 @@ export function WhatWeSolve() {
             </div>
             <SolveAside />
             {/* Slot sizes the film; poster shows until the fly layer covers it */}
-            <div ref={slotRef} className="solve-film solve-film-slot" aria-hidden>
+            <div ref={slotRef} className="solve-film solve-film-slot rounded-[1.25rem]" aria-hidden>
               <Image
                 src={PLATE}
                 alt=""
                 fill
                 sizes="(max-width: 1024px) 100vw, 1002px"
-                className="object-cover object-center"
+                className="object-cover object-center rounded-[1.25rem]"
               />
             </div>
           </div>
