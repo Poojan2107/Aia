@@ -88,6 +88,7 @@ const BANNERS: HeroBanner[] = [
 ];
 
 export function Hero() {
+  const trackRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
   const [banner, setBanner] = useState(0);
@@ -140,7 +141,39 @@ export function Hero() {
     setBanner(idx);
   }, []);
 
+  // Atmosphere exit: the hero holds while a navy → AIA blue → sky → #f5f5f5 gradient rises
+  // over it. Scroll progress through the track drives one CSS variable (--atmos, 0 → 1).
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let last = -1;
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const range = Math.max(1, rect.height - window.innerHeight);
+      const p = Math.min(1, Math.max(0, -rect.top / range));
+      const rounded = Math.round(p * 1000) / 1000;
+      if (rounded === last) return;
+      last = rounded;
+      track.style.setProperty("--atmos", String(rounded));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
+    <div ref={trackRef} className="hero-track">
     <section
       className="hero-viewport relative isolate w-full bg-black"
       aria-label="Hero"
@@ -225,6 +258,10 @@ export function Hero() {
         height={322}
         className="hero-esg"
       />
+
+      {/* Rising atmosphere (see the effect above); decorative only. */}
+      <div className="hero-atmos" aria-hidden />
     </section>
+    </div>
   );
 }

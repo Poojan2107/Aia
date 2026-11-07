@@ -5856,6 +5856,72 @@ a[data-home-only="disabled"] {
 }
 
 /* ==========================================================================
+   Hero atmosphere exit (feat/hero-atmosphere). The hero is sticky inside a
+   taller track; --atmos (0 → 1, set from scroll in Hero.tsx) raises a 300svh
+   gradient from below the fold until only its #f5f5f5 tail fills the screen,
+   matching the globe section that follows.
+   ========================================================================== */
+.hero-track {
+  position: relative;
+  height: 190svh;
+  --atmos: 0;
+}
+.hero-track > .hero-viewport {
+  position: sticky;
+  top: 0;
+}
+.hero-atmos {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 30;
+  height: 300svh;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 29, 44, 0) 0%,
+    rgba(4, 29, 44, 0.6) 4%,
+    #041d2c 10%,
+    #0b2a63 19%,
+    #0a4fd0 28%,
+    #006eff 34%,
+    #4d9dff 42%,
+    #a6cdff 50%,
+    #e2eeff 58%,
+    #f5f5f5 66%,
+    #f5f5f5 100%
+  );
+  transform: translate3d(0, calc(100svh - var(--atmos) * 300svh), 0);
+  will-change: transform;
+}
+/* Copy dissolves upward as the atmosphere reaches it. */
+.hero-track .hero-copy {
+  opacity: clamp(0, calc(1 - var(--atmos) * 2.4), 1);
+  transform: translate3d(0, calc(var(--atmos) * -90px), 0);
+  filter: blur(calc(var(--atmos) * 12px));
+}
+.hero-track .hero-pager,
+.hero-track .hero-esg {
+  opacity: clamp(0, calc(1 - var(--atmos) * 3.2), 1);
+}
+@media (max-width: 767px) {
+  .hero-track { height: 170svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No pinning: a static atmosphere band under the hero instead. */
+  .hero-track { height: auto; }
+  .hero-track > .hero-viewport { position: relative; }
+  .hero-atmos { display: none; }
+  .hero-track::after {
+    content: "";
+    display: block;
+    height: 45svh;
+    background: linear-gradient(180deg, #041d2c 0%, #0a4fd0 30%, #006eff 42%, #a6cdff 70%, #f5f5f5 100%);
+  }
+}
+
+/* ==========================================================================
  Figma type system: "02Homepage - FINAL EDITION" (771:2487), docs/figma-typography.json.
  Every value is exact at a 1920px viewport and scales with the viewport below it
  (never under the per-size floor). Line height is the Figma ratio, tracking in em.
