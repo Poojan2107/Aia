@@ -5402,6 +5402,12 @@ html.lenis body { height: auto; }
   padding: clamp(5px, 1.35cqw, 8px) clamp(9px, 2.2cqw, 13px) clamp(5px, 1.35cqw, 8px) clamp(6px, 1.5cqw, 9px);
 }
 .gsq-tag.is-aia .gsq-tag-stem { height: 40px; background: linear-gradient(180deg, #ffa21f, rgba(255, 162, 31, 0)); }
+/* Small globes (phones, 1024 laptops): label only the Ahmedabad HQ; every other
+   location keeps its dot (gold = manufacturing, blue = service). Eight tags on a
+   ~340px globe collide and run into the text columns. */
+@container (max-width: 460px) {
+  .gsq-tag:not(.is-hq) { display: none; }
+}
 .gsq-tag.is-aia .gsq-tag-badge { height: clamp(16px, 3.7cqw, 22px); }
 .gsq-tag.is-aia .gsq-tag-text strong { font-size: clamp(11px, 2.35cqw, 14px); }
 @keyframes gsq-stem-in { from { transform: scaleY(0); } }
@@ -5894,6 +5900,7 @@ a[data-home-only="disabled"] {
 .gsq-stage {
   background: transparent;
   --g-sky: 1;
+  --g-logo: 1;
 }
 .gsq-sky {
   position: absolute;
@@ -5926,6 +5933,23 @@ a[data-home-only="disabled"] {
     will-change: transform;
   }
   .gsq-light { opacity: var(--g-head); }
+
+  /* Logo choreography (transforms set from scroll in AiaVegaGlobeSection): the columns
+     stay put so the logos land exactly on their places; only the copy fades in. */
+  .gsq-stage.is-scrubbed .gsq-col-aia,
+  .gsq-stage.is-scrubbed .gsq-col-vega { opacity: 1; transform: none; }
+  .gsq-stage.is-scrubbed .gsq-col > :not(.gsq-logo) {
+    opacity: var(--g-cols);
+    transform: translate3d(0, calc((1 - var(--g-cols)) * 28px), 0);
+  }
+  .gsq-stage.is-scrubbed .gsq-logo {
+    position: relative;
+    z-index: 5;
+    opacity: var(--g-logo);
+    transform-origin: center;
+    will-change: transform;
+  }
+  .gsq-stage.is-scrubbed .gsq-head { z-index: 6; }
 }
 @media (max-width: 1023px) {
   /* Not pinned: a fixed curved band at the top of the section, heading on its core. */
@@ -5953,61 +5977,79 @@ a[data-home-only="disabled"] {
   .gsq-light { display: none; }
 }
 
-/* Closure: white page → dark dome rising from the bottom → the footer. */
-.closure-sky {
-  position: relative;
-  height: 70svh;
-  overflow: hidden;
-  background: #ffffff;
+/* Closure (mirror of the opening): the last section pins at its end while the footer
+   slides up over it for one screen. The footer's top 60svh is a reversed curved sky,
+   transparent → white → AIA-blue arc → navy core, rising with --close (ClosureScene.tsx)
+   until the core meets the footer photo, right above the tagline. */
+.closure-scene { position: relative; padding-bottom: 100svh; }
+.closure-pin { position: sticky; top: var(--pin-top, 0px); z-index: 1; }
+.foot {
+  --zone: 60svh;
+  --close: 0;
+  z-index: 2;
+  margin-top: -100svh;
+  background: linear-gradient(180deg, transparent 0, transparent var(--zone), #05121c var(--zone));
 }
-.closure-sky::before {
+.foot > .foot-bg,
+.foot > .foot-scrim {
+  top: var(--zone) !important;
+  height: calc(100% - var(--zone)) !important;
+}
+.foot-sky {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  height: var(--zone);
+  overflow: hidden;
+  pointer-events: none;
+}
+.foot-sky::before {
   content: "";
   position: absolute;
-  inset: 0;
-  transform-origin: 50% 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 300%;
   background: radial-gradient(
-    160% 100% at 50% 100%,
-    #0c1e30 0%,
-    #0f2338 34%,
-    #0b2a63 44%,
-    #0a4fd0 54%,
-    #006eff 62%,
-    #5aa2ff 70%,
-    #b3d4ff 78%,
+    125% 100% at 50% 100%,
+    #0d1f33 0%,
+    #0d1f33 58%,
+    #0b2a63 63%,
+    #0a4fd0 67.5%,
+    #006eff 71.5%,
+    #5aa2ff 75.5%,
+    #b3d4ff 80%,
     #e3eeff 86%,
-    #ffffff 94%
+    #ffffff 93%,
+    rgba(255, 255, 255, 0) 100%
   );
+  transform: translate3d(0, calc(var(--close) * -66.6667%), 0);
+  will-change: transform;
 }
-/* Footer top melts into the closure's dark core (no seam over the footer photo). */
+.foot-inner { padding-top: calc(var(--zone) + clamp(3rem, 4.3vw, 82px)) !important; }
+/* Footer photo starts below the sky and melts into its navy core. */
 .foot::after {
   content: "";
   position: absolute;
-  inset: 0 0 auto 0;
+  top: var(--zone);
+  left: 0;
+  right: 0;
   z-index: -1;
-  height: min(42%, 520px);
+  height: min(40%, 480px);
   pointer-events: none;
   background: linear-gradient(180deg, #0d1f33 0%, rgba(13, 31, 51, 0.6) 45%, rgba(13, 31, 51, 0) 100%);
 }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* The dome swells up as the band scrolls in (no JS; static where unsupported). */
-    .closure-sky::before {
-      animation: closure-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 55%;
-    }
-  }
-}
-@keyframes closure-rise {
-  from { transform: scaleY(0.45); }
-  to { transform: scaleY(1); }
-}
 
 @media (prefers-reduced-motion: reduce) {
-  /* No pinning or overlap: the hero ends, the sky band reads as a static transition. */
+  /* No pinning or overlap: both skies read as static transitions. */
   .hero-track { height: auto; }
   .hero-track > .hero-viewport { position: relative; }
   .gsq { margin-top: 0; }
+  .closure-scene { padding-bottom: 0; }
+  .closure-pin { position: relative; }
+  .foot { margin-top: 0; --close: 0.62; }
 }
 
 /* ==========================================================================

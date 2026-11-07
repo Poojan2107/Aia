@@ -17,24 +17,40 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
  * Phones and reduced motion get the same beats without the pin.
  */
 
-type Site = { id: string; city: string; country: string; lat: number; lng: number; company: "AIA" | "Vega"; chip?: boolean; below?: boolean };
+type Site = {
+  id: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
+  company: "AIA" | "Vega";
+  /** Contact page legend: gold pin = manufacturing unit, grey pin = service center. */
+  unit: "manufacturing" | "service";
+  /** Second line of the hub tag. */
+  org: string;
+  chip?: boolean;
+  below?: boolean;
+};
 
-const AHMEDABAD: Site = { id: "ahmedabad", city: "Ahmedabad", country: "India", lat: 23.0225, lng: 72.5714, company: "AIA", chip: true };
+/**
+ * Exactly the 12 locations on aiaengineering.com/contact-us (Manufacturing Units + Service
+ * Centers), placed at each office's street address.
+ */
+const AHMEDABAD: Site = { id: "ahmedabad", city: "Ahmedabad", country: "India", lat: 23.0402, lng: 72.5054, company: "AIA", unit: "manufacturing", org: "AIA Engineering · HQ", chip: true };
 
 const SITES: Site[] = [
-  AHMEDABAD,
-  { id: "bengaluru", city: "Bengaluru", country: "India", lat: 12.9716, lng: 77.5946, company: "AIA" },
-  { id: "brentwood", city: "Nashville", country: "USA", lat: 36.0331, lng: -86.7828, company: "Vega", chip: true },
-  { id: "brampton", city: "Toronto", country: "Canada", lat: 43.7315, lng: -79.7624, company: "Vega" },
-  { id: "london", city: "London", country: "UK", lat: 51.5806, lng: -0.3417, company: "Vega", chip: true, below: true },
-  { id: "dubai", city: "Dubai", country: "UAE", lat: 25.2048, lng: 55.2708, company: "Vega" },
-  { id: "johannesburg", city: "Johannesburg", country: "South Africa", lat: -26.2041, lng: 28.0473, company: "Vega", chip: true },
-  { id: "accra", city: "Accra", country: "Ghana", lat: 5.6037, lng: -0.187, company: "Vega" },
-  { id: "santiago", city: "Santiago", country: "Chile", lat: -33.4489, lng: -70.6693, company: "Vega", chip: true },
-  { id: "lima", city: "Lima", country: "Peru", lat: -12.0464, lng: -77.0428, company: "Vega" },
-  { id: "perth", city: "Perth", country: "Australia", lat: -31.9505, lng: 115.8605, company: "Vega", chip: true },
-  { id: "wuxi", city: "Wuxi", country: "China", lat: 31.4912, lng: 120.3119, company: "Vega" },
-  { id: "jakarta", city: "Jakarta", country: "Indonesia", lat: -6.2088, lng: 106.8456, company: "Vega" },
+  AHMEDABAD, // 11-12 Sigma Corporates, Sindhubhavan Road, Bodakdev
+  { id: "accra", city: "Accra", country: "Ghana", lat: 5.6045, lng: -0.1832, company: "AIA", unit: "manufacturing", org: "AIA Ghana · Manufacturing", chip: true }, // Christman House, Kofi Annan Street
+  { id: "wuxi", city: "Wuxi", country: "China", lat: 31.5402, lng: 120.2968, company: "Vega", unit: "manufacturing", org: "Vega Industries · Manufacturing", chip: true }, // Times Building, 655 Hubin Road
+  { id: "brampton", city: "Brampton", country: "Canada", lat: 43.6855, lng: -79.7598, company: "Vega", unit: "service", org: "Vega Industries" }, // 10 Gillingham Drive
+  { id: "brentwood", city: "Brentwood", country: "USA", lat: 36.0236, lng: -86.7869, company: "Vega", unit: "service", org: "Vega Industries", chip: true }, // 330 Franklin Road, TN
+  { id: "lima", city: "Lima", country: "Peru", lat: -12.0966, lng: -77.0294, company: "Vega", unit: "service", org: "Vega Industries" }, // Las Camelias 256, San Isidro
+  { id: "santiago", city: "Santiago", country: "Chile", lat: -33.4087, lng: -70.5715, company: "Vega", unit: "service", org: "Vega Industries", chip: true }, // Av. Apoquindo 5950, Las Condes
+  { id: "harrow", city: "Harrow", country: "UK", lat: 51.5786, lng: -0.3346, company: "Vega", unit: "service", org: "Vega Industries", chip: true, below: true }, // Congress House, 14 Lyon Road
+  { id: "randburg", city: "Randburg", country: "South Africa", lat: -26.0936, lng: 28.0064, company: "Vega", unit: "service", org: "Vega Industries", chip: true }, // Stabilitas House, Kent Avenue
+  { id: "ajman", city: "Ajman", country: "UAE", lat: 25.418, lng: 55.447, company: "Vega", unit: "service", org: "Vega Industries" }, // Ajman Free Zone
+  { id: "jakarta", city: "Jakarta", country: "Indonesia", lat: -6.2238, lng: 106.8226, company: "Vega", unit: "service", org: "Vega Industries" }, // DBS Bank Tower, Jl. Prof. Dr. Satrio
+  { id: "perth", city: "Perth", country: "Australia", lat: -31.9541, lng: 115.853, company: "Vega", unit: "service", org: "Vega Industries", chip: true }, // 267 St Georges Terrace
 ];
 
 /** Each route is drawn twice: a faint trail that grows in, and a bright pulse that travels it. */
@@ -63,12 +79,15 @@ type Stage = 0 | 1 | 2 | 3 | 4;
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+type Box = { cx: number; cy: number; w: number };
 
 /** Hub tag: a stem from the location up to a card with the company badge. */
 function chipElement(site: Site) {
   const isAia = site.company === "AIA";
   const root = document.createElement("div");
-  root.className = `gsq-tag ${isAia ? "is-aia" : "is-vega"}${site.below ? " is-below" : ""}`;
+  root.className = `gsq-tag ${isAia ? "is-aia" : "is-vega"} is-${site.unit}${site.id === "ahmedabad" ? " is-hq" : ""}${site.below ? " is-below" : ""}`;
   const stem = document.createElement("span");
   stem.className = "gsq-tag-stem";
   const card = document.createElement("span");
@@ -80,9 +99,9 @@ function chipElement(site: Site) {
   const text = document.createElement("span");
   text.className = "gsq-tag-text";
   const city = document.createElement("strong");
-  city.textContent = isAia ? `${site.city}, India` : `${site.city}, ${site.country}`;
+  city.textContent = `${site.city}, ${site.country}`;
   const org = document.createElement("small");
-  org.textContent = isAia ? "AIA Engineering · HQ" : "Vega Industries";
+  org.textContent = site.org;
   text.append(city, org);
   card.append(badge, text);
   root.append(stem, card);
@@ -195,9 +214,10 @@ export function AiaVegaGlobeSection() {
         .ringMaxRadius((d) => ((d as Ring).hq ? 7 : 3.2))
         .ringPropagationSpeed((d) => ((d as Ring).hq ? 2.6 : 1.6))
         .ringRepeatPeriod((d) => ((d as Ring).hq ? 1000 : 2200))
-        .pointColor((d) => ((d as Site).company === "AIA" ? "#ffc65c" : "#4da3ff"))
+        // Gold = manufacturing unit, blue = service center (the contact page's legend).
+        .pointColor((d) => ((d as Site).unit === "manufacturing" ? "#ffc65c" : "#4da3ff"))
         .pointAltitude(0.012)
-        .pointRadius((d) => ((d as Site).company === "AIA" ? 0.55 : 0.4))
+        .pointRadius((d) => ((d as Site).unit === "manufacturing" ? 0.55 : 0.4))
         .arcColor((d: object) =>
           (d as Arc).kind === "trail"
             ? ["rgba(255, 186, 70, 0.55)", "rgba(40, 140, 255, 0.45)"]
@@ -333,6 +353,29 @@ export function AiaVegaGlobeSection() {
       };
     }
 
+    // Logo choreography: the AIA and Vega logos meet in the centre of the light, part to
+    // make room for the tagline, then fly to their exact places in the two columns.
+    const logoA = stageEl.querySelector<HTMLElement>(".gsq-logo-aia");
+    const logoV = stageEl.querySelector<HTMLElement>(".gsq-logo-vega");
+    const headEl = stageEl.querySelector<HTMLElement>(".gsq-head");
+    const headingEl = stageEl.querySelector<HTMLElement>(".gsq-heading");
+    let nat: { a: Box; v: Box; head: Box; headW: number; W: number; H: number } | null = null;
+    const measure = () => {
+      if (!logoA || !logoV || !headEl || !headingEl) return;
+      const els = [logoA, logoV, headEl];
+      const prev = els.map((e) => e.style.transform);
+      els.forEach((e) => (e.style.transform = "none"));
+      const s = stageEl.getBoundingClientRect();
+      const box = (el: HTMLElement): Box => {
+        const b = el.getBoundingClientRect();
+        return { cx: b.left - s.left + b.width / 2, cy: b.top - s.top + b.height / 2, w: b.width };
+      };
+      const range = document.createRange();
+      range.selectNodeContents(headingEl);
+      nat = { a: box(logoA), v: box(logoV), head: box(headEl), headW: range.getBoundingClientRect().width, W: s.width, H: s.height };
+      els.forEach((e, i) => (e.style.transform = prev[i]));
+    };
+
     let raf = 0;
     let last: Stage = 0;
     const update = () => {
@@ -347,15 +390,46 @@ export function AiaVegaGlobeSection() {
       const p = clamp01((-r.top + lead) / (range + lead));
       const pinP = lead / (range + lead);
       const after = (start: number, span: number) => clamp01((p - pinP - start) / span);
+      // Beats after the pin: sky 0-.17, logos meet .085-.135, part .135-.185, tagline .165-.215,
+      // logos fly to their columns while the tagline rises to its place .25-.34,
+      // globe .29-.42, column copy .33-.43, network .45-.60.
+      const sLogo = easeOut(after(0.085, 0.05));
+      const sPart = easeInOut(after(0.135, 0.05));
+      const sPlace = easeInOut(after(0.25, 0.09));
       stageEl.style.setProperty("--g-sky", after(0, 0.17).toFixed(4));
-      stageEl.style.setProperty("--g-head", easeOut(after(0.1, 0.1)).toFixed(3));
-      stageEl.style.setProperty("--g-globe", easeOut(after(0.14, 0.17)).toFixed(3));
-      stageEl.style.setProperty("--g-cols", easeOut(after(0.27, 0.14)).toFixed(3));
-      stageEl.style.setProperty("--g-net", after(0.41, 0.16).toFixed(3));
+      stageEl.style.setProperty("--g-logo", sLogo.toFixed(3));
+      stageEl.style.setProperty("--g-head", easeOut(after(0.165, 0.05)).toFixed(3));
+      stageEl.style.setProperty("--g-globe", easeOut(after(0.29, 0.13)).toFixed(3));
+      stageEl.style.setProperty("--g-cols", easeOut(after(0.33, 0.1)).toFixed(3));
+      stageEl.style.setProperty("--g-net", after(0.45, 0.15).toFixed(3));
+
+      const sr = stageEl.getBoundingClientRect();
+      if (!nat || Math.abs(nat.W - sr.width) > 1 || Math.abs(nat.H - sr.height) > 1) measure();
+      if (nat && logoA && logoV && headEl) {
+        const { a, v, head, headW, W, H } = nat;
+        const cx = W / 2;
+        const cy = H * 0.5;
+        const big = 1.8;
+        const scale = lerp(big, 1, sPlace);
+        const gap = 48;
+        // Together (centre) -> parted (room for the tagline) -> their own places.
+        const aTogether = cx - gap / 2 - (a.w * big) / 2;
+        const vTogether = cx + gap / 2 + (v.w * big) / 2;
+        const aParted = cx - headW / 2 - 72 - (a.w * big) / 2;
+        const vParted = cx + headW / 2 + 72 + (v.w * big) / 2;
+        const ax = lerp(lerp(aTogether, aParted, sPart), a.cx, sPlace);
+        const vx = lerp(lerp(vTogether, vParted, sPart), v.cx, sPlace);
+        const ay = lerp(cy, a.cy, sPlace);
+        const vy = lerp(cy, v.cy, sPlace);
+        logoA.style.transform = "translate3d(" + (ax - a.cx).toFixed(1) + "px, " + (ay - a.cy).toFixed(1) + "px, 0) scale(" + scale.toFixed(3) + ")";
+        logoV.style.transform = "translate3d(" + (vx - v.cx).toFixed(1) + "px, " + (vy - v.cy).toFixed(1) + "px, 0) scale(" + scale.toFixed(3) + ")";
+        // The tagline first sits between the logos, then rises to its place as they leave.
+        headEl.style.transform = "translate3d(0, " + lerp(cy - head.cy, 0, sPlace).toFixed(1) + "px, 0)";
+      }
       // Hysteresis: a stage only drops back once the scroll is clearly below its threshold,
       // so tiny wheel/trackpad jitter at a boundary can't replay the globe's transitions.
       const q0 = pinP;
-      const at = (q: number) => (q > q0 + 0.41 ? 4 : q > q0 + 0.27 ? 3 : q > q0 + 0.14 ? 2 : q > q0 + 0.01 ? 1 : 0) as Stage;
+      const at = (q: number) => (q > q0 + 0.45 ? 4 : q > q0 + 0.33 ? 3 : q > q0 + 0.29 ? 2 : q > q0 + 0.01 ? 1 : 0) as Stage;
       const forward = at(p);
       const next: Stage = forward >= last ? forward : Math.max(forward, at(p + 0.03)) as Stage;
       if (next !== last) {
@@ -366,12 +440,22 @@ export function AiaVegaGlobeSection() {
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
+    // Logo sizes change once the images load: measure again.
+    const onLogoLoad = () => {
+      nat = null;
+      onScroll();
+    };
+    [logoA, logoV].forEach((img) => img?.addEventListener("load", onLogoLoad));
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      [logoA, logoV].forEach((img) => img?.removeEventListener("load", onLogoLoad));
+      [logoA, logoV, headEl].forEach((el) => {
+        if (el) el.style.transform = "";
+      });
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

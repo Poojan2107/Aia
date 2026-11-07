@@ -18,6 +18,7 @@ import {
   Insights,
 } from "@/components/home/ClosingSections";
 import { AssistChip } from "@/components/ui/AssistChip";
+import { ClosureScene } from "@/components/home/ClosureScene";
 import { routeById } from "@/lib/routes";
 import { metadataFor } from "@/lib/seo";
 
@@ -41,9 +42,10 @@ export default function HomePage() {
         <CaseStudies />
         <Sustainability />
         <Faq />
-        <Insights />
+        <ClosureScene>
+          <Insights />
+        </ClosureScene>
       </main>
-      <div className="closure-sky" aria-hidden />
       <SiteFooter />
       <AssistChip />
     </>
