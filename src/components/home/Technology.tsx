@@ -83,7 +83,9 @@ export function Technology() {
                 playsInline
                 preload="metadata"
                 className="absolute inset-0 h-full w-full object-cover"
-              />
+              >
+                <source src={cap.video} type={cap.video.endsWith(".mov") ? "video/quicktime" : "video/mp4"} />
+              </video>
             </div>
             <div className="tech2-text">
               <p className="tech2-kicker">
