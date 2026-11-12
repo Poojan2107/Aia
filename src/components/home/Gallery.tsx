@@ -241,6 +241,7 @@ export function Gallery() {
                   <MediaSlot
                     poster={card.poster}
                     posterAlt={card.title}
+                    eager
                     src={isCenter ? card.src : undefined}
                     playback={isCenter ? "click" : "ambient"}
                     film={isCenter}

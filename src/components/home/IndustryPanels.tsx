@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { useEffect, useRef, useState } from "react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { href } from "@/lib/routes";
@@ -160,7 +161,7 @@ export function IndustryPanels() {
                     </p>
                   ))}
                 </div>
-                <Link href={href(current.route)} className="inds-cta" data-magnetic="">
+                <Link prefetch={homeOnly ? false : undefined} href={href(current.route)} className="inds-cta" data-magnetic="">
                   <span aria-hidden className="inds-cta-dot" />
                   <span key={current.id} className="inds-cta-label ft ft-cta">
                     {current.cta}
@@ -171,7 +172,7 @@ export function IndustryPanels() {
             <ul className="inds-thumbs" aria-label="All industries">
               {industries.map((ind, i) => (
                 <li key={ind.id}>
-                  <Link href={href(ind.route)} className={`inds-thumb ${i === active ? "is-on" : ""}`} aria-label={`${ind.name} solutions`}>
+                  <Link prefetch={homeOnly ? false : undefined} href={href(ind.route)} className={`inds-thumb ${i === active ? "is-on" : ""}`} aria-label={`${ind.name} solutions`}>
                     <Image src={ind.photo} alt="" fill sizes="172px" className="object-cover" />
                     <span className="inds-thumb-label">{ind.name}</span>
                   </Link>

@@ -12,6 +12,8 @@ type Props = {
   src?: string;
   className?: string;
   priority?: boolean;
+  /** Fetch the poster at page load (low priority) instead of just before it scrolls in. */
+  eager?: boolean;
   sizes?: string;
   fit?: "cover" | "contain";
   /** Full-bleed cinematic treatment */
@@ -37,6 +39,7 @@ export function MediaSlot({
   src,
   className = "",
   priority = false,
+  eager = false,
   sizes = "100vw",
   fit = "cover",
   overlay = false,
@@ -138,6 +141,8 @@ export function MediaSlot({
         alt={posterAlt}
         fill
         priority={priority}
+        loading={priority ? undefined : eager ? "eager" : undefined}
+        fetchPriority={eager && !priority ? "low" : undefined}
         sizes={sizes}
         className={`${fit === "cover" ? "object-cover" : "object-contain"} ${
           videoReady && (!clickMode || isActive) ? "opacity-0" : "opacity-100"

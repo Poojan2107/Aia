@@ -9,6 +9,8 @@ const ESG_BADGE = "/images/design/esg-dnb-badge.png";
 
 export interface HeroBanner {
   id: string;
+  /** Optional oversized lead (e.g. "450,000 MT"); the tagline then sets smaller beneath it. */
+  lead?: string;
   tagline: string[];
   lede: string[];
   ctaText: string;
@@ -39,7 +41,8 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "manufacturing-capacity",
-    tagline: ["450,000 MT OF", "MANUFACTURING THAT", "KEEPS INDUSTRIES", "MOVING."],
+    lead: "450,000 MT",
+    tagline: ["OF MANUFACTURING THAT", "KEEPS INDUSTRIES MOVING."],
     lede: [
       "Across six manufacturing clusters, AIA Engineering combines advanced metallurgy, precision manufacturing and large-scale production to deliver wear-resistant castings and engineered grinding solutions for critical industrial applications.",
     ],
@@ -61,7 +64,8 @@ const BANNERS: HeroBanner[] = [
   },
   {
     id: "ngds",
-    tagline: ["NGDS. THE NEXT", "EVOLUTION IN", "DISCHARGE", "ENGINEERING."],
+    lead: "NGDS.",
+    tagline: ["THE NEXT EVOLUTION IN", "DISCHARGE ENGINEERING."],
     lede: [
       "AIA’s Next Generation Discharge System (NGDS) brings advanced discharge engineering to SAG and ball mills, designed to improve slurry evacuation, support higher mill throughput and enhance grinding efficiency.",
     ],
@@ -145,11 +149,23 @@ export function Hero() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
     let last = -1;
+    // Cached track geometry (refreshed on resize) keeps layout reads out of the scroll loop.
+    const geo = { top: 0, height: 1 };
+    const remeasure = () => {
+      const r = track.getBoundingClientRect();
+      geo.top = r.top + window.scrollY;
+      geo.height = r.height;
+    };
+    remeasure();
+    const ro = new ResizeObserver(() => {
+      remeasure();
+      onScroll();
+    });
+    ro.observe(track);
     const update = () => {
       raf = 0;
-      const rect = track.getBoundingClientRect();
-      const range = Math.max(1, rect.height - window.innerHeight);
-      const p = Math.min(1, Math.max(0, -rect.top / range));
+      const range = Math.max(1, geo.height - window.innerHeight);
+      const p = Math.min(1, Math.max(0, (window.scrollY - geo.top) / range));
       const rounded = Math.round(p * 1000) / 1000;
       if (rounded === last) return;
       last = rounded;
@@ -162,6 +178,7 @@ export function Hero() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
+      ro.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (raf) cancelAnimationFrame(raf);
@@ -205,9 +222,12 @@ export function Hero() {
 
         <div className="hero-copy z-10" data-hero-lock="figma-1920">
           <div key={current.id} className="hero-lockup animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <h1 className="hero-enter hero-headline ft ft-hero">
+            <h1 className={`hero-enter hero-headline ft ft-hero${current.lead ? " has-lead" : ""}`}>
+              {current.lead && <span className="hero-lead">{current.lead}</span>}
               {current.tagline.map((line, idx) => (
-                <span key={idx}>{line}</span>
+                <span key={idx} className={current.lead ? "hero-sub" : undefined}>
+                  {line}
+                </span>
               ))}
             </h1>
 
@@ -235,7 +255,7 @@ export function Hero() {
               key={item.id}
               type="button"
               className={`hero-pager-dot${i === banner ? " is-active" : ""}`}
-              aria-label={`Show banner ${i + 1} of ${BANNERS.length}: ${item.tagline.join(" ")}`}
+              aria-label={`Show banner ${i + 1} of ${BANNERS.length}: ${[item.lead, ...item.tagline].filter(Boolean).join(" ")}`}
               aria-current={i === banner ? "true" : undefined}
               onClick={() => selectBanner(i)}
             >

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { href } from "@/lib/routes";
 
 /**
@@ -34,7 +35,7 @@ function LinkList({ links }: { links: FooterLink[] }) {
     <ul className="foot-links">
       {links.map(([label, id]) => (
         <li key={label}>
-          <Link href={href(id)} className="ft ft-link22">{label}</Link>
+          <Link prefetch={homeOnly ? false : undefined} href={href(id)} className="ft ft-link22">{label}</Link>
         </li>
       ))}
     </ul>
@@ -43,7 +44,7 @@ function LinkList({ links }: { links: FooterLink[] }) {
 
 function Pill({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <Link href={to} className="foot-pill" data-magnetic="">
+    <Link prefetch={homeOnly ? false : undefined} href={to} className="foot-pill" data-magnetic="">
       <span aria-hidden className="foot-pill-dot" />
       <span className="ft ft-cta">{children}</span>
     </Link>
@@ -113,8 +114,8 @@ export function SiteFooter() {
         <div className="foot-bottom">
           <p className="ft ft-legal22">© 2026 AIA Engineering Limited, All Rights Reserved.</p>
           <nav aria-label="Legal" className="foot-legal">
-            <Link href={href("privacy-policy")} className="ft ft-legal22">Privacy Policy</Link>
-            <Link href={href("html-sitemap")} className="ft ft-legal22">Sitemap</Link>
+            <Link prefetch={homeOnly ? false : undefined} href={href("privacy-policy")} className="ft ft-legal22">Privacy Policy</Link>
+            <Link prefetch={homeOnly ? false : undefined} href={href("html-sitemap")} className="ft ft-legal22">Sitemap</Link>
             <span className="ft ft-legal22">En</span>
           </nav>
           <p className="foot-credit ft ft-legal22">

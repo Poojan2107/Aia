@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { type ComponentProps } from "react";
 import { isHomeOnlyAllowedHref } from "@/lib/home-only";
 
@@ -74,7 +75,7 @@ export function CtaButton({
 
   if (href) {
     return (
-      <Link
+      <Link prefetch={homeOnly ? false : undefined}
         href={href}
         className={`group ${classes}`}
         style={style}

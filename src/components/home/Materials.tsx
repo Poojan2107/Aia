@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { useState } from "react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
@@ -340,7 +341,7 @@ export function Materials() {
               ))}
             </ul>
 
-            <Link href={href(industry.route)} className="mats-cta-pill" data-magnetic="">
+            <Link prefetch={homeOnly ? false : undefined} href={href(industry.route)} className="mats-cta-pill" data-magnetic="">
               <span aria-hidden className="mats-cta-dot" />
               {industry.cta}
             </Link>

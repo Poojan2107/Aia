@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { footprint } from "@/data/site";
@@ -149,7 +150,7 @@ export function AboutBand() {
           <p ref={copyRef} className="about2-copy ft ft-copy18">
             AIA Engineering Limited develops and manufactures engineered wear-resistant solutions for mining, cement, quarry and thermal power industries. With expertise in advanced metallurgy, grinding media, mill liners and precision manufacturing, we help industrial customers address demanding wear conditions and support long-term equipment performance.
           </p>
-          <Link ref={ctaRef} href={href("about")} className="about2-cta">
+          <Link prefetch={homeOnly ? false : undefined} ref={ctaRef} href={href("about")} className="about2-cta">
             <span aria-hidden className="about2-cta-dot" />
             <span className="ft ft-cta">About AIA Engineering</span>
           </Link>

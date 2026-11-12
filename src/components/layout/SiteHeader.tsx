@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -39,7 +40,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
   if (!item.groups) {
     return (
       <li>
-        <Link href={item.href} className={base} aria-current={current ? "page" : undefined}>
+        <Link prefetch={homeOnly ? false : undefined} href={item.href} className={base} aria-current={current ? "page" : undefined}>
           {item.label}
         </Link>
       </li>
@@ -86,7 +87,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
                 <ul className="space-y-1">
                   {group.links.map((link) => (
                     <li key={link.href}>
-                      <Link
+                      <Link prefetch={homeOnly ? false : undefined}
                         href={link.href}
                         onClick={onClose}
                         className="group flex items-center justify-between whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[0.88rem] font-medium text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-accent"
@@ -112,7 +113,7 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
   return (
     <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col bg-aia-navy text-white lg:hidden" role="dialog" aria-modal="true" aria-label="Site navigation">
       <div className="flex items-center justify-between px-5 py-4">
-        <Link href="/" onClick={onClose} aria-label="AIA Engineering home">
+        <Link prefetch={homeOnly ? false : undefined} href="/" onClick={onClose} aria-label="AIA Engineering home">
           <Image
             src="/images/design/logo-aia-vega-white.png"
             alt="AIA Engineering Limited and Vega Industries"
@@ -135,7 +136,7 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
             if (!item.groups) {
               return (
                 <li key={item.id}>
-                  <Link href={item.href} onClick={onClose} className="block py-4 text-[1.1rem] font-semibold">
+                  <Link prefetch={homeOnly ? false : undefined} href={item.href} onClick={onClose} className="block py-4 text-[1.1rem] font-semibold">
                     {item.label}
                   </Link>
                 </li>
@@ -160,7 +161,7 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
                       <ul>
                         {group.links.map((link) => (
                           <li key={link.href}>
-                            <Link href={link.href} onClick={onClose} className="block py-1.5 text-[0.98rem] text-white/80 hover:text-aia-accent">
+                            <Link prefetch={homeOnly ? false : undefined} href={link.href} onClick={onClose} className="block py-1.5 text-[0.98rem] text-white/80 hover:text-aia-accent">
                               {link.label}
                             </Link>
                           </li>
@@ -245,7 +246,7 @@ export function SiteHeader() {
         className={`site-nav fixed inset-x-0 top-0 z-40${solid ? " is-solid" : ""}${hidden ? " is-hidden" : ""}`}
       >
         <div className="site-nav-bar">
-          <Link href="/" className="site-nav-brand" aria-label="AIA Engineering home">
+          <Link prefetch={homeOnly ? false : undefined} href="/" className="site-nav-brand" aria-label="AIA Engineering home">
             <Image
               src="/images/design/logo-aia-vega-white.png"
               alt="AIA Engineering Limited and Vega Industries"

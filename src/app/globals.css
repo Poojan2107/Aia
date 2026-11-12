@@ -3110,6 +3110,10 @@ button.solve-cta > span:last-child {
 .gallery-card {
   width: var(--gallery-card-w);
   flex: none;
+  /* The strip holds 5 copies of the films for the endless loop; only the cards near the
+     screen are rendered (the rest skip paint and image decode). 16:10 card = 0.625 tall. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto var(--gallery-card-w) calc(var(--gallery-card-w) * 0.625);
   transform-origin: center center;
   transition:
     transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
@@ -5096,8 +5100,10 @@ button.solve-cta > span:last-child {
   position: relative;
   aspect-ratio: 480 / 296;
   overflow: hidden;
-  background: #05080c;
+  /* No dark backdrop: it showed as dark arcs at the rounded corners around the films. */
+  background: transparent;
   border-radius: 1.25rem;
+  isolation: isolate;
 }
 .tech2-kicker {
   font-size: clamp(0.72rem, 0.68vw, 13px);
@@ -5973,13 +5979,22 @@ a[data-home-only="disabled"] {
   opacity: clamp(0, calc(1 - var(--atmos) * 1.7), 1);
   transform: translate3d(0, calc(var(--atmos) * -120px), 0);
   filter: blur(calc(var(--atmos) * 10px));
+  will-change: transform, opacity, filter;
 }
 .hero-track .hero-pager,
 .hero-track .hero-esg {
   opacity: clamp(0, calc(1 - var(--atmos) * 2.5), 1);
 }
-.hero-track .hero-film {
-  filter: brightness(calc(0.84 - var(--atmos) * 0.35)) contrast(1.04);
+/* The film dims through a black veil (opacity is composited for free) instead of a
+   per-frame brightness filter on the playing video. Same look: 0.84 → 0.49 brightness. */
+.hero-track .hero-viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: #000;
+  opacity: calc(var(--atmos) * 0.42);
+  pointer-events: none;
 }
 
 /* Globe section rides over the pinned hero; its own sky replaces the flat grey. */
@@ -6159,3 +6174,25 @@ a[data-home-only="disabled"] {
 }
 @keyframes gsq-fallback-spin { to { background-position: 200% 50%; } }
 @media (prefers-reduced-motion: reduce) { .gsq-globe-fallback { animation: none; } }
+
+/* Hero lead + sub lockup (banners 02 and 04): one oversized figure or name, with the rest
+   of the line set smaller and tracked beneath it, instead of four huge stacked lines. */
+.hero-headline.has-lead .hero-lead {
+  display: block;
+  font-size: 1.32em;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.14em;
+}
+.hero-headline.has-lead .hero-sub {
+  font-size: 0.5em;
+  line-height: 1.12;
+  letter-spacing: 0.015em;
+  color: rgba(255, 247, 233, 0.92);
+}
+@media (max-width: 1023px) {
+  .hero-headline.has-lead .hero-lead { display: block; }
+  .hero-headline.has-lead .hero-lead::after { content: none; }
+  .hero-headline.has-lead .hero-sub { display: block; font-size: 0.56em; }
+  .hero-headline.has-lead .hero-sub::after { content: none; }
+}

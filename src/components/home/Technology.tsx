@@ -17,7 +17,6 @@ const capabilities = [
     title: "Discrete Element Method (DEM)",
     body: "Using Discrete Element Method (DEM) simulation, we study charge motion, grinding media trajectories and impact energy inside mills. These insights support SAG and ball mill liner design, helping identify opportunities to improve grinding efficiency, optimise wear patterns and extend liner service life.",
     video: "/videos/DEM.mp4",
-    poster: "/images/design/tech-dem.jpg",
     alt: "DEM simulation of charge motion inside a mill",
   },
   {
@@ -26,7 +25,6 @@ const capabilities = [
     title: "Finite Element Analysis (FEA)",
     body: "Finite Element Analysis (FEA) helps us evaluate the structural performance of mill liners and critical components under simulated operating conditions. By studying stress concentration, deformation and load distribution, we refine component geometry, weight and material selection to reduce the risk of premature failure.",
     video: "/videos/FEA.mp4",
-    poster: "/images/design/tech-fea.jpg",
     alt: "FEA stress map across a mill liner segment",
   },
   {
@@ -35,7 +33,6 @@ const capabilities = [
     title: "MAGMA Casting Simulation",
     body: "Through MAGMA casting process simulation, we study metal flow and solidification behaviour to identify potential casting defects before production. These simulations support process refinement, improved metallurgical quality and more consistent manufacturing of wear-resistant castings.",
     video: "/videos/Magma.mp4",
-    poster: "/images/design/tech-magma.jpg",
     alt: "Casting solidification simulation of a liner mould",
   },
   {
@@ -44,7 +41,6 @@ const capabilities = [
     title: "PolyWorks: 3D Scanning & Inspection",
     body: "Using high-precision 3D scanning and dimensional inspection, we compare manufactured mill components with their approved design models. PolyWorks supports accurate measurement, quality verification and reliable fitment of engineered mill liners and wear parts.",
     video: "/videos/Polyworks.mp4",
-    poster: "/images/design/tech-polyworks.jpg",
     alt: "3D scanner comparing a manufactured liner to its CAD model",
   },
 ] as const;
@@ -76,9 +72,8 @@ export function Technology() {
             <div className="tech2-media rounded-[1.25rem]">
               <LazyVideo
                 src={cap.video}
-                poster={cap.poster}
                 label={cap.alt}
-                className="absolute inset-0 h-full w-full object-cover rounded-[1.25rem]"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             <div className="tech2-text">

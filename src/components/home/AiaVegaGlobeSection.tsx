@@ -164,21 +164,31 @@ export function AiaVegaGlobeSection() {
       return;
     }
 
-    // Start the globe once the hero has had its bandwidth: on first scroll, or shortly after load.
+    // Build the globe in idle time right after load, while the visitor is still on the hero,
+    // so its one-off setup cost never lands in the middle of a scroll. Library download and
+    // compile, then construction, run in separate idle slices.
+    type IdleWin = Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+    const whenIdle = (cb: () => void, timeout = 1500) => {
+      const w = window as IdleWin;
+      if (w.requestIdleCallback) w.requestIdleCallback(cb, { timeout });
+      else window.setTimeout(cb, 1);
+    };
     let started = false;
     let idle = 0;
+    let warm = 0;
     const begin = () => {
       if (started || disposed) return;
       started = true;
-      window.removeEventListener("scroll", begin);
       window.removeEventListener("load", onLoad);
       boot();
     };
     const onLoad = () => {
-      idle = window.setTimeout(begin, 1200);
+      idle = window.setTimeout(() => whenIdle(begin), 400);
     };
     const boot = () => (async () => {
       const [{ default: Globe }, THREE] = await Promise.all([import("globe.gl"), import("three")]);
+      if (disposed) return;
+      await new Promise<void>((r) => whenIdle(r, 800));
       if (disposed) return;
 
       const world = new Globe(host, { animateIn: false, rendererConfig: { antialias: true, alpha: true } })
@@ -192,6 +202,13 @@ export function AiaVegaGlobeSection() {
         .height(host.clientHeight)
         .pointOfView({ lat: VIEW_INDIA.lat, lng: VIEW_INDIA.lng + 40, altitude: 2.4 }, 0);
       worldRef.current = world;
+      // three.js reads every shader's info log after compiling, which blocks the frame until
+      // the GPU driver finishes; skip it in production so new layers never stall a scroll.
+      world.renderer().debug.checkShaderErrors = false;
+      // No hover tooltips or clicks on globe objects: skip globe.gl's per-frame pointer
+      // hit-testing (it measured the canvas and raycast every frame under the cursor).
+      // Drag-to-rotate is separate (orbit controls) and keeps working.
+      world.enablePointerInteraction(false);
       // Weak machines: fewer pixels to shade keeps scrolling smooth.
       const weak = (navigator.hardwareConcurrency || 4) <= 4;
       world.renderer().setPixelRatio(Math.min(window.devicePixelRatio || 1, weak ? 1.25 : 2));
@@ -278,7 +295,12 @@ export function AiaVegaGlobeSection() {
         if (visible) world.resumeAnimation();
         else world.pauseAnimation();
       });
-      io.observe(host);
+      // Warm-up: keep rendering for a few seconds after build (the globe is still hidden
+      // behind the hero), so texture upload and shader compile happen now and not on the
+      // visitor's first scroll. Only then start pausing it while off-screen.
+      warm = window.setTimeout(() => {
+        if (!disposed) io?.observe(host);
+      }, 3000);
       // Only touch the renderer when the box really changes size; a no-op setSize still clears the canvas.
       let size = `${host.clientWidth}x${host.clientHeight}`;
       ro = new ResizeObserver(() => {
@@ -288,11 +310,24 @@ export function AiaVegaGlobeSection() {
         world.width(host.clientWidth).height(host.clientHeight);
       });
       ro.observe(host);
+      // Pre-warm while the globe is still hidden behind the hero: decode the tag badges and
+      // draw the pins, rings and arcs once, so their textures and shaders are ready before
+      // the visitor scrolls to them. The stage logic then takes over the real data.
+      for (const src of ["/images/design/logo-aia-mark-blue.webp", "/images/design/logo-vega-color.webp"]) {
+        const img = new window.Image();
+        img.src = src;
+        void img.decode().catch(() => undefined);
+      }
+      world
+        .pointsData(SITES)
+        .ringsData([HQ_RING])
+        .arcsData(ROUTES.flatMap((s, i) => [arcFor(s, i, "trail"), arcFor(s, i, "pulse")]));
+      await new Promise<void>((r) => window.setTimeout(r, 900));
+      if (disposed) return;
       setReady(true);
     })().catch(() => {
       if (!disposed) setFailed(true);
     });
-    window.addEventListener("scroll", begin, { passive: true });
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad);
 
@@ -301,7 +336,7 @@ export function AiaVegaGlobeSection() {
     return () => {
       disposed = true;
       window.clearTimeout(idle);
-      window.removeEventListener("scroll", begin);
+      window.clearTimeout(warm);
       window.removeEventListener("load", onLoad);
       cancelAnimationFrame(raf);
       window.clearTimeout(view.timer);
@@ -367,8 +402,10 @@ export function AiaVegaGlobeSection() {
     world
       .pointsData(stage >= 3 ? AIA_SITES : [])
       .ringsData(stage >= 3 ? [HQ_RING] : [])
-      .arcsData([])
-      .htmlElementsData(stage >= 3 ? SITES : []);
+      .arcsData([]);
+    // The 12 HTML office tags go in on the next frame, so pins and tags never share a frame.
+    const tagFrame = requestAnimationFrame(() => world.htmlElementsData(stage >= 3 ? SITES : []));
+    return () => cancelAnimationFrame(tagFrame);
   }, [stage, ready]);
 
   /* ---------- scroll choreography ---------- */
@@ -421,11 +458,24 @@ export function AiaVegaGlobeSection() {
       els.forEach((e, i) => (e.style.transform = prev[i]));
     };
 
+    // Geometry is cached and refreshed only when something resizes, so the per-frame update
+    // does no layout reads (reading after the style writes below forced a layout every frame).
+    const geo = { top: 0, height: 1, W: 0, H: 0 };
+    const remeasure = () => {
+      const tr = track.getBoundingClientRect();
+      geo.top = tr.top + window.scrollY;
+      geo.height = tr.height;
+      const sr = stageEl.getBoundingClientRect();
+      geo.W = sr.width;
+      geo.H = sr.height;
+    };
+    remeasure();
+
     let raf = 0;
     let last: Stage = 0;
     const update = () => {
       raf = 0;
-      const r = track.getBoundingClientRect();
+      const r = { top: geo.top - window.scrollY, height: geo.height };
       const range = Math.max(1, r.height - window.innerHeight);
       // The section slides up over the pinned hero (progress starts the moment it enters),
       // carrying the sky's soft navy edge with it. Once it pins (pinP), the curved dome
@@ -448,8 +498,7 @@ export function AiaVegaGlobeSection() {
       stageEl.style.setProperty("--g-cols", easeOut(after(0.33, 0.1)).toFixed(3));
       stageEl.style.setProperty("--g-net", after(0.45, 0.15).toFixed(3));
 
-      const sr = stageEl.getBoundingClientRect();
-      if (!nat || Math.abs(nat.W - sr.width) > 1 || Math.abs(nat.H - sr.height) > 1) measure();
+      if (!nat || Math.abs(nat.W - geo.W) > 1 || Math.abs(nat.H - geo.H) > 1) measure();
       if (nat && logoA && logoV && headEl) {
         const { a, v, head, headW, W, H } = nat;
         const cx = W / 2;
@@ -491,12 +540,20 @@ export function AiaVegaGlobeSection() {
       onScroll();
     };
     [logoA, logoV].forEach((img) => img?.addEventListener("load", onLogoLoad));
+    const onResize = () => {
+      remeasure();
+      onScroll();
+    };
+    // Content above (hero, fonts, images) can move the track: watch the page as well.
+    const geoRo = new ResizeObserver(onResize);
+    [track, stageEl, document.body].forEach((el) => geoRo.observe(el));
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", onResize);
     return () => {
+      geoRo.disconnect();
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
       [logoA, logoV].forEach((img) => img?.removeEventListener("load", onLogoLoad));
       [logoA, logoV, headEl].forEach((el) => {
         if (el) el.style.transform = "";

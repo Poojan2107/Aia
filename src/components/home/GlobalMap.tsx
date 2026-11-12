@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { homeOnly } from "@/lib/env";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { WorldMap } from "@/components/ui/WorldMap";
 import { Reveal } from "@/components/ui/Reveal";
@@ -42,7 +43,7 @@ export function GlobalMap() {
             >
               Find AIA near you
             </CtaButton>
-            <Link
+            <Link prefetch={homeOnly ? false : undefined}
               href="/dev/global-presence"
               className="inline-flex items-center gap-1.5 rounded-full border border-[#006eff] bg-[#006eff] px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-[#0056d6] transition-all"
             >

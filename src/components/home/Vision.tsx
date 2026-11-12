@@ -84,7 +84,9 @@ function LeaderRow({ leader }: { leader: Leader }) {
             width={leader.portrait.width}
             height={leader.portrait.height}
             sizes="(max-width: 1024px) 85vw, 40vw"
-            priority={leader.id === "aia"}
+            // Already-compact WebP: serve straight from the CDN (no first-hit resize wait).
+            unoptimized
+            decoding="async"
           />
         </div>
       </div>
