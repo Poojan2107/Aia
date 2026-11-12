@@ -56,14 +56,14 @@ const industries: Industry[] = [
         cameraTarget: "auto auto auto",
         fieldOfView: "30deg",
         hotspot: {
-          material: "Metal (Cr-Mo / High-Chromium White Iron)",
+          material: "Metal (Cr-Mo / Hi-Cr)",
           featuredApp: "Ball Mill Shell Wave Lifter",
           position: "0m 0.05m 0.06m",
           normal: "0m 1m 0m",
         },
         bullets: [
-          "Built for demanding grinding conditions, our engineered metal alloys combine wear resistance with the strength required for critical mill components.",
-          "Developed around specific operating requirements, these material solutions help improve component reliability and extend wear life.",
+          "Engineered for demanding grinding environments, our wear-resistant metal alloys are developed to provide the strength, toughness and abrasion resistance required by critical mill components.",
+          "Combining metallurgical expertise with application-specific design, these material solutions help support component reliability, improved wear life and consistent mill performance.",
         ],
       },
       {
@@ -160,8 +160,8 @@ const industries: Industry[] = [
       },
       {
         id: "sintercast",
-        label: "HI-CR WITH SINTERCAST",
-        title: "Hi-Cr with SinterCast",
+        label: "HI-CR WITH SINTERCAST®",
+        title: "Hi-Cr with Sintercast®",
         primaryMoc: "High-Chrome Matrix with Sintered Ceramic",
         shadingType: "sintercast",
         modelSrc: "/models/materials_exact_cad/SAGMill_ShellLiner_Composite_[W9_5769_24_D].glb",
@@ -256,7 +256,7 @@ export function Materials() {
         <SectionLabel>Materials &amp; Metallurgy</SectionLabel>
         <h2 id="mats-heading" className="mats-heading">Materials that make the difference.</h2>
         <p className="mats-lead">
-          Every material has a purpose. Every application has a challenge. We bring them together through engineering designed to perform where it matters most.
+          Every material has a purpose. Every application brings a different wear challenge. Through advanced metallurgy, wear-resistant alloys and application-specific engineering, we develop material solutions designed to withstand demanding operating conditions and deliver reliable performance.
         </p>
       </Reveal>
 
