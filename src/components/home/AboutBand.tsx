@@ -147,7 +147,7 @@ export function AboutBand() {
             </h2>
           </div>
           <p ref={copyRef} className="about2-copy ft ft-copy18">
-            Across mining, cement, quarry and thermal power, we design and manufacture wear solutions for grinding and other demanding applications. Our expertise in metallurgy, engineering and manufacturing helps extend component life, improve equipment reliability and support better operating performance.
+            AIA Engineering Limited develops and manufactures engineered wear-resistant solutions for mining, cement, quarry and thermal power industries. With expertise in advanced metallurgy, grinding media, mill liners and precision manufacturing, we help industrial customers address demanding wear conditions and support long-term equipment performance.
           </p>
           <Link ref={ctaRef} href={href("about")} className="about2-cta">
             <span aria-hidden className="about2-cta-dot" />

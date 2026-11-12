@@ -42,16 +42,20 @@ export function Sustainability() {
 
             <div className="ft ft-body28 text-white">
               <p className="mb-0">
-                Yes, we believe it can. By using resources more efficiently,{" "}
+                Yes, we believe it can. At AIA Engineering, we are working{" "}
                 <br className="hidden lg:block" />
-                reducing waste and embracing reuse and recycling,
+                to reduce the environmental impact of our operations{" "}
+                <br className="hidden lg:block" />
+                through responsible resource use, waste reduction,{" "}
+                <br className="hidden lg:block" />
+                recycling and more efficient manufacturing practices.
               </p>
               <p className="mt-5 mb-0 sm:mt-6">
-                we&apos;re working to lower the environmental impact of our{" "}
+                Our approach to sustainability focuses on{" "}
                 <br className="hidden lg:block" />
-                operations while continuing to deliver the performance{" "}
+                supporting long-term industrial performance while{" "}
                 <br className="hidden lg:block" />
-                industry depends on.
+                using resources more thoughtfully.
               </p>
             </div>
 
@@ -70,7 +74,7 @@ export function Sustainability() {
                     <CountUp value="30%" duration={1400} delay={90} />
                   </p>
                   <p className="ft ft-statcap mt-2.5 text-white/85">
-                    <span className="lg:whitespace-nowrap">Energy comes from the</span>{" "}
+                    <span className="lg:whitespace-nowrap">Energy comes from</span>{" "}
                     <span className="lg:block lg:whitespace-nowrap">renewable energy resources</span>
                   </p>
                 </div>
@@ -83,7 +87,7 @@ export function Sustainability() {
                 variant="outline-light"
                 className="!h-9 w-full justify-center !gap-2 !border-white/90 !px-4 !text-[10px] !leading-none sm:w-auto [&>span:first-child]:!size-1"
               >
-                See how we think lighter
+                Explore sustainability
               </CtaButton>
               <CtaButton
                 href="/company/csr"

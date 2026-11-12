@@ -2,6 +2,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { href } from "@/lib/routes";
 
 /** Dun & Bradstreet ESG Registered seal (Figma 02Homepage, bottom-right of the hero). */
 const ESG_BADGE = "/images/design/esg-dnb-badge.png";
@@ -27,61 +28,56 @@ export interface HeroBanner {
 const BANNERS: HeroBanner[] = [
   {
     id: "engineering-excellence",
-    tagline: ["ENGINEERING", "EXCELLENCE IN", "EVERY SOLUTION."],
+    tagline: ["ENGINEERED TO", "THINK AHEAD."],
     lede: [
-      "Combining proprietary metallurgy, advanced design modeling and deep",
-      "application insights to optimize grinding circuits worldwide.",
+      "Combining advanced metallurgy, simulation and precision engineering to develop wear-resistant solutions, mill liners and grinding media for demanding industrial applications.",
     ],
-    ctaText: "Explore solutions by industry",
-    ctaHref: "#solutions",
+    ctaText: "Explore our technology",
+    ctaHref: "#tech-heading",
     video: "/videos/banners/hero-engineering-excellence.mp4",
     poster: "/images/design/hero-banner-engineering.jpg",
   },
   {
     id: "manufacturing-capacity",
-    tagline: ["450,000 MT CAPACITY.", "6 MANUFACTURING", "CLUSTERS."],
+    tagline: ["450,000 MT OF", "MANUFACTURING THAT", "KEEPS INDUSTRIES", "MOVING."],
     lede: [
-      "World-scale state-of-the-art foundries, ISO-certified manufacturing,",
-      "and automated heat treatment serving 4,000+ operations globally.",
+      "Across six manufacturing clusters, AIA Engineering combines advanced metallurgy, precision manufacturing and large-scale production to deliver wear-resistant castings and engineered grinding solutions for critical industrial applications.",
     ],
-    ctaText: "Explore our technology",
-    ctaHref: "/technology-infrastructure",
+    ctaText: "Explore our infrastructure",
+    ctaHref: href("technology-infrastructure"),
     video: "/videos/banners/hero-manufacturing.mp4",
     poster: "/images/design/hero-banner-manufacturing.jpg",
   },
   {
     id: "services-support",
-    tagline: ["OPTIMIZE. MAINTAIN.", "EXCEL."],
+    tagline: ["PERFORMANCE", "DOESN’T END AT", "DELIVERY."],
     lede: [
-      "End-to-end technical support, mill relining, wear monitoring,",
-      "and continuous diagnostics for your grinding operations worldwide.",
+      "From grinding circuit optimisation and mill reline supervision to wear monitoring and technical support, AIA helps customers improve grinding efficiency, equipment reliability and operational performance.",
     ],
     ctaText: "Explore services & support",
-    ctaHref: "#services",
+    ctaHref: "#services-heading",
     video: "/videos/banners/hero-services.mp4",
     poster: "/images/design/hero-banner-services.jpg",
   },
   {
     id: "ngds",
-    tagline: ["NEXT GENERATION", "DISCHARGE SYSTEM", "(NGDS)."],
+    tagline: ["NGDS. THE NEXT", "EVOLUTION IN", "DISCHARGE", "ENGINEERING."],
     lede: [
-      "Proprietary mill discharge design eliminating slurry pooling,",
-      "maximizing grinding throughput, and dramatically extending liner life.",
+      "AIA’s Next Generation Discharge System (NGDS) brings advanced discharge engineering to SAG and ball mills, designed to improve slurry evacuation, support higher mill throughput and enhance grinding efficiency.",
     ],
-    ctaText: "Explore wear solutions",
-    ctaHref: "#materials",
+    ctaText: "Explore NGDS technology",
+    ctaHref: href("mining-ngds"),
     video: "/videos/banners/hero-ngds.mp4",
     poster: "/images/design/hero-banner-ngds.jpg",
   },
   {
     id: "global-logistics",
-    tagline: ["A GLOBAL NETWORK", "DELIVERING TO", "120+ COUNTRIES."],
+    tagline: ["ENGINEERED IN INDIA.", "CONNECTED TO", "THE WORLD."],
     lede: [
-      "Integrated supply chain, strategically positioned regional warehouses,",
-      "and 10+ international service centers ensuring zero downtime.",
+      "Through VEGA Industries, AIA Engineering connects its manufacturing expertise and engineered grinding solutions with customers across 120+ countries, supported by an international distribution network and regional technical services.",
     ],
     ctaText: "Explore global presence",
-    ctaHref: "/global-presence",
+    ctaHref: href("global-presence"),
     video: "/videos/banners/hero-logistics.mp4",
     poster: "/images/design/hero-banner-logistics.jpg",
   },

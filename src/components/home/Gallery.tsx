@@ -4,6 +4,8 @@ import { useEffect, useLayoutEffect, useRef, useState, type TransitionEvent } fr
 import { MediaSlot } from "@/components/ui/MediaSlot";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { CtaButton } from "@/components/ui/CtaButton";
+import { href } from "@/lib/routes";
 import { media } from "@/data/media";
 
 type Film = {
@@ -179,14 +181,16 @@ export function Gallery() {
         </h2>
         <p className="gallery-support ft ft-copy18">
           <span>
-            Explore AIA solutions, applications and engineering through videos that
-            show
+            Explore the people, ideas, innovations and defining moments that shape the world of AIA Engineering.
           </span>
           <span>
-            how our products are designed to perform in demanding operating
-            conditions.
+            From advanced manufacturing and engineered grinding solutions to our people, operations and milestones,
           </span>
+          <span>discover the stories and experiences behind what we do.</span>
         </p>
+        <CtaButton href={href("videos-media")} variant="solid" className="gallery-cta">
+          Explore videos &amp; media
+        </CtaButton>
       </Reveal>
 
       <div

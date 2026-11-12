@@ -25,9 +25,9 @@ type Industry = {
 };
 
 const industries: Industry[] = [
-  { id: "mining", index: "01", name: "Mining", lead: ["Wear solutions", "engineered for critical-", "grinding applications."], cta: "Explore mining", route: "mining", photo: "/images/design/ind-mining-figma.jpg", alt: "Grinding mill and conveyor at a mineral processing plant" },
-  { id: "cement", index: "02", name: "Cement", lead: ["Wear solutions", "for demanding", "grinding applications."], cta: "Explore cement", route: "cement", photo: "/images/design/ind-cement.jpg", alt: "Cement plant with preheater tower" },
-  { id: "quarry", index: "03", name: "Quarry", lead: ["Wear protection", "for crushing", "applications."], cta: "Explore quarry", route: "quarry-products", photo: "/images/design/ind-quarry.jpg", alt: "Mobile crusher and conveyor at a quarry" },
+  { id: "mining", index: "01", name: "Mining", lead: ["Wear solutions", "for critical grinding", "applications."], cta: "Explore mining", route: "mining", photo: "/images/design/ind-mining-figma.jpg", alt: "Grinding mill and conveyor at a mineral processing plant" },
+  { id: "cement", index: "02", name: "Cement", lead: ["Engineered for", "demanding cement", "grinding applications."], cta: "Explore cement", route: "cement", photo: "/images/design/ind-cement.jpg", alt: "Cement plant with preheater tower" },
+  { id: "quarry", index: "03", name: "Quarry", lead: ["Wear protection", "for high-impact", "crushing applications."], cta: "Explore quarry", route: "quarry-products", photo: "/images/design/ind-quarry.jpg", alt: "Mobile crusher and conveyor at a quarry" },
   { id: "thermal", index: "04", name: "Thermal", lead: ["Wear solutions for", "demanding coal", "grinding applications."], cta: "Explore thermal", route: "thermal-power", photo: "/images/design/ind-thermal.jpg", alt: "Thermal power station with cooling towers" },
 ];
 
@@ -103,7 +103,7 @@ export function IndustryPanels() {
       <div className="inds-intro">
         <SectionLabel className="inds-intro-label">Solutions by industry</SectionLabel>
         <h2 id="industries-heading" className="inds-intro-heading ft ft-h62">
-          Explore solutions for Mining, Cement, Quarry and Thermal Power applications.
+          Explore engineered wear solutions for Mining, Cement, Quarry and Thermal Power applications.
         </h2>
       </div>
 

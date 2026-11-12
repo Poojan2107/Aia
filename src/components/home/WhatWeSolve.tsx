@@ -14,12 +14,15 @@ const PLATE = "/images/what-we-solve-poster.webp";
 
 const SOLVE_BODY_LINES = [
   "Across mining, cement, quarry and thermal",
-  "power, we design and manufacture wear",
-  "solutions for grinding and other demanding",
-  "applications. Our expertise in metallurgy,",
-  "engineering and manufacturing helps extend",
-  "component life, improve equipment reliability",
-  "and support better operating performance.",
+  "power, we engineer and manufacture",
+  "wear-resistant castings, mill liners, grinding",
+  "media and critical wear components for",
+  "demanding industrial applications. Our",
+  "expertise in metallurgy, comminution solutions",
+  "and application-specific engineering",
+  "helps extend component life, improve",
+  "equipment reliability and support more",
+  "efficient operations.",
 ] as const;
 
 /** Figma 710:1584: body copy with the CTA under it, centred against the film. */

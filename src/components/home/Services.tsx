@@ -31,6 +31,9 @@ export function Services() {
             <span>We don&apos;t just supply.</span>
             <span>We help you perform.</span>
           </h2>
+          <p className="services-lede ft ft-body24">
+            From liner design and grinding circuit surveys to on-site reline supervision, we support customers with application-focused engineering and technical services that help mills operate reliably and efficiently.
+          </p>
           <CtaButton
             href={href(current.route)}
             variant="solid"

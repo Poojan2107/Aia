@@ -515,7 +515,7 @@ export function AiaVegaGlobeSection() {
           <span aria-hidden className="gsq-light gsq-light-b" />
 
           <header className="gsq-head">
-            <SectionLabel>AIA Engineering • Vega Industries</SectionLabel>
+            <SectionLabel>AIA Engineering × VEGA Industries</SectionLabel>
             <h2 id="gsq-heading" className="gsq-heading ft ft-h56" data-no-split="">
               One vision. Two strengths.
               <br />
@@ -537,17 +537,17 @@ export function AiaVegaGlobeSection() {
 
           <article className="gsq-col gsq-col-aia">
             <Image src="/images/design/logo-aia-blue.webp" alt="AIA Engineering Limited" width={1552} height={1015} className="gsq-logo gsq-logo-aia" />
-            <h3 className="gsq-kicker ft ft-kicker20">Four decades of creating advanced comminution technologies across industries</h3>
+            <h3 className="gsq-kicker ft ft-kicker20">Four decades of advanced comminution engineering</h3>
             <p className="gsq-body ft ft-body22">
-              AIA Engineering Limited is a global leader in manufacturing engineered grinding solutions to improve reliability, efficiency and overall mill performance. With a legacy of over 45 years, AIA Engineering combines engineering expertise with manufacturing capability to deliver application specific solutions across the Mining, Cement, Thermal and Quarry industries.
+              AIA Engineering Limited brings over 45 years of experience in manufacturing engineered grinding solutions and wear-resistant components. Combining advanced metallurgy, product engineering and manufacturing expertise, AIA develops application-specific solutions that support mill reliability, grinding efficiency and operational performance across mining, cement, quarry and thermal power industries.
             </p>
           </article>
 
           <article className="gsq-col gsq-col-vega">
-            <Image src="/images/design/logo-vega-color.webp" alt="Vega Industries" width={200} height={145} className="gsq-logo gsq-logo-vega" />
-            <h3 className="gsq-kicker ft ft-kicker20">Delivering engineering expertise worldwide across 120+ countries</h3>
+            <Image src="/images/design/logo-vega-color.webp" alt="VEGA Industries" width={200} height={145} className="gsq-logo gsq-logo-vega" />
+            <h3 className="gsq-kicker ft ft-kicker20">Connecting engineering expertise across 120+ countries</h3>
             <p className="gsq-body ft ft-body22">
-              Vega Industries is a wholly owned subsidiary of AIA Engineering Limited. As its international marketing arm, Vega extends AIA&apos;s application expertise to the international markets. Through its 10+ service centers and an established global supply chain network, Vega acts as an end-to-end technical partner in helping customers across 120+ countries improve their grinding operations.
+              VEGA Industries, a wholly owned subsidiary of AIA Engineering Limited, extends the Group&rsquo;s application expertise to international markets. Through its global marketing and distribution network, regional support capabilities and technical services, VEGA helps customers optimise grinding operations, improve equipment uptime and achieve long-term operating value.
             </p>
           </article>
           </div>

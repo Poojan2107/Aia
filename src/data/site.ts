@@ -43,7 +43,7 @@ export const footprint = [
   { value: "120+", label: "Countries" },
   { value: "6+", label: "Manufacturing Clusters" },
   { value: "50+", label: "Basic Alloys" },
-  { value: "2000+", label: "Employees" },
+  { value: "2,000+", label: "Employees" },
   { value: "10+", label: "Global Service Centers" },
-  { value: "4000+", label: "Customers" },
+  { value: "4,000+", label: "Customers" },
 ] as const;

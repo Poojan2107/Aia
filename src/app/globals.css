@@ -535,11 +535,9 @@ video.film-cover {
 }
 
 /* Full Figma line breaks once the rail reaches 524px (27.292vw ≥ 32.75rem) */
-@media (min-width: 1920px) {
-  .hero-lede span {
-    white-space: nowrap;
-  }
-}
+/* Supporting copy is one paragraph per banner (Homepage Content Master): it wraps inside
+   the 524px rail with balanced lines instead of fixed Figma breaks. */
+.hero-lede span { text-wrap: pretty; }
 
 @media (max-width: 767px) {
   /* Keep the hero CTA clear of the fixed assistant button (60px + 24px inset). */
@@ -557,6 +555,19 @@ video.film-cover {
 
   .hero-headline span {
     white-space: normal;
+  }
+
+  /* Below desktop the banner headline flows as one balanced block (the Figma line
+     breaks are desktop-only) and stays clear of the banner dots on the right. */
+  .hero-headline {
+    padding-right: 2.75rem;
+    text-wrap: balance;
+  }
+  .hero-headline span {
+    display: inline;
+  }
+  .hero-headline span::after {
+    content: " ";
   }
 
   .hero-lede {
@@ -1772,6 +1783,13 @@ video.film-cover {
   }
 }
 
+/* Supporting sentence under the services headline (Homepage Content Master). */
+.services-lede {
+  margin: -1rem 0 2.25rem;
+  max-width: 34rem;
+  color: rgba(4, 29, 44, 0.72);
+}
+
 a.services-cta,
 button.services-cta {
   height: 36px;
@@ -2386,14 +2404,16 @@ button.tech-cta .hero-cta-label {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Body flows as one paragraph inside its column (Homepage Content Master copy is longer
+   than the old fixed Figma lines, which ran under the film at laptop widths). */
 .solve-body span {
-  display: block;
+  display: inline;
 }
-
-@media (min-width: 1024px) {
-  .solve-body span {
-    white-space: nowrap;
-  }
+.solve-body span::after {
+  content: " ";
+}
+.solve-body {
+  text-wrap: pretty;
 }
 
 @media (max-width: 1023px) {
@@ -3155,6 +3175,13 @@ button.solve-cta > span:last-child {
 
 .gallery-support span {
   display: block;
+}
+/* Gallery CTA (Homepage Content Master): centred under the support copy. */
+.gallery-cta { margin: 1.75rem auto 0; }
+@media (max-width: 1023px) {
+  /* Long support lines wrap as one paragraph on smaller screens. */
+  .gallery-support span { display: inline; }
+  .gallery-support span::after { content: " "; }
 }
 
 @media (min-width: 640px) {
@@ -5893,6 +5920,21 @@ a[data-home-only="disabled"] {
 
   /* Footer: last row clears the chip. */
   .foot-bottom { padding-bottom: calc(1.75rem + 64px); }
+}
+/* Narrow phones: the longest banner word ("MANUFACTURING") must fit beside the banner dots. */
+@media (max-width: 430px) {
+  .hero-headline.ft.ft { --ft-floor: 0.32; }
+  .hero-headline,
+  .hero-lede { padding-right: 2.25rem; }
+}
+/* Short phones (iPhone SE class): no height to spare, so the copy keeps its full width and
+   the banner dots move to the screen edge instead. */
+@media (max-width: 430px) and (max-height: 600px) {
+  .hero-headline.ft.ft { --ft-floor: 0.28; }
+  .hero-headline,
+  .hero-lede { padding-right: 1.25rem; }
+  .hero-lede { font-size: 12px; line-height: 18px; }
+  .hero-pager { right: 0.25rem; }
 }
 
 /* Short phones: the industry shortcuts and the About copy (it repeats What we solve) don't fit,
