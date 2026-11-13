@@ -64,7 +64,15 @@ export function SiteFooter() {
             <br />
             Supporting operations worldwide.
           </p>
-          <Image src="/images/design/logo-aia-vega-white.png" alt="AIA Engineering Limited and Vega Industries" width={418} height={163} className="foot-logos" />
+          <Image
+            src="/images/design/logo-aia-vega-white.png"
+            alt="AIA Engineering Limited and Vega Industries"
+            width={650}
+            height={200}
+            className="foot-logos"
+            sizes="(max-width: 768px) 200px, 320px"
+            quality={100}
+          />
         </div>
 
         <div className="foot-panel">

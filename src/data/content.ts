@@ -107,6 +107,42 @@ export const services = [
     description:
       "Technical planning for liner replacement windows to reduce downtime during planned shutdowns.",
   },
+  {
+    audience: "thermal" as const,
+    title: "Design Modelling & Alloy Selection",
+    description:
+      "Develop wear-resistant components and select suitable alloys based on coal mill design and operating requirements.",
+  },
+  {
+    audience: "thermal" as const,
+    title: "Wear Monitoring",
+    description:
+      "Monitor the condition of grinding components to support maintenance planning and timely replacement decisions.",
+  },
+  {
+    audience: "thermal" as const,
+    title: "Installation Support",
+    description:
+      "Provide technical guidance during installation and replacement of coal mill wear parts to support reliable operation.",
+  },
+  {
+    audience: "thermal" as const,
+    title: "Coal Mill Performance Assessment",
+    description:
+      "Assess coal grinding performance and operating conditions to identify opportunities for improved mill efficiency.",
+  },
+  {
+    audience: "thermal" as const,
+    title: "Process Optimisation",
+    description:
+      "Evaluate coal pulverising operations to identify improvements in grinding performance and component wear life.",
+  },
+  {
+    audience: "thermal" as const,
+    title: "Mill Operation & Maintenance Support",
+    description:
+      "Provide technical support to address wear-related issues, improve equipment reliability and support maintenance activities.",
+  },
 ] as const;
 
 export const technologyPillars = [
@@ -172,7 +208,7 @@ export const insights = [
     title:
       "What Plant Teams Should Look for When Selecting Grinding Media and Wear Parts",
     href: "/knowledge-hub/news-and-insights",
-    image: "/images/insight-1.jpg",
+    image: "/images/thumbnails/blog-grinding-media.jpg",
   },
   {
     date: "24 December 2026",
@@ -180,21 +216,21 @@ export const insights = [
     title:
       "The Role of Material, Design and Operating Conditions in Extending Mill Life",
     href: "/knowledge-hub/news-and-insights",
-    image: "/images/insight-2.jpg",
+    image: "/images/thumbnails/blog-mill-life.jpg",
   },
   {
     date: "12 January 2026",
     type: "News" as const,
     title: "AIA expands global service coverage for critical grinding assets",
     href: "/knowledge-hub/news-and-insights",
-    image: "/images/insight-1.jpg",
+    image: "/images/thumbnails/blog-grinding-media.jpg",
   },
   {
     date: "02 February 2026",
     type: "Press Release" as const,
     title: "AIA Engineering reports continued investment in wear R&D",
     href: "/knowledge-hub/news-and-insights",
-    image: "/images/insight-2.jpg",
+    image: "/images/thumbnails/blog-mill-life.jpg",
   },
 ] as const;
 
@@ -203,18 +239,18 @@ export const caseStudies = [
     title: "40ft SAG mill in Latin America",
     meta: "Life improvement - Throughput Increase - Power Reduction",
     href: "/knowledge-hub/case-studies/40ft-sag-mill-in-latin-america",
-    image: "/images/case-1.png",
+    image: "/images/thumbnails/case-40ft-sag-latin-america.jpg",
   },
   {
-    title: "15ft Ball mill in India",
+    title: "28ft SAG mill in Asia",
     meta: "Throughput Increase - Power Consumption",
-    href: "/knowledge-hub/case-studies/15-ft-ball-mill-in-india",
-    image: "/images/case-2.png",
+    href: "/knowledge-hub/case-studies/28ft-sag-mill-in-asia",
+    image: "/images/thumbnails/case-28ft-sag-asia.jpg",
   },
   {
     title: "34ft SAG mill in West Africa",
     meta: "Life improvement - Throughput Increase",
     href: "/knowledge-hub/case-studies/34ft-sag-mill-in-west-africa",
-    image: "/images/case-3.png",
+    image: "/images/thumbnails/case-34ft-sag-west-africa.jpg",
   },
 ] as const;

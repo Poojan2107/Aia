@@ -593,7 +593,15 @@ export function AiaVegaGlobeSection() {
           </div>
 
           <article className="gsq-col gsq-col-aia">
-            <Image src="/images/design/logo-aia-blue.webp" alt="AIA Engineering Limited" width={1552} height={1015} className="gsq-logo gsq-logo-aia" />
+            <Image
+              src="/images/design/logo-aia-blue.webp"
+              alt="AIA Engineering Limited"
+              width={1552}
+              height={1070}
+              className="gsq-logo gsq-logo-aia"
+              sizes="(max-width: 1024px) 160px, 240px"
+              quality={100}
+            />
             <h3 className="gsq-kicker ft ft-kicker20">Four decades of advanced comminution engineering</h3>
             <p className="gsq-body ft ft-body22">
               AIA Engineering Limited brings over 45 years of experience in manufacturing engineered grinding solutions and wear-resistant components. Combining advanced metallurgy, product engineering and manufacturing expertise, AIA develops application-specific solutions that support mill reliability, grinding efficiency and operational performance across mining, cement, quarry and thermal power industries.
@@ -601,7 +609,15 @@ export function AiaVegaGlobeSection() {
           </article>
 
           <article className="gsq-col gsq-col-vega">
-            <Image src="/images/design/logo-vega-color.webp" alt="VEGA Industries" width={200} height={145} className="gsq-logo gsq-logo-vega" />
+            <Image
+              src="/images/design/logo-vega-color.webp"
+              alt="VEGA Industries"
+              width={1200}
+              height={871}
+              className="gsq-logo gsq-logo-vega"
+              sizes="(max-width: 1024px) 140px, 200px"
+              quality={100}
+            />
             <h3 className="gsq-kicker ft ft-kicker20">Connecting engineering expertise across 120+ countries</h3>
             <p className="gsq-body ft ft-body22">
               VEGA Industries, a wholly owned subsidiary of AIA Engineering Limited, extends the Group&rsquo;s application expertise to international markets. Through its global marketing and distribution network, regional support capabilities and technical services, VEGA helps customers optimise grinding operations, improve equipment uptime and achieve long-term operating value.

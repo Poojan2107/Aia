@@ -5272,7 +5272,7 @@ button.solve-cta > span:last-child {
 .foot-inner { margin-inline: auto; max-width: 1920px; padding: clamp(3rem, 4.3vw, 82px) clamp(1rem, 7vw, 134px) 0; }
 .foot-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem; border-bottom: 1px solid #fff; padding-bottom: clamp(2rem, 3.4vw, 64px); margin-inline: calc(-1 * clamp(1rem, 7vw, 134px)); padding-inline: clamp(1rem, 7vw, 134px); }
 .foot-tagline { font-family: var(--font-haas); font-size: clamp(1.6rem, 2.5vw, 48px); font-weight: 500; line-height: 1.21; }
-.foot-logos { height: clamp(64px, 5.94vw, 114px); width: auto; }
+.foot-logos { height: clamp(64px, 5.94vw, 114px); width: auto; object-fit: contain; display: block; }
 .foot-panel { margin: 0 auto; max-width: 1309px; min-height: clamp(0px, 40.8vw, 783px); background: #0061e0; padding: clamp(2rem, 4.2vw, 80px); }
 .foot-grid { display: grid; gap: clamp(2.5rem, 4.5vw, 86px) 2rem; }
 .foot-heading { margin-bottom: clamp(0.9rem, 0.83vw, 16px); font-family: var(--font-haas); font-size: clamp(1.2rem, 1.46vw, 28px); font-weight: 500; line-height: 1; }
@@ -5400,7 +5400,7 @@ html.lenis body { height: auto; }
   filter: blur(24px);
 }
 .gsq-col { position: relative; z-index: 3; margin-top: 2rem; max-width: 30rem; }
-.gsq-logo { width: auto; }
+.gsq-logo { width: auto; object-fit: contain; display: block; }
 .gsq-logo-aia { height: clamp(60px, 4.6vw, 88px); }
 .gsq-logo-vega { height: clamp(56px, 4.2vw, 80px); }
 .gsq-kicker {
@@ -5642,6 +5642,8 @@ html.lenis body { height: auto; }
 
 .lead-brand {
   width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .lead-brand-aia {

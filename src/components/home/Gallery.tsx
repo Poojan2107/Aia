@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState, type TransitionEvent } from "react";
 import { MediaSlot } from "@/components/ui/MediaSlot";
 import { Reveal } from "@/components/ui/Reveal";
@@ -49,8 +50,14 @@ const COPIES = 5;
 function BrandMarks() {
   return (
     <div className="pointer-events-none absolute right-4 top-4 z-10 flex items-center gap-3 opacity-90 sm:right-6 sm:top-6">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/logo-vega.png" alt="" className="h-4 w-auto brightness-0 invert" />
+      <Image
+        src="/images/logo-vega.png"
+        alt="Vega Industries"
+        width={1200}
+        height={871}
+        className="h-4 w-auto object-contain"
+        quality={100}
+      />
     </div>
   );
 }

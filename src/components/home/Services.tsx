@@ -9,6 +9,7 @@ import { href } from "@/lib/routes";
 const tabs = [
   { id: "mining", label: "For Mining", cta: "Explore mining services", route: "mining-services" },
   { id: "cement", label: "For Cement", cta: "Explore cement services", route: "cement-services" },
+  { id: "thermal", label: "For Thermal", cta: "Explore Thermal Services", route: "thermal-power-services" },
 ] as const;
 
 export function Services() {

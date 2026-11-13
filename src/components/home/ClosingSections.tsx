@@ -303,7 +303,7 @@ export function Insights() {
                       alt=""
                       fill
                       sizes="(max-width: 1024px) 100vw, 45vw"
-                      className="object-cover object-[80%_center] transition duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
+                      className="object-cover object-center transition duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
                     />
                   </div>
 

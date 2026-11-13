@@ -117,10 +117,12 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
           <Image
             src="/images/design/logo-aia-vega-white.png"
             alt="AIA Engineering Limited and Vega Industries"
-            width={418}
-            height={163}
+            width={650}
+            height={200}
             className="h-10 w-auto object-contain"
             priority
+            quality={100}
+            sizes="160px"
           />
         </Link>
         <button type="button" onClick={onClose} className="flex size-11 items-center justify-center rounded-full border border-white/25" aria-label="Close menu">
@@ -250,10 +252,12 @@ export function SiteHeader() {
             <Image
               src="/images/design/logo-aia-vega-white.png"
               alt="AIA Engineering Limited and Vega Industries"
-              width={418}
-              height={163}
+              width={650}
+              height={200}
               className="site-nav-brand-logo"
               priority
+              quality={100}
+              sizes="(max-width: 768px) 160px, 240px"
             />
           </Link>
 
