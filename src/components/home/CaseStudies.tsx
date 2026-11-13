@@ -16,7 +16,9 @@ export function CaseStudies() {
   const [motion, setMotion] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef(index);
-  indexRef.current = index;
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
   const offset = (index + 1) % count;
   const ordered = [...caseStudies.slice(offset), ...caseStudies.slice(0, offset)];
 

@@ -72,7 +72,9 @@ export function Gallery() {
 
   const rowRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef(index);
-  indexRef.current = index;
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
 
   const dragStartX = useRef<number | null>(null);
   const dragStartY = useRef<number | null>(null);

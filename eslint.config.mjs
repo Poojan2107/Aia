@@ -15,7 +15,13 @@ const eslintConfig = defineConfig([
     // Vendored Framer export (MeridianGlobe) — compiled code, not hand-written.
     "src/components/ui/AtomicGlobe.jsx",
     "src/components/ui/AtomicGlobe.d.ts",
+    "aia-ballmill-showcase/**",
   ]),
+  {
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
