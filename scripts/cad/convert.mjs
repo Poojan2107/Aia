@@ -12,6 +12,7 @@ import { weld, simplify, dedup, prune, reorder, meshopt } from "@gltf-transform/
 import { MeshoptSimplifier, MeshoptEncoder } from "meshoptimizer";
 import { products } from "./manifest.mjs";
 import { finishes } from "./materials.mjs";
+import { bakeAO } from "./ao.mjs";
 
 const OUT = "public/models/catalog";
 fs.mkdirSync(OUT, { recursive: true });
@@ -72,6 +73,12 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     byRole.set(role, g);
   }
 
+  // Baked ambient occlusion (scripts/cad/ao.mjs), stored as vertex colour: recesses darken.
+  const aoStart = Date.now();
+  const aoValues = bakeAO([...byRole.values()]);
+  const aoByRole = new Map([...byRole.keys()].map((r, i) => [r, aoValues[i]]));
+  const aoSeconds = ((Date.now() - aoStart) / 1000).toFixed(1);
+
   const doc = new Document();
   const buf = doc.createBuffer();
   const scene = doc.createScene(prod.id);
@@ -94,6 +101,13 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
       .setAttribute("POSITION", doc.createAccessor().setType("VEC3").setArray(new Float32Array(g.pos)).setBuffer(buf))
       .setIndices(doc.createAccessor().setType("SCALAR").setArray(new Uint32Array(g.idx)).setBuffer(buf))
       .setMaterial(mat);
+    {
+      const ao = aoByRole.get(role);
+      const floor = base.aoFloor ?? 0.28;
+      const col = new Float32Array(ao.length * 3);
+      for (let v = 0; v < ao.length; v++) col.fill(floor + (1 - floor) * Math.pow(ao[v], 1.4), v * 3, v * 3 + 3);
+      prim.setAttribute("COLOR_0", doc.createAccessor().setType("VEC3").setArray(col).setBuffer(buf));
+    }
     if (g.nrm.length === g.pos.length) prim.setAttribute("NORMAL", doc.createAccessor().setType("VEC3").setArray(new Float32Array(g.nrm)).setBuffer(buf));
     if (f.normalMap || f.mrMap || f.colorMap) {
       // Box-projected UVs (CAD meshes have none): project each vertex on the plane facing its normal.
@@ -131,6 +145,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     rolesBeforeSimplify: roles,
     kb: Math.round(fs.statSync(file).size / 1024),
     seconds: +((Date.now() - t0) / 1000).toFixed(1),
+    aoSeconds: +aoSeconds,
   };
   console.log(prod.id, JSON.stringify(report[prod.id]));
 }

@@ -10,8 +10,9 @@
     "rolesBeforeSimplify": {
       "steel": 21824
     },
-    "kb": 364,
-    "seconds": 10.2
+    "kb": 396,
+    "seconds": 11.1,
+    "aoSeconds": 0.7
   },
   "mining-rubber-ball-mill-shell-liner": {
     "aiaRef": "W9_5780_4",
@@ -24,8 +25,9 @@
     "rolesBeforeSimplify": {
       "rubber": 284
     },
-    "kb": 47,
-    "seconds": 0.3
+    "kb": 48,
+    "seconds": 0.4,
+    "aoSeconds": 0.1
   },
   "mining-composite-ball-mill-end-liner": {
     "aiaRef": "W9_5724_6",
@@ -40,8 +42,9 @@
       "bolt": 5660,
       "rubber": 18646
     },
-    "kb": 672,
-    "seconds": 8.5
+    "kb": 713,
+    "seconds": 9.3,
+    "aoSeconds": 0.8
   },
   "thermal-metal-tube-mill-oblique-wave-liner": {
     "aiaRef": "AIA_A1_084_OW_2",
@@ -54,8 +57,9 @@
     "rolesBeforeSimplify": {
       "hicr": 4978
     },
-    "kb": 122,
-    "seconds": 1.7
+    "kb": 118,
+    "seconds": 2.2,
+    "aoSeconds": 0.2
   },
   "thermal-sintercast-loesche-lm-roller": {
     "aiaRef": "V_A1_INS_928 (LM ROLL SINTERCAST)",
@@ -70,8 +74,9 @@
       "hicr": 994576,
       "ceramic": 1011824
     },
-    "kb": 2813,
-    "seconds": 29.6
+    "kb": 2884,
+    "seconds": 62,
+    "aoSeconds": 29.2
   },
   "cement-metal-tube-mill-liner": {
     "aiaRef": "TOTAL_TUBE_MILL_ASSLY_FCB_4800_CHROME › IIE2",
@@ -84,8 +89,9 @@
     "rolesBeforeSimplify": {
       "hicr": 1416
     },
-    "kb": 84,
-    "seconds": 0.8
+    "kb": 76,
+    "seconds": 1.1,
+    "aoSeconds": 0.3
   },
   "cement-sintercast-loesche-lm-table": {
     "aiaRef": "V_A2_1540_A (LM TABLE SINTERCAST)",
@@ -99,7 +105,8 @@
       "hicr": 38120,
       "ceramic": 37396
     },
-    "kb": 1036,
-    "seconds": 9.7
+    "kb": 1110,
+    "seconds": 12.2,
+    "aoSeconds": 1.7
   }
 }

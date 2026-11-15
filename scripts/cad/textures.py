@@ -43,10 +43,11 @@ def normal_from_height(h, strength):
     return Image.fromarray(((n * 0.5 + 0.5) * 255).astype(np.uint8), "RGB")
 
 
-# Sand-cast iron: fine grain + soft pitting.
-cast_h = tileable_noise(512, [(0.6, 1.0), (1.6, 0.6), (5, 0.35)])
-normal_from_height(cast_h, 6.0).save(os.path.join(TEX, "cast-normal.png"))
-rough = 0.55 + (tileable_noise(512, [(2.5, 1.0), (10, 0.6)]) - 0.5) * 0.25  # 0.43..0.68
+# Sand-cast iron: fine, even sand grain with a little soft pitting (AIA's photos show an almost
+# smooth satin casting skin, not a hammered surface).
+cast_h = tileable_noise(512, [(0.5, 1.0), (1.1, 0.45), (3, 0.12)])
+normal_from_height(cast_h, 3.2).save(os.path.join(TEX, "cast-normal.png"))
+rough = 0.57 + (tileable_noise(512, [(2.5, 1.0), (14, 0.7)]) - 0.5) * 0.18  # ~0.48..0.66
 Image.fromarray((np.clip(rough, 0, 1) * 255).astype(np.uint8)).convert("RGB").save(os.path.join(TEX, "cast-rough.png"))
 
 # Moulded rubber: very fine, soft texture.
@@ -87,9 +88,9 @@ small("cast-normal.jpg", Image.open(os.path.join(TEX, "cast-normal.png")))
 r = Image.open(os.path.join(TEX, "cast-rough.png")).convert("L")
 small("cast-mr.jpg", Image.merge("RGB", (Image.new("L", r.size, 0), r, Image.new("L", r.size, 255))))
 small("rubber-normal.jpg", Image.open(os.path.join(TEX, "rubber-normal.png")))
-# Cast-iron tone mottling (base colour multiplier 0.78..1.0), blotchy at casting scale.
-mott = tileable_noise(512, [(18, 1.0), (6, 0.5), (1.2, 0.25)])
-tone = 0.78 + mott * 0.22
+# Cast-iron tone mottling (base colour multiplier 0.86..1.0), soft blotches at casting scale.
+mott = tileable_noise(512, [(22, 1.0), (8, 0.45), (1.2, 0.12)])
+tone = 0.86 + mott * 0.14
 Image.fromarray((tone * 255).astype(np.uint8)).convert("RGB").resize((256, 256), Image.LANCZOS).save(os.path.join(TEX, "cast-color.jpg"), quality=88)
 print("web textures written")
 
