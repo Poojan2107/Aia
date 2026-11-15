@@ -143,6 +143,9 @@ export function MaterialViewer3D({ src, image, alt, info, orbit }: Props) {
     };
     el.addEventListener("load", onLoad);
     el.addEventListener("error", onError);
+    // From a fast CDN the model can finish loading before this listener is attached (effects run
+    // after paint): if it already has, run the same steps now instead of waiting for an event.
+    if ((el as unknown as { loaded?: boolean }).loaded) queueMicrotask(onLoad);
     return () => {
       el.removeEventListener("load", onLoad);
       el.removeEventListener("error", onError);
