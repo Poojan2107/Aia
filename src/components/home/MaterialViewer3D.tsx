@@ -118,35 +118,49 @@ export function MaterialViewer3D({ src, image, alt, info, orbit }: Props) {
   useEffect(() => {
     const el = viewerRef.current;
     if (!el) return;
+    let done = false;
+    let poll = 0;
+    let io: IntersectionObserver | null = null;
     const onLoad = () => {
+      if (done) return;
+      done = true;
+      window.clearInterval(poll);
       setIsLoading(false);
-      // Turn into the front view when the stage is on screen (now, or when it scrolls in).
+      // Turn into the front view when the stage is on screen (now, or when it scrolls in): a third
+      // of the stage, or half the window on short screens where a third of the stage never fits.
       const container = containerRef.current;
       if (!container) return;
-      const io = new IntersectionObserver(
+      io = new IntersectionObserver(
         ([entry]) => {
           if (!entry?.isIntersecting) return;
-          io.disconnect();
+          const seen = entry.intersectionRect.height;
+          if (entry.intersectionRatio < 0.35 && seen < window.innerHeight * 0.5) return;
+          io?.disconnect();
           window.setTimeout(() => {
             const mv = viewerRef.current as unknown as { cameraOrbit?: string } | null;
             if (mv) mv.cameraOrbit = cameraOrbit;
             setIntroDone(true);
           }, 120);
         },
-        { threshold: 0.35 },
+        { threshold: [0, 0.1, 0.2, 0.35, 0.5, 0.75, 1] },
       );
       io.observe(container);
     };
     const onError = () => {
+      window.clearInterval(poll);
       setIsLoading(false);
       setHasError(true);
     };
     el.addEventListener("load", onLoad);
     el.addEventListener("error", onError);
-    // From a fast CDN the model can finish loading before this listener is attached (effects run
-    // after paint): if it already has, run the same steps now instead of waiting for an event.
-    if ((el as unknown as { loaded?: boolean }).loaded) queueMicrotask(onLoad);
+    // The "load" event can be missed (the model finishing before this listener is attached, which
+    // some browsers showed): also watch the viewer's own `loaded` flag until it is set.
+    const isLoaded = () => Boolean((el as unknown as { loaded?: boolean }).loaded);
+    poll = window.setInterval(() => isLoaded() && onLoad(), 400);
+    if (isLoaded()) queueMicrotask(onLoad);
     return () => {
+      window.clearInterval(poll);
+      io?.disconnect();
       el.removeEventListener("load", onLoad);
       el.removeEventListener("error", onError);
     };
