@@ -4676,7 +4676,7 @@ button.solve-cta > span:last-child {
   background: #ffffff;
   border: 1px solid #d8d8d8;
   font-family: var(--font-sinteca, sans-serif);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -6198,3 +6198,82 @@ a[data-home-only="disabled"] {
   .hero-headline.has-lead .hero-sub { display: block; font-size: 0.56em; }
   .hero-headline.has-lead .hero-sub::after { content: none; }
 }
+
+/* MOC viewer info card: anchored to the viewer's bottom-right corner (not to model coordinates),
+   wrapping inside the visual so it never runs into the blue panel. */
+.mats-3d-container .mats-hotspot-container--media {
+  left: auto !important;
+  right: clamp(12px, 1.6vw, 24px);
+  top: auto !important;
+  bottom: clamp(12px, 1.6vw, 24px) !important;
+}
+.mats-3d-container .mats-hotspot-container--media .mats-ref-card {
+  left: auto;
+  right: 0;
+  top: auto;
+  bottom: 36px;
+  width: max-content;
+  max-width: min(360px, calc(100vw - 48px));
+  white-space: normal;
+}
+.mats-3d-container .mats-ref-row { align-items: baseline; }
+.mats-3d-container .mats-ref-val { overflow-wrap: anywhere; }
+/* Info card closed by default (it covered the model); the + button opens it. */
+.mats-3d-container .mats-hotspot-container--media .mats-ref-card { display: none; }
+.mats-3d-container .mats-hotspot-container--media[data-toggled="true"] .mats-ref-card { display: block; }
+/* MOC tab whose AIA CAD model is not converted yet. */
+.mats-3d-pending {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  background:
+    radial-gradient(60% 55% at 50% 50%, rgba(0, 110, 255, 0.06), rgba(0, 110, 255, 0) 70%),
+    repeating-linear-gradient(0deg, rgba(4, 29, 44, 0.04) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(4, 29, 44, 0.04) 0 1px, transparent 1px 28px);
+}
+.mats-3d-pending-kicker {
+  font-family: var(--font-sinteca), var(--font-inter), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aia-accent, #006eff);
+}
+.mats-3d-pending-text { max-width: 22rem; font-size: 15px; line-height: 1.5; color: rgba(4, 29, 44, 0.7); }
+/* MOC tab shown with AIA's own product image (aiaengineering.com), as on AIA's site. */
+.mats-product-image {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+}
+.mats-product-image img {
+  max-width: min(100%, 560px);
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 18px 24px rgba(4, 29, 44, 0.14));
+}
+/* Info toggle as a labelled pill (the card starts closed). */
+.mats-3d-container .mats-hotspot-pin {
+  width: auto;
+  height: 32px;
+  gap: 8px;
+  padding: 0 14px 0 6px;
+  border-radius: 999px;
+}
+.mats-3d-container .mats-pin-dot { display: grid; place-items: center; width: 20px; height: 20px; line-height: 1; }
+.mats-3d-container .mats-pin-label { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+.mats-3d-container .mats-hotspot-container--media .mats-ref-card { bottom: 44px; }
+/* Still render cross-fades into the live 3D model (no jump as the model turns in). */
+.mats-model-poster { transition: opacity 600ms ease; pointer-events: none; }
+.mats-model-poster.is-hidden { opacity: 0; }
+.mats-model-viewer { animation: mats-mv-in 600ms ease both; }
+@keyframes mats-mv-in { from { opacity: 0; } }

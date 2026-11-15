@@ -289,7 +289,7 @@ export function Gallery() {
         >
           <GalleryNavArrow className="size-10 rotate-180 transition-transform duration-300 group-hover:-translate-x-0.5" />
         </button>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-0">
           {films.map((film, i) => {
             const active = activeIndex === i;
             return (
@@ -299,11 +299,17 @@ export function Gallery() {
                 aria-label={`Show ${film.title}`}
                 aria-current={active}
                 onClick={() => goTo(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${active
-                    ? "w-6 bg-[var(--aia-accent)] shadow-sm"
-                    : "w-1.5 bg-[#c5c8cc] hover:bg-[#8e959d]"
-                  }`}
-              />
+                // 24px tap target (WCAG 2.5.8) around the small visual dot.
+                className="group grid h-6 min-w-6 place-items-center"
+              >
+                <span
+                  aria-hidden
+                  className={`block h-1.5 rounded-full transition-all duration-300 ${active
+                      ? "w-6 bg-[var(--aia-accent)] shadow-sm"
+                      : "w-1.5 bg-[#c5c8cc] group-hover:bg-[#8e959d]"
+                    }`}
+                />
+              </button>
             );
           })}
         </div>

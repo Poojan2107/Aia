@@ -92,3 +92,6 @@ __pycache__/
 /public/globe.svg
 /public/vercel.svg
 /public/window.svg
+
+# AIA-provided CAD library (confidential, 3.9 GB): never commit
+/models/

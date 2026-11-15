@@ -26,10 +26,10 @@ type Industry = {
 };
 
 const industries: Industry[] = [
-  { id: "mining", index: "01", name: "Mining", lead: ["Wear solutions", "for critical grinding", "applications."], cta: "Explore mining", route: "mining", photo: "/images/design/ind-mining-figma.jpg", alt: "Grinding mill and conveyor at a mineral processing plant" },
-  { id: "cement", index: "02", name: "Cement", lead: ["Engineered for", "demanding cement", "grinding applications."], cta: "Explore cement", route: "cement", photo: "/images/design/ind-cement.jpg", alt: "Cement plant with preheater tower" },
+  { id: "mining", index: "01", name: "Mining", lead: ["Wear resistant solutions", "for critical grinding", "applications."], cta: "Explore mining", route: "mining", photo: "/images/design/ind-mining-figma.jpg", alt: "Grinding mill and conveyor at a mineral processing plant" },
+  { id: "cement", index: "02", name: "Cement", lead: ["Innovative solutions", "for cement grinding", "excellence."], cta: "Explore cement", route: "cement", photo: "/images/design/ind-cement.jpg", alt: "Cement plant with preheater tower" },
   { id: "quarry", index: "03", name: "Quarry", lead: ["Wear protection", "for high-impact", "crushing applications."], cta: "Explore quarry", route: "quarry-products", photo: "/images/design/ind-quarry.jpg", alt: "Mobile crusher and conveyor at a quarry" },
-  { id: "thermal", index: "04", name: "Thermal", lead: ["Wear solutions for", "demanding coal", "grinding applications."], cta: "Explore thermal", route: "thermal-power", photo: "/images/design/ind-thermal.jpg", alt: "Thermal power station with cooling towers" },
+  { id: "thermal", index: "04", name: "Thermal", lead: ["Wear resistant solutions", "for demanding coal", "grinding applications."], cta: "Explore thermal", route: "thermal-power", photo: "/images/design/ind-thermal.jpg", alt: "Thermal power station with cooling towers" },
 ];
 
 /** Split line position as a fraction of the stage height (Figma: 426 / 1073). */

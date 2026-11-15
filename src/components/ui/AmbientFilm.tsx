@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { webglTier } from "@/lib/webgl";
+import { MP4_TYPE, WEBM_TYPE, webmTwin } from "@/lib/video";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
@@ -29,7 +31,9 @@ export function AmbientFilm({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Lite mode on devices without a GPU (software WebGL, common on Linux VMs/laptops): decoding
+    // full-screen films on the CPU stalls scrolling for seconds, so the poster stays instead.
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || webglTier() !== "hardware";
     const wrap = wrapRef.current;
     const video = videoRef.current;
     if (!src || !wrap || !video || reduced) return;
@@ -87,10 +91,12 @@ export function AmbientFilm({
           loop
           playsInline
           preload="metadata"
-          src={src}
           onPlaying={() => setReady(true)}
           aria-hidden
-        />
+        >
+          <source src={src} type={MP4_TYPE} />
+          <source src={webmTwin(src)} type={WEBM_TYPE} />
+        </video>
       ) : null}
     </div>
   );

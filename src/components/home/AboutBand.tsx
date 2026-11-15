@@ -137,7 +137,9 @@ export function AboutBand() {
               <AmbientFilm
                 src={media.about}
                 poster="/images/what-we-solve-poster.webp"
-                sizes="100vw"
+                // Grows to full screen on scroll, so it needs the full-width image (same as "100vw";
+                // this form avoids Next's dev check, which measures it before it has grown).
+                sizes="(min-width: 1px) 100vw"
                 coverBleed
               />
               <div aria-hidden className="about2-scrim" />

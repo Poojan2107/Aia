@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>html,body{margin:0;background:#f4f5f7}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+  // Local QA render of a converted AIA model: studio light, three-quarter view.
+  import * as THREE from "three";
+  import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+  import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+  import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+  const q = new URLSearchParams(location.search); const id = q.get("m"); const flip = +(q.get("flip") || 0); const zoom = +(q.get("zoom") || 1);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setSize(900, 640);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  document.body.appendChild(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color("#f4f5f7");
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+  const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(3, 5, 4); scene.add(key);
+  const cam = new THREE.PerspectiveCamera(30, 900 / 640, 0.01, 100);
+  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+  loader.load(`/public/models/catalog/${id}.glb`, (g) => {
+    const obj = g.scene; scene.add(obj);
+    const box = new THREE.Box3().setFromObject(obj); const size = box.getSize(new THREE.Vector3()); const c = box.getCenter(new THREE.Vector3());
+    const r = size.length() / 2;
+    const sx = flip ? -1 : 1; cam.position.set(c.x + sx * r * 1.6 / zoom, c.y + r * 1.2 / zoom, c.z + sx * r * 2.0 / zoom); cam.lookAt(c);
+    renderer.render(scene, cam);
+    window.__done = true;
+  }, undefined, (e) => { document.title = "ERR " + e.message; window.__done = true; });
+</script>
+</body>
+</html>

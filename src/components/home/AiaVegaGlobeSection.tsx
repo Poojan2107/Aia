@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { webglTier } from "@/lib/webgl";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { GlobeInstance } from "globe.gl";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -151,15 +152,9 @@ export function AiaVegaGlobeSection() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-    const hasWebGL = (() => {
-      try {
-        const c = document.createElement("canvas");
-        return Boolean(c.getContext("webgl2") || c.getContext("webgl"));
-      } catch {
-        return false;
-      }
-    })();
-    if (!hasWebGL) {
+    // No GPU (no WebGL, or WebGL drawn on the CPU as on many Linux laptops/VMs): the 3D globe
+    // freezes for seconds there, so show the lightweight CSS globe instead.
+    if (webglTier() !== "hardware") {
       queueMicrotask(() => setFailed(true));
       return;
     }
@@ -604,7 +599,7 @@ export function AiaVegaGlobeSection() {
             />
             <h3 className="gsq-kicker ft ft-kicker20">Four decades of advanced comminution engineering</h3>
             <p className="gsq-body ft ft-body22">
-              AIA Engineering Limited brings over 45 years of experience in manufacturing engineered grinding solutions and wear-resistant components. Combining advanced metallurgy, product engineering and manufacturing expertise, AIA develops application-specific solutions that support mill reliability, grinding efficiency and operational performance across mining, cement, quarry and thermal power industries.
+              AIA Engineering Limited brings over 48 years of experience in manufacturing engineered grinding solutions and wear-resistant components. Combining advanced metallurgy, product engineering and manufacturing expertise, AIA develops application-specific solutions that support mill reliability, grinding efficiency and operational performance across mining, cement, quarry and thermal power industries.
             </p>
           </article>
 

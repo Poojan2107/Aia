@@ -15,7 +15,7 @@ const PLATE = "/images/what-we-solve-poster.webp";
 const SOLVE_BODY_LINES = [
   "Across mining, cement, quarry and thermal",
   "power, we engineer and manufacture",
-  "wear-resistant castings, mill liners, grinding",
+  "wear-resistant products, mill liners, grinding",
   "media and critical wear components for",
   "demanding industrial applications. Our",
   "expertise in metallurgy, comminution solutions",
@@ -168,8 +168,8 @@ export function WhatWeSolve() {
           <SectionLabel className="solve-label">What we solve</SectionLabel>
           <div className="solve-main">
             <h2 id="what-we-solve-heading" className="solve-heading ft ft-h56">
-              For over four decades, AIA has been engineering longer life into
-              the parts that keep industry moving.
+              For over four decades, AIA has been engineering process efficiency
+              &amp; reliability into the parts that keep industry moving.
             </h2>
           </div>
           <SolveAside />
@@ -212,8 +212,8 @@ export function WhatWeSolve() {
             <SectionLabel className="solve-label">What we solve</SectionLabel>
             <div className="solve-main">
               <h2 id="what-we-solve-heading" className="solve-heading ft ft-h56">
-                For over four decades, AIA has been engineering longer life
-                into the parts that keep industry moving.
+                For over four decades, AIA has been engineering process efficiency
+                &amp; reliability into the parts that keep industry moving.
               </h2>
             </div>
             <SolveAside />
@@ -240,7 +240,9 @@ export function WhatWeSolve() {
               poster={PLATE}
               className="absolute inset-0"
               position="center center"
-              sizes="100vw"
+              // Grows to full screen on scroll, so it needs the full-width image (same as "100vw";
+              // this form avoids Next's dev check, which measures it before it has grown).
+              sizes="(min-width: 1px) 100vw"
             />
           </div>
 

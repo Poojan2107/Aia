@@ -1,417 +1,268 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
+import { webglTier } from "@/lib/webgl";
 
-export type MocShadingType =
-  | "metal"
-  | "steel"
-  | "rubber"
-  | "composite"
-  | "integrated"
-  | "sintercast"
-  | "vcast"
-  | "media";
-
-export type HotspotData = {
-  material: string;
-  featuredApp: string;
-  position?: string;
-  normal?: string;
-};
+/**
+ * 3D viewer for AIA's products (models converted locally from AIA's own CAD; see scripts/cad).
+ * - model-viewer is self-hosted (public/vendor), with the meshopt decoder served locally too:
+ *   nothing loads from a third-party CDN.
+ * - Finishes are baked into each model per material (matte cast metal, rubber, ceramic), so the
+ *   viewer applies no shading overrides — this is what keeps cast liners dull, like the real parts.
+ */
+export type ModelInfo = { material: string; featuredApp: string; specs?: string[] };
 
 type Props = {
   src?: string;
-  poster?: string;
+  /** AIA's own product image (aiaengineering.com), shown when the part has no converted model. */
+  image?: string;
   alt: string;
-  mocType?: MocShadingType;
-  hotspot?: HotspotData;
-  orientation?: string;
-  cameraOrbit?: string;
-  cameraTarget?: string;
-  fieldOfView?: string;
+  info?: ModelInfo;
+  orbit?: string;
 };
 
-const MODEL_VIEWER_SRC =
-  "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
+const MODEL_VIEWER_SRC = "/vendor/model-viewer-4.0.0.min.js";
+const MESHOPT_DECODER_SRC = "/vendor/meshopt_decoder.js";
+const DEFAULT_ORBIT = "35deg 65deg 105%";
+/** Where each model starts before it turns into its front view (theta offset, a little higher). */
+const introOrbit = (front: string) => {
+  const [t, p, r] = front.split(/\s+/);
+  return `${parseFloat(t) - 60}deg ${Math.min(80, parseFloat(p) + 8)}deg ${parseFloat(r) + 12}%`;
+};
 
-export function MaterialViewer3D({
-  src,
-  poster,
-  alt,
-  mocType = "metal",
-  hotspot,
-  orientation,
-  cameraOrbit,
-  cameraTarget,
-  fieldOfView,
-}: Props) {
-  const [scriptReady, setScriptReady] = useState(() => {
-    if (typeof window === "undefined" || typeof customElements === "undefined") {
-      return false;
-    }
-    return Boolean(customElements.get("model-viewer"));
-  });
-  const [isLoading, setIsLoading] = useState(Boolean(src));
-  const [hasError, setHasError] = useState(false);
-  const [hotspotOpen, setHotspotOpen] = useState(true);
-  const [autoRotateActive, setAutoRotateActive] = useState(false);
-  const [isInteractive, setIsInteractive] = useState(false);
-  const viewerRef = useRef<HTMLElement | null>(null);
+type ModelViewerCtor = CustomElementConstructor & { meshoptDecoderLocation?: string };
 
-  const defaultOrbit = cameraOrbit || "0deg 85deg 115%";
 
-  const handleToggle360 = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    const el = viewerRef.current as unknown as { cameraOrbit?: string; autoRotate?: boolean };
-    if (!el) return;
-    if (!autoRotateActive) {
-      setIsInteractive(true);
-      setAutoRotateActive(true);
-    } else {
-      setAutoRotateActive(false);
-      // Reset back to front-facing view
-      if (typeof el.cameraOrbit !== "undefined") {
-        el.cameraOrbit = defaultOrbit;
-      }
-      setIsInteractive(false);
-    }
+function loadModelViewer(): Promise<void> {
+  const ready = () => {
+    const ctor = customElements.get("model-viewer") as ModelViewerCtor | undefined;
+    if (ctor) ctor.meshoptDecoderLocation = MESHOPT_DECODER_SRC;
   };
-
-  const handleActivateInteractive = () => {
-    if (!isInteractive) {
-      setIsInteractive(true);
-    }
-  };
-
-  // Load model-viewer script once
-  useEffect(() => {
-    if (typeof customElements !== "undefined" && customElements.get("model-viewer")) {
-      setScriptReady(true);
-      return;
-    }
-
-    const existing = document.querySelector<HTMLScriptElement>(
-      `script[data-model-viewer="aia"]`
-    );
-    if (existing) {
-      const onLoad = () => setScriptReady(true);
-      existing.addEventListener("load", onLoad);
-      return () => existing.removeEventListener("load", onLoad);
-    }
-
-    const script = document.createElement("script");
+  if (customElements.get("model-viewer")) {
+    ready();
+    return Promise.resolve();
+  }
+  const existing = document.querySelector<HTMLScriptElement>('script[data-model-viewer="aia"]');
+  const script = existing ?? document.createElement("script");
+  if (!existing) {
     script.type = "module";
     script.src = MODEL_VIEWER_SRC;
     script.dataset.modelViewer = "aia";
-    script.onload = () => setScriptReady(true);
-    script.onerror = () => {
-      console.warn("Could not load model-viewer CDN, falling back to static image.");
-      setHasError(true);
-    };
     document.head.appendChild(script);
-  }, []);
+  }
+  return customElements.whenDefined("model-viewer").then(ready);
+}
 
-  // Reset loading & interactive state on model src change
+export function MaterialViewer3D({ src, image, alt, info, orbit }: Props) {
+  const [scriptReady, setScriptReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(Boolean(src));
+  const [hasError, setHasError] = useState(false);
+  // Info card: closed by default (it sat over the model); the + button opens it.
+  const [infoToggled, setInfoToggled] = useState(false);
+  const [autoRotate, setAutoRotate] = useState(false);
+  const [isInteractive, setIsInteractive] = useState(false);
+  const [noWebGL, setNoWebGL] = useState(false);
+  const viewerRef = useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const cameraOrbit = orbit || DEFAULT_ORBIT;
+  // Intro turn: the model loads angled away and glides into its front view once it is on screen.
+  const [introDone, setIntroDone] = useState(false);
+  // Still render of the same AIA model (scripts/cad/posters.mjs): shown instantly while the 3D
+  // loads, and instead of 3D on devices without a GPU.
+  const poster = src ? src.replace(/\.glb$/, ".poster.webp") : undefined;
+
+  // Load the 3D viewer in idle time shortly after the page has loaded (after the globe's own
+  // start-up), or as soon as the section comes near if that happens first. Loading it only on
+  // approach put its script compile in the middle of the visitor's scroll. Only on machines with
+  // a GPU; without one the still render is shown instead.
   useEffect(() => {
-    if (src) {
-      setIsLoading(true);
-      setHasError(false);
-      setIsInteractive(false);
-      setAutoRotateActive(false);
-    }
-  }, [src]);
-
-  // Apply authentic physical metallurgical PBR shading matching AIA website palette & materials
-  const applyMaterialShading = useCallback(
-    (viewer: HTMLElement) => {
-      const model = (viewer as unknown as { model?: { materials?: unknown[] } }).model;
-      if (!model || !Array.isArray(model.materials) || model.materials.length === 0) {
+    const el = containerRef.current;
+    if (!el) return;
+    let alive = true;
+    let started = false;
+    let timer = 0;
+    const start = () => {
+      if (started || !alive) return;
+      started = true;
+      io.disconnect();
+      window.clearTimeout(timer);
+      window.removeEventListener("load", onLoad);
+      if (webglTier() !== "hardware") {
+        setNoWebGL(true);
         return;
       }
+      loadModelViewer()
+        .then(() => alive && setScriptReady(true))
+        .catch(() => alive && setHasError(true));
+    };
+    type IdleWin = Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+    const onLoad = () => {
+      timer = window.setTimeout(() => {
+        const w = window as IdleWin;
+        if (w.requestIdleCallback) w.requestIdleCallback(start, { timeout: 3000 });
+        else start();
+      }, 2500);
+    };
+    const io = new IntersectionObserver(([entry]) => entry?.isIntersecting && start(), { rootMargin: "100% 0px" });
+    io.observe(el);
+    if (document.readyState === "complete") onLoad();
+    else window.addEventListener("load", onLoad);
+    return () => {
+      alive = false;
+      io.disconnect();
+      window.clearTimeout(timer);
+      window.removeEventListener("load", onLoad);
+    };
+  }, []);
 
-      model.materials.forEach((mat: unknown, idx: number) => {
-        const material = mat as {
-          name?: string;
-          pbrMetallicRoughness?: {
-            setBaseColorFactor: (rgba: [number, number, number, number]) => void;
-            setMetallicFactor: (val: number) => void;
-            setRoughnessFactor: (val: number) => void;
-          };
-        };
-
-        const pbr = material.pbrMetallicRoughness;
-        if (!pbr) return;
-
-        const matName = (material.name || "").toLowerCase();
-
-        switch (mocType) {
-          case "rubber":
-            // Deep vulcanized matte industrial elastomer: soft non-metallic scattering
-            pbr.setBaseColorFactor([0.11, 0.12, 0.14, 1.0]);
-            pbr.setMetallicFactor(0.02);
-            pbr.setRoughnessFactor(0.86);
-            break;
-
-          case "integrated":
-            // Integrated composite: high-chrome wave lifter wear face on dampening elastomer bedding
-            // Material 1 ("FFEFD2CB"): High-Chrome Alloy Wear Face
-            // Material 0 ("FFB2B2B2"): Mounting elastomer base
-            if (idx === 1 || matName.includes("efd2cb") || matName.includes("lifter") || matName.includes("face")) {
-              pbr.setBaseColorFactor([0.86, 0.89, 0.94, 1.0]);
-              pbr.setMetallicFactor(0.96);
-              pbr.setRoughnessFactor(0.15);
-            } else {
-              pbr.setBaseColorFactor([0.12, 0.13, 0.15, 1.0]);
-              pbr.setMetallicFactor(0.02);
-              pbr.setRoughnessFactor(0.88);
-            }
-            break;
-
-          case "composite":
-            // Dual-matrix composite: high-chrome wear inserts in resilient vulcanized rubber matrix
-            // Material 1 ("FF7FFFFB"): Vulcanized Rubber Sector Body & Backing (Yellow in CAD)
-            // Materials 0 & 2 ("FFFFCDF6", "FFE3E3E3"): High-Chrome Alloy Wear Inserts (Pink in CAD)
-            if (
-              matName.includes("rubber") ||
-              matName.includes("back") ||
-              matName.includes("cushion") ||
-              matName.includes("7ffffb") ||
-              idx === 1
-            ) {
-              // Vulcanized rubber cushion matrix
-              pbr.setBaseColorFactor([0.10, 0.11, 0.13, 1.0]);
-              pbr.setMetallicFactor(0.01);
-              pbr.setRoughnessFactor(0.88);
-            } else {
-              // High-chrome wear inserts: brilliant cast alloy
-              pbr.setBaseColorFactor([0.86, 0.89, 0.94, 1.0]);
-              pbr.setMetallicFactor(0.96);
-              pbr.setRoughnessFactor(0.14);
-            }
-            break;
-
-          case "sintercast":
-            // High-chrome cast alloy matrix with embedded dark refractory ceramic SinterCast inserts
-            // Material 1 ("FFE3E3E3"): Heavy cast high-chrome alloy shell body
-            // Materials 0, 2, 3 ("FF83BCFC", "FFFF00FF", "FF8080FF"): Refractory ceramic inserts (Magenta in CAD)
-            if (
-              matName.includes("8080ff") ||
-              matName.includes("83bcfc") ||
-              matName.includes("ff00ff") ||
-              matName.includes("ceramic") ||
-              matName.includes("insert") ||
-              matName.includes("tile") ||
-              idx !== 1
-            ) {
-              // Ultra-hard refractory ceramic composite armor tiles
-              pbr.setBaseColorFactor([0.10, 0.11, 0.13, 1.0]);
-              pbr.setMetallicFactor(0.04);
-              pbr.setRoughnessFactor(0.72);
-            } else {
-              // High-chrome alloy shell matrix
-              pbr.setBaseColorFactor([0.78, 0.82, 0.88, 1.0]);
-              pbr.setMetallicFactor(0.95);
-              pbr.setRoughnessFactor(0.18);
-            }
-            break;
-
-          case "steel":
-            // Tough martensitic Cr-Mo alloy steel: dense industrial gunmetal alloy sheen
-            pbr.setBaseColorFactor([0.36, 0.40, 0.46, 1.0]);
-            pbr.setMetallicFactor(0.88);
-            pbr.setRoughnessFactor(0.30);
-            break;
-
-          case "vcast":
-            // V-Cast: tough tempered alloy steel with gunmetal sheen
-            pbr.setBaseColorFactor([0.30, 0.35, 0.44, 1.0]);
-            pbr.setMetallicFactor(0.92);
-            pbr.setRoughnessFactor(0.24);
-            break;
-
-          case "media":
-            // Spherical high-chrome grinding ball: specular mirror chrome reflection
-            pbr.setBaseColorFactor([0.94, 0.96, 0.99, 1.0]);
-            pbr.setMetallicFactor(0.98);
-            pbr.setRoughnessFactor(0.06);
-            break;
-
-          case "metal":
-          default:
-            // High-Chrome / Cr-Mo White Cast Iron: authentic crystalline specular metallic sheen
-            pbr.setBaseColorFactor([0.80, 0.84, 0.90, 1.0]);
-            pbr.setMetallicFactor(0.95);
-            pbr.setRoughnessFactor(0.18);
-            break;
-        }
-      });
-    },
-    [mocType]
-  );
-
-  // Handle model-viewer progress/load events and apply shader
   useEffect(() => {
     const el = viewerRef.current;
     if (!el) return;
-
-    const handleLoad = () => {
+    const onLoad = () => {
       setIsLoading(false);
-      applyMaterialShading(el);
+      // Turn into the front view when the stage is on screen (now, or when it scrolls in).
+      const container = containerRef.current;
+      if (!container) return;
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry?.isIntersecting) return;
+          io.disconnect();
+          window.setTimeout(() => {
+            const mv = viewerRef.current as unknown as { cameraOrbit?: string } | null;
+            if (mv) mv.cameraOrbit = cameraOrbit;
+            setIntroDone(true);
+          }, 120);
+        },
+        { threshold: 0.35 },
+      );
+      io.observe(container);
     };
-    const handleError = () => {
+    const onError = () => {
       setIsLoading(false);
       setHasError(true);
     };
-
-    el.addEventListener("load", handleLoad);
-    el.addEventListener("scene-graph-ready", handleLoad);
-    el.addEventListener("error", handleError);
-
-    // Apply immediately and follow up once scene graph populates
-    applyMaterialShading(el);
-    const timer = setTimeout(() => applyMaterialShading(el), 80);
-
+    el.addEventListener("load", onLoad);
+    el.addEventListener("error", onError);
     return () => {
-      clearTimeout(timer);
-      el.removeEventListener("load", handleLoad);
-      el.removeEventListener("scene-graph-ready", handleLoad);
-      el.removeEventListener("error", handleError);
+      el.removeEventListener("load", onLoad);
+      el.removeEventListener("error", onError);
     };
-  }, [src, scriptReady, mocType, applyMaterialShading, isLoading]);
+  }, [scriptReady, src, cameraOrbit]);
 
-  // If no 3D GLB is provided or error, render verified authentic photograph (e.g. Grinding Media)
-  if (!src || hasError) {
-    const fallbackImage = poster || "/images/products/grinding-1.webp";
-    return (
-      <div className="mats-render mats-render-image-mode">
-        <div className="mats-image-wrapper">
-          <Image
-            src={fallbackImage}
-            alt={alt}
-            width={720}
-            height={540}
-            className="mats-authentic-photo"
-            priority
-          />
-          {hotspot && (
-            <div className="mats-hotspot-container mats-hotspot-container--media">
-              <button
-                type="button"
-                className="mats-hotspot-pin"
-                onClick={() => setHotspotOpen(!hotspotOpen)}
-                aria-label="Toggle material information"
-              >
-                <span className="mats-pin-pulse" />
-                <span className="mats-pin-dot">+</span>
-              </button>
-              {hotspotOpen && (
-                <div className="mats-ref-card">
-                  <div className="mats-ref-row">
-                    <span className="mats-ref-label">Material</span>
-                    <span className="mats-ref-sep">:</span>
-                    <span className="mats-ref-val">{hotspot.material}</span>
-                  </div>
-                  <div className="mats-ref-row">
-                    <span className="mats-ref-label">Featured Application</span>
-                    <span className="mats-ref-sep">:</span>
-                    <span className="mats-ref-val">{hotspot.featuredApp}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
+  const resetView = () => {
+    const el = viewerRef.current as unknown as { cameraOrbit?: string } | null;
+    if (el) el.cameraOrbit = cameraOrbit;
+    setAutoRotate(false);
+    setIsInteractive(false);
+  };
 
   return (
     <div
-      className={`mats-3d-container ${!isInteractive ? "is-locked" : "is-interactive"}`}
-      onClick={handleActivateInteractive}
+      ref={containerRef}
+      className={`mats-3d-container ${isInteractive ? "is-interactive" : "is-locked"}`}
+      onClick={() => !isInteractive && setIsInteractive(true)}
     >
-      {isLoading && (
-        <div className="mats-3d-loading">
-          <span className="mats-3d-spinner" aria-hidden="true" />
-          <span className="mats-3d-loading-text">Loading AIA CAD Model…</span>
-        </div>
-      )}
-
-      {scriptReady ? (
+      {src && scriptReady && !hasError && !noWebGL ? (
         <model-viewer
           ref={viewerRef}
           key={src}
           src={src}
           alt={alt}
           bounds="tight"
-          environment-image="neutral"
-          orientation={orientation || "0deg 0deg 0deg"}
-          camera-target={cameraTarget || "auto auto auto"}
-          camera-orbit={defaultOrbit}
-          field-of-view={fieldOfView || "32deg"}
+          environment-image="/models/env/studio.hdr"
+          camera-orbit={introDone ? cameraOrbit : introOrbit(cameraOrbit)}
+          field-of-view="30deg"
+          min-camera-orbit="auto 20deg 85%"
+          max-camera-orbit="auto 86deg 150%"
+          interpolation-decay="110"
+          disable-pan
           camera-controls={isInteractive ? true : undefined}
-          auto-rotate={autoRotateActive ? "" : undefined}
-          auto-rotate-delay={500}
+          auto-rotate={autoRotate ? "" : undefined}
+          auto-rotate-delay={300}
           rotation-per-second="18deg"
           touch-action="pan-y"
-          shadow-intensity="1.8"
-          shadow-softness="0.4"
-          exposure="1.20"
-          tone-mapping="aces"
+          shadow-intensity="1.25"
+          shadow-softness="0.65"
+          exposure="0.9"
+          tone-mapping="neutral"
           interaction-prompt="none"
           loading="eager"
           className="mats-model-viewer"
-        >
-          {hotspot && (
-            <div
-              slot="hotspot-main"
-              data-position={hotspot.position || "0m 0.04m 0.06m"}
-              data-normal={hotspot.normal || "0m 1m 0m"}
-              className="mats-3d-hotspot-wrapper"
-            >
-              <button
-                type="button"
-                className="mats-hotspot-pin"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setHotspotOpen(!hotspotOpen);
-                }}
-                aria-label="Toggle material information"
-              >
-                <span className="mats-pin-pulse" />
-                <span className="mats-pin-dot">+</span>
-              </button>
-              {hotspotOpen && (
-                <div className="mats-ref-card">
-                  <div className="mats-ref-row">
-                    <span className="mats-ref-label">Material</span>
-                    <span className="mats-ref-sep">:</span>
-                    <span className="mats-ref-val">{hotspot.material}</span>
-                  </div>
-                  <div className="mats-ref-row">
-                    <span className="mats-ref-label">Featured Application</span>
-                    <span className="mats-ref-sep">:</span>
-                    <span className="mats-ref-val">{hotspot.featuredApp}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </model-viewer>
-      ) : (
-        <div className="mats-render">
-          <Image
-            src={poster || "/images/design/material-liner.webp"}
-            alt={alt}
-            width={720}
-            height={540}
-            priority
-          />
+        />
+      ) : null}
+
+      {src && (isLoading || !scriptReady) && !hasError && !noWebGL && (
+        <div className="mats-3d-loading">
+          <span className="mats-3d-spinner" aria-hidden="true" />
+          <span className="mats-3d-loading-text">Loading AIA CAD model…</span>
         </div>
       )}
 
-      {src && !isInteractive && !isLoading && (
+      {!src && image && (
+        <div className="mats-product-image">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={image} alt={alt} loading="lazy" decoding="async" />
+        </div>
+      )}
+
+      {!src && !image && (
+        <div className="mats-3d-pending">
+          <span className="mats-3d-pending-kicker">AIA CAD model</span>
+          <span className="mats-3d-pending-text">3D model being prepared from AIA&rsquo;s engineering files.</span>
+        </div>
+      )}
+
+      {poster && (
+        <div
+          className={`mats-product-image mats-model-poster${hasError || noWebGL || isLoading || !scriptReady ? "" : " is-hidden"}`}
+          aria-hidden={!(hasError || noWebGL || isLoading || !scriptReady)}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={poster} alt={alt} decoding="async" />
+        </div>
+      )}
+
+      {info && (
+        <div className="mats-hotspot-container mats-hotspot-container--media" data-toggled={infoToggled ? "true" : "false"}>
+          <button
+            type="button"
+            className="mats-hotspot-pin"
+            onClick={(e) => {
+              e.stopPropagation();
+              setInfoToggled((v) => !v);
+            }}
+            aria-label="Toggle material information"
+            aria-expanded={infoToggled}
+          >
+            <span className="mats-pin-pulse" />
+            <span className="mats-pin-dot">{infoToggled ? "−" : "+"}</span>
+            <span className="mats-pin-label">Material details</span>
+          </button>
+          {(
+            <div className="mats-ref-card">
+              <div className="mats-ref-row">
+                <span className="mats-ref-label">Material</span>
+                <span className="mats-ref-sep">:</span>
+                <span className="mats-ref-val">{info.material}</span>
+              </div>
+              <div className="mats-ref-row">
+                <span className="mats-ref-label">Featured Application</span>
+                <span className="mats-ref-sep">:</span>
+                <span className="mats-ref-val">{info.featuredApp}</span>
+              </div>
+              {info.specs?.length ? (
+                <div className="mats-ref-row">
+                  <span className="mats-ref-label">Specification</span>
+                  <span className="mats-ref-sep">:</span>
+                  <span className="mats-ref-val">{info.specs.join(" · ")}</span>
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+      )}
+
+      {src && !isInteractive && !isLoading && !hasError && !noWebGL && (
         <div className="mats-click-hint" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
@@ -420,30 +271,25 @@ export function MaterialViewer3D({
         </div>
       )}
 
-      {src && (
+      {src && !hasError && !noWebGL && (
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
-            if (isInteractive && !autoRotateActive) {
-              const el = viewerRef.current as unknown as { cameraOrbit?: string };
-              if (el && typeof el.cameraOrbit !== "undefined") {
-                el.cameraOrbit = defaultOrbit;
-              }
-              setIsInteractive(false);
-            } else {
-              handleToggle360(e);
+            if (autoRotate || isInteractive) resetView();
+            else {
+              setIsInteractive(true);
+              setAutoRotate(true);
             }
           }}
-          className={`mats-360-pill ${autoRotateActive ? "mats-360-pill--active" : ""}`}
-          aria-label={autoRotateActive ? "Reset front view" : isInteractive ? "Reset front view" : "Start 360 rotation"}
-          title={autoRotateActive || isInteractive ? "Click to reset to front view" : "Click to rotate 360°"}
+          className={`mats-360-pill ${autoRotate ? "mats-360-pill--active" : ""}`}
+          aria-label={autoRotate || isInteractive ? "Reset front view" : "Start 360 rotation"}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
             <ellipse cx="12" cy="12" rx="10" ry="5" strokeDasharray="3 2" />
             <circle cx="12" cy="12" r="2.5" fill="currentColor" />
           </svg>
-          <span>{autoRotateActive ? "Reset front view" : isInteractive ? "Reset front view" : "360 view"}</span>
+          <span>{autoRotate || isInteractive ? "Reset front view" : "360 view"}</span>
         </button>
       )}
     </div>

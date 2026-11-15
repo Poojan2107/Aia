@@ -15,7 +15,7 @@ const capabilities = [
     id: "dem",
     kicker: "01/Understanding wear before it happens",
     title: "Discrete Element Method (DEM)",
-    body: "Using Discrete Element Method (DEM) simulation, we study charge motion, grinding media trajectories and impact energy inside mills. These insights support SAG and ball mill liner design, helping identify opportunities to improve grinding efficiency, optimise wear patterns and extend liner service life.",
+    body: "Using Discrete Element Method (DEM) simulation, we study charge motion, grinding media trajectories and impact energy inside mills. These insights support SAG and ball mill liner design, helping identify opportunities to improve grinding efficiency, optimise wear patterns and extend liner service life. DEM is also used to understand discharge flow dynamics.",
     video: "/videos/DEM.mp4",
     alt: "DEM simulation of charge motion inside a mill",
   },
@@ -58,7 +58,7 @@ export function Technology() {
         </div>
         <div className="tech2-copy">
           <p className="tech2-body ft ft-body28">
-            Every operating environment presents a different wear challenge. At AIA Engineering, we combine advanced metallurgy, research, simulation and precision engineering to develop mill liners and wear-resistant components around the conditions they are expected to face.
+            Every operating environment presents a different wear challenge. At AIA Engineering, we combine advanced metallurgy, mill operational parameters and requirements, simulation and precision engineering to develop mill liners and wear-resistant components around the conditions they are expected to face.
           </p>
           <CtaButton href={href("technology-infrastructure")} variant="solid" className="tech2-cta">
             Explore our technology

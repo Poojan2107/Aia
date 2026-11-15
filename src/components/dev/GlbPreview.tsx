@@ -15,7 +15,7 @@ type Props = {
 };
 
 const MODEL_VIEWER_SRC =
-  "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
+  "/vendor/model-viewer-4.0.0.min.js";
 
 export function GlbPreview({ models }: Props) {
   const [activeId, setActiveId] = useState(models[0]?.id ?? "");

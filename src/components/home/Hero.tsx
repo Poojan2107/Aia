@@ -1,6 +1,7 @@
 
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { playableVideo } from "@/lib/video";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { href } from "@/lib/routes";
 
@@ -44,7 +45,7 @@ const BANNERS: HeroBanner[] = [
     lead: "450,000 MT",
     tagline: ["OF MANUFACTURING THAT", "KEEPS INDUSTRIES MOVING."],
     lede: [
-      "Across six manufacturing clusters, AIA Engineering combines advanced metallurgy, precision manufacturing and large-scale production to deliver wear-resistant castings and engineered grinding solutions for critical industrial applications.",
+      "Across six manufacturing clusters, AIA Engineering combines advanced metallurgy, state-of-the-art manufacturing and large-scale production to deliver wear-resistant castings and engineered grinding solutions for critical industrial applications.",
     ],
     ctaText: "Explore our infrastructure",
     ctaHref: href("technology-infrastructure"),
@@ -65,9 +66,9 @@ const BANNERS: HeroBanner[] = [
   {
     id: "ngds",
     lead: "NGDS.",
-    tagline: ["THE NEXT EVOLUTION IN", "DISCHARGE ENGINEERING."],
+    tagline: ["THE NEXT EVOLUTION IN", "DISCHARGE ASSEMBLY."],
     lede: [
-      "AIA’s Next Generation Discharge System (NGDS) brings advanced discharge engineering to SAG and ball mills, designed to improve slurry evacuation, support higher mill throughput and enhance grinding efficiency.",
+      "AIA’s Next Generation Discharge System (NGDS) brings advanced discharge engineering to SAG and ball mills, designed to improve slurry evacuation, support higher mill throughput, reduce energy consumption and enhance grinding efficiency.",
     ],
     ctaText: "Explore NGDS technology",
     ctaHref: href("mining-ngds"),
@@ -114,7 +115,7 @@ export function Hero() {
     if (reduced) return;
 
     setReady(false);
-    video.src = current.video;
+    video.src = playableVideo(current.video);
     video.poster = current.poster;
     video.load();
 
@@ -225,9 +226,11 @@ export function Hero() {
             <h1 className={`hero-enter hero-headline ft ft-hero${current.lead ? " has-lead" : ""}`}>
               {current.lead && <span className="hero-lead">{current.lead}</span>}
               {current.tagline.map((line, idx) => (
-                <span key={idx} className={current.lead ? "hero-sub" : undefined}>
-                  {line}
-                </span>
+                <Fragment key={idx}>
+                  {/* Word break for search engines and screen readers; lines are visual blocks. */}
+                  {(idx > 0 || current.lead) && <span className="sr-only"> </span>}
+                  <span className={current.lead ? "hero-sub" : undefined}>{line}</span>
+                </Fragment>
               ))}
             </h1>
 

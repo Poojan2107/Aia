@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>html,body{margin:0;background:transparent}model-viewer{width:1200px;height:900px;background:transparent;--poster-color:transparent}</style>
+<script type="module" src="/public/vendor/model-viewer-4.0.0.min.js"></script>
+</head>
+<body>
+<!-- Still render of a catalog model with the SAME viewer and settings as the site
+     (src/components/home/MaterialViewer3D.tsx), so the stills match the live 3D exactly. -->
+<script type="module">
+  await customElements.whenDefined("model-viewer");
+  customElements.get("model-viewer").meshoptDecoderLocation = "/public/vendor/meshopt_decoder.js";
+  const q = new URLSearchParams(location.search);
+  const mv = document.createElement("model-viewer");
+  const attrs = {
+    src: `/public/models/catalog/${q.get("m")}.glb`,
+    bounds: "tight",
+    "environment-image": "/public/models/env/studio.hdr",
+    "camera-orbit": q.get("orbit") || "35deg 65deg 105%",
+    "field-of-view": "30deg",
+    "shadow-intensity": "1.25",
+    "shadow-softness": "0.65",
+    exposure: "0.9",
+    "tone-mapping": "neutral",
+    "interaction-prompt": "none",
+  };
+  for (const [k, v] of Object.entries(attrs)) mv.setAttribute(k, v);
+  mv.addEventListener("load", () => setTimeout(() => (window.__done = true), 700));
+  mv.addEventListener("error", () => { document.title = "ERR"; window.__done = true; });
+  document.body.appendChild(mv);
+</script>
+</body>
+</html>

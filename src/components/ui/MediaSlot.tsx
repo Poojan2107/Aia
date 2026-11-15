@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { MP4_TYPE, WEBM_TYPE, webmTwin } from "@/lib/video";
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/lib/motion";
 
@@ -161,7 +162,6 @@ export function MediaSlot({
           controls={clickMode && isActive}
           preload={clickMode ? "none" : "auto"}
           poster={poster}
-          src={src}
           onPlaying={() => setVideoReady(true)}
           onPlay={() => setPlaying(true)}
           onPause={() => {
@@ -171,7 +171,8 @@ export function MediaSlot({
             setPlaying(false);
           }}
         >
-          <source src={src} type="video/mp4" />
+          <source src={src} type={`${MP4_TYPE.slice(0, -1)}, mp4a.40.2"`} />
+          <source src={webmTwin(src)} type={`${WEBM_TYPE.slice(0, -1)}, opus"`} />
         </video>
       ) : null}
 

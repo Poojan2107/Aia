@@ -19,12 +19,15 @@ const mediaOrigin = (() => {
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://ajax.googleapis.com${isDev ? " 'unsafe-eval'" : ""}`,
+  // 'wasm-unsafe-eval' lets the self-hosted 3D viewer compile its WebAssembly model decoder
+  // (it does not allow JavaScript eval). No third-party script hosts: the viewer is self-hosted.
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' blob: data: ${mediaOrigin}`.trim(),
   `media-src 'self' blob: ${mediaOrigin}`.trim(),
   "font-src 'self'",
-  `connect-src 'self' ${mediaOrigin}`.trim(),
+  // blob: lets the 3D viewer read the texture maps embedded in its models (loaded via fetch).
+  `connect-src 'self' blob: data: ${mediaOrigin}`.trim(),
   "frame-src https://www.youtube-nocookie.com https://player.vimeo.com",
   "object-src 'none'",
   "base-uri 'self'",
