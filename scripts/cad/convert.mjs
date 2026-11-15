@@ -28,8 +28,8 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
   const res = occt.ReadStepFile(new Uint8Array(fs.readFileSync(prod.source)), {
     linearUnit: "millimeter",
     linearDeflectionType: "bounding_box_ratio",
-    linearDeflection: prod.deflection ?? 0.0008,
-    angularDeflection: prod.angular ?? 0.35,
+    linearDeflection: prod.deflection ?? 0.0003,
+    angularDeflection: prod.angular ?? 0.12,
   });
   if (!res.success) throw new Error(`STEP read failed: ${prod.id}`);
 
@@ -92,41 +92,65 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     const base = finishes[role];
     if (!base) throw new Error(`No finish for role ${role}`);
     // Tiny repeated parts (e.g. Sintercast inserts) are too small for surface grain: plain finish.
-    const f = prod.plainRoles?.includes(role) ? { color: base.color, metallic: base.metallic, roughness: base.roughness === 1 ? 0.6 : base.roughness } : base;
+    const f = prod.plainRoles?.includes(role) ? { color: base.color, metallic: base.metallic, roughness: prod.plainRoughness ?? (base.roughness === 1 ? 0.6 : base.roughness) } : base;
     const mat = doc.createMaterial(role).setBaseColorFactor([...f.color, 1]).setMetallicFactor(f.metallic).setRoughnessFactor(f.roughness);
     if (f.normalMap) mat.setNormalTexture(texture(f.normalMap)).setNormalScale(f.normalScale ?? 1);
     if (f.mrMap) mat.setMetallicRoughnessTexture(texture(f.mrMap));
     if (f.colorMap) mat.setBaseColorTexture(texture(f.colorMap));
-    const prim = doc.createPrimitive()
-      .setAttribute("POSITION", doc.createAccessor().setType("VEC3").setArray(new Float32Array(g.pos)).setBuffer(buf))
-      .setIndices(doc.createAccessor().setType("SCALAR").setArray(new Uint32Array(g.idx)).setBuffer(buf))
-      .setMaterial(mat);
-    {
-      const ao = aoByRole.get(role);
-      const floor = base.aoFloor ?? 0.28;
-      const col = new Float32Array(ao.length * 3);
-      for (let v = 0; v < ao.length; v++) col.fill(floor + (1 - floor) * Math.pow(ao[v], 1.4), v * 3, v * 3 + 3);
-      prim.setAttribute("COLOR_0", doc.createAccessor().setType("VEC3").setArray(col).setBuffer(buf));
-    }
-    if (g.nrm.length === g.pos.length) prim.setAttribute("NORMAL", doc.createAccessor().setType("VEC3").setArray(new Float32Array(g.nrm)).setBuffer(buf));
+    // Baked AO as vertex colour (how dark a fully enclosed corner gets: the finish's aoFloor, or
+    // the product's own where tiny repeated parts would otherwise shimmer).
+    const ao = aoByRole.get(role);
+    const floor = prod.aoFloor?.[role] ?? base.aoFloor ?? 0.28;
+    let pos = g.pos, nrm = g.nrm, idx = g.idx;
+    let col = new Float32Array(ao.length * 3);
+    for (let v = 0; v < ao.length; v++) col.fill(floor + (1 - floor) * Math.pow(ao[v], 1.4), v * 3, v * 3 + 3);
+    let uv = null;
     if (f.normalMap || f.mrMap || f.colorMap) {
-      // Box-projected UVs (CAD meshes have none): project each vertex on the plane facing its normal.
+      // Box-projected UVs (CAD meshes have none). Each triangle is projected on the one plane facing
+      // it (by its face normal); a vertex shared by triangles facing different ways is split, so the
+      // grain is never smeared between two projections inside a triangle (that showed as streaks).
       const tile = f.tile ?? 0.12; // metres per texture repeat
-      const uv = new Float32Array((g.pos.length / 3) * 2);
-      for (let i = 0, j = 0; i < g.pos.length; i += 3, j += 2) {
-        const [nx, ny, nz] = [Math.abs(g.nrm[i] ?? 0), Math.abs(g.nrm[i + 1] ?? 0), Math.abs(g.nrm[i + 2] ?? 1)];
-        const [a, b] = nx >= ny && nx >= nz ? [g.pos[i + 1], g.pos[i + 2]] : ny >= nz ? [g.pos[i], g.pos[i + 2]] : [g.pos[i], g.pos[i + 1]];
-        uv[j] = a / tile; uv[j + 1] = b / tile;
+      const P = [], N = [], C = [], U = [], I = [];
+      const seen = new Map();
+      for (let t = 0; t < idx.length; t += 3) {
+        const [a, b, c] = [idx[t], idx[t + 1], idx[t + 2]];
+        const e1 = [0, 1, 2].map((k) => pos[b * 3 + k] - pos[a * 3 + k]);
+        const e2 = [0, 1, 2].map((k) => pos[c * 3 + k] - pos[a * 3 + k]);
+        const fn = [Math.abs(e1[1] * e2[2] - e1[2] * e2[1]), Math.abs(e1[2] * e2[0] - e1[0] * e2[2]), Math.abs(e1[0] * e2[1] - e1[1] * e2[0])];
+        const axis = fn[0] >= fn[1] && fn[0] >= fn[2] ? 0 : fn[1] >= fn[2] ? 1 : 2;
+        for (const v of [a, b, c]) {
+          const key = v * 3 + axis;
+          let n = seen.get(key);
+          if (n === undefined) {
+            n = P.length / 3;
+            seen.set(key, n);
+            P.push(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2]);
+            N.push(nrm[v * 3] ?? 0, nrm[v * 3 + 1] ?? 0, nrm[v * 3 + 2] ?? 1);
+            C.push(col[v * 3], col[v * 3 + 1], col[v * 3 + 2]);
+            const [u0, u1] = axis === 0 ? [pos[v * 3 + 1], pos[v * 3 + 2]] : axis === 1 ? [pos[v * 3], pos[v * 3 + 2]] : [pos[v * 3], pos[v * 3 + 1]];
+            U.push(u0 / tile, u1 / tile);
+          }
+          I.push(n);
+        }
       }
-      prim.setAttribute("TEXCOORD_0", doc.createAccessor().setType("VEC2").setArray(uv).setBuffer(buf));
+      pos = P; nrm = N; idx = I; col = new Float32Array(C); uv = new Float32Array(U);
     }
+    const prim = doc.createPrimitive()
+      .setAttribute("POSITION", doc.createAccessor().setType("VEC3").setArray(new Float32Array(pos)).setBuffer(buf))
+      .setAttribute("COLOR_0", doc.createAccessor().setType("VEC3").setArray(col).setBuffer(buf))
+      .setIndices(doc.createAccessor().setType("SCALAR").setArray(new Uint32Array(idx)).setBuffer(buf))
+      .setMaterial(mat);
+    if (nrm.length === pos.length) prim.setAttribute("NORMAL", doc.createAccessor().setType("VEC3").setArray(new Float32Array(nrm)).setBuffer(buf));
+    if (uv) prim.setAttribute("TEXCOORD_0", doc.createAccessor().setType("VEC2").setArray(uv).setBuffer(buf));
     root.addChild(doc.createNode(role).setMesh(doc.createMesh(role).addPrimitive(prim)));
     roles[role] = g.idx.length / 3;
   }
 
   await doc.transform(
     weld(),
-    ...(prod.simplify ? [simplify({ simplifier: MeshoptSimplifier, ratio: prod.simplify, error: prod.simplifyError ?? 0.0008 })] : []),
+    // Fine tessellation keeps curved wear faces smooth; simplify then removes triangles only where the
+    // surface stays within the error (flat areas), so files stay small.
+    simplify({ simplifier: MeshoptSimplifier, ratio: prod.simplify ?? 0.2, error: prod.simplifyError ?? 0.00035 }),
     dedup(),
     prune(),
     reorder({ encoder: MeshoptEncoder }),

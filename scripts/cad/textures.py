@@ -47,7 +47,8 @@ def normal_from_height(h, strength):
 # smooth satin casting skin, not a hammered surface).
 cast_h = tileable_noise(512, [(0.5, 1.0), (1.1, 0.45), (3, 0.12)])
 normal_from_height(cast_h, 3.2).save(os.path.join(TEX, "cast-normal.png"))
-rough = 0.57 + (tileable_noise(512, [(2.5, 1.0), (14, 0.7)]) - 0.5) * 0.18  # ~0.48..0.66
+# Fine-scale only: large soft blotches showed as patches where the box projection changes plane.
+rough = 0.56 + (tileable_noise(512, [(1.2, 1.0), (3, 0.5)]) - 0.5) * 0.14  # ~0.49..0.63
 Image.fromarray((np.clip(rough, 0, 1) * 255).astype(np.uint8)).convert("RGB").save(os.path.join(TEX, "cast-rough.png"))
 
 # Moulded rubber: very fine, soft texture.
@@ -88,9 +89,10 @@ small("cast-normal.jpg", Image.open(os.path.join(TEX, "cast-normal.png")))
 r = Image.open(os.path.join(TEX, "cast-rough.png")).convert("L")
 small("cast-mr.jpg", Image.merge("RGB", (Image.new("L", r.size, 0), r, Image.new("L", r.size, 255))))
 small("rubber-normal.jpg", Image.open(os.path.join(TEX, "rubber-normal.png")))
-# Cast-iron tone mottling (base colour multiplier 0.86..1.0), soft blotches at casting scale.
-mott = tileable_noise(512, [(22, 1.0), (8, 0.45), (1.2, 0.12)])
-tone = 0.86 + mott * 0.14
+# Cast-iron tone variation (base colour multiplier 0.93..1.0): fine and faint, so it never shows
+# as bands or patches.
+mott = tileable_noise(512, [(2, 1.0), (0.8, 0.5)])
+tone = 0.93 + mott * 0.07
 Image.fromarray((tone * 255).astype(np.uint8)).convert("RGB").resize((256, 256), Image.LANCZOS).save(os.path.join(TEX, "cast-color.jpg"), quality=88)
 print("web textures written")
 

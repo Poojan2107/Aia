@@ -35,6 +35,8 @@ export const products = [
     source: `${LIB}/Thermal/Tube mill/Products/Shell Liners/AIA_A1_084_OW_2.STEP`,
     aiaRef: "AIA_A1_084_OW_2",
     roles: () => "hicr",
+    // Small part with long gentle curves: keep full tessellation (simplifying shows as facets).
+    simplify: 1,
   },
   {
     id: "thermal-sintercast-loesche-lm-roller",
@@ -43,6 +45,10 @@ export const products = [
     // Named in AIA's CAD: ROLL body, ROLL_INSERT (Hi-Cr), ROLL_CERAMIC.
     roles: (part) => (/CERAMIC/i.test(part.name) ? "ceramic" : /INSERT/i.test(part.name) ? "hicr" : "steel"),
     plainRoles: ["hicr", "ceramic"],
+    // Hundreds of small inserts: softer finish and lighter gap shading, so the face reads as one
+    // even pattern (as on AIA's Sinter-Cast renders) instead of shimmering as it turns.
+    plainRoughness: 0.72,
+    aoFloor: { hicr: 0.72, ceramic: 0.72 },
     // 177 parts / 1.1M triangles in the CAD: coarser tessellation, then simplify for the web.
     deflection: 0.0012,
     angular: 0.3,
@@ -58,6 +64,7 @@ export const products = [
     // Wave (wear) face up.
     orient: [-90, 0, 0],
     roles: () => "hicr",
+    simplify: 1,
   },
   {
     id: "cement-sintercast-loesche-lm-table",
