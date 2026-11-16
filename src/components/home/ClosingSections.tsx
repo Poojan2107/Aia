@@ -291,7 +291,7 @@ export function Insights() {
                     </h3>
                     <a
                       href={item.href}
-                      className="ui-caps ft ft-read14 mt-14 inline-flex items-center gap-1.5 text-aia-accent hover:opacity-80 sm:mt-16"
+                      className="ui-caps ft ft-read14 relative mt-14 inline-flex items-center gap-1.5 text-aia-accent after:absolute after:inset-x-0 after:-inset-y-2 after:content-[''] hover:opacity-80 sm:mt-16"
                     >
                       Read article <span aria-hidden>›</span>
                     </a>

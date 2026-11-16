@@ -299,8 +299,8 @@ export function Gallery() {
                 aria-label={`Show ${film.title}`}
                 aria-current={active}
                 onClick={() => goTo(i)}
-                // 24px tap target (WCAG 2.5.8) around the small visual dot.
-                className="group grid h-6 min-w-6 place-items-center"
+                // 24px box around the small visual dot, with a 36px invisible touch area for fingers.
+                className="group relative grid h-6 min-w-6 place-items-center after:absolute after:-inset-1.5 after:content-['']"
               >
                 <span
                   aria-hidden

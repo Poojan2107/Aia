@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { webglTier } from "@/lib/webgl";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { GlobeInstance } from "globe.gl";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
@@ -114,6 +116,8 @@ function chipElement(site: Site) {
   return root;
 }
 
+gsap.registerPlugin(ScrollTrigger);
+
 const SCRUB_QUERY = "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
 function subscribeScrub(cb: () => void) {
   const mq = window.matchMedia(SCRUB_QUERY);
@@ -126,6 +130,7 @@ export function AiaVegaGlobeSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const globeHostRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<GlobeInstance | null>(null);
   const [stage, setStage] = useState<Stage>(0);
   const [ready, setReady] = useState(false);
@@ -403,6 +408,33 @@ export function AiaVegaGlobeSection() {
     return () => cancelAnimationFrame(tagFrame);
   }, [stage, ready]);
 
+  /* ---------- phones & tablets: the logos meet and part in the sky ---------- */
+  // Desktop flies the column logos themselves (below). On phones the columns sit far below the
+  // globe, so a decorative pair plays the same beat in the empty sky above the heading: the two
+  // logos meet in the centre of the light, part as the page scrolls, and fade before the heading.
+  useEffect(() => {
+    const intro = introRef.current;
+    const stageEl = stageRef.current;
+    if (!intro || !stageEl) return;
+    const mm = gsap.matchMedia();
+    mm.add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
+      const [a, v] = Array.from(intro.children) as HTMLElement[];
+      const part = () => Math.round(window.innerWidth * 0.17);
+      gsap.set(intro, { autoAlpha: 0, y: 24 });
+      gsap.set([a, v], { x: 0, scale: 1.12 });
+      const tl = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: { trigger: stageEl, start: "top 75%", end: "top -40%", scrub: 0.6, invalidateOnRefresh: true },
+      });
+      tl.to(intro, { autoAlpha: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0)
+        .to([a, v], { scale: 1, duration: 0.3, ease: "power2.out" }, 0)
+        .to(a, { x: () => -part(), scale: 0.86, duration: 0.35, ease: "power1.inOut" }, 0.42)
+        .to(v, { x: () => part(), scale: 0.86, duration: 0.35, ease: "power1.inOut" }, 0.42)
+        .to(intro, { autoAlpha: 0, y: -28, duration: 0.2 }, 0.8);
+    });
+    return () => mm.revert();
+  }, []);
+
   /* ---------- scroll choreography ---------- */
   useEffect(() => {
     const track = trackRef.current;
@@ -565,6 +597,11 @@ export function AiaVegaGlobeSection() {
           <span aria-hidden className="gsq-sky" />
           <span aria-hidden className="gsq-light gsq-light-a" />
           <span aria-hidden className="gsq-light gsq-light-b" />
+          {/* Phones & tablets only (see the effect above): decorative, the real logos are in the columns. */}
+          <div ref={introRef} aria-hidden className="gsq-intro">
+            <Image src="/images/design/logo-aia-blue.webp" alt="" width={1552} height={1070} className="gsq-intro-logo gsq-intro-aia" sizes="140px" quality={100} />
+            <Image src="/images/design/logo-vega-color.webp" alt="" width={1200} height={871} className="gsq-intro-logo gsq-intro-vega" sizes="130px" quality={100} />
+          </div>
 
           <header className="gsq-head">
             <SectionLabel>AIA Engineering × VEGA Industries</SectionLabel>

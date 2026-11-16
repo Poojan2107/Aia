@@ -30,6 +30,7 @@ export function AboutBand() {
   const rightRef = useRef<HTMLSpanElement>(null);
   const copyRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const shadeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -40,7 +41,8 @@ export function AboutBand() {
     const right = rightRef.current;
     const copy = copyRef.current;
     const cta = ctaRef.current;
-    if (!track || !stage || !plate || !title || !left || !right || !copy || !cta || reduced) return;
+    const shade = shadeRef.current;
+    if (!track || !stage || !plate || !title || !left || !right || !copy || !cta || !shade || reduced) return;
 
     // One normal space, measured from the heading's own font.
     const space = () => {
@@ -77,17 +79,45 @@ export function AboutBand() {
 
     gsap.set(plate, { scale: 1, transformOrigin: "center center", force3D: true });
     gsap.set([left, right], { x: 0, autoAlpha: 1, force3D: true });
-    // Phones: the copy waits above the CTA and fades in once the film covers the screen.
-    const phone = window.matchMedia("(max-width: 767px)").matches;
+    // Phones and short screens (e.g. a phone held sideways): the copy waits above the CTA and
+    // fades in once the film covers the screen. Keep in sync with the CSS (.about2-copy, .about2-shade).
+    const phone = window.matchMedia("(max-width: 767px), (max-height: 560px)").matches;
     tween.to(plate, { scale: cover, duration: 1 }, 0);
     tween.to(left, { x: () => place().left, duration: 0.85 }, 0);
     tween.to(right, { x: () => place().right, duration: 0.85 }, 0);
     if (phone) {
+      // The copy grows upward from above the CTA; on narrow or short phones it would reach the
+      // title, so the title rises to sit clear above it (never above the header, never down).
+      const HEADER = 72;
+      const words = () => {
+        const r = left.getBoundingClientRect();
+        const y = gsap.getProperty(title, "y") as number;
+        return { top: r.top - y, bottom: r.bottom - y };
+      };
+      // Show the copy only where it fits between the header and the CTA with the title above it.
+      copy.style.display = "";
+      const fits = () => copy.getBoundingClientRect().top - 20 - (words().bottom - words().top) >= HEADER;
+      if (!fits()) copy.style.display = "none";
+      const lift = () => {
+        if (copy.style.display === "none") return 0;
+        const w = words();
+        return Math.max(HEADER - w.top, Math.min(0, copy.getBoundingClientRect().top - 20 - w.bottom));
+      };
       gsap.set(copy, { y: 0, autoAlpha: 0 });
+      gsap.set(title, { y: 0 });
+      gsap.set(shade, { autoAlpha: 0 });
+      tween.to(title, { y: lift, duration: 0.3 }, 0.55);
+      // The film is scaled ~3x to cover a phone, so its own scrim falls off-screen: a screen-fixed
+      // shade keeps white copy readable over the bright pour.
+      tween.to(shade, { autoAlpha: 1, duration: 0.3 }, 0.6);
       tween.to(copy, { autoAlpha: 1, duration: 0.3 }, 0.65);
     } else {
       gsap.set(copy, { y: 0, autoAlpha: 1 });
+      gsap.set(shade, { autoAlpha: 0 });
       tween.to(copy, { y: sink, duration: 1 }, 0);
+      // Light shade at the bottom as the film fills the screen, so the copy stays readable over
+      // the bright pour.
+      tween.to(shade, { autoAlpha: 1, duration: 0.4 }, 0.5);
     }
 
     // Keep video scaled up and text in center on reverse scroll (never shrink or reverse)
@@ -149,6 +179,7 @@ export function AboutBand() {
               <span ref={rightRef} className="about2-word about2-word-right ft ft-h72x">AIA Engineering</span>
             </h2>
           </div>
+          <div ref={shadeRef} aria-hidden className="about2-shade" />
           <p ref={copyRef} className="about2-copy ft ft-copy18">
             AIA Engineering Limited develops and manufactures engineered wear-resistant solutions for mining, cement, quarry and thermal power industries. With expertise in advanced metallurgy, grinding media, mill liners and precision manufacturing, we help industrial customers address demanding wear conditions and support long-term equipment performance.
           </p>
