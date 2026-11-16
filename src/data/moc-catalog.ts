@@ -23,6 +23,12 @@ export type MocEntry = {
   aiaRef?: string;
   /** Optional camera framing override for the 3D viewer. */
   orbit?: string;
+  /** Optional point the camera looks at (model-viewer camera-target, metres), for tall models. */
+  target?: string;
+  /** Optional floor shadow strength for the 3D viewer (default 1.25). */
+  shadow?: number;
+  /** Optional camera field of view for the 3D viewer (default 30deg). */
+  fov?: string;
 };
 
 export type MocIndustry = {
@@ -42,9 +48,16 @@ const media30 = (industry: string): MocEntry => ({
     "Hi-Cr grinding media with up to 30% chromium, supplied in sizes from 12.5 mm to 100 mm.",
     "Marked Ball Test (MBT) for a cost-effective alloy, backed by a performance guarantee.",
   ],
-  // AIA has no CAD for grinding media: AIA's own photo (aiaengineering.com/ball-mill/, 516 px there),
-  // upscaled 4x locally with Real-ESRGAN (x4plus) to 1400 px so it stays sharp on the stage.
-  image: "/images/products/aia/grinding-media-hicr.webp",
+  // AIA has no CAD for grinding media ("NA" in AIA's STEP matrix); AIA (Malay, 2026-11-17)
+  // approved balls that look like grinding media: generated (scripts/cad/grinding-media.py).
+  model: "/models/catalog/grinding-media-hicr.glb",
+  aiaRef: "Hi-Cr grinding media (generated, AIA-approved)",
+  // Straight on, as AIA's grinding media photo the balls are arranged after; balls are placed as
+  // in the photo (some above the floor), so the floor shadow is kept faint.
+  orbit: "0deg 86deg 76%",
+  shadow: 0.35,
+  // Long-lens view like the photo, so the balls overlap as they do there.
+  fov: "10deg",
 });
 
 export const mocCatalog: MocIndustry[] = [
@@ -94,16 +107,21 @@ export const mocCatalog: MocIndustry[] = [
       {
         id: "mining-sintercast",
         moc: "Hi-Cr with Sintercast®",
-        product: "Verti Mill Shoe Liner",
-        specs: ["Verti Mill", "Sintercast alloy"],
+        product: "Verti Mill Liners",
+        specs: ["Verti Mill", "Flight and shoe liners", "Sintercast alloy"],
         body: [
           "Shoe liners in Sintercast alloy (Hi-Cr iron embedded with ceramic particles), reducing wear on the shoe liners.",
           "Sintercast has 3X life expectancy compared to Hi-Cr, for fewer replacement cycles and increased mill availability.",
         ],
-        // AIA's CAD exists only as a 3D PDF (V_A1_1169): show AIA's own Verti Mill image
-        // (aiaengineering.com/verti-mill/ — flight liners and shoe liners), as AIA's site does.
-        image: "/images/products/aia/verti-mill-liners.webp",
-        aiaRef: "V_A1_1169",
+        // AIA's Verti Mill CAD exists only as 3D PDFs: the screw (VTM 4500 flight and shoe liners)
+        // was decoded locally from AIA's assembly PDF (scripts/cad/manifest.mjs). Colours per AIA
+        // (Malay, 2026-11-17): flight liners dark grey, shoe liners light grey.
+        model: "/models/catalog/mining-sintercast-verti-mill-liners.glb",
+        aiaRef: "Verty Mill assembly 16461 › VTM 4500 flight and shoe liners",
+        // Framed on the liner section from the side, as in AIA's own Verti Mill views (the full
+        // shaft is 9 m tall; it stays in the model and shows when the visitor turns or zooms out).
+        orbit: "-20deg 76deg 70%",
+        target: "0m -1.7m 0m",
       },
       media30("mining"),
     ],
@@ -160,8 +178,9 @@ export const mocCatalog: MocIndustry[] = [
           "An impact-resistant, non-conventional alloy for maximum crushing efficiency.",
           "Supplied as weight-balanced sets to take care of rotor vibration, for a uniform wear profile and long lifespan.",
         ],
-        // AIA's CAD exists only as a 3D PDF: AIA's own blow bar photo (aiaengineering.com/quarry/).
-        image: "/images/products/aia/quarry-blow-bar.webp",
+        // AIA's CAD exists only as a 3D PDF (Quarry/BLOW BAR): decoded locally (scripts/cad/manifest.mjs).
+        model: "/models/catalog/quarry-metal-blow-bar.glb",
+        aiaRef: "Quarry › BLOW BAR (14263_P00277_REV_2)",
       },
       {
         id: "quarry-sintercast",
@@ -172,9 +191,12 @@ export const mocCatalog: MocIndustry[] = [
           "Constructed with a superior alloy, AIA's hammers come with differential hardening to curb breakage at the shank, offered with or without ceramic.",
           "Supplied in in-house weight-balanced condition to take care of rotor vibration, for high crushing efficiency and a uniform wear profile.",
         ],
-        // AIA's own hammers photo (aiaengineering.com/quarry/). AIA defines Sintercast as Hi-Cr
-        // iron embedded with ceramic particles; the Quarry page offers hammers "with ceramic".
-        image: "/images/products/aia/quarry-hammers.webp",
+        // AIA defines Sintercast as Hi-Cr iron embedded with ceramic particles; the Quarry page offers
+        // hammers "with ceramic". AIA's CAD exists only as a 3D PDF (Quarry/HAMMER): decoded locally.
+        model: "/models/catalog/quarry-sintercast-hammer.glb",
+        aiaRef: "Quarry › HAMMER (9544)",
+        // A tall, compact part: a wider framing keeps the whole hammer clear of the stage edges.
+        orbit: "35deg 68deg 128%",
       },
     ],
   },
@@ -217,8 +239,12 @@ export const mocCatalog: MocIndustry[] = [
           "Hi-Cr grinding media with up to 18% chromium, supplied in sizes from 20 mm to 80 mm.",
           "Marked Ball Test (MBT) for a cost-effective alloy, backed by a performance guarantee.",
         ],
-        // Same AIA photo as the other grinding media tabs (upscaled locally, see media30 above).
-        image: "/images/products/aia/grinding-media-hicr.webp",
+        // Same grinding media model as the other tabs (see media30 above).
+        model: "/models/catalog/grinding-media-hicr.glb",
+        aiaRef: "Hi-Cr grinding media (generated, AIA-approved)",
+        orbit: "0deg 86deg 76%",
+        shadow: 0.35,
+        fov: "10deg",
       },
     ],
   },

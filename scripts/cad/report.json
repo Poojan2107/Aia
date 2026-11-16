@@ -6,13 +6,13 @@
       528,
       2259
     ],
-    "triangles": 124312,
+    "triangles": 24862,
     "rolesBeforeSimplify": {
-      "steel": 124312
+      "metal": 124312
     },
-    "kb": 1507,
-    "seconds": 16.9,
-    "aoSeconds": 2.7
+    "kb": 488,
+    "seconds": 15.9,
+    "aoSeconds": 2.6
   },
   "mining-rubber-ball-mill-shell-liner": {
     "aiaRef": "W9_5780_4",
@@ -21,7 +21,7 @@
       122,
       1320
     ],
-    "triangles": 300,
+    "triangles": 270,
     "rolesBeforeSimplify": {
       "rubber": 300
     },
@@ -36,15 +36,15 @@
       1233,
       575
     ],
-    "triangles": 347930,
+    "triangles": 69584,
     "rolesBeforeSimplify": {
-      "hicr": 171426,
+      "metal": 171426,
       "bolt": 40632,
       "rubber": 135872
     },
-    "kb": 3533,
-    "seconds": 19.6,
-    "aoSeconds": 3.6
+    "kb": 1042,
+    "seconds": 18.5,
+    "aoSeconds": 3.2
   },
   "thermal-metal-tube-mill-oblique-wave-liner": {
     "aiaRef": "AIA_A1_084_OW_2",
@@ -55,11 +55,11 @@
     ],
     "triangles": 20047,
     "rolesBeforeSimplify": {
-      "hicr": 20047
+      "metal": 20047
     },
     "kb": 276,
-    "seconds": 3.6,
-    "aoSeconds": 0.4
+    "seconds": 2.9,
+    "aoSeconds": 0.6
   },
   "thermal-sintercast-loesche-lm-roller": {
     "aiaRef": "V_A1_INS_928 (LM ROLL SINTERCAST)",
@@ -70,13 +70,13 @@
     ],
     "triangles": 244740,
     "rolesBeforeSimplify": {
-      "steel": 16626,
-      "hicr": 994576,
-      "ceramic": 1011824
+      "metal": 16626,
+      "sinterHicr": 994576,
+      "sinterCeramic": 1011824
     },
     "kb": 2893,
-    "seconds": 57.4,
-    "aoSeconds": 25.7
+    "seconds": 59.6,
+    "aoSeconds": 30.5
   },
   "cement-metal-tube-mill-liner": {
     "aiaRef": "TOTAL_TUBE_MILL_ASSLY_FCB_4800_CHROME › IIE2",
@@ -87,11 +87,11 @@
     ],
     "triangles": 11574,
     "rolesBeforeSimplify": {
-      "hicr": 11574
+      "metal": 11574
     },
     "kb": 190,
     "seconds": 1.5,
-    "aoSeconds": 0.3
+    "aoSeconds": 0.4
   },
   "cement-sintercast-loesche-lm-table": {
     "aiaRef": "V_A2_1540_A (LM TABLE SINTERCAST)",
@@ -102,11 +102,73 @@
     ],
     "triangles": 45230,
     "rolesBeforeSimplify": {
-      "hicr": 118146,
-      "ceramic": 108016
+      "sinterHicr": 118146,
+      "sinterCeramic": 108016
     },
-    "kb": 774,
-    "seconds": 27.4,
-    "aoSeconds": 3.8
+    "kb": 759,
+    "seconds": 27,
+    "aoSeconds": 4.9
+  },
+  "mining-sintercast-verti-mill-liners": {
+    "aiaRef": "Verty Mill assembly 16461 › VTM 4500 flight and shoe liners",
+    "sizeMm": [
+      4891,
+      9112,
+      4898
+    ],
+    "triangles": 23749,
+    "rolesBeforeSimplify": {
+      "sinterCeramic": 15840,
+      "sinterHicr": 31692,
+      "metal": 35104
+    },
+    "kb": 460,
+    "seconds": 9.8,
+    "aoSeconds": 8.2
+  },
+  "quarry-metal-blow-bar": {
+    "aiaRef": "Quarry › BLOW BAR (14263_P00277_REV_2)",
+    "sizeMm": [
+      200,
+      531,
+      2245
+    ],
+    "triangles": 380,
+    "rolesBeforeSimplify": {
+      "metal": 380
+    },
+    "kb": 61,
+    "seconds": 0.4,
+    "aoSeconds": 0.3
+  },
+  "quarry-sintercast-hammer": {
+    "aiaRef": "Quarry › HAMMER (9544)",
+    "sizeMm": [
+      187,
+      385,
+      235
+    ],
+    "triangles": 2118,
+    "rolesBeforeSimplify": {
+      "sinterCeramic": 2970
+    },
+    "kb": 83,
+    "seconds": 0.6,
+    "aoSeconds": 0.5
+  },
+  "grinding-media-hicr": {
+    "aiaRef": "Hi-Cr grinding media (generated, AIA-approved; no AIA CAD)",
+    "sizeMm": [
+      348,
+      255,
+      342
+    ],
+    "triangles": 14080,
+    "rolesBeforeSimplify": {
+      "media": 14080
+    },
+    "kb": 230,
+    "seconds": 2.6,
+    "aoSeconds": 2.1
   }
 }

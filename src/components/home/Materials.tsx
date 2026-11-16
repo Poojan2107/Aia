@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { homeOnly } from "@/lib/env";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { href } from "@/lib/routes";
@@ -83,6 +83,9 @@ export function Materials() {
             alt={entry.model ? `${entry.product} in ${entry.moc}, 3D model from AIA's CAD` : `${entry.product}, AIA Engineering`}
             info={{ material: entry.moc, featuredApp: entry.product, specs: entry.specs }}
             orbit={entry.orbit}
+            target={entry.target}
+            shadow={entry.shadow}
+            fov={entry.fov}
           />
         </div>
 
@@ -92,16 +95,18 @@ export function Materials() {
               {String(index).padStart(2, "0")} / {industry.label} material
             </p>
 
-            <h3 className="mats-title">{entry.moc}</h3>
-
-            <ul className="mats-bullets" aria-label="Material details">
-              {entry.body.map((line, idx) => (
-                <li key={idx} className="mats-bullet-item">
-                  <span className="mats-bullet-dot">•</span>
-                  <span className="mats-bullet-text">{line}</span>
-                </li>
+            <h3 className="mats-title">
+              {/* Keep hyphenated names (Hi-Cr, Cr-Mo) whole: browsers otherwise wrap after the hyphen. */}
+              {entry.moc.split(" ").map((word, i) => (
+                <Fragment key={i}>
+                  {i > 0 ? " " : null}
+                  <span className="whitespace-nowrap">{word}</span>
+                </Fragment>
               ))}
-            </ul>
+            </h3>
+
+            {/* AIA (Malay, 2026-11-17): the panel shows only the MOC heading; the technical copy
+                (entry.body in moc-catalog) is kept in the data but not shown. */}
 
             <Link prefetch={homeOnly ? false : undefined} href={href(industry.route)} className="mats-cta-pill" data-magnetic="">
               <span aria-hidden className="mats-cta-dot" />

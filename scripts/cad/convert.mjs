@@ -25,12 +25,16 @@ const report = {};
 
 for (const prod of products.filter((p) => !only.length || only.includes(p.id))) {
   const t0 = Date.now();
-  const res = occt.ReadStepFile(new Uint8Array(fs.readFileSync(prod.source)), {
-    linearUnit: "millimeter",
-    linearDeflectionType: "bounding_box_ratio",
-    linearDeflection: prod.deflection ?? 0.0003,
-    angularDeflection: prod.angular ?? 0.12,
-  });
+  // STEP is tessellated here; a .json source is AIA geometry already decoded from a 3D PDF
+  // (see prcMeshes below), with positions in mm and triangle indices per part.
+  const res = prod.source.endsWith(".json")
+    ? { success: true, meshes: prcMeshes(JSON.parse(fs.readFileSync(prod.source, "utf8")).parts) }
+    : occt.ReadStepFile(new Uint8Array(fs.readFileSync(prod.source)), {
+        linearUnit: "millimeter",
+        linearDeflectionType: "bounding_box_ratio",
+        linearDeflection: prod.deflection ?? 0.0003,
+        angularDeflection: prod.angular ?? 0.12,
+      });
   if (!res.success) throw new Error(`STEP read failed: ${prod.id}`);
 
   // Bounds of the whole product (to centre it) and per-part sizes (to assign roles).
@@ -176,3 +180,107 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
 const reportFile = path.join("scripts/cad", "report.json");
 const prev = fs.existsSync(reportFile) ? JSON.parse(fs.readFileSync(reportFile, "utf8")) : {};
 fs.writeFileSync(reportFile, JSON.stringify({ ...prev, ...report }, null, 2));
+
+/**
+ * Meshes from AIA geometry decoded out of a 3D PDF (compressed PRC carries no normals; a part may
+ * bring its own exact normals, e.g. the generated grinding media): each
+ * part becomes an indexed mesh with crease-aware normals, so curved faces shade smoothly while
+ * edges sharper than 40 degrees stay crisp. Same shape as occt-import-js output.
+ */
+function prcMeshes(parts) {
+  const crease = Math.cos((40 * Math.PI) / 180);
+  return parts.map((part) => {
+    const P = part.positions, T = orientTriangles(part.positions, part.tris);
+    const nTri = T.length / 3;
+    const fn = new Float32Array(T.length); // face normal (area-weighted) per triangle
+    for (let t = 0; t < nTri; t++) {
+      const [a, b, c] = [T[t * 3] * 3, T[t * 3 + 1] * 3, T[t * 3 + 2] * 3];
+      const u = [P[b] - P[a], P[b + 1] - P[a + 1], P[b + 2] - P[a + 2]];
+      const v = [P[c] - P[a], P[c + 1] - P[a + 1], P[c + 2] - P[a + 2]];
+      fn[t * 3] = u[1] * v[2] - u[2] * v[1]; fn[t * 3 + 1] = u[2] * v[0] - u[0] * v[2]; fn[t * 3 + 2] = u[0] * v[1] - u[1] * v[0];
+    }
+    const around = new Map(); // vertex -> triangles using it
+    for (let t = 0; t < nTri; t++) for (let k = 0; k < 3; k++) {
+      const v = T[t * 3 + k];
+      (around.get(v) ?? around.set(v, []).get(v)).push(t);
+    }
+    const unit = (x, y, z) => { const l = Math.hypot(x, y, z) || 1; return [x / l, y / l, z / l]; };
+    const pos = new Float32Array(T.length * 3), nrm = new Float32Array(T.length * 3), idx = new Uint32Array(T.length);
+    for (let t = 0; t < nTri; t++) {
+      const own = unit(fn[t * 3], fn[t * 3 + 1], fn[t * 3 + 2]);
+      for (let k = 0; k < 3; k++) {
+        const v = T[t * 3 + k], o = (t * 3 + k) * 3;
+        let x = 0, y = 0, z = 0;
+        for (const s of around.get(v)) {
+          const f = unit(fn[s * 3], fn[s * 3 + 1], fn[s * 3 + 2]);
+          if (f[0] * own[0] + f[1] * own[1] + f[2] * own[2] >= crease) { x += fn[s * 3]; y += fn[s * 3 + 1]; z += fn[s * 3 + 2]; }
+        }
+        const n = part.normals ? [part.normals[v * 3], part.normals[v * 3 + 1], part.normals[v * 3 + 2]] : unit(x, y, z);
+        pos[o] = P[v * 3]; pos[o + 1] = P[v * 3 + 1]; pos[o + 2] = P[v * 3 + 2];
+        nrm[o] = n[0]; nrm[o + 1] = n[1]; nrm[o + 2] = n[2];
+        idx[t * 3 + k] = t * 3 + k;
+      }
+    }
+    return { name: part.name, attributes: { position: { array: pos }, normal: { array: nrm } }, index: { array: idx } };
+  });
+}
+
+/**
+ * Compressed PRC does not keep a consistent triangle winding, so the viewer culls part of every
+ * surface (plates showed as thin fins with gaps). Make neighbours agree (an edge shared by two
+ * triangles must run in opposite directions), then turn each connected piece outward (positive
+ * signed volume). Returns a new index array.
+ */
+function orientTriangles(P, tris) {
+  // Work on welded vertices (same point within 0.01 mm = same vertex) so edges match even when
+  // the decoder repeats points; the original indices are restored at the end.
+  const canon = new Map(), id = new Uint32Array(P.length / 3);
+  for (let v = 0; v < id.length; v++) {
+    const k = Math.round(P[v * 3] * 100) + "," + Math.round(P[v * 3 + 1] * 100) + "," + Math.round(P[v * 3 + 2] * 100);
+    id[v] = canon.get(k) ?? canon.set(k, v).get(k);
+  }
+  const orig = Uint32Array.from(tris);
+  const T = orig.map((v) => id[v]);
+  const n = T.length / 3;
+  const edges = new Map(); // "a,b" (a<b) -> [triangle, ...]
+  const key = (a, b) => (a < b ? a + "," + b : b + "," + a);
+  for (let t = 0; t < n; t++) for (let k = 0; k < 3; k++) {
+    const kk = key(T[t * 3 + k], T[t * 3 + ((k + 1) % 3)]);
+    (edges.get(kk) ?? edges.set(kk, []).get(kk)).push(t);
+  }
+  const dir = (t, a, b) => { // true if triangle t walks a -> b
+    for (let k = 0; k < 3; k++) if (T[t * 3 + k] === a && T[t * 3 + ((k + 1) % 3)] === b) return true;
+    return false;
+  };
+  const flip = (t) => { const x = T[t * 3 + 1]; T[t * 3 + 1] = T[t * 3 + 2]; T[t * 3 + 2] = x; };
+  const seen = new Uint8Array(n);
+  for (let s0 = 0; s0 < n; s0++) {
+    if (seen[s0]) continue;
+    const comp = [s0]; seen[s0] = 1;
+    for (let q = 0; q < comp.length; q++) {
+      const t = comp[q];
+      for (let k = 0; k < 3; k++) {
+        const a = T[t * 3 + k], b = T[t * 3 + ((k + 1) % 3)];
+        for (const u of edges.get(key(a, b))) {
+          if (u === t || seen[u]) continue;
+          if (dir(u, a, b)) flip(u); // neighbour walks the same way: flip it to agree
+          seen[u] = 1; comp.push(u);
+        }
+      }
+    }
+    let vol = 0; // signed volume of this piece; negative = inside-out
+    for (const t of comp) {
+      const [a, b, c] = [T[t * 3] * 3, T[t * 3 + 1] * 3, T[t * 3 + 2] * 3];
+      vol += P[a] * (P[b + 1] * P[c + 2] - P[b + 2] * P[c + 1]) - P[a + 1] * (P[b] * P[c + 2] - P[b + 2] * P[c]) + P[a + 2] * (P[b] * P[c + 1] - P[b + 1] * P[c]);
+    }
+    if (vol < 0) for (const t of comp) flip(t);
+  }
+  // Same triangles as the input, now in the agreed winding, on the original vertex indices.
+  const out = new Uint32Array(T.length);
+  for (let t = 0; t < n; t++) {
+    const a = orig[t * 3], b = orig[t * 3 + 1], c = orig[t * 3 + 2];
+    const flipped = id[b] === T[t * 3 + 2] && id[c] === T[t * 3 + 1] && id[b] !== id[c];
+    out[t * 3] = a; out[t * 3 + 1] = flipped ? c : b; out[t * 3 + 2] = flipped ? b : c;
+  }
+  return out;
+}

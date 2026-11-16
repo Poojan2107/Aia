@@ -4978,7 +4978,8 @@ button.solve-cta > span:last-child {
 .mats-title {
   margin-top: 14px;
   font-family: var(--font-haas, sans-serif);
-  font-size: clamp(1.75rem, 2.3vw, 36px);
+  /* The heading stands alone in the panel (no body copy), so it is set a step larger. */
+  font-size: clamp(2rem, 2.9vw, 46px);
   font-weight: 600;
   line-height: 1.22;
   color: #ffffff;
@@ -5011,7 +5012,7 @@ button.solve-cta > span:last-child {
   flex: 1;
 }
 .mats-cta-pill {
-  margin-top: 36px;
+  margin-top: 32px;
   display: inline-flex;
   align-items: center;
   gap: 10px;

@@ -19,6 +19,12 @@ type Props = {
   alt: string;
   info?: ModelInfo;
   orbit?: string;
+  /** Point the camera looks at (camera-target); defaults to the model's centre. */
+  target?: string;
+  /** Floor shadow strength (default 1.25); lower for arrangements that don't rest on the floor. */
+  shadow?: number;
+  /** Camera field of view (default 30deg); narrow it to match a long-lens product photo. */
+  fov?: string;
 };
 
 const MODEL_VIEWER_SRC = "/vendor/model-viewer-4.0.0.min.js";
@@ -53,7 +59,7 @@ function loadModelViewer(): Promise<void> {
   return customElements.whenDefined("model-viewer").then(ready);
 }
 
-export function MaterialViewer3D({ src, image, alt, info, orbit }: Props) {
+export function MaterialViewer3D({ src, image, alt, info, orbit, target, shadow, fov }: Props) {
   const [scriptReady, setScriptReady] = useState(false);
   const [isLoading, setIsLoading] = useState(Boolean(src));
   const [hasError, setHasError] = useState(false);
@@ -188,8 +194,10 @@ export function MaterialViewer3D({ src, image, alt, info, orbit }: Props) {
           bounds="tight"
           environment-image="/models/env/studio.hdr"
           camera-orbit={introDone ? cameraOrbit : introOrbit(cameraOrbit)}
-          field-of-view="30deg"
-          min-camera-orbit="auto 20deg 85%"
+          camera-target={target ?? "auto auto auto"}
+          field-of-view={fov ?? "30deg"}
+          min-field-of-view={fov ?? "25deg"}
+          min-camera-orbit="auto 20deg 60%"
           max-camera-orbit="auto 86deg 150%"
           interpolation-decay="110"
           disable-pan
@@ -198,7 +206,7 @@ export function MaterialViewer3D({ src, image, alt, info, orbit }: Props) {
           auto-rotate-delay={300}
           rotation-per-second="18deg"
           touch-action="pan-y"
-          shadow-intensity="1.25"
+          shadow-intensity={String(shadow ?? 1.25)}
           shadow-softness="0.65"
           exposure="0.9"
           tone-mapping="neutral"

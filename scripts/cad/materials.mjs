@@ -7,12 +7,19 @@
 // the studio), fine sand-cast grain, and recesses darker (baked AO; aoFloor = how dark a fully
 // enclosed corner gets). Clearly lighter than rubber, as AIA's own renders show them.
 const cast = { colorMap: "cast-color.jpg", normalMap: "cast-normal.jpg", normalScale: 0.18, mrMap: "cast-mr.jpg", tile: 0.12, aoFloor: 0.5 };
+// One look per MOC, the same in every industry:
+//   metal         — every "Metal" MOC (Cr-Mo / Hi-Cr / steel castings), and supporting steel
+//                   (Verti Mill shaft, Loesche roller body, composite inserts)
+//   sinterHicr    — the Hi-Cr parts of Sintercast products: dark grey (AIA, Malay 2026-11-17)
+//   sinterCeramic — the Sintercast part itself (ceramic inserts, shoe liners, hammer with
+//                   ceramic): light grey (AIA, Malay 2026-11-17)
 export const finishes = {
-  steel: { color: [0.2, 0.205, 0.215], metallic: 0.88, roughness: 0.82, ...cast },
-  hicr: { color: [0.23, 0.235, 0.245], metallic: 0.88, roughness: 0.78, ...cast },
+  metal: { color: [0.23, 0.235, 0.245], metallic: 0.88, roughness: 0.78, ...cast },
+  sinterHicr: { color: [0.085, 0.087, 0.092], metallic: 0.85, roughness: 0.8, ...cast },
+  sinterCeramic: { color: [0.42, 0.425, 0.432], metallic: 0.62, roughness: 0.82, ...cast },
   rubber: { color: [0.022, 0.023, 0.025], metallic: 0, roughness: 0.74, normalMap: "rubber-normal.jpg", normalScale: 0.45, tile: 0.08, aoFloor: 0.45 },
-  // Sintercast ceramic: light warm grey, matte, as on AIA's Sinter-Cast renders (light face with
-  // the dark Hi-Cr matrix around the inserts).
-  ceramic: { color: [0.27, 0.262, 0.245], metallic: 0, roughness: 0.82, normalMap: "cast-normal.jpg", normalScale: 0.3, tile: 0.1, aoFloor: 0.55 },
+  // Hi-Cr grinding media (its own MOC): dark charcoal cast balls with a satin sheen and a fine
+  // pitted skin, as on AIA's and industry photos of high-chrome media (not mirror chrome).
+  media: { color: [0.17, 0.172, 0.178], metallic: 0.9, roughness: 0.48, colorMap: "cast-color.jpg", normalMap: "cast-normal.jpg", normalScale: 0.35, mrMap: "cast-mr.jpg", tile: 0.03, aoFloor: 0.35 },
   bolt: { color: [0.32, 0.325, 0.335], metallic: 0.95, roughness: 0.38, aoFloor: 0.5 },
 };
