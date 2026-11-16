@@ -56,7 +56,8 @@ export const products = [
     aiaRef: "Quarry › HAMMER (9544)",
     // Stored eye-down in the CAD; eye up, as on AIA's product photo.
     orient: [0, 0, 180],
-    roles: () => "sinterCeramic",
+    // One solid in AIA's CAD (ceramic not modelled): the Hi-Cr body, as on the other Sintercast products.
+    roles: () => "sinterHicr",
   },
   {
     id: "grinding-media-hicr",

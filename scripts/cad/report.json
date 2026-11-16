@@ -150,10 +150,10 @@
     ],
     "triangles": 2118,
     "rolesBeforeSimplify": {
-      "sinterCeramic": 2970
+      "sinterHicr": 2970
     },
     "kb": 83,
-    "seconds": 0.6,
+    "seconds": 0.8,
     "aoSeconds": 0.5
   },
   "grinding-media-hicr": {
