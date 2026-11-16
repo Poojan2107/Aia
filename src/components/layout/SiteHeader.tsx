@@ -90,7 +90,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
                       <Link prefetch={homeOnly ? false : undefined}
                         href={link.href}
                         onClick={onClose}
-                        className="group flex items-center justify-between whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[0.88rem] font-medium text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-accent"
+                        className="group flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[0.88rem] font-medium text-aia-navy/80 transition hover:bg-aia-surface-soft hover:text-aia-accent"
                       >
                         <span>{link.label}</span>
                         <span className="text-[0.75rem] opacity-0 transition-opacity group-hover:opacity-100 text-aia-accent">→</span>
