@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { webglTier } from "@/lib/webgl";
-import { MP4_TYPE, WEBM_TYPE, webmTwin } from "@/lib/video";
+import { MP4_TYPE, WEBM_TYPE, filmsPlaySmoothly, webmTwin } from "@/lib/video";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
@@ -31,18 +30,19 @@ export function AmbientFilm({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Lite mode on devices without a GPU (software WebGL, common on Linux VMs/laptops): decoding
-    // full-screen films on the CPU stalls scrolling for seconds, so the poster stays instead.
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || webglTier() !== "hardware";
     const wrap = wrapRef.current;
     const video = videoRef.current;
-    if (!src || !wrap || !video || reduced) return;
+    if (!src || !wrap || !video) return;
+    // Devices that can't decode the film smoothly (see filmsPlaySmoothly) keep the poster.
+    let allowed = false;
+    let alive = true;
 
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
 
     const tryPlay = () => {
+      if (!allowed) return;
       video.muted = true;
       void video
         .play()
@@ -51,10 +51,17 @@ export function AmbientFilm({
         })
         .catch(() => undefined);
     };
+    let visible = false;
+    void filmsPlaySmoothly().then((ok) => {
+      if (!alive || !ok) return;
+      allowed = true;
+      if (visible) tryPlay();
+    });
 
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) tryPlay();
+        visible = entry.isIntersecting;
+        if (visible) tryPlay();
         else video.pause();
       },
       { threshold: 0.08, rootMargin: "160px" },
@@ -63,6 +70,7 @@ export function AmbientFilm({
     video.addEventListener("canplay", tryPlay);
     video.addEventListener("loadeddata", tryPlay);
     return () => {
+      alive = false;
       io.disconnect();
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("loadeddata", tryPlay);

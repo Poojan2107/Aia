@@ -42,8 +42,9 @@ const media30 = (industry: string): MocEntry => ({
     "Hi-Cr grinding media with up to 30% chromium, supplied in sizes from 12.5 mm to 100 mm.",
     "Marked Ball Test (MBT) for a cost-effective alloy, backed by a performance guarantee.",
   ],
-  // AIA has no CAD for grinding media: AIA's own photo (aiaengineering.com/ball-mill/).
-  image: "/images/products/grinding-1.webp",
+  // AIA has no CAD for grinding media: AIA's own photo (aiaengineering.com/ball-mill/, 516 px there),
+  // upscaled 4x locally with Real-ESRGAN (x4plus) to 1400 px so it stays sharp on the stage.
+  image: "/images/products/aia/grinding-media-hicr.webp",
 });
 
 export const mocCatalog: MocIndustry[] = [
@@ -216,8 +217,8 @@ export const mocCatalog: MocIndustry[] = [
           "Hi-Cr grinding media with up to 18% chromium, supplied in sizes from 20 mm to 80 mm.",
           "Marked Ball Test (MBT) for a cost-effective alloy, backed by a performance guarantee.",
         ],
-        // AIA has no CAD for grinding media: AIA's own photo (aiaengineering.com/ball-mill/).
-        image: "/images/products/grinding-1.webp",
+        // Same AIA photo as the other grinding media tabs (upscaled locally, see media30 above).
+        image: "/images/products/aia/grinding-media-hicr.webp",
       },
     ],
   },

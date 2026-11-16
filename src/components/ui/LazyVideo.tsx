@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { webglTier } from "@/lib/webgl";
-import { playableVideo } from "@/lib/video";
+import { filmsPlaySmoothly, playableVideo } from "@/lib/video";
 
 type Props = { src: string; label?: string; className?: string };
 
@@ -36,12 +35,18 @@ export function LazyVideo({ src, label, className = "" }: Props) {
   useEffect(() => {
     const video = ref.current;
     if (!video || !near) return;
-    // Lite mode on devices without a GPU: show the first frame instead of playing.
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || webglTier() !== "hardware";
+    // Devices that can't decode the film smoothly show its first frame instead (see filmsPlaySmoothly).
+    let allowed = false;
+    let alive = true;
     let visible = false;
     const tryPlay = () => {
-      if (visible && !reduced) void video.play().catch(() => undefined);
+      if (visible && allowed) void video.play().catch(() => undefined);
     };
+    void filmsPlaySmoothly().then((ok) => {
+      if (!alive || !ok) return;
+      allowed = true;
+      tryPlay();
+    });
     const io = new IntersectionObserver(([entry]) => {
       visible = Boolean(entry?.isIntersecting);
       if (visible) tryPlay();
@@ -50,6 +55,7 @@ export function LazyVideo({ src, label, className = "" }: Props) {
     io.observe(video);
     video.addEventListener("canplay", tryPlay);
     return () => {
+      alive = false;
       io.disconnect();
       video.removeEventListener("canplay", tryPlay);
     };
