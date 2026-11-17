@@ -37,6 +37,9 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
       });
   if (!res.success) throw new Error(`STEP read failed: ${prod.id}`);
 
+  // Optional: flatten raised CAD markings (e.g. a part code) back into the surface they sit on.
+  if (prod.flattenFaces) for (const m of res.meshes) flattenFaces(m, prod.flattenFaces);
+
   // Bounds of the whole product (to centre it) and per-part sizes (to assign roles).
   const box = [Infinity, Infinity, Infinity, -Infinity, -Infinity, -Infinity];
   const parts = res.meshes.map((m) => {
@@ -283,4 +286,66 @@ function orientTriangles(P, tris) {
     out[t * 3] = a; out[t * 3 + 1] = flipped ? c : b; out[t * 3 + 2] = flipped ? b : c;
   }
   return out;
+}
+
+/**
+ * Flatten raised markings modelled on a surface extruded along Z (its height Y depends on X only):
+ * every vertex of brep faces [from..to] is moved onto that surface's profile, so the letters collapse
+ * into it and the surface reads clean. `onto` is the brep face index of the surface.
+ */
+function flattenFaces(mesh, opts) {
+  if (opts.axis !== undefined) return flattenOnPlane(mesh, opts);
+  const { from, to, onto } = opts;
+  const P = mesh.attributes.position.array, I = mesh.index.array, F = mesh.brep_faces;
+  const prof = [];
+  for (let t = F[onto].first; t <= F[onto].last; t++) for (let c = 0; c < 3; c++) {
+    const v = I[t * 3 + c];
+    prof.push([P[v * 3], P[v * 3 + 1]]);
+  }
+  prof.sort((a, b) => a[0] - b[0]);
+  const heightAt = (x) => {
+    let lo = prof[0], hi = prof[prof.length - 1];
+    for (const p of prof) { if (p[0] <= x) lo = p; else { hi = p; break; } }
+    return hi[0] === lo[0] ? lo[1] : lo[1] + ((x - lo[0]) / (hi[0] - lo[0])) * (hi[1] - lo[1]);
+  };
+  const N = mesh.attributes.normal?.array;
+  // Surface normal near the markings (the face is near-flat across the narrow marking area).
+  let n0 = null;
+  if (N) {
+    const cx = (() => { let a = 0, c = 0; for (let k = from; k <= to; k++) for (let t = F[k].first; t <= F[k].last; t++) { a += P[I[t * 3] * 3]; c++; } return a / c; })();
+    let best = Infinity;
+    for (let t = F[onto].first; t <= F[onto].last; t++) for (let c = 0; c < 3; c++) {
+      const v = I[t * 3 + c], d = Math.abs(P[v * 3] - cx);
+      if (d < best) { best = d; n0 = [N[v * 3], N[v * 3 + 1], N[v * 3 + 2]]; }
+    }
+  }
+  const moved = new Set();
+  for (let k = from; k <= to; k++) for (let t = F[k].first; t <= F[k].last; t++) for (let c = 0; c < 3; c++) {
+    const v = I[t * 3 + c];
+    if (moved.has(v)) continue;
+    moved.add(v);
+    P[v * 3 + 1] = heightAt(P[v * 3]);
+    // Take the surface's normal too, so no shading ghost of the letters remains.
+    if (N && n0) { N[v * 3] = n0[0]; N[v * 3 + 1] = n0[1]; N[v * 3 + 2] = n0[2]; }
+  }
+}
+
+/**
+ * Flatten raised markings standing on a flat face perpendicular to an axis: every vertex of brep
+ * faces [from..to] gets that axis coordinate set to the markings' base (their lowest point along
+ * the axis, the face they stand on), and the face's normal, so they vanish into it.
+ */
+function flattenOnPlane(mesh, { from, to, axis }) {
+  const P = mesh.attributes.position.array, I = mesh.index.array, F = mesh.brep_faces;
+  const N = mesh.attributes.normal?.array;
+  const verts = new Set();
+  for (let k = from; k <= to; k++) for (let t = F[k].first; t <= F[k].last; t++) for (let c = 0; c < 3; c++) verts.add(I[t * 3 + c]);
+  let lo = Infinity, hi = -Infinity;
+  for (const v of verts) { lo = Math.min(lo, P[v * 3 + axis]); hi = Math.max(hi, P[v * 3 + axis]); }
+  const n = [0, 0, 0]; n[axis] = 1; // raised towards +axis: the base face faces +axis
+  for (const v of verts) {
+    P[v * 3 + axis] = lo;
+    if (N) { N[v * 3] = n[0]; N[v * 3 + 1] = n[1]; N[v * 3 + 2] = n[2]; }
+  }
+  void hi;
 }

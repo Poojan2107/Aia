@@ -14,12 +14,17 @@ export const products = [
     source: `${LIB}/Mining/SAG mill/Products/STEP/2_SAG_SHELL LINER_STEEL_W9_5693_3_E..STEP`,
     aiaRef: "W9_5693_3_E",
     roles: () => "metal",
+    // AIA (2026-11-16): remove part markings; the raised marking (brep faces 628-659) stands on a
+    // face perpendicular to Y.
+    flattenFaces: { from: 628, to: 659, axis: 1 },
   },
   {
     id: "mining-rubber-ball-mill-shell-liner",
     source: `${LIB}/Mining/Ball mill/Products/Overflow/STEP/14.BM OVFL_SHELL LINER_RUBBER_W9_5780_4..STEP`,
     aiaRef: "W9_5780_4",
     roles: () => "rubber",
+    // AIA (2026-11-17): remove the raised "SL1" part marking (brep faces 10-66) from the top face (6).
+    flattenFaces: { from: 10, to: 66, onto: 6 },
   },
   {
     id: "mining-composite-ball-mill-end-liner",

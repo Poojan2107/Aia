@@ -3,15 +3,15 @@
     "aiaRef": "W9_5693_3_E",
     "sizeMm": [
       916,
-      528,
+      525,
       2259
     ],
     "triangles": 24862,
     "rolesBeforeSimplify": {
       "metal": 124312
     },
-    "kb": 488,
-    "seconds": 15.9,
+    "kb": 486,
+    "seconds": 16.6,
     "aoSeconds": 2.6
   },
   "mining-rubber-ball-mill-shell-liner": {
@@ -21,11 +21,11 @@
       122,
       1320
     ],
-    "triangles": 270,
+    "triangles": 140,
     "rolesBeforeSimplify": {
       "rubber": 300
     },
-    "kb": 48,
+    "kb": 44,
     "seconds": 0.4,
     "aoSeconds": 0.1
   },
@@ -42,9 +42,9 @@
       "bolt": 40632,
       "rubber": 135872
     },
-    "kb": 1042,
-    "seconds": 18.5,
-    "aoSeconds": 3.2
+    "kb": 1041,
+    "seconds": 18.8,
+    "aoSeconds": 3.3
   },
   "thermal-metal-tube-mill-oblique-wave-liner": {
     "aiaRef": "AIA_A1_084_OW_2",

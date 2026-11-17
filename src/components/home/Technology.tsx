@@ -13,7 +13,7 @@ import { LazyVideo } from "@/components/ui/LazyVideo";
 const capabilities = [
   {
     id: "dem",
-    kicker: "01/Understanding wear before it happens",
+    kicker: "01/Understanding wear and charge motion",
     title: "Discrete Element Method (DEM)",
     body: "Using Discrete Element Method (DEM) simulation, we study charge motion, grinding media trajectories and impact energy inside mills. These insights support SAG and ball mill liner design, helping identify opportunities to improve grinding efficiency, optimise wear patterns and extend liner service life. DEM is also used to understand discharge flow dynamics.",
     video: "/videos/DEM.mp4",

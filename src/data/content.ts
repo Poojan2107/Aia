@@ -111,7 +111,7 @@ export const services = [
     audience: "thermal" as const,
     title: "Design Modelling & Alloy Selection",
     description:
-      "Develop wear-resistant components and select suitable alloys based on coal mill design and operating requirements.",
+      "Develop wear-resistant components and select suitable alloys based on coal properties, mill design and operating requirements.",
   },
   {
     audience: "thermal" as const,
@@ -123,7 +123,7 @@ export const services = [
     audience: "thermal" as const,
     title: "Installation Support",
     description:
-      "Provide technical guidance during installation and replacement of coal mill wear parts to support reliable operation.",
+      "Provide technical guidance and supervision during installation and replacement of coal mill wear parts to support reliable operation.",
   },
   {
     audience: "thermal" as const,

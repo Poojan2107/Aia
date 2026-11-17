@@ -106,7 +106,7 @@ export const mocCatalog: MocIndustry[] = [
       },
       {
         id: "mining-sintercast",
-        moc: "Hi-Cr with Sintercast®",
+        moc: "Sintercast®",
         product: "Verti Mill Liners",
         specs: ["Verti Mill", "Flight and shoe liners", "Sintercast alloy"],
         body: [
@@ -148,7 +148,7 @@ export const mocCatalog: MocIndustry[] = [
       },
       {
         id: "cement-sintercast",
-        moc: "Hi-Cr with Sintercast®",
+        moc: "Sintercast®",
         product: "VRM Table Segment (Loesche LM)",
         specs: ["Loesche LM 15.2 – LM 74.4", "Hi-Cr · Sinter-Cast · V-Cast"],
         body: [
@@ -184,7 +184,7 @@ export const mocCatalog: MocIndustry[] = [
       },
       {
         id: "quarry-sintercast",
-        moc: "Hi-Cr with Sintercast®",
+        moc: "Sintercast®",
         product: "Hammers with Ceramic",
         specs: ["Impact crushers", "With ceramic"],
         body: [
@@ -220,7 +220,7 @@ export const mocCatalog: MocIndustry[] = [
       },
       {
         id: "thermal-sintercast",
-        moc: "Hi-Cr with Sintercast®",
+        moc: "Sintercast®",
         product: "VRM Grinding Roller (Loesche LM)",
         specs: ["Loesche LM 12.2 – LM 43.4", "Sinter-Cast"],
         body: [
