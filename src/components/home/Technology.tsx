@@ -44,6 +44,8 @@ const capabilities = [
     body: "Using high-precision 3D scanning and dimensional inspection, we compare manufactured mill components with their approved design models. PolyWorks supports accurate measurement, quality verification and reliable fitment of engineered mill liners and wear parts.",
     video: "/videos/Polyworks.mp4",
     rate: 3,
+    // The scanned disc sits right of and below the film's centre: re-centred in the card.
+    mediaClass: "tech2-media--polyworks",
     alt: "3D scanner comparing a manufactured liner to its CAD model",
   },
 ] as const;
@@ -72,7 +74,7 @@ export function Technology() {
       <div className="tech2-rows">
         {capabilities.map((cap, i) => (
           <ScrollReveal key={cap.id} as="article" className={`tech2-row ${i % 2 === 1 ? "is-flipped" : ""}`}>
-            <div className="tech2-media rounded-[1.25rem]">
+            <div className={`tech2-media rounded-[1.25rem] ${"mediaClass" in cap ? cap.mediaClass : ""}`}>
               <LazyVideo
                 src={cap.video}
                 label={cap.alt}
