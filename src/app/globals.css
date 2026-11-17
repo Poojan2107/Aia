@@ -6385,3 +6385,8 @@ a[data-home-only="disabled"] {
    and crop the white strip along the film's top and left edges. */
 .tech2-media--polyworks video { transform: translate(-10.5%, -10.2%) scale(1.3); }
 [data-reveal="pending"] .tech2-media--polyworks video { transform: translate(-10.5%, -10.2%) scale(1.45); }
+
+/* PolyWorks film: the scanned disc sits right of and below the frame centre; centre it in the card
+   and crop the white strip along the film's top and left edges. */
+.tech2-media--polyworks video { transform: translate(-10.5%, -10.2%) scale(1.3); }
+[data-reveal="pending"] .tech2-media--polyworks video { transform: translate(-10.5%, -10.2%) scale(1.45); }
