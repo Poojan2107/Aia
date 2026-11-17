@@ -3,9 +3,9 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 /**
  * Leadership — 1:1 match with Figma / Presentation slide design:
- * AIA's Managing Director (Mr. Bhadresh Kantilal Shah) & Vega's CEO (Mr. Sumit Mitra),
- * each featuring high-resolution cut-out portraits, exact 1:1 architectural blue shards,
- * soft cloud/mist bottom fade, brand mark, quotation watermark, and branded attributions.
+ * AIA's Managing Director (Mr. Bhadresh Shah) & Vega's CEO (Mr. Sumit Mitra),
+ * shown as two quote cards (brand mark, heading, quote, attribution). Portraits are kept in the data
+ * for the leadership redesign.
  */
 
 type Leader = {
@@ -23,7 +23,7 @@ type Leader = {
 const leaders: Leader[] = [
   {
     id: "aia",
-    name: "MR. BHADRESH KANTILAL SHAH",
+    name: "MR. BHADRESH SHAH",
     role: "(MANAGING DIRECTOR - AIA ENGINEERING)",
     heading: ["A vision that", "continues to guide us."],
     quote:
@@ -47,50 +47,12 @@ const leaders: Leader[] = [
   },
 ];
 
-/**
- * Blue shards measured from the Figma (02Homepage frame 771:2487) against each
- * portrait, in plate units (0–100, square plate, portrait 72% wide and
- * bottom-centred). Corners that sit behind the portrait are placed inside its
- * silhouette. The long shard on each row keeps its Figma angles and runs far
- * past the plate; `.lead` clips it at the page edge, as in the design.
- */
-const SHARDS: Record<string, string[]> = {
-  aia: [
-    "35.0,13.8 46.1,13.8 32.9,36.2",
-    "88.0,20.3 62.8,40.2 79.9,47.1",
-    "43.0,76.7 -160,9.3 -160,80.4",
-  ],
-  vega: [
-    "58.8,15.2 68.7,15.2 70.8,36.1",
-    "11.1,26.4 41.8,56.0 22.8,73.4",
-    "53.3,75.4 260,6.5 260,79.7",
-  ],
-};
 
 function LeaderRow({ leader }: { leader: Leader }) {
   const headingId = `lead-${leader.id}`;
+  // Quotes only (AIA feedback 2026-11-17): portraits are kept in the data above for the redesign.
   return (
-    <ScrollReveal as="article" className={`lead-row ${leader.flip ? "is-flipped" : ""}`}>
-      <div className="lead-plate" aria-hidden>
-        <svg className="lead-shards" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-          {SHARDS[leader.id].map((points) => (
-            <polygon key={points} points={points} />
-          ))}
-        </svg>
-        <div className="lead-portrait lead-portrait-mask">
-          <Image
-            src={leader.portrait.src}
-            alt={leader.name}
-            width={leader.portrait.width}
-            height={leader.portrait.height}
-            sizes="(max-width: 1024px) 85vw, 40vw"
-            // Already-compact WebP: serve straight from the CDN (no first-hit resize wait).
-            unoptimized
-            decoding="async"
-          />
-        </div>
-      </div>
-
+    <ScrollReveal as="article" className="lead-card">
       <div className="lead-copy" aria-labelledby={headingId}>
         <Image
           src="/images/vision-quote-v2.png"
@@ -109,26 +71,19 @@ function LeaderRow({ leader }: { leader: Leader }) {
           sizes="(max-width: 1024px) 120px, 180px"
           quality={100}
         />
-        <h2 id={headingId} className="lead-heading ft ft-h62">
-          {leader.heading[0]}
-          <br />
-          {leader.heading[1]}
+        <h2 id={headingId} className="lead-heading ft ft-h40">
+          {leader.heading[0]} {leader.heading[1]}
         </h2>
         <blockquote className="lead-quote">
           <p className="ft ft-quote28">{leader.quote}</p>
         </blockquote>
-        <p
-          className="lead-name ft ft-name"
-          style={{ color: leader.accentColor }}
-        >
-          <span
-            aria-hidden
-            className="lead-dot"
-            style={{ backgroundColor: leader.accentColor }}
-          />
-          {leader.name}
-        </p>
-        <p className="lead-role ft ft-role">{leader.role}</p>
+        <div className="lead-sign">
+          <p className="lead-name ft ft-name" style={{ color: leader.accentColor }}>
+            <span aria-hidden className="lead-dot" style={{ backgroundColor: leader.accentColor }} />
+            {leader.name}
+          </p>
+          <p className="lead-role ft ft-role">{leader.role}</p>
+        </div>
       </div>
     </ScrollReveal>
   );
@@ -136,10 +91,12 @@ function LeaderRow({ leader }: { leader: Leader }) {
 
 export function Vision() {
   return (
-    <section className="lead" aria-label="Leadership">
-      {leaders.map((leader) => (
-        <LeaderRow key={leader.id} leader={leader} />
-      ))}
+    <section className="lead lead--quotes" aria-label="Leadership">
+      <div className="lead-grid">
+        {leaders.map((leader) => (
+          <LeaderRow key={leader.id} leader={leader} />
+        ))}
+      </div>
     </section>
   );
 }

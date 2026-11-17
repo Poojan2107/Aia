@@ -16,7 +16,7 @@ const capabilities = [
     kicker: "01/Understanding wear and charge motion",
     title: "Discrete Element Method (DEM)",
     body: "Using Discrete Element Method (DEM) simulation, we study charge motion, grinding media trajectories and impact energy inside mills. These insights support SAG and ball mill liner design, helping identify opportunities to improve grinding efficiency, optimise wear patterns and extend liner service life. DEM is also used to understand discharge flow dynamics.",
-    video: "/videos/DEM.mp4",
+    video: "/videos/DEM-clean.mp4",
     alt: "DEM simulation of charge motion inside a mill",
   },
   {
@@ -33,6 +33,8 @@ const capabilities = [
     title: "MAGMA Casting Simulation",
     body: "Through MAGMA casting process simulation, we study metal flow and solidification behaviour to identify potential casting defects before production. These simulations support process refinement, improved metallurgical quality and more consistent manufacturing of wear-resistant castings.",
     video: "/videos/Magma.mp4",
+    // AIA feedback 2026-11-16: the transition is too slow; played at 3x.
+    rate: 3,
     alt: "Casting solidification simulation of a liner mould",
   },
   {
@@ -41,6 +43,7 @@ const capabilities = [
     title: "PolyWorks: 3D Scanning & Inspection",
     body: "Using high-precision 3D scanning and dimensional inspection, we compare manufactured mill components with their approved design models. PolyWorks supports accurate measurement, quality verification and reliable fitment of engineered mill liners and wear parts.",
     video: "/videos/Polyworks.mp4",
+    rate: 3,
     alt: "3D scanner comparing a manufactured liner to its CAD model",
   },
 ] as const;
@@ -73,6 +76,7 @@ export function Technology() {
               <LazyVideo
                 src={cap.video}
                 label={cap.alt}
+                rate={"rate" in cap ? cap.rate : 1}
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </div>

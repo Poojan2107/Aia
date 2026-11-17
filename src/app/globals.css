@@ -6337,3 +6337,46 @@ a[data-home-only="disabled"] {
 .mats-model-poster.is-hidden { opacity: 0; }
 .mats-model-viewer { animation: mats-mv-in 600ms ease both; }
 @keyframes mats-mv-in { from { opacity: 0; } }
+
+/* ── Leadership as quote cards (AIA feedback 2026-11-17: quotes only, no photos) ── */
+.lead--quotes { padding: clamp(3.5rem, 6vw, 110px) clamp(1rem, 7vw, 134px); }
+.lead--quotes .lead-grid {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 40px);
+  max-width: 1720px;
+  margin-inline: auto;
+}
+@media (min-width: 1024px) {
+  .lead--quotes .lead-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+.lead-card {
+  position: relative;
+  display: flex;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(4, 29, 44, 0.07);
+  overflow: hidden;
+}
+.lead-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0066ff, #5aa2ff);
+}
+.lead--quotes .lead-copy {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  padding: clamp(1.75rem, 3.6vw, 64px);
+}
+.lead--quotes .lead-heading { white-space: normal; margin-top: 1.25rem; }
+.lead--quotes .lead-quote { flex: 1; }
+.lead--quotes .lead-sign {
+  margin-top: clamp(1.5rem, 2.5vw, 40px);
+  padding-top: 1.25rem;
+  border-top: 1px solid #e8eaee;
+}
+.lead--quotes .lead-quote-mark { top: clamp(1.5rem, 3vw, 52px); right: clamp(1.5rem, 3.4vw, 60px); }
+.lead--quotes .lead-brand { align-self: flex-start; margin-inline: 0; }

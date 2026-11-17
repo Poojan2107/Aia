@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { filmsPlaySmoothly, playableVideo } from "@/lib/video";
 
-type Props = { src: string; label?: string; className?: string };
+type Props = { src: string; label?: string; className?: string; /** Playback speed (1 = normal). */ rate?: number };
 
 /**
  * Muted loop that starts downloading well before it scrolls into view (so it is already
  * playing when it arrives), plays while visible and pauses off-screen. No poster image:
  * the film itself is the first thing the viewer sees.
  */
-export function LazyVideo({ src, label, className = "" }: Props) {
+export function LazyVideo({ src, label, className = "", rate = 1 }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(false);
 
@@ -40,6 +40,7 @@ export function LazyVideo({ src, label, className = "" }: Props) {
     let alive = true;
     let visible = false;
     const tryPlay = () => {
+      video.playbackRate = rate;
       if (visible && allowed) void video.play().catch(() => undefined);
     };
     void filmsPlaySmoothly().then((ok) => {
@@ -59,7 +60,7 @@ export function LazyVideo({ src, label, className = "" }: Props) {
       io.disconnect();
       video.removeEventListener("canplay", tryPlay);
     };
-  }, [near]);
+  }, [near, rate]);
 
   return (
     <video
