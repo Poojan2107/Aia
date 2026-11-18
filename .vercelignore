@@ -8,3 +8,19 @@ CLAUDE.md
 !README.md
 scripts/qa-shots.mjs
 .tmp
+
+# Not needed to run the site (CLI deploys upload the working folder; keep it small):
+# AIA's CAD library and decoded sources (the site only serves public/models/catalog/*.glb).
+/models
+/docs
+# Raw and unused films (nothing in src references them).
+public/videos/quarry.mp4
+public/videos/Copy of Quarry_0.08.mp4
+public/videos/Video Project 4.mp4
+public/videos/banner-logistics.mp4
+public/videos/20260821-1456-51.1111462.mp4
+public/videos/Screen Recording 2026-08-21 202512.mp4
+public/videos/DEM.mp4
+public/videos/DEM.webm
+*.tmp.mp4
+*.tmp.webm
