@@ -166,7 +166,7 @@ export function AboutBand() {
             <div ref={plateRef} className="about2-plate">
               <AmbientFilm
                 src={media.about}
-                poster="/images/what-we-solve-poster.webp"
+                poster="/images/about-us-poster.webp"
                 // Grows to full screen on scroll, so it needs the full-width image (same as "100vw";
                 // this form avoids Next's dev check, which measures it before it has grown).
                 sizes="(min-width: 1px) 100vw"
