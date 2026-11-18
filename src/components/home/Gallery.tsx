@@ -7,14 +7,12 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { href } from "@/lib/routes";
-import { media } from "@/data/media";
 
 type Film = {
   id: string;
   title: string;
   caption?: string;
   poster: string;
-  src?: string;
   branded?: boolean;
 };
 
@@ -24,7 +22,6 @@ const films: readonly Film[] = [
     title: "Ball Mill Lining Solutions",
     caption: "Safety | Wear Life | Operations",
     poster: "/images/mill-poster.png",
-    src: media.gallery.lining,
     branded: false,
   },
   {
@@ -32,7 +29,6 @@ const films: readonly Film[] = [
     title: "AIA Engineering Corporate Film",
     caption: undefined,
     poster: "/images/gallery-center.jpg",
-    src: media.gallery.corporate,
     branded: false,
   },
   {
@@ -40,7 +36,6 @@ const films: readonly Film[] = [
     title: "Wear Component Systems",
     caption: "Precision | Reliability | Life",
     poster: "/images/gallery-3.png",
-    src: media.gallery.components,
     branded: true,
   },
 ];
@@ -251,9 +246,8 @@ export function Gallery() {
                     poster={card.poster}
                     posterAlt={card.title}
                     eager
-                    src={isCenter ? card.src : undefined}
-                    playback={isCenter ? "click" : "ambient"}
-                    film={isCenter}
+                    // Films are off for now: every card shows its thumbnail only (no play button).
+                    playback="ambient"
                     active={playing}
                     onActiveChange={(next) =>
                       setPlayingId(next ? card.id : null)

@@ -13,9 +13,4 @@ export const media = {
     "02": undefined as string | undefined,
     "03": undefined as string | undefined,
   },
-  gallery: {
-    lining: "/videos/mill.mp4",
-    corporate: "/videos/corporate.mp4",
-    components: "/videos/hero.mp4",
-  },
 } as const;
