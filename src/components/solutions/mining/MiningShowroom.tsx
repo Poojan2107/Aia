@@ -31,11 +31,9 @@ type Mill = {
  * Take-apart states. Distances are metres along each part's own travel direction (the shell's top
  * half lifts, heads and end liners slide out along the axis, shell liners and bolts move straight
  * out from it). The chosen component comes out just enough to stand apart, is lit and is framed at
- * the centre (MillExplorer fits the camera to it); the rest fade back. Bolts stay on the mill,
- * lifted slightly, so they read as the complete fastener pattern.
+ * the centre (MillExplorer fits the camera to it); the rest fade back. For fasteners the mill opens
+ * the same way and the bolts come straight out of their holes, around the liners they hold.
  */
-/** AIA shell-liner fastener set (bolt, nut, washers) from the SAG mill CAD, shown on its own. */
-const FASTENER = { src: "/models/catalog/fastener-sag-shell.glb", scale: 0.62 };
 const SAG_OPEN = { "shell-top": 6.5, "feed-head": 2.4, "discharge-head": 3.2 };
 const BALL_OPEN = { "shell-top": 5.5, "feed-head": 2.4, "discharge-head": 3.2 };
 
@@ -46,7 +44,7 @@ const MILLS: Mill[] = [
     title: "SAG Mill Components",
     mark: "SAG",
     lede: "Engineered for impact resistance and mill shell protection.",
-    explorer: { src: "/models/catalog/mill-sag-explode.glb", view: { theta: -38, phi: 66, distance: 0.82 }, products: { fastener: FASTENER } },
+    explorer: { src: "/models/catalog/mill-sag-explode.glb", view: { theta: -38, phi: 66, distance: 0.82 } },
     components: [
       {
         name: "Advanced Lining Systems",
@@ -59,7 +57,7 @@ const MILLS: Mill[] = [
       },
       {
         name: "High-Quality Fasteners",
-        state: { product: "fastener" },
+        state: { amounts: { ...SAG_OPEN, fasteners: 0.7 }, focus: ["fasteners"], ghost: 0.16 },
       },
     ],
     side: "right",
@@ -73,7 +71,7 @@ const MILLS: Mill[] = [
     explorer: {
       src: "/models/catalog/mill-ball-explode.glb",
       view: { theta: -34, phi: 68, distance: 0.8 },
-      products: { media: { src: "/models/catalog/grinding-media-hicr.glb", scale: 0.55 }, fastener: FASTENER },
+      products: { media: { src: "/models/catalog/grinding-media-hicr.glb", scale: 0.55 } },
     },
     components: [
       {
@@ -89,7 +87,7 @@ const MILLS: Mill[] = [
       {
         name: "High-Quality Fasteners",
         body: "They are made from high-grade alloy steel (like Grade 10.9 or 12.9) that can handle tons of pressure without snapping or stretching.",
-        state: { product: "fastener" },
+        state: { amounts: { ...BALL_OPEN, fasteners: 0.6 }, focus: ["fasteners"], ghost: 0.16 },
       },
     ],
     side: "left",

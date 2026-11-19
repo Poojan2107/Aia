@@ -320,7 +320,8 @@ export function MillExplorer({ src, alt, view, states, state, products, accent }
           g.mats.forEach((m, i) => {
             tmp.copy(g.base[i]).lerp(pale, Math.min(1, fade * 1.1)).lerp(accentCol, g.lit.x * 0.7);
             m.color.copy(tmp);
-            glow.copy(accentCol).multiplyScalar(0.14 * g.lit.x);
+            // Small parts (bolts) glow more so the lit pattern still reads at whole-mill scale.
+            glow.copy(accentCol).multiplyScalar((g.group === "fasteners" ? 0.45 : 0.14) * g.lit.x);
             m.emissive.copy(glow);
             const fading = a < 0.995;
             if (m.transparent !== fading) { m.transparent = fading; m.needsUpdate = true; }
