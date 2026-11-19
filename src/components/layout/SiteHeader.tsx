@@ -108,11 +108,21 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
   );
 }
 
+/**
+ * Navbar navigation lock (presentation mode): links in the navbar and the mobile menu do nothing
+ * when clicked; menus still open so the site structure can be shown. Set to false to unlock.
+ */
+const NAV_LOCKED = true;
+const blockNav = (e: React.MouseEvent) => {
+  if (!NAV_LOCKED) return;
+  if ((e.target as HTMLElement).closest("a[href]")) e.preventDefault();
+};
+
 function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: string }) {
   const [expanded, setExpanded] = useState<string | null>(() => mainNav.find((item) => isCurrent(item, pathname))?.id ?? null);
 
   return (
-    <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col bg-aia-navy text-white lg:hidden" role="dialog" aria-modal="true" aria-label="Site navigation">
+    <div id="mobile-menu" className="fixed inset-0 z-50 flex flex-col bg-aia-navy text-white lg:hidden" role="dialog" aria-modal="true" aria-label="Site navigation" onClickCapture={blockNav}>
       <div className="flex items-center justify-between px-5 py-4">
         <Link prefetch={homeOnly ? false : undefined} href="/" onClick={onClose} aria-label="AIA Engineering home">
           <Image
@@ -247,6 +257,8 @@ export function SiteHeader() {
       </a>
       <header
         className={`site-nav fixed inset-x-0 top-0 z-40${solid ? " is-solid" : ""}${hidden ? " is-hidden" : ""}`}
+      
+        onClickCapture={blockNav}
       >
         <div className="site-nav-bar">
           <Link prefetch={homeOnly ? false : undefined} href="/" className="site-nav-brand" aria-label="AIA Engineering home">
