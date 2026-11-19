@@ -7261,26 +7261,25 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
    keep the AIA Brand gradient exactly (Brand Blue into Sporty Blue); only its soft light glow
    drifts, slowly and within a small range, on the blue surfaces that matter: footer panel, product
    name bars, CTA panels and solid CTA buttons (homepage too), active tabs. Small icon buttons, dots
-   and text stay still. Off with reduced motion. */
+   and text stay still. It is an explicit palette choice, so it also runs with reduced motion on. */
 @keyframes aia-glow-drift {
-  0% { background-position: 100% 0%, 0 0; }
-  50% { background-position: 60% 40%, 0 0; }
-  100% { background-position: 20% 10%, 0 0; }
+  0% { background-position: -50% 30%, 0 0; }
+  100% { background-position: 150% 70%, 0 0; }
 }
 html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent, .site-nav-contact, .vision-shard, :is(a, button).bg-aia-accent:not([class*="size-"])) {
+  /* The AIA Brand gradient stays put; a soft Sporty Blue light (60% of the width) sweeps across
+     nearly the whole surface and back, every 8s, so the motion is clearly visible but calm. */
   background:
-    radial-gradient(closest-side, rgba(64, 150, 255, 0.34), rgba(64, 150, 255, 0) 100%) no-repeat,
+    radial-gradient(closest-side, rgba(96, 170, 255, 0.6), rgba(96, 170, 255, 0) 100%) no-repeat,
     linear-gradient(125deg, #1f2766 0%, #2b357e 32%, #1d4cc0 68%, #0061e0 100%);
-  background-size: 140% 220%, 100% 100%;
-  background-position: 100% 0%, 0 0;
-  animation: aia-glow-drift 18s ease-in-out infinite alternate;
+  background-size: 60% 180%, 100% 100%;
+  background-position: -50% 30%, 0 0;
+  animation: aia-glow-drift 8s ease-in-out infinite alternate;
 }
 /* Stacked bars drift out of step, so the stack never pulses in unison. */
-html[data-motion] .qs-card:nth-child(2n) .qs-bar { animation-delay: -6s; }
-html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -12s; }
-@media (prefers-reduced-motion: reduce) {
-  html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab, .mill-callout, .site-nav-contact, .vision-shard, .bg-aia-accent) { animation: none !important; }
-}
+html[data-motion] .qs-card:nth-child(2n) .qs-bar { animation-delay: -3s; }
+html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -5.5s; }
+
 
 
 /* Quarry rail, closer to the Figma: bold navy titles, roomier rows, larger light body copy,
