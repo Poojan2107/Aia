@@ -23,6 +23,10 @@ export const finishes = {
   sinterCeramic: { color: [0.42, 0.425, 0.432], metallic: 0.62, roughness: 0.82, ...cast },
   // Rubber (AIA feedback 2026-11-16): a black that contrasts with the metal grey, matte and slightly
   // rough like moulded rubber. The same rubber and metal shades are used on every product.
+  // Composite (AIA feedback 2026-11-19: the rubber-smooth body read as polished): a dark grey
+  // engineered composite with the cast grain and tone mottling showing clearly, matte, a slight
+  // metallic sheen; not glossy, not bare steel.
+  composite: { color: [0.11, 0.112, 0.118], metallic: 0.35, roughness: 0.88, colorMap: "cast-color.jpg", normalMap: "cast-normal.jpg", normalScale: 1.25, mrMap: "cast-mr.jpg", tile: 0.24, aoFloor: 0.45 },
   rubber: { color: [0.04, 0.041, 0.044], metallic: 0, roughness: 0.86, normalMap: "rubber-normal.jpg", normalScale: 1.1, tile: 0.05, aoFloor: 0.5 },
   // Hi-Cr grinding media (its own MOC): dark charcoal cast balls with a satin sheen and a fine
   // pitted skin, as on AIA's and industry photos of high-chrome media (not mirror chrome).

@@ -32,8 +32,8 @@ export const products = [
     aiaRef: "W9_5724_6",
     // Hi-Cr inserts (the wear face) up.
     orient: [90, 0, 0],
-    // One body (rubber), three identical inserts (Hi-Cr), three small bolts.
-    roles: (part) => (part.maxDim > 1000 ? "rubber" : part.maxDim > 300 ? "metal" : "bolt"),
+    // One composite body, three identical inserts (Hi-Cr), three small bolts.
+    roles: (part) => (part.maxDim > 1000 ? "composite" : part.maxDim > 300 ? "metal" : "bolt"),
   },
   {
     id: "mining-sintercast-verti-mill-liners",

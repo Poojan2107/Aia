@@ -40,11 +40,11 @@
     "rolesBeforeSimplify": {
       "metal": 171426,
       "bolt": 40632,
-      "rubber": 135872
+      "composite": 135872
     },
-    "kb": 1041,
-    "seconds": 18.8,
-    "aoSeconds": 3.3
+    "kb": 1003,
+    "seconds": 24.9,
+    "aoSeconds": 3.9
   },
   "thermal-metal-tube-mill-oblique-wave-liner": {
     "aiaRef": "AIA_A1_084_OW_2",

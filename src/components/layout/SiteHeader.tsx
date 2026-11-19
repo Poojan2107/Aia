@@ -126,13 +126,13 @@ function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: stri
       <div className="flex items-center justify-between px-5 py-4">
         <Link prefetch={homeOnly ? false : undefined} href="/" onClick={onClose} aria-label="AIA Engineering home">
           <Image
-            src="/images/design/logo-aia-vega-white.png"
+            src="/images/brand/aia-vega-white.svg"
             alt="AIA Engineering Limited and Vega Industries"
-            width={650}
-            height={200}
+            width={704}
+            height={229}
             className="h-10 w-auto object-contain"
             priority
-            quality={100}
+            unoptimized
             sizes="160px"
           />
         </Link>
@@ -263,13 +263,13 @@ export function SiteHeader() {
         <div className="site-nav-bar">
           <Link prefetch={homeOnly ? false : undefined} href="/" className="site-nav-brand" aria-label="AIA Engineering home">
             <Image
-              src="/images/design/logo-aia-vega-white.png"
+              src="/images/brand/aia-vega-white.svg"
               alt="AIA Engineering Limited and Vega Industries"
-              width={650}
-              height={200}
+              width={704}
+              height={229}
               className="site-nav-brand-logo"
               priority
-              quality={100}
+              unoptimized
               sizes="(max-width: 768px) 160px, 240px"
             />
           </Link>

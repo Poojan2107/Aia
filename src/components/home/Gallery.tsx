@@ -46,12 +46,12 @@ function BrandMarks() {
   return (
     <div className="pointer-events-none absolute right-4 top-4 z-10 flex items-center gap-3 opacity-90 sm:right-6 sm:top-6">
       <Image
-        src="/images/logo-vega.png"
+        src="/images/brand/vega-white.svg"
         alt="Vega Industries"
-        width={1200}
-        height={871}
+        width={283}
+        height={212}
         className="h-4 w-auto object-contain"
-        quality={100}
+        unoptimized
       />
     </div>
   );

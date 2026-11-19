@@ -148,7 +148,9 @@ export function Faq() {
             return (
               <div
                 key={item.question}
-                className={`flex min-h-0 flex-col lg:flex-1 ${
+                // Rows share the column's height but never shrink below their content, so an open
+                // answer pushes the next question down instead of running over it.
+                className={`flex flex-col lg:flex-[1_0_auto] ${
                   isOpen ? "bg-[#f0f1f6]" : ""
                 }`}
               >

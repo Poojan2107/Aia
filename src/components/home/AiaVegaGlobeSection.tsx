@@ -103,7 +103,7 @@ function chipElement(site: Site) {
   const badge = document.createElement("img");
   badge.className = "gsq-tag-badge";
   badge.alt = "";
-  badge.src = isAia ? "/images/design/logo-aia-mark-blue.webp" : "/images/design/logo-vega-color.webp";
+  badge.src = isAia ? "/images/brand/aia-mark.svg" : "/images/brand/vega.svg";
   const text = document.createElement("span");
   text.className = "gsq-tag-text";
   const city = document.createElement("strong");
@@ -313,7 +313,7 @@ export function AiaVegaGlobeSection() {
       // Pre-warm while the globe is still hidden behind the hero: decode the tag badges and
       // draw the pins, rings and arcs once, so their textures and shaders are ready before
       // the visitor scrolls to them. The stage logic then takes over the real data.
-      for (const src of ["/images/design/logo-aia-mark-blue.webp", "/images/design/logo-vega-color.webp"]) {
+      for (const src of ["/images/brand/aia-mark.svg", "/images/brand/vega.svg"]) {
         const img = new window.Image();
         img.src = src;
         void img.decode().catch(() => undefined);
@@ -599,8 +599,8 @@ export function AiaVegaGlobeSection() {
           <span aria-hidden className="gsq-light gsq-light-b" />
           {/* Phones & tablets only (see the effect above): decorative, the real logos are in the columns. */}
           <div ref={introRef} aria-hidden className="gsq-intro">
-            <Image src="/images/design/logo-aia-blue.webp" alt="" width={1552} height={1070} className="gsq-intro-logo gsq-intro-aia" sizes="140px" quality={100} />
-            <Image src="/images/design/logo-vega-color.webp" alt="" width={1200} height={871} className="gsq-intro-logo gsq-intro-vega" sizes="130px" quality={100} />
+            <Image src="/images/brand/aia.svg" alt="" width={285} height={207} className="gsq-intro-logo gsq-intro-aia" sizes="140px" unoptimized />
+            <Image src="/images/brand/vega.svg" alt="" width={283} height={212} className="gsq-intro-logo gsq-intro-vega" sizes="130px" unoptimized />
           </div>
 
           <header className="gsq-head">
@@ -626,13 +626,13 @@ export function AiaVegaGlobeSection() {
 
           <article className="gsq-col gsq-col-aia">
             <Image
-              src="/images/design/logo-aia-blue.webp"
+              src="/images/brand/aia.svg"
               alt="AIA Engineering Limited"
-              width={1552}
-              height={1070}
+              width={285}
+              height={207}
               className="gsq-logo gsq-logo-aia"
               sizes="(max-width: 1024px) 160px, 240px"
-              quality={100}
+              unoptimized
             />
             <h3 className="gsq-kicker ft ft-kicker20">Four decades of advanced comminution engineering</h3>
             <p className="gsq-body ft ft-body22">
@@ -642,13 +642,13 @@ export function AiaVegaGlobeSection() {
 
           <article className="gsq-col gsq-col-vega">
             <Image
-              src="/images/design/logo-vega-color.webp"
+              src="/images/brand/vega.svg"
               alt="VEGA Industries"
-              width={1200}
-              height={871}
+              width={283}
+              height={212}
               className="gsq-logo gsq-logo-vega"
               sizes="(max-width: 1024px) 140px, 200px"
-              quality={100}
+              unoptimized
             />
             <h3 className="gsq-kicker ft ft-kicker20">Connecting engineering expertise across 120+ countries</h3>
             <p className="gsq-body ft ft-body22">

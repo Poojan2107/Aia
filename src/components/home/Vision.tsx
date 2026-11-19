@@ -29,7 +29,7 @@ const leaders: Leader[] = [
     quote:
       "Customer Excellence is our philosophy. Our focus remains on improving productivity while reducing environmental impact. We promise to deliver value through ethical, sustainable, and profitable means.",
     portrait: { src: "/images/ceo/bhadresh-shah.webp", width: 1100, height: 1380 },
-    brand: { src: "/images/design/logo-aia-mark-blue.webp", alt: "AIA Engineering", width: 899, height: 764, className: "lead-brand-aia" },
+    brand: { src: "/images/brand/aia-mark.svg", alt: "AIA Engineering", width: 266, height: 166, className: "lead-brand-aia" },
     accentColor: "var(--aia-accent)",
     flip: false,
   },
@@ -41,7 +41,7 @@ const leaders: Leader[] = [
     quote:
       "At Vega Industries, we help customers worldwide maximise mill throughput, improve efficiency, and increase equipment uptime. Combining technical expertise with advanced manufacturing, we deliver tailored solutions and responsive local support that drive measurable value and long-term performance.",
     portrait: { src: "/images/ceo/sumit-mitra.webp", width: 1100, height: 1243 },
-    brand: { src: "/images/design/logo-vega-color.webp", alt: "Vega Industries", width: 1200, height: 871, className: "lead-brand-vega" },
+    brand: { src: "/images/brand/vega.svg", alt: "Vega Industries", width: 283, height: 212, className: "lead-brand-vega" },
     accentColor: "var(--aia-accent)",
     flip: true,
   },
@@ -68,8 +68,7 @@ function LeaderRow({ leader }: { leader: Leader }) {
           width={leader.brand.width}
           height={leader.brand.height}
           className={`lead-brand ${leader.brand.className}`}
-          sizes="(max-width: 1024px) 120px, 180px"
-          quality={100}
+          unoptimized
         />
         <h2 id={headingId} className="lead-heading ft ft-h40">
           {leader.heading[0]} {leader.heading[1]}
