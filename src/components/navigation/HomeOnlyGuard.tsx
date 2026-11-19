@@ -6,7 +6,7 @@ import { homeOnly } from "@/lib/env";
 
 function markLink(el: HTMLAnchorElement) {
   const href = el.getAttribute("href");
-  const allowed = isHomeOnlyAllowedHref(href);
+  const allowed = isHomeOnlyAllowedHref(href, { hostname: window.location.hostname });
   el.dataset.homeOnly = allowed ? "allowed" : "disabled";
   if (allowed) {
     el.removeAttribute("aria-disabled");
@@ -33,7 +33,7 @@ export function HomeOnlyGuard() {
       if (!(target instanceof Element)) return;
       const anchor = target.closest("a[href]");
       if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (isHomeOnlyAllowedHref(anchor.getAttribute("href"))) return;
+      if (isHomeOnlyAllowedHref(anchor.getAttribute("href"), { hostname: window.location.hostname })) return;
       event.preventDefault();
       event.stopPropagation();
     };

@@ -53,7 +53,7 @@ function OverlayCard({ service }: { service: ServiceItem }) {
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.12)_0%,rgba(4,29,44,0.84)_100%)] transition duration-500 group-hover:bg-[linear-gradient(180deg,rgba(4,29,44,0.06)_0%,rgba(4,29,44,0.92)_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--aia-navy-rgb),0.12)_0%,rgba(var(--aia-navy-rgb),0.84)_100%)] transition duration-500 group-hover:bg-[linear-gradient(180deg,rgba(var(--aia-navy-rgb),0.06)_0%,rgba(var(--aia-navy-rgb),0.92)_100%)]"
         />
         <div className="relative z-10 mt-auto p-7 sm:p-8">
           <h3 className="display text-[clamp(1.45rem,2.6vw,2.1rem)] font-extrabold leading-[1.05] tracking-[-0.03em]">
@@ -71,7 +71,7 @@ function HoverCard({ service }: { service: ServiceItem }) {
   return (
     <article
       id={service.id}
-      className="group scroll-mt-28 flex h-full flex-col overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+      className="group scroll-mt-28 flex h-full flex-col overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_22px_50px_rgba(var(--aia-navy-rgb),0.08)]"
     >
       <FeatureImage src={service.image.src} alt={service.image.alt} className="aspect-[16/10] w-full rounded-none" />
       <div className="flex flex-1 flex-col p-6 sm:p-7">

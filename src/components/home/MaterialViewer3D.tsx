@@ -39,7 +39,7 @@ const introOrbit = (front: string) => {
 type ModelViewerCtor = CustomElementConstructor & { meshoptDecoderLocation?: string };
 
 
-function loadModelViewer(): Promise<void> {
+export function loadModelViewer(): Promise<void> {
   const ready = () => {
     const ctor = customElements.get("model-viewer") as ModelViewerCtor | undefined;
     if (ctor) ctor.meshoptDecoderLocation = MESHOPT_DECODER_SRC;

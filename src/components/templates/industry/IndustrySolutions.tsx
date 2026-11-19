@@ -119,7 +119,7 @@ export function IndustrySolutions({ content, label, contactHref, explore }: Prop
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group flex flex-col justify-between rounded-2xl border border-aia-line p-8 transition duration-300 hover:border-aia-accent hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+                  className="group flex flex-col justify-between rounded-2xl border border-aia-line p-8 transition duration-300 hover:border-aia-accent hover:shadow-[0_22px_50px_rgba(var(--aia-navy-rgb),0.08)]"
                 >
                   <span className="text-[1.4rem] font-bold group-hover:text-aia-accent">{item.label}</span>
                   <span className="mt-3 text-[0.95rem] leading-[1.7] text-aia-navy/65">{item.description}</span>

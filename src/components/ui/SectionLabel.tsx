@@ -1,14 +1,14 @@
 type Props = {
   children: React.ReactNode;
   className?: string;
-  /** Figma often wraps labels in brackets, e.g. [GALLERY] */
+  /** Brackets around the label, e.g. [GALLERY]: off (AIA asked for plain labels). */
   brackets?: boolean;
 };
 
 export function SectionLabel({
   children,
   className = "",
-  brackets = true,
+  brackets = false,
 }: Props) {
   return (
     <p className={`section-label ft ft-label ${className}`}>

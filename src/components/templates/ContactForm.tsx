@@ -242,7 +242,8 @@ function ContactFormFields({ initialIndustry }: { initialIndustry?: string }) {
           />
           <span className="text-[0.85rem] leading-relaxed text-aia-navy/70">
             I consent to AIA Engineering and Vega Industries storing and processing my details to respond to this enquiry in accordance with the{" "}
-            <Link href="/privacy-policy" className="font-semibold text-aia-accent hover:underline">
+            {/* HomeOnlyGuard may mark this link before the (Suspense) form hydrates. */}
+            <Link href="/privacy-policy" className="font-semibold text-aia-accent hover:underline" suppressHydrationWarning>
               Privacy Policy
             </Link>
             .

@@ -46,7 +46,7 @@ export function IndustryHero({ hero, label, anchors }: { hero: Hero; label: stri
       <Image src={hero.image.src} alt={hero.image.alt} fill priority sizes="100vw" className="object-cover object-center" />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.32)_0%,rgba(4,29,44,0.08)_34%,rgba(4,29,44,0.22)_62%,rgba(4,29,44,0.72)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--aia-navy-rgb),0.32)_0%,rgba(var(--aia-navy-rgb),0.08)_34%,rgba(var(--aia-navy-rgb),0.22)_62%,rgba(var(--aia-navy-rgb),0.72)_100%)]"
       />
       <div
         aria-hidden

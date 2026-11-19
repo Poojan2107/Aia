@@ -1,5 +1,6 @@
 "use client";
 
+import { PaletteSwitch } from "@/components/layout/PaletteSwitch";
 import Link from "next/link";
 import { homeOnly } from "@/lib/env";
 import { usePathname } from "next/navigation";
@@ -276,6 +277,7 @@ export function SiteHeader() {
                   current={isCurrent(item, pathname)}
                 />
               ))}
+              <PaletteSwitch />
             </ul>
           </nav>
 

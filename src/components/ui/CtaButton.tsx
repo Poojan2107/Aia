@@ -1,6 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { homeOnly } from "@/lib/env";
-import { type ComponentProps } from "react";
+import { useEffect, useState, type ComponentProps } from "react";
 import { isHomeOnlyAllowedHref } from "@/lib/home-only";
 
 type Variant = "solid" | "outline" | "ghost" | "cream" | "outline-light";
@@ -33,9 +35,16 @@ export function CtaButton({
   children,
   ...rest
 }: Props) {
+  // Hostname is read after mount so SSR and the first client paint match; local
+  // preview paths (e.g. quarry) then unlock on localhost only.
+  const [hostname, setHostname] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    setHostname(window.location.hostname);
+  }, []);
+
   const isFilled = variant === "solid" || variant === "cream";
   const isOutlineLight = variant === "outline-light";
-  const locked = Boolean(href && !isHomeOnlyAllowedHref(href));
+  const locked = Boolean(href && !isHomeOnlyAllowedHref(href, { hostname }));
   const classes = [
     "inline-flex h-[50px] max-w-full items-center gap-2.5 rounded-full px-7 text-[14px] leading-8 transition-[color,background-color,border-color,transform] duration-300 ease-[var(--ease-out)] hover:scale-[1.02] active:scale-[0.99]",
     "ui-caps",

@@ -7,6 +7,7 @@ import { MiningLanding } from "@/components/solutions/mining/MiningLanding";
 import { IndustryProducts } from "@/components/templates/industry/IndustryProducts";
 import { IndustryServices } from "@/components/templates/industry/IndustryServices";
 import { IndustrySolutions } from "@/components/templates/industry/IndustrySolutions";
+import { QuarryLanding } from "@/components/solutions/quarry/QuarryLanding";
 import { BoardPage, DirectorPage, CommitteesPage, CsrListingPage, CsrDetailPage } from "@/components/templates/company";
 import { InvestorPage, StockTickerPage } from "@/components/templates/investors/InvestorPage";
 import {
@@ -67,10 +68,16 @@ async function body(route: RouteEntry): Promise<React.ReactNode> {
       const { contactHref, label } = industryContext(route);
       const content = required(await cms.industryProducts(route.id));
       const products = content.groups.flatMap((group) => group.products);
+      const Products =
+        route.id === "quarry-products" ? (
+          <QuarryLanding content={content} label={`${label} products`} contactHref={contactHref} back={backLink(route)} />
+        ) : (
+          <IndustryProducts content={content} label={`${label} products`} contactHref={contactHref} back={backLink(route)} />
+        );
       return (
         <>
           <JsonLd data={productListJsonLd(route.title, absolute(route.path), products)} />
-          <IndustryProducts content={content} label={`${label} products`} contactHref={contactHref} back={backLink(route)} />
+          {Products}
         </>
       );
     }

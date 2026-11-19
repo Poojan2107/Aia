@@ -30,7 +30,7 @@ const leaders: Leader[] = [
       "Customer Excellence is our philosophy. Our focus remains on improving productivity while reducing environmental impact. We promise to deliver value through ethical, sustainable, and profitable means.",
     portrait: { src: "/images/ceo/bhadresh-shah.webp", width: 1100, height: 1380 },
     brand: { src: "/images/design/logo-aia-mark-blue.webp", alt: "AIA Engineering", width: 899, height: 764, className: "lead-brand-aia" },
-    accentColor: "#006eff",
+    accentColor: "var(--aia-accent)",
     flip: false,
   },
   {
@@ -42,7 +42,7 @@ const leaders: Leader[] = [
       "At Vega Industries, we help customers worldwide maximise mill throughput, improve efficiency, and increase equipment uptime. Combining technical expertise with advanced manufacturing, we deliver tailored solutions and responsive local support that drive measurable value and long-term performance.",
     portrait: { src: "/images/ceo/sumit-mitra.webp", width: 1100, height: 1243 },
     brand: { src: "/images/design/logo-vega-color.webp", alt: "Vega Industries", width: 1200, height: 871, className: "lead-brand-vega" },
-    accentColor: "#006eff",
+    accentColor: "var(--aia-accent)",
     flip: true,
   },
 ];

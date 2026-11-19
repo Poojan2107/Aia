@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { homeOnly } from "@/lib/env";
+import { isLocalPreviewPath, isPreviewHost } from "@/lib/local-preview";
 import { legacyRedirects, type RedirectRule } from "@/lib/redirects/legacy";
 
 const redirectMap = new Map<string, RedirectRule>();
@@ -36,8 +37,12 @@ export function proxy(request: NextRequest) {
   }
 
   // 0. Home-only lock: every page except "/" goes straight home (one hop, no legacy chains).
+  //    Allowlisted preview pages (quarry, mining) also open (see src/lib/local-preview.ts).
   if (homeOnly) {
     if (pathname === "/") return NextResponse.next();
+    if (isPreviewHost(request.nextUrl.hostname) && isLocalPreviewPath(pathname)) {
+      return NextResponse.next();
+    }
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.search = "";

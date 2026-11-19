@@ -658,7 +658,7 @@ export function AiaVegaGlobeSection() {
           </div>
 
           <p className="gsq-foot">
-            <span className="section-label ft ft-label">[Engineered in India. Connected worldwide.]</span>
+            <span className="section-label ft ft-label">Engineered in India. Connected worldwide.</span>
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { miningPage } from "@/data/mining";
 import { ValueFunnel } from "@/components/solutions/mining/ValueFunnel";
 import { PerformanceScroll } from "@/components/solutions/mining/PerformanceScroll";
+import { SolutionsOrbit } from "@/components/solutions/mining/SolutionsOrbit";
 
 export function MiningLanding() {
   const { hero, intro, cases } = miningPage;
@@ -26,7 +27,7 @@ export function MiningLanding() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.32)_0%,rgba(4,29,44,0.08)_34%,rgba(4,29,44,0.22)_62%,rgba(4,29,44,0.62)_100%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--aia-navy-rgb),0.32)_0%,rgba(var(--aia-navy-rgb),0.08)_34%,rgba(var(--aia-navy-rgb),0.22)_62%,rgba(var(--aia-navy-rgb),0.62)_100%)]"
         />
         <div
           aria-hidden
@@ -65,6 +66,7 @@ export function MiningLanding() {
           </div>
         </div>
       </section>
+      <SolutionsOrbit />
 
       <div className="bg-white text-aia-navy">
         <section className="page-pad mx-auto max-w-[1440px] py-14 sm:py-20 lg:py-24" aria-labelledby="mining-approach">

@@ -61,7 +61,7 @@ function ProductCard({ product }: { product: ProductItem }) {
   return (
     <article
       id={product.id}
-      className="group scroll-mt-28 h-full overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_22px_50px_rgba(4,29,44,0.08)]"
+      className="group scroll-mt-28 h-full overflow-hidden rounded-[22px] border border-aia-line bg-white transition duration-500 hover:-translate-y-1 hover:border-aia-accent/40 hover:shadow-[0_22px_50px_rgba(var(--aia-navy-rgb),0.08)]"
     >
       <FeatureImage src={product.image.src} alt={product.image.alt} className="aspect-[16/10] w-full rounded-none" />
       <div className="p-6 sm:p-8">
@@ -84,7 +84,7 @@ function OverlayCard({ product }: { product: ProductItem }) {
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,29,44,0.15)_0%,rgba(4,29,44,0.82)_100%)] transition duration-500 group-hover:bg-[linear-gradient(180deg,rgba(4,29,44,0.08)_0%,rgba(4,29,44,0.9)_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(var(--aia-navy-rgb),0.15)_0%,rgba(var(--aia-navy-rgb),0.82)_100%)] transition duration-500 group-hover:bg-[linear-gradient(180deg,rgba(var(--aia-navy-rgb),0.08)_0%,rgba(var(--aia-navy-rgb),0.9)_100%)]"
         />
         <div className="relative z-10 mt-auto p-7 sm:p-9">
           <h3 className="display text-[clamp(1.6rem,3vw,2.35rem)] font-extrabold leading-[1.02] tracking-[-0.03em]">
@@ -187,16 +187,18 @@ type Props = {
   label: string;
   contactHref: string;
   back?: { href: string; label: string };
+  /** When true, skip the image hero (caller supplies its own, e.g. video). */
+  omitHero?: boolean;
 };
 
-export function IndustryProducts({ content, label, contactHref, back }: Props) {
+export function IndustryProducts({ content, label, contactHref, back, omitHero = false }: Props) {
   const { hero, groups, cases } = content;
   const anchors = groups.map((group) => ({ id: group.id, name: group.name }));
   const active = useActiveSection(anchors.map((a) => a.id));
 
   return (
     <>
-      <IndustryHero hero={hero} label={label} anchors={anchors} />
+      {omitHero ? null : <IndustryHero hero={hero} label={label} anchors={anchors} />}
       <SectionNav anchors={anchors} active={active} label="Product families" />
 
       <div className="bg-white text-aia-navy">
