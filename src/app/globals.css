@@ -4355,15 +4355,15 @@ button.solve-cta > span:last-child {
 }
 /* On the blue pill the label always stays white; hover / open / current read as a light frosted
    chip behind it (an accent-coloured label vanished against the pill). */
-.nav-pill-item:hover,
-.nav-pill-item[aria-expanded="true"] {
+.nav-pill-item:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.2);
 }
+/* Selected (menu open, or the page you are on): a solid AIA blue chip with a white label. */
+.nav-pill-item[aria-expanded="true"],
 .nav-pill-item.is-current {
   color: #fff;
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.85);
+  background: var(--aia-fill);
 }
 .site-nav-actions {
   height: 64px;

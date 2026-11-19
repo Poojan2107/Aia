@@ -28,6 +28,7 @@ function apply(id: PaletteId) {
  */
 export function PaletteSwitch() {
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [current, setCurrent] = useState<PaletteId>("default");
   const ref = useRef<HTMLLIElement>(null);
 
@@ -56,6 +57,12 @@ export function PaletteSwitch() {
   const choose = (id: PaletteId) => {
     setCurrent(id);
     apply(id);
+    // Close right after a pick, with a short fade so it doesn't snap away.
+    setClosing(true);
+    window.setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, 180);
     try {
       localStorage.setItem(KEY, id);
     } catch {}
@@ -75,7 +82,7 @@ export function PaletteSwitch() {
           <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
-      <div id="nav-panel-palette" hidden={!open} className="absolute right-0 top-full pt-2.5 animate-in fade-in-0 zoom-in-95 duration-150">
+      <div id="nav-panel-palette" hidden={!open} className={`absolute right-0 top-full pt-2.5 animate-in fade-in-0 zoom-in-95 duration-150 transition-[opacity,transform] ease-out ${closing ? "pointer-events-none -translate-y-1 opacity-0" : ""}`}>
         <div className="pal-panel rounded-2xl border border-aia-line/80 bg-white/98 p-3 shadow-[0_24px_60px_rgba(4,29,44,0.16)] backdrop-blur-md" role="radiogroup" aria-label="Colour palette">
           {PALETTES.map((p) => (
             <button
