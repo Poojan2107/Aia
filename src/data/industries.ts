@@ -156,7 +156,7 @@ export const industries: Industry[] = [
     name: "Quarry",
     description:
       "The aggregate and quarry sector demands wear parts that can handle harsh working conditions. AIA Engineering Ltd. and Vega Industries offer durable products to deliver consistent performance with a significantly longer life, enhancing higher equipment availability and reliability.",
-    href: "/solutions/quarry/products",
+    href: "/solutions/quarry",
     solutions: [
       {
         id: "blow",

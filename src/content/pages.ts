@@ -44,7 +44,7 @@ export const contentPages: Record<string, ContentPageContent> = {
         links: [
           { label: "Mining", href: "/solutions/mining" },
           { label: "Cement", href: "/solutions/cement" },
-          { label: "Quarry", href: "/solutions/quarry/products" },
+          { label: "Quarry", href: "/solutions/quarry" },
           { label: "Thermal Power", href: "/solutions/thermal-power" },
         ],
       },

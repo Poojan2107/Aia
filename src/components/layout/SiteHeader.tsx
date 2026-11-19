@@ -114,7 +114,7 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
  */
 const NAV_LOCKED = true;
 /** Pages still reachable while locked: the home logo and the quarry products page. */
-const NAV_OPEN = ["/", "/solutions/quarry/products"];
+const NAV_OPEN = ["/", "/solutions/quarry"];
 const blockNav = (e: React.MouseEvent) => {
   if (!NAV_LOCKED) return;
   const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");

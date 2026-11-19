@@ -29,15 +29,15 @@ describe("Home-only lock", () => {
     const { proxy } = await import("./proxy");
     const { isHomeOnlyAllowedHref } = await import("@/lib/home-only");
 
-    const local = proxy(new NextRequest("http://localhost:3000/solutions/quarry/products"));
+    const local = proxy(new NextRequest("http://localhost:3000/solutions/quarry"));
     expect(local.status).toBe(200);
 
-    const remote = proxy(new NextRequest("https://aia-vega.vercel.app/solutions/quarry/products"));
+    const remote = proxy(new NextRequest("https://aia-vega.vercel.app/solutions/quarry"));
     expect(remote.status).toBe(200);
     const other = proxy(new NextRequest("https://aia-vega.vercel.app/solutions/cement"));
     expect(other.status).toBe(307);
 
-    expect(isHomeOnlyAllowedHref("/solutions/quarry/products", { hostname: "localhost" })).toBe(true);
+    expect(isHomeOnlyAllowedHref("/solutions/quarry", { hostname: "localhost" })).toBe(true);
     expect(isHomeOnlyAllowedHref("/solutions/mining", { hostname: "aia-vega.vercel.app" })).toBe(true);
     expect(isHomeOnlyAllowedHref("/solutions/cement", { hostname: "aia-vega.vercel.app" })).toBe(false);
     vi.unstubAllEnvs();

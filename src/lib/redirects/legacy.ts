@@ -89,7 +89,7 @@ export const explicitLegacyRedirects: RedirectRule[] = [
   { from: "/tube-mill", to: "/solutions/cement/products#tube-mill", status: 301 },
   { from: "/vrm", to: "/solutions/cement/products#vrm", status: 301 },
 
-  { from: "/quarry", to: "/solutions/quarry/products", status: 301 },
+  { from: "/quarry", to: "/solutions/quarry", status: 301 },
 
   { from: "/thermal", to: "/solutions/thermal-power", status: 301 },
   { from: "/tube-mill-thermal", to: "/solutions/thermal-power/products#tube", status: 301 },
@@ -158,7 +158,7 @@ export const explicitLegacyRedirects: RedirectRule[] = [
   { from: "/resources/downloads", to: "/knowledge-hub/downloads", status: 301 },
   { from: "/services", to: "/solutions", status: 301 },
   { from: "/solutions/thermal", to: "/solutions/thermal-power", status: 301 },
-  { from: "/solutions/quarry", to: "/solutions/quarry/products", status: 301 },
+  { from: "/solutions/quarry/products", to: "/solutions/quarry", status: 301 },
   { from: "/investors/reports", to: "/investors/reports-and-presentations", status: 301 },
   { from: "/investors/governance", to: "/investors/corporate-governance", status: 301 },
   { from: "/investors/policy", to: "/investors/policies", status: 301 },

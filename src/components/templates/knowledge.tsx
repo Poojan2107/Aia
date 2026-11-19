@@ -63,7 +63,7 @@ const industryLinks: Record<string, { label: string; href: string }[]> = {
     { label: "Cement Services", href: "/solutions/cement/services" },
   ],
   quarry: [
-    { label: "Quarry Products", href: "/solutions/quarry/products" },
+    { label: "Quarry Products", href: "/solutions/quarry" },
   ],
   "thermal-power": [
     { label: "Thermal Power Solutions", href: "/solutions/thermal-power" },

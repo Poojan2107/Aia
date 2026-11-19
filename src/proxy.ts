@@ -43,6 +43,12 @@ export function proxy(request: NextRequest) {
     if (isPreviewHost(request.nextUrl.hostname) && isLocalPreviewPath(pathname)) {
       return NextResponse.next();
     }
+    // The quarry page moved from /solutions/quarry/products to /solutions/quarry: keep old links.
+    if (pathname.replace(/\/+$/, "") === "/solutions/quarry/products") {
+      const moved = request.nextUrl.clone();
+      moved.pathname = "/solutions/quarry";
+      return NextResponse.redirect(moved, 308);
+    }
     const url = request.nextUrl.clone();
     url.pathname = "/";
     url.search = "";

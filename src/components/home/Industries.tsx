@@ -53,7 +53,7 @@ const panels: IndustryPanel[] = [
     index: "03",
     name: "Quarry",
     description: "Wear protection for crushing applications.",
-    href: "/solutions/quarry/products",
+    href: "/solutions/quarry",
     cta: "Explore Quarry",
     image: "/images/QUARRY.jpg",
     alt: "Conveyor depositing crushed rock at a quarry",
