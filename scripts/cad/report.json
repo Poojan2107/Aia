@@ -376,7 +376,7 @@
       10194,
       10194
     ],
-    "triangles": 330784,
+    "triangles": 308542,
     "rolesBeforeSimplify": {
       "metal:feed-liners": 49236,
       "bolt:fasteners": 15324,
@@ -384,11 +384,11 @@
       "metal:shell-liners": 92109,
       "millShell:shell-top": 18810,
       "millShell:shell-bottom": 18812,
-      "metal:discharge": 89965,
+      "metal:discharge": 67723,
       "millHead:discharge-head": 23086
     },
-    "kb": 8382,
-    "seconds": 106.6,
+    "kb": 4407,
+    "seconds": 138.1,
     "aoSeconds": 29.9
   },
   "mill-ball-explode": {
@@ -411,9 +411,9 @@
       "metal:discharge": 21578,
       "rubber:shell-liners": 720
     },
-    "kb": 6122,
-    "seconds": 618,
-    "aoSeconds": 9.1
+    "kb": 3952,
+    "seconds": 826.3,
+    "aoSeconds": 13.1
   },
   "fastener-sag-shell": {
     "aiaRef": "SAG mill shell fastener (FE_SHELL_DE_FULL ASSEMBLY)",

@@ -37,7 +37,7 @@ const BANNERS: HeroBanner[] = [
     ],
     ctaText: "Explore our technology",
     ctaHref: "#tech-heading",
-    video: "/videos/banners/hero-engineering-excellence.mp4",
+    video: "/videos/banners/hero-engineering-excellence-v2.mp4",
     poster: "/images/design/hero-banner-engineering.jpg",
   },
   {
@@ -60,7 +60,7 @@ const BANNERS: HeroBanner[] = [
     ],
     ctaText: "Explore services & support",
     ctaHref: "#services-heading",
-    video: "/videos/banners/hero-services.mp4",
+    video: "/videos/banners/hero-services-v2.mp4",
     poster: "/images/design/hero-banner-services.jpg",
   },
   {

@@ -142,10 +142,13 @@ export const products = [
     },
     // Reduction per group: shell and heads stay fine (they carry the silhouette); liners, grates and
     // bolts take a coarser tolerance, invisible at showroom size, to keep the file light.
-    preSimplify: { default: 0.02, "millShell:shell-top": 0.35, "millShell:shell-bottom": 0.35, "millHead:feed-head": 0.35, "millHead:discharge-head": 0.35, "metal:discharge": 0.012, "bolt:fasteners": 0.02 },
-    preSimplifyError: { default: 0.006, "millShell:shell-top": 0.0015, "millShell:shell-bottom": 0.0015, "millHead:feed-head": 0.0015, "millHead:discharge-head": 0.0015, "metal:discharge": 0.008, "bolt:fasteners": 0.012 },
+    preSimplify: { default: 0.02, "millShell:shell-top": 0.35, "millShell:shell-bottom": 0.35, "millHead:feed-head": 0.35, "millHead:discharge-head": 0.35, "metal:discharge": 0.008, "bolt:fasteners": 0.02 },
+    preSimplifyError: { default: 0.006, "millShell:shell-top": 0.0015, "millShell:shell-bottom": 0.0015, "millHead:feed-head": 0.0015, "millHead:discharge-head": 0.0015, "metal:discharge": 0.01, "bolt:fasteners": 0.012 },
     radialX: true,
-    plainRoles: ["bolt:fasteners"],
+    // Internal parts are only ever seen opened (lit or ghosted): no surface textures, so no
+    // texture seams doubling their vertices. The shell and heads keep their painted finish.
+    plainRoles: ["bolt:fasteners", "metal:feed-liners", "metal:shell-liners", "metal:discharge"],
+    meshoptLevel: "high",
   },
   {
     id: "fastener-sag-shell",
@@ -201,7 +204,8 @@ export const products = [
     preSimplify: { default: 0.02, "millShell:shell-top": 0.35, "millShell:shell-bottom": 0.35, "millHead:feed-head": 0.35, "millHead:discharge-head": 0.35, "metal:shell-liners": 0.012, "metal:discharge": 0.03, "bolt:fasteners": 0.03 },
     preSimplifyError: { default: 0.005, "millShell:shell-top": 0.0012, "millShell:shell-bottom": 0.0012, "millHead:feed-head": 0.0012, "millHead:discharge-head": 0.0012, "bolt:fasteners": 0.01 },
     radialX: true,
-    plainRoles: ["bolt:fasteners"],
+    plainRoles: ["bolt:fasteners", "metal:feed-liners", "rubber:feed-liners", "metal:shell-liners", "rubber:shell-liners", "metal:discharge"],
+    meshoptLevel: "high",
   },
   {
     id: "mill-verti",

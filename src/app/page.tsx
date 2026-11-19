@@ -15,7 +15,6 @@ import { CaseStudies } from "@/components/home/CaseStudies";
 import {
   Sustainability,
   Faq,
-  Insights,
 } from "@/components/home/ClosingSections";
 import { AssistChip } from "@/components/ui/AssistChip";
 import { routeById } from "@/lib/routes";
@@ -41,7 +40,7 @@ export default function HomePage() {
         <CaseStudies />
         <Sustainability />
         <Faq />
-        <Insights />
+        {/* Ideas & Insights is hidden for now: the FAQ leads straight into the footer. */}
       </main>
       <SiteFooter />
       <AssistChip />

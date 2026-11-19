@@ -13,15 +13,14 @@ type Props = {
 };
 
 /**
- * Local quarry products page: the video hero, then the six crusher wear parts with AIA's 3D models
- * (pinned 3D stage on desktop, stacked on phones). Nothing else, by design.
+ * Local quarry products page, per the Figma: video hero, the scroll-driven product showcase (six
+ * crusher wear parts with AIA's 3D models), case studies, FAQ, then the site footer.
  */
 export function QuarryLanding({ content }: Props) {
-  const hero = content.hero;
-  const tagline = [hero.line1, hero.line2].filter(Boolean) as string[];
+  // Figma "Quarry - Product Page" (1233:50) copy over our own quarry film (no still image).
+  const tagline = ["Advanced wear", "components for", "reliable crushing."];
   const lede =
-    hero.lead ??
-    "Impact-resistant crusher wear parts engineered for aggregate and quarry operations.";
+    "We engineer crusher wear parts, including blow bars, crusher hammers, impellers, anvils, feed disks and frame liners, for extended wear life and efficient aggregate crushing.";
 
   return (
     <>

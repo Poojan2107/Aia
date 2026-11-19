@@ -104,7 +104,11 @@ export function Sustainability() {
   );
 }
 
-export function Faq() {
+/** Homepage FAQ; other pages (e.g. quarry products) pass their own heading and questions. */
+export function Faq({
+  heading = "Here are the essentials about AIA, what we make, and how our solutions support your operations.",
+  items = faqs,
+}: { heading?: string; items?: readonly { question: string; answer: string }[] } = {}) {
   const [open, setOpen] = useState(0);
 
   return (
@@ -121,8 +125,7 @@ export function Faq() {
             id="faq-heading"
             className="display ft ft-h62t mb-6 text-aia-navy lg:mb-7"
           >
-            Here are the essentials about AIA, what we make, and how our
-            solutions support your operations.
+            {heading}
           </h2>
           <div className="flex flex-wrap items-center gap-2.5 self-start">
             <CtaButton
@@ -143,7 +146,7 @@ export function Faq() {
         </div>
 
         <div className="faq-right flex min-h-0 min-w-0 flex-col divide-y divide-[#d6d6d6] max-lg:border-t max-lg:border-[#d6d6d6] lg:h-full">
-          {faqs.map((item, index) => {
+          {items.map((item, index) => {
             const isOpen = open === index;
             return (
               <div

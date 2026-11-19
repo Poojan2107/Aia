@@ -23,9 +23,8 @@ export function QuarryHero({ tagline, lede, ctaHref, ctaText = "View quarry prod
   const trackRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
 
-  // Curtain exit (as on the homepage hero): the hero stays pinned while the products section rises
-  // over it; scroll progress through the track drives --atmos (0 -> 1), which lifts, blurs and
-  // dims the hero copy and film in CSS.
+  // Scroll-out: progress through the hero drives --atmos (0 -> 1), which lifts, blurs and dims the
+  // hero copy and film in CSS while the page scrolls normally.
   useEffect(() => {
     const track = trackRef.current;
     if (!track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -38,7 +37,9 @@ export function QuarryHero({ tagline, lede, ctaHref, ctaText = "View quarry prod
     };
     const update = () => {
       raf = 0;
-      const range = Math.max(1, geo.height - window.innerHeight);
+      // Normal scroll (no curtain): the copy eases up and out over the hero's own height, so the
+      // handover to the products is gradual instead of the text vanishing at the first pixel.
+      const range = Math.max(1, geo.height * 1.15);
       const p = Math.min(1, Math.max(0, (window.scrollY - geo.top) / range));
       track.style.setProperty("--atmos", p.toFixed(3));
     };
@@ -91,7 +92,7 @@ export function QuarryHero({ tagline, lede, ctaHref, ctaText = "View quarry prod
   }, []);
 
   return (
-    <div ref={trackRef} className="hero-track hero-track--curtain">
+    <div ref={trackRef} className="hero-track hero-track--single">
       <section className="hero-viewport relative isolate w-full bg-black" aria-label="Quarry">
         <div className="absolute inset-0 overflow-hidden" aria-hidden>
           {/* eslint-disable-next-line @next/next/no-img-element */}

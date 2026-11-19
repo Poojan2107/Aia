@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 const PALETTES = [
   { id: "default", name: "Current", note: "The site's own blues", colors: ["#041d2c", "#006eff", "#d96b27", "#f7f7f7"] },
   { id: "brand", name: "AIA Brand", note: "Brand Blue to Sporty Blue gradient, orange accents", colors: ["#1f2766", "#0061e0", "#efa500", "#ffffff"] },
+  { id: "motion", name: "Motion Gradient", note: "AIA Brand gradient, drifting slowly on the large blue surfaces", colors: ["#1f2766", "#1d4cc0", "#0061e0", "#efa500"] },
   { id: "secondary", name: "AIA Secondary", note: "Solid brand Blue with Light Orange", colors: ["#041d2c", "#2b357e", "#efa500", "#f7f7f7"] },
 ] as const;
 
@@ -14,8 +15,11 @@ const KEY = "aia-palette";
 
 function apply(id: PaletteId) {
   const root = document.documentElement;
+  // Motion Gradient is the AIA Brand palette plus a slow drift (html[data-motion], globals.css).
   if (id === "default") delete root.dataset.palette;
-  else root.dataset.palette = id;
+  else root.dataset.palette = id === "motion" ? "brand" : id;
+  if (id === "motion") root.dataset.motion = "on";
+  else delete root.dataset.motion;
 }
 
 /**

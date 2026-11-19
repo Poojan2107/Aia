@@ -1163,10 +1163,16 @@ video.film-cover {
     flex: none;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
   }
+  /* The half-visible cards at each end step back: smaller, greyed and softly blurred. */
   .cases-card.is-peek {
-    opacity: 0.75;
+    opacity: 0.5;
+    filter: grayscale(1) blur(1.5px);
+    transform: scale(0.84);
     pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease;
   }
+  .cases-card.is-peek-left { transform-origin: right center; }
+  .cases-card.is-peek-right { transform-origin: left center; }
   .cases-media { transition: box-shadow 0.6s ease, transform 0.6s ease; }
   .cases-card.is-focus .cases-media {
     box-shadow: 0 0 0 2px var(--aia-accent);
@@ -4278,10 +4284,11 @@ button.solve-cta > span:last-child {
     backdrop-filter 0.35s var(--ease-out);
 }
 .site-nav.is-solid {
-  background: rgba(36, 40, 46, 0.78);
-  border-bottom-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  /* Frosted, translucent bar: the page shows through, softly blurred. */
+  background: rgba(var(--aia-navy-rgb), 0.42);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
 }
 .site-nav.is-hidden {
   transform: translate3d(0, -100%, 0);
@@ -4346,12 +4353,17 @@ button.solve-cta > span:last-child {
   color: #fff;
   transition: color 200ms, background-color 200ms;
 }
+/* On the blue pill the label always stays white; hover / open / current read as a light frosted
+   chip behind it (an accent-coloured label vanished against the pill). */
 .nav-pill-item:hover,
 .nav-pill-item[aria-expanded="true"] {
-  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
 }
 .nav-pill-item.is-current {
-  color: var(--aia-accent);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.85);
 }
 .site-nav-actions {
   height: 64px;
@@ -5302,15 +5314,18 @@ button.solve-cta > span:last-child {
 .foot-panel { margin: 0 auto; max-width: 1309px; min-height: clamp(0px, 40.8vw, 783px); background: var(--aia-foot-fill, #0061e0); padding: clamp(2rem, 4.2vw, 80px); }
 .foot-grid { display: grid; gap: clamp(2.5rem, 4.5vw, 86px) 2rem; }
 .foot-heading { margin-bottom: clamp(0.9rem, 0.83vw, 16px); font-family: var(--font-haas); font-size: clamp(1.2rem, 1.46vw, 28px); font-weight: 500; line-height: 1; }
-.foot-links { display: grid; gap: 6px; }
+.foot-links { display: grid; gap: 6px; align-content: start; }
 .foot-links a, .foot-address { font-family: var(--font-haas); font-size: clamp(1rem, 1.15vw, 22px); font-weight: 300; line-height: 24px; color: rgba(255, 255, 255, 0.6); transition: color 200ms; }
 .foot-links a:hover, .foot-address a:hover { color: #fff; }
 .foot-address { font-style: normal; line-height: 1.55; }
 .foot-investor-cols { display: grid; gap: 0 2rem; }
-/* Offices column: AIA corporate office, then Vega's global HQ, then the two LinkedIn links. */
-.foot-offices { display: grid; gap: 0; }
-.foot-office-vega { margin-top: clamp(1.5rem, 1.9vw, 36px); padding-top: clamp(1.5rem, 1.9vw, 36px); border-top: 1px solid rgba(255, 255, 255, 0.22); }
-.foot-social { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(1.5rem, 1.9vw, 36px); }
+/* Offices band (last row of the panel, full width): AIA corporate office, Vega's global HQ and
+   the LinkedIn links, side by side under a divider. */
+.foot-offices { display: grid; gap: clamp(1.75rem, 2.5vw, 48px) 2rem; padding-top: clamp(2rem, 3.4vw, 64px); border-top: 1px solid rgba(255, 255, 255, 0.22); }
+.foot-social { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (min-width: 768px) {
+  .foot-offices { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 .foot-linkedin { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding-inline: 14px 16px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 999px; font-family: var(--font-haas); font-size: 13px; font-weight: 500; color: #fff; transition: background 200ms, color 200ms, border-color 200ms; }
 .foot-linkedin:hover { background: #fff; color: var(--aia-accent); border-color: #fff; }
 .foot-ctas { display: grid; border-block: 1px solid #fff; margin-inline: calc(-1 * clamp(1rem, 7vw, 134px)); padding-inline: clamp(1rem, 7vw, 134px); }
@@ -5328,8 +5343,8 @@ button.solve-cta > span:last-child {
 .foot-credit-logo { height: 21px; width: auto; }
 @media (min-width: 768px) {
   .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .foot-investors { grid-column: span 2; }
-  .foot-investor-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot-investors { grid-column: 1 / -1; }
+  .foot-investor-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .foot-ctas { grid-template-columns: 1fr minmax(0, 655px) minmax(0, 654px) 1fr; padding-inline: 0; }
   .foot-cta { grid-column: 2; border-inline: 1px solid #fff; min-height: clamp(180px, 12.4vw, 239px); padding: clamp(1.5rem, 2.9vw, 56px) clamp(1rem, 3vw, 58px); }
   .foot-cta + .foot-cta { grid-column: 3; border-left: 0; }
@@ -5678,7 +5693,8 @@ html.lenis body { height: auto; }
 }
 
 .lead-brand-aia {
-  height: clamp(44px, 3.4vw, 60px);
+  /* Written logo (mark + "AIA Engineering Limited"), matching the Vega lockup's height. */
+  height: clamp(64px, 5vw, 92px);
 }
 
 .lead-brand-vega {
@@ -7081,3 +7097,263 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
   .msr-item.is-active .msr-item-body { padding-top: calc(8 * var(--u)); }
 }
 @media (prefers-reduced-motion: reduce) { .msr-item-reveal { transition: none; } }
+.mexp-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; transition: opacity 700ms var(--ease-out) 150ms; }
+.mexp-poster.is-hidden { opacity: 0; }
+
+
+/* Footer: the tagline and logos line up with the blue panel's content edges. */
+@media (min-width: 768px) {
+  /* .foot-top spans the full footer (negative margins), so its width is 100% + both gutters. */
+  .foot-top { padding-inline: max(clamp(1rem, 7vw, 134px), calc((100% + 2 * clamp(1rem, 7vw, 134px) - 1309px) / 2 + clamp(2rem, 4.2vw, 80px))); }
+  .foot-top { flex-wrap: nowrap; }
+  .foot-tagline { min-width: 0; }
+  .foot-logos { height: clamp(56px, 5vw, 96px); flex: none; }
+}
+
+/* ── Quarry products showcase (Figma "Quarry - Product Page", 1233:50) ────────────────────────
+   Scroll-driven: left rail pinned under the navbar (the product in view opens), right column the
+   product stack (blue name bar over each AIA 3D model). Sizes follow --qs-s, 1% of the width
+   capped by the height, so the opened rail always fits the screen. */
+.qs {
+  --qs-s: 14px; /* phones; desktop scales with the screen below */
+  --qs-warm: #f2711c;
+  --qs-line: #e4e6ea;
+  position: relative;
+  z-index: 3;
+  background: #fff;
+}
+.qs-rail { display: none; }
+.qs-stack { display: grid; }
+.qs-card { position: relative; scroll-margin-top: var(--site-header-h); }
+.qs-bar {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(44px, 3.1vw, 60px);
+  background: var(--aia-fill);
+  color: #fff;
+  font-family: var(--font-haas);
+  font-weight: 400;
+  font-size: clamp(16px, 1.45vw, 28px);
+  letter-spacing: 0.01em;
+}
+.qs-media { position: relative; height: clamp(320px, 80vw, 520px); background: #fff; }
+.qs-card-copy { padding: 2rem clamp(1rem, 6vw, 3rem) 3rem; border-bottom: 1px solid var(--qs-line); }
+
+/* Copy block (rail panel on desktop, under each card on phones). */
+.qs-eyebrow {
+  margin: 0;
+  font-family: var(--font-sinteca);
+  font-weight: 500;
+  font-size: max(12px, calc(var(--qs-s) * 0.72));
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--qs-warm);
+}
+.qs-name {
+  margin: 0.55em 0 0;
+  font-family: var(--font-haas);
+  font-weight: 600;
+  font-size: max(30px, calc(var(--qs-s) * 2.6));
+  line-height: 1.1;
+  color: var(--aia-navy);
+}
+.qs-text {
+  margin: calc(var(--qs-s) * 0.9) 0 0;
+  padding-bottom: calc(var(--qs-s) * 1.3);
+  border-bottom: 1px solid var(--qs-line);
+  font-family: var(--font-haas);
+  font-weight: 400;
+  font-size: max(15px, calc(var(--qs-s) * 1.05));
+  line-height: 1.55;
+  color: #8a8f98;
+}
+.qs-eyebrow--benefit { margin-top: calc(var(--qs-s) * 1.3); }
+.qs-benefits { margin: calc(var(--qs-s) * 0.4) 0 0; padding: 0; list-style: none; }
+.qs-benefits li {
+  padding: max(10px, calc(var(--qs-s) * 0.78)) 0;
+  border-bottom: 1px solid var(--qs-line);
+  font-family: var(--font-haas);
+  font-size: max(14px, calc(var(--qs-s) * 0.88));
+  line-height: 1.35;
+  color: #14181f;
+}
+.qs-cta { margin-top: calc(var(--qs-s) * 1.4); }
+
+@media (min-width: 1024px) {
+  .qs { --qs-s: min(1vw, 1.62vh); display: grid; grid-template-columns: 39% 61%; align-items: start; }
+  .qs-rail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: sticky;
+    top: var(--site-header-h);
+    height: calc(100vh - var(--site-header-h));
+    height: calc(100svh - var(--site-header-h));
+    border-right: 1px solid var(--qs-line);
+    overflow: hidden;
+  }
+  .qs-stack { border-left: 0; }
+  .qs-card-copy { display: none; }
+  .qs-media { height: clamp(420px, 34vw, 660px); }
+
+  .qs-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--qs-line); }
+  .qs-item { border-bottom: 1px solid var(--qs-line); }
+  .qs-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    width: 100%;
+    height: calc(var(--qs-s) * 3.7);
+    padding: 0 calc(var(--qs-s) * 2) 0 calc(var(--qs-s) * 4);
+    text-align: left;
+    overflow: hidden;
+    transition: height 600ms var(--ease-out), opacity 400ms ease;
+    cursor: pointer;
+  }
+  .qs-row-title {
+    font-family: var(--font-haas);
+    font-weight: 600;
+    font-size: calc(var(--qs-s) * 2.1);
+    color: var(--aia-navy);
+    transition: color 200ms ease;
+  }
+  .qs-row:hover .qs-row-title, .qs-row:focus-visible .qs-row-title { color: var(--aia-accent); }
+  .qs-row-icon {
+    display: grid;
+    place-items: center;
+    width: calc(var(--qs-s) * 1.45);
+    height: calc(var(--qs-s) * 1.45);
+    min-width: 22px;
+    min-height: 22px;
+    border-radius: 999px;
+    background: var(--aia-fill);
+    color: #fff;
+  }
+  .qs-item.is-open .qs-row { height: 0; opacity: 0; pointer-events: none; }
+  .qs-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 650ms var(--ease-out);
+  }
+  .qs-panel-inner {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 calc(var(--qs-s) * 3.2) 0 calc(var(--qs-s) * 4);
+  }
+  .qs-panel-inner > * { opacity: 0; transform: translateY(14px); transition: opacity 350ms ease, transform 500ms var(--ease-out); }
+  .qs-item.is-open .qs-panel { grid-template-rows: 1fr; }
+  .qs-item.is-open .qs-panel-inner > * { opacity: 1; transform: none; transition-delay: 220ms; }
+  .qs-item.is-open .qs-panel-inner { padding-top: calc(var(--qs-s) * 1.6); padding-bottom: calc(var(--qs-s) * 1.8); }
+  .qs-panel-inner { transition: padding 650ms var(--ease-out); }
+  /* Text sizes inside the rail scale with the screen only (no phone floors). */
+  .qs-rail .qs-eyebrow { font-size: max(11px, calc(var(--qs-s) * 0.72)); }
+  .qs-rail .qs-name { font-size: calc(var(--qs-s) * 2.6); }
+  .qs-rail .qs-text { font-size: max(13px, calc(var(--qs-s) * 1.02)); }
+  .qs-rail .qs-benefits li { font-size: max(13px, calc(var(--qs-s) * 0.86)); padding: calc(var(--qs-s) * 0.72) 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qs-row, .qs-panel, .qs-panel-inner, .qs-panel-inner > * { transition: none !important; }
+}
+
+/* Motion Gradient palette (PaletteSwitch "motion" = AIA Brand + html[data-motion]): the brand
+   gradient drifts very slowly, only on the large blue surfaces (footer panel, product name bars,
+   CTA panels, active tabs). Buttons, dots and text stay still. Off with reduced motion. */
+html[data-motion] {
+  /* A lighter Sporty Blue sheen travels across the deep brand blues, so the drift reads. */
+  --aia-fill: linear-gradient(110deg, #1f2766 0%, #2b357e 18%, #1d4cc0 36%, #3d8bff 50%, #1d4cc0 64%, #2b357e 82%, #1f2766 100%);
+  --aia-foot-fill: var(--aia-fill);
+}
+@keyframes aia-drift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent) {
+  background-size: 300% 100%;
+  animation: aia-drift 9s ease-in-out infinite alternate;
+}
+/* Stacked bars drift slightly out of step, so the stack reads as one moving surface. */
+html[data-motion] .qs-card:nth-child(2n) .qs-bar { animation-delay: -4s; }
+html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -9s; }
+@media (prefers-reduced-motion: reduce) {
+  html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab, .mill-callout) { animation: none !important; }
+}
+
+/* Quarry rail, closer to the Figma: bold navy titles, roomier rows, larger light body copy,
+   spaced benefit rows, top-aligned list. One unit (--qs-s) is 1% of the width, capped so the
+   opened rail (about 62 units tall) always fits under the navbar. Opening staggers its lines in. */
+@media (min-width: 1024px) {
+  .qs { --qs-s: min(1vw, calc((100svh - var(--site-header-h)) / 66)); }
+  .qs-rail { justify-content: flex-start; padding-top: calc(var(--qs-s) * 2.2); }
+  .qs-list { border-top: 0; }
+  .qs-row { height: calc(var(--qs-s) * 4.3); padding: 0 calc(var(--qs-s) * 2.4) 0 calc(var(--qs-s) * 4); }
+  .qs-row-title { font-weight: 700; font-size: calc(var(--qs-s) * 2.3); letter-spacing: -0.01em; color: #0d1726; }
+  .qs-row-icon { transition: transform 300ms var(--ease-out); }
+  .qs-row:hover .qs-row-icon { transform: translateY(2px); }
+  .qs-panel-inner { padding: 0 calc(var(--qs-s) * 5) 0 calc(var(--qs-s) * 4); }
+  .qs-item.is-open .qs-panel-inner { padding-top: calc(var(--qs-s) * 1.2); padding-bottom: calc(var(--qs-s) * 2.4); }
+  .qs-rail .qs-eyebrow { font-size: max(11px, calc(var(--qs-s) * 0.82)); letter-spacing: 0.14em; }
+  .qs-rail .qs-name { margin-top: calc(var(--qs-s) * 1.1); font-weight: 700; font-size: calc(var(--qs-s) * 2.8); letter-spacing: -0.01em; color: #0d1726; }
+  .qs-rail .qs-text {
+    margin-top: calc(var(--qs-s) * 1.1);
+    padding-bottom: calc(var(--qs-s) * 1.6);
+    font-weight: 300;
+    font-size: max(13px, calc(var(--qs-s) * 1.12));
+    line-height: 1.6;
+    color: #868c96;
+  }
+  .qs-rail .qs-eyebrow--benefit { margin-top: calc(var(--qs-s) * 1.6); }
+  .qs-rail .qs-benefits { margin-top: calc(var(--qs-s) * 0.5); }
+  .qs-rail .qs-benefits li { font-size: max(13px, calc(var(--qs-s) * 0.92)); padding: calc(var(--qs-s) * 0.75) 0; }
+  .qs-rail .qs-cta { margin-top: calc(var(--qs-s) * 1.8); }
+
+  /* Reveal: the opening product's lines rise in one after another; closing is quick, no delay. */
+  .qs-panel-inner > *, .qs-benefits li { opacity: 0; transform: translateY(16px); transition: opacity 260ms ease, transform 260ms ease; transition-delay: 0ms; }
+  .qs-item.is-open .qs-panel-inner > *, .qs-item.is-open .qs-benefits li {
+    opacity: 1;
+    transform: none;
+    transition: opacity 520ms ease, transform 700ms var(--ease-out);
+  }
+  .qs-item.is-open .qs-panel-inner > :nth-child(1) { transition-delay: 180ms; }
+  .qs-item.is-open .qs-panel-inner > :nth-child(2) { transition-delay: 240ms; }
+  .qs-item.is-open .qs-panel-inner > :nth-child(3) { transition-delay: 300ms; }
+  .qs-item.is-open .qs-panel-inner > :nth-child(4) { transition-delay: 360ms; }
+  .qs-item.is-open .qs-panel-inner > :nth-child(5) { transition-delay: 380ms; }
+  .qs-item.is-open .qs-benefits li:nth-child(1) { transition-delay: 420ms; }
+  .qs-item.is-open .qs-benefits li:nth-child(2) { transition-delay: 480ms; }
+  .qs-item.is-open .qs-benefits li:nth-child(3) { transition-delay: 540ms; }
+  .qs-item.is-open .qs-benefits li:nth-child(4) { transition-delay: 600ms; }
+  .qs-item.is-open .qs-panel-inner > :nth-child(6) { transition-delay: 660ms; }
+  /* The product in view: its name bar deepens slightly, the others rest. */
+  .qs-card .qs-bar { transition: filter 400ms ease; filter: saturate(0.8) brightness(1.04); }
+  .qs-card.is-active .qs-bar { filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qs-panel-inner > *, .qs-benefits li { transition: none !important; }
+}
+
+/* Quarry rail, Figma proportions. --qs-u is 1% of the rail's width (39vw), capped by the screen
+   height so the opened rail (~150 units) always fits. The rail sticks at the very top with room
+   for the navbar, so its content keeps the same position whether the navbar shows or hides. */
+@media (min-width: 1024px) {
+  .qs { --qs-u: min(0.39vw, calc((100svh - var(--site-header-h) - 1.5rem) / 150)); }
+  .qs-rail {
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    padding-top: calc(var(--site-header-h) + 1rem);
+  }
+  .qs-row { height: calc(var(--qs-u) * 9.4); padding: 0 calc(var(--qs-u) * 6) 0 calc(var(--qs-u) * 8); }
+  .qs-row-title { font-size: calc(var(--qs-u) * 4.6); }
+  .qs-row-icon { width: calc(var(--qs-u) * 3.1); height: calc(var(--qs-u) * 3.1); }
+  .qs-panel-inner { padding: 0 calc(var(--qs-u) * 16) 0 calc(var(--qs-u) * 8); }
+  .qs-item.is-open .qs-panel-inner { padding-top: calc(var(--qs-u) * 4); padding-bottom: calc(var(--qs-u) * 6); }
+  .qs-rail .qs-eyebrow { font-size: max(11px, calc(var(--qs-u) * 1.95)); }
+  .qs-rail .qs-name { margin-top: calc(var(--qs-u) * 2.2); font-size: calc(var(--qs-u) * 5.6); }
+  .qs-rail .qs-text { margin-top: calc(var(--qs-u) * 2.2); padding-bottom: calc(var(--qs-u) * 3.6); font-size: max(13px, calc(var(--qs-u) * 2.85)); line-height: 1.5; }
+  .qs-rail .qs-eyebrow--benefit { margin-top: calc(var(--qs-u) * 3.6); }
+  .qs-rail .qs-benefits { margin-top: calc(var(--qs-u) * 1.2); }
+  .qs-rail .qs-benefits li { font-size: max(12px, calc(var(--qs-u) * 2.25)); padding: calc(var(--qs-u) * 2.1) 0; }
+  .qs-rail .qs-cta { margin-top: calc(var(--qs-u) * 4.4); }
+}

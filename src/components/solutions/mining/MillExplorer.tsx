@@ -35,6 +35,8 @@ type Props = {
   /** Separate products shown on their own (e.g. Hi-Cr grinding media, a fastener set), by key. */
   products?: Record<string, { src: string; scale: number }>;
   accent: [number, number, number];
+  /** Still of the resting mill (same framing), shown until the 3D model is ready. */
+  poster?: string;
 };
 
 /** How far faded groups recede: structure (shell, heads) almost vanishes, other components stay as context. */
@@ -42,7 +44,7 @@ const GHOST_STRUCTURE = 0.08;
 const GHOST_PART = 0.26;
 const isStructure = (name: string) => /^mill(Shell|Head|Body)/.test(name);
 
-export function MillExplorer({ src, alt, view, states, state, products, accent }: Props) {
+export function MillExplorer({ src, alt, view, states, state, products, accent, poster }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<{ setState: (s: MillState) => void; setAccent: (rgb: [number, number, number]) => void } | null>(null);
   const [near, setNear] = useState(false);
@@ -428,7 +430,15 @@ export function MillExplorer({ src, alt, view, states, state, products, accent }
     apiRef.current?.setAccent(accent);
   }, [accent, shown]);
 
-  return <div ref={hostRef} className={`mexp ${shown ? "is-shown" : ""}`} role="img" aria-label={alt} />;
+  return (
+    <>
+      {poster ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={poster} alt="" aria-hidden className={`mexp-poster ${shown ? "is-hidden" : ""}`} decoding="async" />
+      ) : null}
+      <div ref={hostRef} className={`mexp ${shown ? "is-shown" : ""}`} role="img" aria-label={alt} />
+    </>
+  );
 }
 
 /** Critically damped spring towards `to` (no overshoot). Returns true while still moving. */

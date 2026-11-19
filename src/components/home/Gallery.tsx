@@ -19,24 +19,24 @@ type Film = {
 const films: readonly Film[] = [
   {
     id: "lining",
-    title: "Ball Mill Lining Solutions",
-    caption: "Safety | Wear Life | Operations",
-    poster: "/images/mill-poster.png",
+    title: "Ball Mill Conversion",
+    caption: "Overflow to Grate Discharge | Next Gen Pulp Lifter",
+    poster: "/images/gallery-ball-mill-conversion.webp",
     branded: false,
   },
   {
     id: "corporate",
-    title: "AIA Engineering Corporate Film",
-    caption: undefined,
-    poster: "/images/gallery-center.jpg",
+    title: "Engineering Excellence",
+    caption: "AIA Engineering Limited | Global Wear Solutions",
+    poster: "/images/gallery-engineering-excellence.webp",
     branded: false,
   },
   {
     id: "components",
-    title: "Wear Component Systems",
-    caption: "Precision | Reliability | Life",
-    poster: "/images/gallery-3.png",
-    branded: true,
+    title: "Overflow vs. Grate Discharge",
+    caption: "Ball Mill Conversion | Next Gen Pulp Lifter",
+    poster: "/images/gallery-overflow-vs-grate.webp",
+    branded: false,
   },
 ];
 

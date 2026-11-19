@@ -342,7 +342,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     dedup({ propertyTypes: [PropertyType.ACCESSOR, PropertyType.MESH, PropertyType.TEXTURE] }),
     prune(),
     reorder({ encoder: MeshoptEncoder }),
-    meshopt({ encoder: MeshoptEncoder, level: "medium" }),
+    meshopt({ encoder: MeshoptEncoder, level: prod.meshoptLevel ?? "medium" }),
   );
   doc.getRoot().getAsset().generator = "AIA local CAD pipeline (OpenCascade + glTF-Transform)";
 

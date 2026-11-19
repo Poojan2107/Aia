@@ -239,6 +239,7 @@ function MillShowcase({ mill }: { mill: Mill }) {
             src={mill.explorer.src}
             view={mill.explorer.view}
             products={mill.explorer.products}
+            poster={`/images/mining/mill-${mill.id}-rest.webp`}
             states={states}
             state={hovering ? String(active) : "rest"}
             accent={accent}

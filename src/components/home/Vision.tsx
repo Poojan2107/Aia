@@ -29,7 +29,7 @@ const leaders: Leader[] = [
     quote:
       "Customer Excellence is our philosophy. Our focus remains on improving productivity while reducing environmental impact. We promise to deliver value through ethical, sustainable, and profitable means.",
     portrait: { src: "/images/ceo/bhadresh-shah.webp", width: 1100, height: 1380 },
-    brand: { src: "/images/brand/aia-mark.svg", alt: "AIA Engineering", width: 266, height: 166, className: "lead-brand-aia" },
+    brand: { src: "/images/brand/aia.svg", alt: "AIA Engineering Limited", width: 285, height: 207, className: "lead-brand-aia" },
     accentColor: "var(--aia-accent)",
     flip: false,
   },

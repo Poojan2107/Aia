@@ -25,9 +25,11 @@ const columns: { title: string; links: FooterLink[] }[] = [
   },
 ];
 
+/** Investor links, spread over the panel's three columns (same order, top to bottom). */
 const investorLinks: FooterLink[][] = [
-  [["Financials", "investor-financials"], ["Shareholding", "investor-shareholding"], ["KYC", "investor-kyc"], ["Reports & Presentations", "investor-reports"], ["Corporate Governance", "investor-governance"], ["Policies", "investor-policies"], ["IEPF", "investor-iepf"], ["Code of Conduct", "investor-code-of-conduct"]],
-  [["List of Stock Exchanges", "investor-stock-exchanges"], ["Scheme of Amalgamation", "investor-amalgamation"], ["Corporate Announcement & Disclosure", "investor-announcements"], ["Investor Regulation 46 (LODR)", "investor-regulation-46"], ["Investor Contact us", "investor-contact"]],
+  [["Financials", "investor-financials"], ["Shareholding", "investor-shareholding"], ["KYC", "investor-kyc"], ["Reports & Presentations", "investor-reports"], ["Corporate Governance", "investor-governance"]],
+  [["Policies", "investor-policies"], ["IEPF", "investor-iepf"], ["Code of Conduct", "investor-code-of-conduct"], ["List of Stock Exchanges", "investor-stock-exchanges"]],
+  [["Scheme of Amalgamation", "investor-amalgamation"], ["Corporate Announcement & Disclosure", "investor-announcements"], ["Investor Regulation 46 (LODR)", "investor-regulation-46"], ["Investor Contact us", "investor-contact"]],
 ];
 
 function LinkList({ links }: { links: FooterLink[] }) {
@@ -92,34 +94,37 @@ export function SiteFooter() {
               </div>
             </div>
             <div className="foot-offices">
-              <div>
+              <div className="foot-office">
                 <h2 className="foot-heading ft ft-h28">India · Corporate Office</h2>
                 <address className="foot-address">
-                  <p className="ft ft-addr22">11–12, Sigma Corporates,<br /> B/h. HOF Showroom, Sindhubhavan Road,<br /> Bodakdev, Ahmedabad – 380054, India.</p>
+                  <p className="ft ft-addr22">11–12, Sigma Corporates,<br /> B/h. HOF Showroom,<br /> Sindhubhavan Road, Bodakdev,<br /> Ahmedabad – 380054, India.</p>
                   <p className="ft ft-contact22 mt-3">M: <a href="tel:+917966047800">+91 79 6604 7800</a></p>
                   <p className="ft ft-contact22">F: +91 79 6604 7848</p>
                   <p className="ft ft-contact22">E: <a href="mailto:info@aiaengineering.com">info@aiaengineering.com</a></p>
                 </address>
               </div>
               {/* Vega's global headquarters, as listed on aiaengineering.com/contact-us. */}
-              <div className="foot-office-vega">
-                <h2 className="foot-heading ft ft-h28">UAE · Vega Global Headquarters</h2>
+              <div className="foot-office">
+                <h2 className="foot-heading ft ft-h28">Vega Global Headquarters</h2>
                 <address className="foot-address">
-                  <p className="ft ft-addr22">Vega Industries (Middle East) F.Z.C<br /> Po Box 4275 A1-304/314,<br /> Ajman Free Zone, Ajman, UAE.</p>
+                  <p className="ft ft-addr22">Vega Industries (Middle East)<br /> F.Z.C, Po Box 4275,<br /> A1-304/314, Ajman Free Zone,<br /> Ajman, UAE.</p>
                   <p className="ft ft-contact22 mt-3">M: <a href="tel:+97167420241">+971 6 7420241</a></p>
                   <p className="ft ft-contact22">E: <a href="mailto:middleeast.sales@vega-industries.com">middleeast.sales@<wbr /><span className="whitespace-nowrap">vega-industries.com</span></a></p>
                 </address>
               </div>
-              <div className="foot-social" aria-label="Follow us on LinkedIn">
-                <a href="https://www.linkedin.com/company/aia-engineering-ltd/" className="foot-linkedin" rel="noopener noreferrer" target="_blank">
-                  <LinkedInIcon />
-                  <span>AIA Engineering</span>
-                </a>
-                {/* TODO(AIA): Vega Industries LinkedIn URL to confirm; placeholder until then. */}
-                <a href={VEGA_LINKEDIN} className="foot-linkedin" rel="noopener noreferrer" target="_blank">
-                  <LinkedInIcon />
-                  <span>Vega Industries</span>
-                </a>
+              <div className="foot-office">
+                <h2 className="foot-heading ft ft-h28">Follow us</h2>
+                <div className="foot-social">
+                  <a href="https://www.linkedin.com/company/aia-engineering-ltd/" className="foot-linkedin" rel="noopener noreferrer" target="_blank">
+                    <LinkedInIcon />
+                    <span>AIA Engineering</span>
+                  </a>
+                  {/* TODO(AIA): Vega Industries LinkedIn URL to confirm; placeholder until then. */}
+                  <a href={VEGA_LINKEDIN} className="foot-linkedin" rel="noopener noreferrer" target="_blank">
+                    <LinkedInIcon />
+                    <span>Vega Industries</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

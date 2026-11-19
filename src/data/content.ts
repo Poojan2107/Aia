@@ -240,18 +240,18 @@ export const caseStudies = [
     title: "40ft SAG mill in Latin America",
     meta: "Life improvement - Throughput Increase - Power Reduction",
     href: "/knowledge-hub/case-studies/40ft-sag-mill-in-latin-america",
-    image: "/images/thumbnails/case-40ft-sag-latin-america.jpg",
+    image: "/images/thumbnails/case-40ft-sag-latin-america.webp",
   },
   {
     title: "28ft SAG mill in Asia",
     meta: "Throughput Increase - Power Consumption",
     href: "/knowledge-hub/case-studies/28ft-sag-mill-in-asia",
-    image: "/images/thumbnails/case-28ft-sag-asia.jpg",
+    image: "/images/thumbnails/case-28ft-sag-asia.webp",
   },
   {
     title: "34ft SAG mill in West Africa",
     meta: "Life improvement - Throughput Increase",
     href: "/knowledge-hub/case-studies/34ft-sag-mill-in-west-africa",
-    image: "/images/thumbnails/case-34ft-sag-west-africa.jpg",
+    image: "/images/thumbnails/case-34ft-sag-west-africa.webp",
   },
 ] as const;

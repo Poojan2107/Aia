@@ -26,7 +26,7 @@ export const quarryProducts: IndustryProductsContent = {
           title: "Blow Bars",
           subtitle: "Impact crushers · maximum crushing efficiency",
           body:
-            "AIA Engineering and Vega Industries have developed an impact-resistant, non-conventional alloy for maximum crushing efficiency. Blow bars are offered with and without ceramic, and each set is supplied weight-balanced in-house to manage rotor vibration — delivering high crushing efficiency, low cost per ton, a uniform wear profile and a long lifespan.",
+            "AIA Engineering Ltd./Vega Industries have developed an impact-resistant, non-conventional alloy for maximum crushing efficiency. This blow bars solution is offered with and without ceramic, and is a set supplied with in-house weight-balanced conditions to take care of rotor vibration.",
           image: { src: "/images/quarry-mill.png", alt: "Impact crusher rotor with blow bars" },
           variants: ["With ceramic", "Without ceramic", "Weight-balanced sets"],
         },

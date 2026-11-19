@@ -1,6 +1,7 @@
 "use client";
 
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { useEffect, useRef, useState } from "react";
+import { CtaButton } from "@/components/ui/CtaButton";
 import { FloatingModel } from "@/components/solutions/quarry/FloatingModel";
 import type { IndustryProductsContent } from "@/content/types";
 
@@ -14,70 +15,195 @@ const MODELS: Record<string, { src: string; orbit?: string }> = {
   "frame-liners": { src: "/models/catalog/quarry-frame-liner.glb", orbit: "30deg 55deg 105%" },
 };
 
+/**
+ * Product benefits, as in the Figma ("Quarry - Product Page"). Blow Bars are the Figma's own lines;
+ * the others restate AIA's quarry copy (src/content/industries/quarry.ts) — nothing new is claimed.
+ */
+const BENEFITS: Record<string, string[]> = {
+  "blow-bars": [
+    "Highly trusted and established alloy for impact resistance.",
+    "High crushing efficiency and low cost per ton of crushing.",
+    "Uniform wear profiles for consistent crushing output.",
+    "Designed for longer component service life.",
+  ],
+  hammers: [
+    "Superior alloy construction for hammer crushers.",
+    "Differential hardening curbs breakage at the shank.",
+    "Uniform end-product size and low cost per ton.",
+    "Weight-balanced in-house to manage rotor vibration.",
+  ],
+  impellers: [
+    "Superior alloys for high wear resistance at high RPM.",
+    "Weight-balanced in-house to manage rotor vibration.",
+    "Uniform wear profile for consistent particle size.",
+    "Easy installation and maintenance-free operation.",
+  ],
+  anvil: [
+    "Superior alloys for high wear resistance and long lifespan.",
+    "Offered in ceramic and non-ceramic variants.",
+    "Uniform wear profile across the impact surface.",
+    "Easy installation and maintenance-free operation.",
+  ],
+  "feed-disk": [
+    "Superior alloys for high wear resistance and long lifespan.",
+    "Offered with or without ceramic.",
+    "Distributes material into the rotor.",
+    "Resists abrasive wear at the centre of the impeller.",
+  ],
+  "frame-liners": [
+    "Protects the crusher housing.",
+    "Superior wear alloys for longer product life.",
+    "Designed for easy installation.",
+    "Maintenance-free operation.",
+  ],
+};
+
 type Props = { content: IndustryProductsContent };
 
 /**
- * The six quarry crusher wear parts as alternating rows: a floating AIA 3D model on one side and
- * its description on the other, swapping sides each row. Descriptions sit on flat panels that
- * alternate white (01, 03, 05) and AIA blue (02, 04, 06). The models float free: each sits on
- * a soft light with its index number set large behind it. An index strip under the heading jumps
- * to any part.
+ * Figma "Quarry - Product Page" products block, scroll-driven. Desktop: the left column is pinned
+ * below the navbar and lists the six parts; the one in view on the right opens (eyebrow, name,
+ * description, benefits, enquiry) while the rest stay as titled rows. The right column is the
+ * product stack: a blue name bar over each AIA 3D model. Scrolling moves through the stack and the
+ * left list follows; clicking a row scrolls to its product. Phones: one card per product (bar,
+ * model, then its copy).
  */
 export function QuarryShowcase({ content }: Props) {
   const group = content.groups[0];
   const products = group.products;
+  const [active, setActive] = useState(0);
+  const stackRef = useRef<HTMLDivElement>(null);
+
+  // The active product is the card whose middle is closest to the middle of the screen.
+  useEffect(() => {
+    const stack = stackRef.current;
+    if (!stack) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const cards = stack.querySelectorAll<HTMLElement>("[data-qs-card]");
+      const mid = window.innerHeight * 0.55;
+      let best = 0;
+      let dist = Infinity;
+      cards.forEach((c, i) => {
+        const r = c.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < dist) {
+          dist = d;
+          best = i;
+        }
+      });
+      setActive(best);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const goTo = (i: number) => {
+    const card = stackRef.current?.querySelectorAll<HTMLElement>("[data-qs-card]")[i];
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const y = window.scrollY + r.top + r.height / 2 - window.innerHeight * 0.55;
+    window.scrollTo({ top: y, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  };
 
   return (
-    <section id={group.id} className="qx" aria-labelledby="qx-heading">
-      <header className="qx-head">
-        <p className="qx-eyebrow">
-          <span className="qx-dot" aria-hidden /> Quarry · {products.length} crusher wear parts
-        </p>
-        <h2 id="qx-heading" className="qx-title">
-          {group.name}
-        </h2>
-        <nav className="qx-index" aria-label="Quarry products">
-          {products.map((p, i) => (
-            <a key={p.id} href={`#${p.id}`} className="qx-index-link">
-              <span>{String(i + 1).padStart(2, "0")}</span>
-              {p.title}
-            </a>
-          ))}
-        </nav>
-      </header>
+    <section id={group.id} className="qs" aria-label={group.name}>
+      {/* Left: pinned list, the product in view opened. */}
+      <div className="qs-rail">
+        <ul className="qs-list">
+          {products.map((p, i) => {
+            const open = i === active;
+            return (
+              <li key={p.id} className={`qs-item ${open ? "is-open" : ""}`}>
+                <button
+                  type="button"
+                  className="qs-row"
+                  aria-expanded={open}
+                  aria-controls={`qs-panel-${p.id}`}
+                  onClick={() => goTo(i)}
+                >
+                  <span className="qs-row-title">{p.title}</span>
+                  <span className="qs-row-icon" aria-hidden>
+                    <Arrow />
+                  </span>
+                </button>
+                <div id={`qs-panel-${p.id}`} className="qs-panel" aria-hidden={!open}>
+                  <div className="qs-panel-inner">
+                    <ProductCopy id={p.id} title={p.title} body={p.body} />
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
 
-      {products.map((p, i) => {
-        const model = MODELS[p.id];
-        const num = String(i + 1).padStart(2, "0");
-        return (
-          <ScrollReveal as="article" key={p.id} className={`qx-row ${i % 2 ? "is-flipped is-blue" : ""}`}>
-            <span id={p.id} className="qx-anchor" aria-hidden />
-            <div className="qx-media">
-              <span className="qx-num" aria-hidden>
-                {num}
-              </span>
-              <span className="qx-glow" aria-hidden />
-              {model ? <FloatingModel src={model.src} orbit={model.orbit} alt={`${p.title}, 3D model from AIA's CAD`} /> : null}
-            </div>
-            <div className="qx-copy">
-              <p className="qx-kicker">
-                <span className="qx-kicker-num">{num}</span>
-                <span className="qx-kicker-line" aria-hidden />
-                {p.subtitle}
-              </p>
-              <h3 className="qx-name">{p.title}</h3>
-              <p className="qx-text">{p.body}</p>
-              {p.variants.length > 0 && (
-                <ul className="qx-chips" aria-label={`${p.title} variants`}>
-                  {p.variants.map((v) => (
-                    <li key={v}>{v}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </ScrollReveal>
-        );
-      })}
+      {/* Right: the product stack. */}
+      <div ref={stackRef} className="qs-stack">
+        {products.map((p, i) => {
+          const model = MODELS[p.id];
+          return (
+            <article key={p.id} id={p.id} data-qs-card className={`qs-card ${i === active ? "is-active" : ""}`}>
+              <h3 className="qs-bar">{p.title}</h3>
+              <div className="qs-media">
+                {model ? (
+                  <FloatingModel src={model.src} orbit={model.orbit} alt={`${p.title}, 3D model from AIA's CAD`} />
+                ) : null}
+              </div>
+              {/* Phones: the copy sits under its own product. */}
+              <div className="qs-card-copy">
+                <ProductCopy id={p.id} title={p.title} body={p.body} />
+              </div>
+            </article>
+          );
+        })}
+      </div>
     </section>
+  );
+}
+
+function ProductCopy({ id, title, body }: { id: string; title: string; body: string }) {
+  const benefits = BENEFITS[id] ?? [];
+  return (
+    <>
+      <p className="qs-eyebrow">Quarry components</p>
+      <p className="qs-name">{title}</p>
+      <p className="qs-text">{body}</p>
+      {benefits.length > 0 && (
+        <>
+          <p className="qs-eyebrow qs-eyebrow--benefit">Product benefit:</p>
+          <ul className="qs-benefits">
+            {benefits.map((b) => (
+              <li key={b}>{b}</li>
+            ))}
+          </ul>
+        </>
+      )}
+      <CtaButton
+        href="/contact"
+        variant="solid"
+        className="qs-cta !h-[38px] w-fit !gap-1.5 !px-[18px] !text-[10px] !leading-none [&>span:first-child]:!size-1.5"
+      >
+        Enquire about {title}
+      </CtaButton>
+    </>
+  );
+}
+
+function Arrow() {
+  return (
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 5v14M6 13l6 6 6-6" />
+    </svg>
   );
 }

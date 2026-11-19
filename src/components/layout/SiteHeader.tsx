@@ -110,12 +110,15 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
 
 /**
  * Navbar navigation lock (presentation mode): links in the navbar and the mobile menu do nothing
- * when clicked; menus still open so the site structure can be shown. Set to false to unlock.
+ * when clicked (except NAV_OPEN); menus still open so the site structure can be shown. Set to false to unlock.
  */
 const NAV_LOCKED = true;
+/** Pages still reachable while locked: the home logo and the quarry products page. */
+const NAV_OPEN = ["/", "/solutions/quarry/products"];
 const blockNav = (e: React.MouseEvent) => {
   if (!NAV_LOCKED) return;
-  if ((e.target as HTMLElement).closest("a[href]")) e.preventDefault();
+  const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
+  if (a && !NAV_OPEN.includes(a.getAttribute("href") ?? "")) e.preventDefault();
 };
 
 function MobileMenu({ onClose, pathname }: { onClose: () => void; pathname: string }) {
