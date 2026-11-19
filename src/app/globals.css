@@ -7282,7 +7282,7 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
   .qs-rail .qs-cta { margin-top: calc(var(--qs-u) * 4.4); }
 }
 
-/* ── Motion Gradient (PaletteSwitch "motion" = AIA Brand + html[data-motion="liquid"]) ────────────
+/* ── Motion Gradient (PaletteSwitch "brand" = AIA Brand colours + html[data-motion="liquid"]) ────────────
    Liquid Drift: Brand Blue #1f2766 carries ~80% of each blue surface; a Sporty Blue and a mid-blue
    field (~20%) drift slowly past each other. The fields are oversized and fade out fully, so there
    are no shapes, only light moving like liquid. Footer panel, product name bars, CTA panels and

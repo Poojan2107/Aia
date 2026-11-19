@@ -2,23 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Colour palettes AIA is choosing between (globals.css, html[data-palette]). AIA Brand is the
- * site's default (set on <html> in the layout, so there is no flash before this loads). */
+/** Colour palettes AIA is choosing between (globals.css, html[data-palette]). Current (the site's
+ * own colours) is the default; AIA Brand carries the Motion Gradient (Liquid Drift). */
 const PALETTES = [
-  { id: "brand", name: "AIA Brand", note: "Brand Blue to Sporty Blue gradient, orange accents", colors: ["#1f2766", "#0061e0", "#efa500", "#ffffff"] },
+  { id: "default", name: "Current", note: "The site's own blues", colors: ["#041d2c", "#006eff", "#d96b27", "#f7f7f7"] },
+  { id: "brand", name: "AIA Brand", note: "Brand Blue with soft liquid light drifting through it, orange accents", colors: ["#1f2766", "#2b357e", "#0061e0", "#efa500"] },
   { id: "secondary", name: "AIA Secondary", note: "Solid brand Blue with Light Orange", colors: ["#041d2c", "#2b357e", "#efa500", "#f7f7f7"] },
-  { id: "motion", name: "Motion Gradient", note: "AIA Brand with soft liquid light drifting through the blue surfaces", colors: ["#1f2766", "#1f2766", "#2b357e", "#0061e0"] },
 ] as const;
 
 type PaletteId = (typeof PALETTES)[number]["id"];
 const KEY = "aia-palette";
-const DEFAULT: PaletteId = "brand";
+const DEFAULT: PaletteId = "default";
 
 function apply(id: PaletteId) {
   const root = document.documentElement;
-  // Motion Gradient is the AIA Brand palette plus the liquid drift (html[data-motion], globals.css).
-  root.dataset.palette = id === "motion" ? "brand" : id;
-  if (id === "motion") root.dataset.motion = "liquid";
+  // AIA Brand = the brand colours plus the liquid drift (html[data-motion], globals.css).
+  if (id === "default") delete root.dataset.palette;
+  else root.dataset.palette = id;
+  if (id === "brand") root.dataset.motion = "liquid";
   else delete root.dataset.motion;
 }
 
@@ -36,7 +37,9 @@ export function PaletteSwitch() {
     let saved: PaletteId = DEFAULT;
     try {
       const v = localStorage.getItem(KEY);
-      if (PALETTES.some((p) => p.id === v)) saved = v as PaletteId;
+      // "motion" was its own option before; it is AIA Brand now.
+      const id = v === "motion" ? "brand" : v;
+      if (PALETTES.some((p) => p.id === id)) saved = id as PaletteId;
     } catch {}
     setCurrent(saved);
     apply(saved);
