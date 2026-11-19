@@ -28,6 +28,23 @@ export function scrollToTarget(target: string | HTMLElement | number) {
   else (typeof target === "string" ? document.querySelector(target) : target)?.scrollIntoView({ behavior: "smooth" });
 }
 
+/** Glide to an exact scroll position (no header offset), as one locked move; resolves when done. */
+export function glideTo(y: number, duration = 1.05): Promise<void> {
+  return new Promise((resolve) => {
+    if (lenis) {
+      lenis.scrollTo(y, {
+        duration,
+        lock: true,
+        easing: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+        onComplete: () => resolve(),
+      });
+    } else {
+      window.scrollTo({ top: y, behavior: "smooth" });
+      window.setTimeout(resolve, duration * 1000);
+    }
+  });
+}
+
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }

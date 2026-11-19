@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
  * own colours) is the default; AIA Brand carries the Motion Gradient (Liquid Drift). */
 const PALETTES = [
   { id: "default", name: "Current", note: "The site's own blues", colors: ["#041d2c", "#006eff", "#d96b27", "#f7f7f7"] },
-  { id: "brand", name: "AIA Brand", note: "Brand Blue with soft liquid light drifting through it, orange accents", colors: ["#1f2766", "#2b357e", "#0061e0", "#efa500"] },
+  { id: "brand", name: "AIA Brand", note: "Brand Blue with cross-directional liquid light, orange accents", colors: ["#1f2766", "#2b357e", "#0061e0", "#efa500"] },
   { id: "secondary", name: "AIA Secondary", note: "Solid brand Blue with Light Orange", colors: ["#041d2c", "#2b357e", "#efa500", "#f7f7f7"] },
 ] as const;
 
@@ -14,13 +14,17 @@ type PaletteId = (typeof PALETTES)[number]["id"];
 const KEY = "aia-palette";
 const DEFAULT: PaletteId = "default";
 
-function apply(id: PaletteId) {
+function apply(id: PaletteId | "motion") {
   const root = document.documentElement;
   // AIA Brand = the brand colours plus the liquid drift (html[data-motion], globals.css).
-  if (id === "default") delete root.dataset.palette;
-  else root.dataset.palette = id;
-  if (id === "brand") root.dataset.motion = "liquid";
-  else delete root.dataset.motion;
+  if (id === "default") {
+    delete root.dataset.palette;
+    delete root.dataset.motion;
+  } else {
+    root.dataset.palette = id === "motion" ? "brand" : id;
+    if (id === "brand" || id === "motion") root.dataset.motion = "liquid";
+    else delete root.dataset.motion;
+  }
 }
 
 /**

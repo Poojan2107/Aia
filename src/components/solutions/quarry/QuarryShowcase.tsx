@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
+import { glideTo } from "@/components/motion/MotionProvider";
 import { FloatingModel } from "@/components/solutions/quarry/FloatingModel";
 import type { IndustryProductsContent } from "@/content/types";
 
@@ -73,6 +74,80 @@ export function QuarryShowcase({ content }: Props) {
   const products = group.products;
   const [active, setActive] = useState(0);
   const stackRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+
+  // Figma layout at Figma sizes: the open product sits at the top of the pinned rail with the
+  // remaining products under it. The list slides up by exactly the closed rows above the open
+  // product, in one move timed with the panels opening and closing (no second correction).
+  const prevActive = useRef(0);
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const before = prevActive.current;
+    prevActive.current = active;
+    const place = () => {
+      // Measure a row that is not animating: neither the product opening nor the one closing (its
+      // height is still collapsing at this moment), so the slide is exactly one full row each.
+      const items = Array.from(list.querySelectorAll<HTMLElement>(".qs-item"));
+      const still = items.find((_, k) => k !== active && k !== before);
+      const rowH = still?.offsetHeight ?? 0; // the full row, divider included
+      list.style.transform = `translateY(${-active * rowH}px)`;
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active]);
+
+  // Desktop: one wheel gesture moves exactly one product. The page glides until the next product
+  // fills the screen and its tab is open, then holds; scrolling past the first or last product
+  // releases back to normal page scrolling. While the showcase is in view the chat button steps
+  // aside so it never covers the panel.
+  useEffect(() => {
+    const stack = stackRef.current;
+    const section = stack?.closest<HTMLElement>(".qs");
+    if (!stack || !section) return;
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let busy = false;
+    const tops = () =>
+      Array.from(stack.querySelectorAll<HTMLElement>("[data-qs-card]")).map((c) => c.getBoundingClientRect().top + window.scrollY);
+    const onWheel = (e: WheelEvent) => {
+      if (!desktop.matches || reduced.matches || Math.abs(e.deltaY) < 2) return;
+      const t = tops();
+      const y = window.scrollY;
+      const first = t[0];
+      const last = t[t.length - 1];
+      const down = e.deltaY > 0;
+      let target: number | null = null;
+      if (down && y < first - 4 && first - y < window.innerHeight) target = first; // entering from above
+      else if (!down && y > last + 4 && y - last < window.innerHeight) target = last; // entering from below
+      else if (y >= first - 4 && y <= last + 4) {
+        let i = 0;
+        t.forEach((top, k) => {
+          if (Math.abs(top - y) < Math.abs(t[i] - y)) i = k;
+        });
+        if (down && i < t.length - 1) target = t[i + 1];
+        else if (!down && i > 0) target = t[i - 1];
+        else if (Math.abs(t[i] - y) > 4) target = t[i]; // settle onto the nearest product first
+      }
+      if (target === null && !busy) return; // past the ends: normal scrolling
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (busy || target === null) return;
+      busy = true;
+      glideTo(target).then(() => window.setTimeout(() => (busy = false), 220));
+    };
+    window.addEventListener("wheel", onWheel, { capture: true, passive: false });
+
+    const root = document.documentElement;
+    const io = new IntersectionObserver(([en]) => root.classList.toggle("qs-in-view", !!en?.isIntersecting), { threshold: 0.15 });
+    io.observe(section);
+    return () => {
+      window.removeEventListener("wheel", onWheel, { capture: true });
+      io.disconnect();
+      root.classList.remove("qs-in-view");
+    };
+  }, []);
 
   // The active product is the card whose middle is closest to the middle of the screen.
   useEffect(() => {
@@ -120,7 +195,7 @@ export function QuarryShowcase({ content }: Props) {
     <section id={group.id} className="qs" aria-label={group.name}>
       {/* Left: pinned list, the product in view opened. */}
       <div className="qs-rail">
-        <ul className="qs-list">
+        <ul ref={listRef} className="qs-list">
           {products.map((p, i) => {
             const open = i === active;
             return (

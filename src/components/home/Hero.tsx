@@ -90,53 +90,79 @@ const BANNERS: HeroBanner[] = [
 
 export function Hero() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [ready, setReady] = useState(false);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  // `banner` is the one asked for (pager / timer); `shown` is the one on screen. A banner's film
+  // loads hidden in its own layer and only crossfades in once it is actually playing, so the
+  // previous banner never flashes through and no still image is ever shown.
   const [banner, setBanner] = useState(0);
+  const [shown, setShown] = useState(0);
+  // The banner that was on screen before: it stays fully visible underneath while the new one
+  // fades in over it (no dip to black mid-crossfade).
+  const [prev, setPrev] = useState(-1);
+  // MP4 everywhere; browsers without H.264 get the WebM twin (decided in the browser, after mount).
+  const [webm, setWebm] = useState(false);
+  useEffect(() => {
+    setWebm(playableVideo("/x.mp4") !== "/x.mp4");
+  }, []);
+  const [loaded, setLoaded] = useState<boolean[]>(() => BANNERS.map((_, i) => i === 0));
+  const [firstReady, setFirstReady] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
-  const current = BANNERS[banner] ?? BANNERS[0];
+  const current = BANNERS[shown] ?? BANNERS[0];
 
-  // Auto-advance every 8 seconds when not paused
+  // Auto-advance 8 seconds after a banner is on screen, when not paused.
   useEffect(() => {
     if (isPaused) return;
-    const timer = setInterval(() => {
-      setBanner((prev) => (prev + 1) % BANNERS.length);
-    }, 8000);
-    return () => clearInterval(timer);
-  }, [isPaused]);
+    const timer = window.setTimeout(() => setBanner((shown + 1) % BANNERS.length), 8000);
+    return () => window.clearTimeout(timer);
+  }, [isPaused, shown]);
 
-  // When banner switches, reload and play video with smooth fade-in
+  // Bring the asked-for banner in: give its layer a source, start it from the top, and show it
+  // once it plays. The next banner's film is warmed up in the background so the switch is instant.
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-
-    setReady(false);
-    video.src = playableVideo(current.video);
-    video.poster = current.poster;
-    video.load();
-
-    const tryPlay = () => {
-      video.muted = true;
-      video.defaultMuted = true;
-      video.playsInline = true;
-      void video
-        .play()
-        .then(() => setReady(true))
-        .catch(() => undefined);
+    const next = (banner + 1) % BANNERS.length;
+    setLoaded((l) => (l[banner] && l[next] ? l : l.map((v, i) => v || i === banner || i === next)));
+    const video = videoRefs.current[banner];
+    if (!video) return;
+    let done = false;
+    const show = () => {
+      if (done) return;
+      done = true;
+      setShown((s) => {
+        if (s !== banner) setPrev(s);
+        return banner;
+      });
+      setFirstReady(true);
     };
-
-    tryPlay();
-    video.addEventListener("canplay", tryPlay);
-    video.addEventListener("playing", () => setReady(true));
+    if (banner !== shown) video.currentTime = 0;
+    video.muted = true;
+    if (reduced) {
+      // Reduced motion: the film's first frame, still.
+      if (video.readyState >= 2) show();
+      else video.addEventListener("loadeddata", show, { once: true });
+      return;
+    }
+    const play = () => void video.play().then(show).catch(() => undefined);
+    if (video.readyState >= 3) play();
+    else video.addEventListener("canplay", play, { once: true });
+    video.addEventListener("playing", show, { once: true });
     return () => {
-      video.removeEventListener("canplay", tryPlay);
-      video.removeEventListener("playing", () => setReady(true));
+      video.removeEventListener("canplay", play);
+      video.removeEventListener("playing", show);
     };
-  }, [banner, current.video, current.poster]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `shown` is read, not tracked
+  }, [banner, loaded[banner]]);
+
+  // Once a crossfade has finished, pause the films that are no longer on screen.
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      videoRefs.current.forEach((v, i) => {
+        if (v && i !== shown && !v.paused) v.pause();
+      });
+    }, 1300);
+    return () => window.clearTimeout(t);
+  }, [shown]);
 
   const selectBanner = useCallback((idx: number) => {
     setBanner(idx);
@@ -194,30 +220,24 @@ export function Hero() {
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="absolute inset-0 overflow-hidden" aria-hidden>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={current.poster}
-            alt=""
-            fetchPriority="high"
-            className={`hero-film object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${ready ? "opacity-0" : "opacity-100"
+        <div className={`absolute inset-0 overflow-hidden hero-films${firstReady ? " is-ready" : ""}`} aria-hidden>
+          {BANNERS.map((b, i) => (
+            <video
+              key={b.id}
+              ref={(el) => {
+                videoRefs.current[i] = el;
+              }}
+              className={`hero-film hero-layer film-drift object-cover object-[center_45%] brightness-[0.84] contrast-[1.04]${
+                i === shown ? " is-on" : i === prev ? " is-prev" : ""
               }`}
-          />
-          <video
-            ref={videoRef}
-            key={current.video}
-            className={`hero-film film-drift object-cover object-[center_45%] brightness-[0.84] contrast-[1.04] transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"
-              }`}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster={current.poster}
-            src={current.video}
-            onPlaying={() => setReady(true)}
-            disablePictureInPicture
-          />
+              muted
+              loop
+              playsInline
+              preload={loaded[i] ? "auto" : "none"}
+              src={loaded[i] ? (webm ? b.video.replace(/\.mp4$/, ".webm") : b.video) : undefined}
+              disablePictureInPicture
+            />
+          ))}
           <div className="hero-scrim" aria-hidden />
         </div>
 

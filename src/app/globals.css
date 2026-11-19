@@ -4355,15 +4355,16 @@ button.solve-cta > span:last-child {
 }
 /* On the blue pill the label always stays white; hover / open / current read as a light frosted
    chip behind it (an accent-coloured label vanished against the pill). */
-.nav-pill-item:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-}
-/* Selected (menu open, or the page you are on): a solid AIA blue chip with a white label. */
+/* Hover, open menu and current page: no box, the label itself turns the palette colour, in a
+   brightened shade (--aia-nav-hi) so it stays readable on the dark bar and over the films. */
+.nav-pill-item:hover,
 .nav-pill-item[aria-expanded="true"],
 .nav-pill-item.is-current {
-  color: #fff;
-  background: var(--aia-fill);
+  background: transparent;
+  color: var(--aia-nav-hi, #4d9dff);
+  font-weight: 600;
+  /* A soft dark halo keeps the coloured label readable over bright film frames. */
+  text-shadow: 0 0 2px rgba(4, 12, 28, 0.55), 0 1px 12px rgba(4, 12, 28, 0.6);
 }
 .site-nav-actions {
   height: 64px;
@@ -6952,6 +6953,7 @@ a[data-home-only="disabled"] {
               Light Grey #D8D7D8 surfaces, Black text.
    ------------------------------------------------------------------------------------------ */
 html[data-palette="brand"] {
+  --aia-nav-hi: #5aa6ff; /* Sporty Blue, lifted for the dark navbar */
   --aia-accent: #0061e0;
   --aia-accent-deep: #1f2a6e;
   --aia-accent-rgb: 0, 97, 224;
@@ -6971,6 +6973,7 @@ html[data-palette="brand"] {
   --aia-foot-fill: var(--aia-fill);
 }
 html[data-palette="secondary"] {
+  --aia-nav-hi: #efa500; /* Light Orange: brand Blue would vanish on the dark navbar */
   /* Same roles as the site's own palette, in AIA's colours: solid brand Blue where the site uses
      its solid blue, Light Orange where it uses orange. Everything else stays as Current. */
   --aia-accent: #2b357e;
@@ -7257,50 +7260,129 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
   .qs-row, .qs-panel, .qs-panel-inner, .qs-panel-inner > * { transition: none !important; }
 }
 
-/* Quarry rail, Figma proportions. --qs-u is 1% of the rail's width (39vw), capped by the screen
-   height so the opened rail (~150 units) always fits. The rail sticks at the very top with room
-   for the navbar, so its content keeps the same position whether the navbar shows or hides. */
+/* Quarry rail and stack at the Figma's own sizes ("Quarry - Product Page", 1920 frame), scaled
+   with the screen width: --qs-d is one Figma pixel. Open product: 65 top, eyebrow 16, name 50,
+   body 26/42 (~594 wide), benefit rows 82 apart, CTA 48 tall, 100 below; closed rows 145 tall with
+   48px titles and 32px arrows; 76 left padding. The rail starts flush with the first name bar (no
+   gap) and is pinned for the whole stack; QuarryShowcase slides the list so the open product stays
+   at the top. Each product on the right fills the screen. */
 @media (min-width: 1024px) {
-  .qs { --qs-u: min(0.39vw, calc((100svh - var(--site-header-h) - 1.5rem) / 150)); }
+  /* One Figma pixel, capped so the open product plus one full row (about 1,215 units) fits the
+     screen. The open panel fills the screen minus exactly one row, so the next product shows as a
+     complete row at the bottom edge ("next up") and later rows start below the screen: nothing is
+     ever half cut. */
+  .qs { --qs-d: min(calc(100vw / 1920), calc(100svh / 1215), 1.1px); --qs-row-h: calc(var(--qs-d) * 145); }
+  .qs-item.is-open .qs-panel-inner { min-height: calc(100svh - var(--qs-row-h) - 4px); box-sizing: border-box; } /* 4px: row dividers */
   .qs-rail {
     top: 0;
     height: 100vh;
     height: 100svh;
-    padding-top: calc(var(--site-header-h) + 1rem);
+    padding-top: 0;
+    justify-content: flex-start;
+    overflow: hidden;
   }
-  .qs-row { height: calc(var(--qs-u) * 9.4); padding: 0 calc(var(--qs-u) * 6) 0 calc(var(--qs-u) * 8); }
-  .qs-row-title { font-size: calc(var(--qs-u) * 4.6); }
-  .qs-row-icon { width: calc(var(--qs-u) * 3.1); height: calc(var(--qs-u) * 3.1); }
-  .qs-panel-inner { padding: 0 calc(var(--qs-u) * 16) 0 calc(var(--qs-u) * 8); }
-  .qs-item.is-open .qs-panel-inner { padding-top: calc(var(--qs-u) * 4); padding-bottom: calc(var(--qs-u) * 6); }
-  .qs-rail .qs-eyebrow { font-size: max(11px, calc(var(--qs-u) * 1.95)); }
-  .qs-rail .qs-name { margin-top: calc(var(--qs-u) * 2.2); font-size: calc(var(--qs-u) * 5.6); }
-  .qs-rail .qs-text { margin-top: calc(var(--qs-u) * 2.2); padding-bottom: calc(var(--qs-u) * 3.6); font-size: max(13px, calc(var(--qs-u) * 2.85)); line-height: 1.5; }
-  .qs-rail .qs-eyebrow--benefit { margin-top: calc(var(--qs-u) * 3.6); }
-  .qs-rail .qs-benefits { margin-top: calc(var(--qs-u) * 1.2); }
-  .qs-rail .qs-benefits li { font-size: max(12px, calc(var(--qs-u) * 2.25)); padding: calc(var(--qs-u) * 2.1) 0; }
-  .qs-rail .qs-cta { margin-top: calc(var(--qs-u) * 4.4); }
+  .qs-list { transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1); will-change: transform; }
+  .qs-panel { transition-duration: 700ms; transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  .qs-row { transition: height 700ms cubic-bezier(0.65, 0, 0.35, 1), opacity 350ms ease; }
+
+  .qs-row { height: var(--qs-row-h); padding: 0 calc(var(--qs-d) * 70) 0 calc(var(--qs-d) * 76); }
+  .qs-row-title { font-size: calc(var(--qs-d) * 48); font-weight: 700; letter-spacing: -0.015em; }
+  .qs-row-icon { width: calc(var(--qs-d) * 32); height: calc(var(--qs-d) * 32); min-width: 18px; min-height: 18px; }
+  .qs-row-icon svg { width: 55%; height: 55%; }
+  .qs-panel-inner { padding: 0 calc(var(--qs-d) * 82) 0 calc(var(--qs-d) * 76); }
+  .qs-item.is-open .qs-panel-inner { padding-top: calc(var(--qs-d) * 58); padding-bottom: calc(var(--qs-d) * 76); }
+  .qs-rail .qs-eyebrow { font-size: max(10px, calc(var(--qs-d) * 16)); letter-spacing: 0.14em; }
+  .qs-rail .qs-name { margin-top: calc(var(--qs-d) * 34); font-size: calc(var(--qs-d) * 50); font-weight: 700; line-height: 1.1; }
+  .qs-rail .qs-text {
+    margin-top: calc(var(--qs-d) * 22);
+    padding-bottom: calc(var(--qs-d) * 30);
+    font-size: max(13px, calc(var(--qs-d) * 26));
+    font-weight: 300;
+    line-height: 1.6;
+  }
+  .qs-rail .qs-eyebrow--benefit { margin-top: calc(var(--qs-d) * 34); }
+  .qs-rail .qs-benefits { margin-top: calc(var(--qs-d) * 8); }
+  .qs-rail .qs-benefits li { font-size: max(12px, calc(var(--qs-d) * 20)); line-height: 1.3; padding: calc(var(--qs-d) * 28) 0; }
+  .qs-rail .qs-cta { margin-top: calc(var(--qs-d) * 40); }
+
+  /* One product per screen: name bar + model fill the viewport. */
+  .qs-card { height: 100vh; height: 100svh; display: flex; flex-direction: column; }
+  .qs-card .qs-media { flex: 1; height: auto; min-height: 0; }
 }
 
 /* ── Motion Gradient (PaletteSwitch "brand" = AIA Brand colours + html[data-motion="liquid"]) ────────────
-   Liquid Drift: Brand Blue #1f2766 carries ~80% of each blue surface; a Sporty Blue and a mid-blue
-   field (~20%) drift slowly past each other. The fields are oversized and fade out fully, so there
-   are no shapes, only light moving like liquid. Footer panel, product name bars, CTA panels and
-   solid CTA buttons, active tabs and the selected navbar chip; small icons, dots and text stay still. */
-html[data-motion="liquid"] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent, .site-nav-contact, .vision-shard, .nav-pill-item[aria-expanded="true"], .nav-pill-item.is-current, :is(a, button).bg-aia-accent:not([class*="size-"])) {
+   Rising Liquid Drift: continuous, one-directional motion that never stops or reverses.
+   - Both fields travel bottom-left to top-right, always forward and upward: a quiet sense of
+     growth and progress.
+   - The fields repeat as tiles and each loop moves them by whole tiles at a constant (linear)
+     speed, so the end of a loop is identical to its start: no pause, no visible restart.
+   - The Sporty Blue light (tiles 140% wide) travels three tiles per loop, so a pass comes round
+     about every 13s; the cobalt field (200% tiles) one tile, a little slower behind it (depth).
+   - Base: the AIA palette, Primary #2B357E (deeper at the far end) into Secondary #0061E0, so a
+     surface reads as the AIA gradient at every moment. Light toned down (50% core).
+   - Large surfaces only; buttons and small controls keep a still gradient (below). */
+@keyframes liq-drift-cross {
+  0% {
+    background-position: 0% 0%, 0% 0%, 0 0;
+  }
+  100% {
+    background-position: -1050% 1050%, -200% 200%, 0 0;
+  }
+}
+
+html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy) {
   background:
-    radial-gradient(closest-side, rgba(0, 97, 224, 0.42), rgba(0, 97, 224, 0) 100%) no-repeat,
-    radial-gradient(closest-side, rgba(43, 53, 126, 0.8), rgba(43, 53, 126, 0) 100%) no-repeat,
-    #1f2766;
-  background-size: 85% 230%, 75% 210%, 100% 100%;
-  background-position: -40% 20%, 140% 80%, 0 0;
-  animation: liq-drift 24s ease-in-out infinite alternate;
+    radial-gradient(ellipse 60% 60% at center, rgba(82, 172, 255, 0.5) 0%, rgba(0, 97, 224, 0.32) 32%, rgba(0, 97, 224, 0) 68%) repeat,
+    radial-gradient(ellipse 65% 65% at center, rgba(37, 99, 235, 0.65) 0%, rgba(31, 39, 102, 0.35) 40%, rgba(31, 39, 102, 0) 72%) repeat,
+    linear-gradient(130deg, #222a6a 0%, #2b357e 42%, #1d49b8 76%, #0061e0 100%);
+  background-size: 140% 140%, 200% 200%, 100% 100%;
+  background-position: 0% 0%, 0% 0%, 0 0;
+  animation: liq-drift-cross 40s linear infinite;
 }
-@keyframes liq-drift {
-  0% { background-position: -40% 20%, 140% 80%, 0 0; }
-  50% { background-position: 55% 75%, 30% 25%, 0 0; }
-  100% { background-position: 140% 35%, -35% 60%, 0 0; }
+
+/* Buttons and small controls: the same AIA gradient, still; on hover its light glides across once
+   (a single smooth pass), so the controls stay calm and premium. */
+html[data-motion] :is(.inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent, .site-nav-contact, .vision-shard, :is(a, button).bg-aia-accent:not([class*="size-"])) {
+  background:
+    radial-gradient(ellipse 70% 120% at center, rgba(82, 172, 255, 0.42), rgba(0, 97, 224, 0) 70%) no-repeat,
+    linear-gradient(130deg, #222a6a 0%, #2b357e 42%, #1d49b8 76%, #0061e0 100%);
+  background-size: 60% 100%, 100% 100%;
+  background-position: -60% 50%, 0 0;
+  transition: background-position 650ms cubic-bezier(0.22, 1, 0.36, 1), color 200ms;
 }
-/* Stacked quarry name bars drift out of step. */
-html[data-motion="liquid"] .qs-card:nth-child(2n) .qs-bar { animation-delay: -6s; }
-html[data-motion="liquid"] .qs-card:nth-child(3n) .qs-bar { animation-delay: -12s; }
+html[data-motion] :is(.inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent, .site-nav-contact, .vision-shard, :is(a, button).bg-aia-accent:not([class*="size-"])):hover { background-position: 160% 50%, 0 0; }
+
+/* Stacked quarry name bars drift out of step so they never pulse in unison. */
+html[data-motion] .qs-card:nth-child(2n) .qs-bar { animation-delay: -13s; }
+html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -26s; }
+
+/* Navbar legibility over bright hero films: while the bar is see-through, a soft dark fade sits
+   behind its top edge (no box around items). It fades out once the bar turns frosted. */
+.site-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -40% 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(4, 12, 28, 0.5), rgba(4, 12, 28, 0.22) 60%, rgba(4, 12, 28, 0));
+  transition: opacity 0.35s var(--ease-out);
+}
+.site-nav.is-solid::before { opacity: 0; }
+
+
+/* While the quarry showcase is on screen the chat button steps aside (it would cover the panel). */
+[data-aia-assist] { transition: opacity 300ms ease, transform 300ms var(--ease-out); }
+@media (min-width: 1024px) {
+  html.qs-in-view [data-aia-assist] { opacity: 0; transform: translateY(16px); pointer-events: none; }
+}
+
+/* Homepage hero: one film layer per banner. A banner's film loads hidden and fades in over the
+   one on screen only once it is playing; the outgoing film stays fully visible beneath until it
+   is covered, so there is no flash of the previous banner, no still image and no dip to black. */
+.hero-films { background: #000; }
+.hero-layer { opacity: 0; z-index: 0; transition: opacity 1.2s cubic-bezier(0.45, 0, 0.55, 1); }
+.hero-layer.is-prev { opacity: 1; z-index: 1; transition: none; }
+.hero-layer.is-on { opacity: 1; z-index: 2; }
+.hero-films:not(.is-ready) .hero-layer { transition-duration: 0.9s; }
+/* The readability scrim always sits above every film layer (layers stack up to z-index 2). */
+.hero-films .hero-scrim { z-index: 3; }
