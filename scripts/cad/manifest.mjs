@@ -106,12 +106,102 @@ export const products = [
     preSimplify: { default: 0.04, "millBody:body": 0.3 }, preSimplifyError: 0.001, simplifyError: 0.0006,
   },
   {
-    id: "mill-ball-goldfield",
-    // AIA's full NGDS ball mill assembly (Goldfield, EEPL discharge, integrated composite liners).
+    id: "mill-sag-explode",
+    // Take-apart SAG mill for the products showroom: AIA's full FE + shell + DE assembly with every
+    // component group kept separate and a travel direction per part (see convert.mjs _EXPLODE).
+    sources: [
+      { tag: "FE", file: `${LIB}/Mining/SAG mill/Mill assembly/STEP/FE_SHELL_DE_FULL ASSEMBLY/FE_ASSLY.STL` },
+      { tag: "SH", file: `${LIB}/Mining/SAG mill/Mill assembly/STEP/FE_SHELL_DE_FULL ASSEMBLY/SHELL_ASSLY.STL`, dx: 2422 },
+      { tag: "DE", file: `${LIB}/Mining/SAG mill/Mill assembly/STEP/FE_SHELL_DE_FULL ASSEMBLY/DE_ASSLY.STL`, mirrorX: 3073, dx: 6415 },
+    ],
+    aiaRef: "SAG mill FE_SHELL_DE_FULL ASSEMBLY (take-apart)",
+    roles: (part) => {
+      const tag = part.name.split("/")[0];
+      const r = Math.hypot(part.centre[1] - 5148, part.centre[2] - 5148);
+      if (part.maxDim < 40) return null; // washers, pins
+      if (part.maxDim > 2900) {
+        if (tag === "FE") return "millHead:feed-head";
+        if (tag === "DE") return "millHead:discharge-head";
+        if (r < 500) return "millShell:shell";
+        return "metal:shell-liners"; // full-length lifter bars
+      }
+      if (tag === "SH") return part.maxDim < 400 ? "bolt:fasteners" : "metal:shell-liners";
+      if (tag === "FE") return part.maxDim < 400 ? "bolt:fasteners" : "metal:feed-liners";
+      return part.maxDim < 150 ? "bolt:fasteners" : "metal:discharge";
+    },
+    // The shell opens in two halves: the top half lifts away.
+    triRole: (c, n, centre, part, role) => (role === "millShell:shell" ? (c[1] > centre[1] ? "millShell:shell-top" : "millShell:shell-bottom") : undefined),
+    explode: (part, role) => {
+      const tag = part.name.split("/")[0];
+      if (role === "millShell:shell-top") return [0, 1, 0];
+      if (role === "millShell:shell-bottom") return null;
+      if (role === "metal:shell-liners") return "radial";
+      if (role === "bolt:fasteners") return tag === "SH" ? "radial" : tag === "FE" ? [-1, 0, 0] : [1, 0, 0];
+      if (tag === "FE") return [-1, 0, 0];
+      return [1, 0, 0];
+    },
+    // Reduction per group: shell and heads stay fine (they carry the silhouette); liners, grates and
+    // bolts take a coarser tolerance, invisible at showroom size, to keep the file light.
+    preSimplify: { default: 0.02, "millShell:shell-top": 0.35, "millShell:shell-bottom": 0.35, "millHead:feed-head": 0.35, "millHead:discharge-head": 0.35, "metal:discharge": 0.012, "bolt:fasteners": 0.02 },
+    preSimplifyError: { default: 0.006, "millShell:shell-top": 0.0015, "millShell:shell-bottom": 0.0015, "millHead:feed-head": 0.0015, "millHead:discharge-head": 0.0015, "metal:discharge": 0.008, "bolt:fasteners": 0.012 },
+    radialX: true,
+    plainRoles: ["bolt:fasteners"],
+  },
+  {
+    id: "fastener-sag-shell",
+    // One AIA shell-liner fastener set (bolt, nut, washers) as fitted on the SAG mill shell
+    // (FE_SHELL_DE_FULL ASSEMBLY, bolt SH/stl-3), shown on its own in the showroom.
+    sources: [{ tag: "SH", file: `${LIB}/Mining/SAG mill/Mill assembly/STEP/FE_SHELL_DE_FULL ASSEMBLY/SHELL_ASSLY.STL`, dx: 2422 }],
+    aiaRef: "SAG mill shell fastener (FE_SHELL_DE_FULL ASSEMBLY)",
+    roles: (part) => (part.maxDim < 400 && Math.hypot(part.centre[0] - 4181, part.centre[1] - 3731, part.centre[2] - 415) < 260 ? "bolt" : null),
+    simplify: 0.6, simplifyError: 0.0004,
+  },
+  {
+    id: "mill-ball-explode",
+    // Take-apart ball mill for the products showroom: AIA's full NGDS assembly (Goldfield, EEPL
+    // discharge, integrated composite liners), every component group separate, with a travel
+    // direction per part (see convert.mjs _EXPLODE). Axis along X through y = z = 0.
     source: `${LIB}/Mining/Ball mill/Mill assembly/NGDS/STEP/FULL_ASSLY_GOLDFIELD EEPL_WITH INTEGRATED COMPOSITE LINER/FULL_ASSLY_GOLDFIELD EEPL_WITH INTEGRATED COMPOSITE LINER.STEP`,
-    aiaRef: "FULL_ASSLY_GOLDFIELD EEPL (ball mill, NGDS)",
-    roles: () => "metal",
-    deflectionMm: 15, angular: 0.6,
+    aiaRef: "FULL_ASSLY_GOLDFIELD EEPL (ball mill, NGDS, take-apart)",
+    roles: (part) => {
+      const n = part.name || "";
+      const x = part.centre[0];
+      if (part.maxDim < 40) return null;
+      if (n.startsWith("BOLT/")) return "bolt:fasteners";
+      if (/FEED SIDE TRUNION/i.test(n)) return "millHead:feed-head";
+      // Next Generation Discharge System = the grate plates and pulp lifters only. The DE filler
+      // blocks and bars line the shell end, so they belong to the lining system.
+      if (/GRATE|PULP LIFTER/i.test(n)) return "metal:discharge";
+      if (/FILLER/i.test(n)) return /RUBBER/i.test(n) ? "rubber:shell-liners" : "metal:shell-liners";
+      if (/P00424|AIA_STD_238|W9_5396_12/i.test(n)) return /Rubber/i.test(n) ? "rubber:feed-liners" : "metal:feed-liners";
+      if (/Shell Liners|Base Plate|Case Plate|Dase Plate|Lugs|P00479/i.test(n)) return "metal:shell-liners";
+      if (part.maxDim > 2900) return x > 4000 ? "millHead:discharge-head" : x < -4000 ? "millHead:feed-head" : "millShell:shell";
+      return part.maxDim < 400 ? "bolt:fasteners" : "millShell:shell";
+    },
+    triRole: (c, n, centre, part, role) => (role === "millShell:shell" ? (c[1] > 0 ? "millShell:shell-top" : "millShell:shell-bottom") : undefined),
+    explode: (part, role) => {
+      const x = part.centre[0];
+      if (role === "millShell:shell-top") return [0, 1, 0];
+      if (role === "millShell:shell-bottom") return null;
+      if (role.endsWith(":shell-liners")) return "radial";
+      if (role === "bolt:fasteners") return Math.abs(x) < 5000 ? "radial" : [Math.sign(x), 0, 0];
+      if (role.endsWith(":feed-liners") || role === "millHead:feed-head") return [-1, 0, 0];
+      if (role.endsWith(":discharge") || role === "millHead:discharge-head") return [1, 0, 0];
+      return null;
+    },
+    // The Goldfield STEP leaves the bolts out; AIA's FULL MILL_ASSLY STL is the same mill
+    // (14492 x 8485 mm) and has them: the bolts on the shell and heads are taken from it.
+    extraStl: [{
+      tag: "BOLT",
+      file: `${LIB}/Mining/Ball mill/Mill assembly/FULL MILL_ASSLY/FULL MILL_ASSLY.STL`,
+      dx: -7303, dy: -4285, dz: -4230,
+      keep: (q) => q.maxDim > 40 && q.maxDim < 400 && Math.hypot(q.centre[1], q.centre[2]) > 4050,
+    }],
+    deflectionMm: 6, angular: 0.5,
+    preSimplify: { default: 0.02, "millShell:shell-top": 0.35, "millShell:shell-bottom": 0.35, "millHead:feed-head": 0.35, "millHead:discharge-head": 0.35, "metal:shell-liners": 0.012, "metal:discharge": 0.03, "bolt:fasteners": 0.03 },
+    preSimplifyError: { default: 0.005, "millShell:shell-top": 0.0012, "millShell:shell-bottom": 0.0012, "millHead:feed-head": 0.0012, "millHead:discharge-head": 0.0012, "bolt:fasteners": 0.01 },
+    radialX: true,
+    plainRoles: ["bolt:fasteners"],
   },
   {
     id: "mill-verti",

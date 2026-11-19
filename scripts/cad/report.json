@@ -368,5 +368,66 @@
     "kb": 3961,
     "seconds": 35.7,
     "aoSeconds": 10.4
+  },
+  "mill-sag-explode": {
+    "aiaRef": "SAG mill FE_SHELL_DE_FULL ASSEMBLY (take-apart)",
+    "sizeMm": [
+      9465,
+      10194,
+      10194
+    ],
+    "triangles": 330784,
+    "rolesBeforeSimplify": {
+      "metal:feed-liners": 49236,
+      "bolt:fasteners": 15324,
+      "millHead:feed-head": 23442,
+      "metal:shell-liners": 92109,
+      "millShell:shell-top": 18810,
+      "millShell:shell-bottom": 18812,
+      "metal:discharge": 89965,
+      "millHead:discharge-head": 23086
+    },
+    "kb": 8382,
+    "seconds": 106.6,
+    "aoSeconds": 29.9
+  },
+  "mill-ball-explode": {
+    "aiaRef": "FULL_ASSLY_GOLDFIELD EEPL (ball mill, NGDS, take-apart)",
+    "sizeMm": [
+      14492,
+      8485,
+      8485
+    ],
+    "triangles": 249039,
+    "rolesBeforeSimplify": {
+      "millShell:shell-bottom": 34157,
+      "millShell:shell-top": 33301,
+      "metal:shell-liners": 109157,
+      "millHead:feed-head": 10694,
+      "rubber:feed-liners": 5040,
+      "metal:feed-liners": 7244,
+      "bolt:fasteners": 17446,
+      "millHead:discharge-head": 9702,
+      "metal:discharge": 21578,
+      "rubber:shell-liners": 720
+    },
+    "kb": 6122,
+    "seconds": 618,
+    "aoSeconds": 9.1
+  },
+  "fastener-sag-shell": {
+    "aiaRef": "SAG mill shell fastener (FE_SHELL_DE_FULL ASSEMBLY)",
+    "sizeMm": [
+      4625,
+      10190,
+      10186
+    ],
+    "triangles": 4082,
+    "rolesBeforeSimplify": {
+      "bolt": 6100
+    },
+    "kb": 21,
+    "seconds": 8.3,
+    "aoSeconds": 0.2
   }
 }

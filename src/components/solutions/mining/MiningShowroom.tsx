@@ -1,32 +1,43 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CtaButton } from "@/components/ui/CtaButton";
-import { FloatingModel } from "@/components/solutions/quarry/FloatingModel";
+import { MillExplorer, type MillState } from "@/components/solutions/mining/MillExplorer";
+import { useAccentRgb } from "@/lib/use-accent-rgb";
 import { CaseStudies } from "@/components/home/CaseStudies";
 
 /**
  * Mining products showroom (Figma "Mining – Product Showroom", 1156:26): a hero, an intro, one
- * showcase per mill (AIA's own full-mill CAD with AIA's parts in blue and the mill structure in
- * steel; hovering a component lights only its parts), case studies and the CTA band.
+ * showcase per mill (AIA's own assembled mill CAD; pointing at a component takes the mill apart
+ * around it and lights it, see MillExplorer), case studies and the CTA band.
  * Case studies, the CTA band and the footer are the site's shared ones (homepage carousel,
  * quarry page band). Copy follows the Figma; the hero photo is a stand-in until it is exported.
  */
 
-type Component = { name: string; body?: string; groups?: string[] };
+type Component = { name: string; body?: string; state: MillState };
 type Mill = {
   id: string;
   index: string;
   title: string;
   mark: string;
   lede: string;
-  model: { src: string; orbit: string };
-  /** Material groups that are AIA parts (lit by default); the rest is mill structure. */
-  aia: string[];
+  explorer: { src: string; view: { theta: number; phi: number; distance?: number }; products?: Record<string, { src: string; scale: number }> };
   components: Component[];
   side: "right" | "left";
 };
+
+/*
+ * Take-apart states. Distances are metres along each part's own travel direction (the shell's top
+ * half lifts, heads and end liners slide out along the axis, shell liners and bolts move straight
+ * out from it). The chosen component comes out just enough to stand apart, is lit and is framed at
+ * the centre (MillExplorer fits the camera to it); the rest fade back. Bolts stay on the mill,
+ * lifted slightly, so they read as the complete fastener pattern.
+ */
+/** AIA shell-liner fastener set (bolt, nut, washers) from the SAG mill CAD, shown on its own. */
+const FASTENER = { src: "/models/catalog/fastener-sag-shell.glb", scale: 0.62 };
+const SAG_OPEN = { "shell-top": 6.5, "feed-head": 2.4, "discharge-head": 3.2 };
+const BALL_OPEN = { "shell-top": 5.5, "feed-head": 2.4, "discharge-head": 3.2 };
 
 const MILLS: Mill[] = [
   {
@@ -35,16 +46,21 @@ const MILLS: Mill[] = [
     title: "SAG Mill Components",
     mark: "SAG",
     lede: "Engineered for impact resistance and mill shell protection.",
-    model: { src: "/models/catalog/mill-sag-cut.glb", orbit: "-12deg 56deg 118%" },
-    aia: ["feed-liners", "shell-liners", "discharge"],
+    explorer: { src: "/models/catalog/mill-sag-explode.glb", view: { theta: -38, phi: 66, distance: 0.82 }, products: { fastener: FASTENER } },
     components: [
       {
         name: "Advanced Lining Systems",
         body: "Feed end and shell liners developed to protect mill internals, resist impact and abrasion, and optimize.",
-        groups: ["feed-liners", "shell-liners"],
+        state: { amounts: { ...SAG_OPEN, "feed-head": 5.0, "feed-liners": 1.8, "shell-liners": 0.25 }, focus: ["shell-liners", "feed-liners"] },
       },
-      { name: "Discharge End Assembly", groups: ["discharge"] },
-      { name: "High-Quality Fasteners" },
+      {
+        name: "Discharge End Assembly",
+        state: { amounts: { "shell-top": 3.0, "discharge-head": 6.0, discharge: 2.6 }, focus: ["discharge"], ghost: 0.18 },
+      },
+      {
+        name: "High-Quality Fasteners",
+        state: { product: "fastener" },
+      },
     ],
     side: "right",
   },
@@ -54,19 +70,26 @@ const MILLS: Mill[] = [
     title: "Ball Mill Components",
     mark: "Ball",
     lede: "Engineered for efficient grinding and optimised material flow.",
-    model: { src: "/models/catalog/mill-ball-ngds.glb", orbit: "-30deg 50deg 88%" },
-    aia: ["feed-liners", "shell-liners", "discharge"],
+    explorer: {
+      src: "/models/catalog/mill-ball-explode.glb",
+      view: { theta: -34, phi: 68, distance: 0.8 },
+      products: { media: { src: "/models/catalog/grinding-media-hicr.glb", scale: 0.55 }, fastener: FASTENER },
+    },
     components: [
       {
         name: "Advanced Lining Systems",
         body: "Ball mill shell and end liners designed for wear protection and optimised charge movement.",
-        groups: ["feed-liners", "shell-liners"],
+        state: { amounts: { ...BALL_OPEN, "feed-head": 5.0, "feed-liners": 1.8 }, focus: ["shell-liners", "feed-liners"] },
       },
-      { name: "Next Generation Discharge System", groups: ["discharge"] },
-      { name: "Hi-Cr Grinding Media" },
+      {
+        name: "Next Generation Discharge System",
+        state: { amounts: { "shell-top": 2.6, "discharge-head": 6.0, discharge: 2.6 }, focus: ["discharge"], ghost: 0.18 },
+      },
+      { name: "Hi-Cr Grinding Media", state: { product: "media" } },
       {
         name: "High-Quality Fasteners",
         body: "They are made from high-grade alloy steel (like Grade 10.9 or 12.9) that can handle tons of pressure without snapping or stretching.",
+        state: { product: "fastener" },
       },
     ],
     side: "left",
@@ -77,20 +100,18 @@ const MILLS: Mill[] = [
     title: "Verti Mill Components",
     mark: "Verti",
     lede: "Engineered for abrasion resistance and extended component life in fine grinding applications.",
-    model: { src: "/models/catalog/mill-verti.glb", orbit: "20deg 64deg 92%" },
-    aia: ["liners"],
+    explorer: { src: "/models/catalog/mill-verti.glb", view: { theta: 20, phi: 68, distance: 1.0 } },
     components: [
       {
         name: "Flight Liners",
         body: "High chrome (Hi-Cr) liners engineered for wear protection in vertical grinding applications.",
-        groups: ["sinterHicr:liners"],
+        state: { focus: ["sinterHicr:liners"] },
       },
-      { name: "Shoe Liners", groups: ["sinterCeramic:liners"] },
+      { name: "Shoe Liners", state: { focus: ["sinterCeramic:liners"] } },
     ],
     side: "right",
   },
 ];
-
 
 export function MiningShowroom() {
   return (
@@ -184,9 +205,30 @@ function ShowroomHero() {
 function MillShowcase({ mill }: { mill: Mill }) {
   const [active, setActive] = useState(0);
   const [hovering, setHovering] = useState(false);
-  const current = mill.components[active];
-  // At rest every AIA part is lit; while a component is pointed at, only its parts are.
-  const highlight = hovering && current?.groups ? current.groups : mill.aia;
+  const accent = useAccentRgb();
+  // The list reflows as a description opens; a short settle window keeps the cursor from
+  // bouncing between neighbours while it does (the last item pointed at wins).
+  const lastSwitch = useRef(0);
+  const pending = useRef<number | null>(null);
+  const point = (i: number) => {
+    setHovering(true);
+    if (pending.current) window.clearTimeout(pending.current);
+    const wait = 320 - (performance.now() - lastSwitch.current);
+    const go = () => {
+      pending.current = null;
+      lastSwitch.current = performance.now();
+      setActive(i);
+    };
+    if (wait <= 0) go();
+    else pending.current = window.setTimeout(go, wait);
+  };
+  const leave = () => {
+    if (pending.current) window.clearTimeout(pending.current);
+    pending.current = null;
+    setHovering(false);
+  };
+  // At rest the mill is assembled; pointing at a component takes the mill apart around it.
+  const states = useMemo(() => Object.fromEntries([["rest", {}], ...mill.components.map((c, i) => [String(i), c.state])]), [mill]);
 
   return (
     <section id={`mill-${mill.id}`} className={`msr-mill is-${mill.side}`} aria-labelledby={`msr-${mill.id}-title`}>
@@ -195,7 +237,15 @@ function MillShowcase({ mill }: { mill: Mill }) {
           {mill.mark}
         </span>
         <div className="msr-model">
-          <FloatingModel src={mill.model.src} orbit={mill.model.orbit} highlight={highlight} alt={`${mill.title}: AIA's full mill CAD`} />
+          <MillExplorer
+            src={mill.explorer.src}
+            view={mill.explorer.view}
+            products={mill.explorer.products}
+            states={states}
+            state={hovering ? String(active) : "rest"}
+            accent={accent}
+            alt={`${mill.title}: AIA's mill CAD; pointing at a component takes the mill apart around it`}
+          />
         </div>
         <span className="msr-chip">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
@@ -216,25 +266,28 @@ function MillShowcase({ mill }: { mill: Mill }) {
         </h2>
         <p className="msr-lede">{mill.lede}</p>
         <p className="msr-label">Explore our engineered components:</p>
-        <ul className="msr-list" onMouseLeave={() => setHovering(false)}>
+        <ul className="msr-list" onMouseLeave={leave}>
           {mill.components.map((c, i) => (
             <li key={c.name}>
               <button
                 type="button"
                 className={`msr-item ${i === active ? "is-active" : ""}`}
                 aria-expanded={i === active}
-                onMouseEnter={() => {
+                onMouseEnter={() => point(i)}
+                onFocus={() => point(i)}
+                onBlur={leave}
+                onClick={() => {
+                  lastSwitch.current = performance.now();
                   setActive(i);
                   setHovering(true);
                 }}
-                onFocus={() => {
-                  setActive(i);
-                  setHovering(true);
-                }}
-                onClick={() => setActive(i)}
               >
                 <span className="msr-item-name">{c.name}</span>
-                {i === active && c.body ? <span className="msr-item-body">{c.body}</span> : null}
+                {c.body ? (
+                  <span className="msr-item-reveal" aria-hidden={i !== active}>
+                    <span className="msr-item-body">{c.body}</span>
+                  </span>
+                ) : null}
               </button>
             </li>
           ))}

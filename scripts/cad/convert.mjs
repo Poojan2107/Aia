@@ -42,6 +42,18 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
         angularDeflection: prod.angular ?? 0.12,
       });
   if (!res.success) throw new Error(`STEP read failed: ${prod.id}`);
+  // A STEP product may take extra parts from an STL export of the same assembly (placed by
+  // dx/dy/dz, filtered by `keep`), e.g. fasteners the STEP leaves out.
+  for (const extra of prod.extraStl ?? []) {
+    const add = stlParts(extra.file, extra).filter((m) => {
+      const p = m.attributes.position.array;
+      const b = [Infinity, Infinity, Infinity, -Infinity, -Infinity, -Infinity];
+      for (let i = 0; i < p.length; i += 3) for (let k = 0; k < 3; k++) { b[k] = Math.min(b[k], p[i + k]); b[k + 3] = Math.max(b[k + 3], p[i + k]); }
+      const maxDim = Math.max(b[3] - b[0], b[4] - b[1], b[5] - b[2]);
+      return extra.keep({ maxDim, centre: [0, 1, 2].map((k) => (b[k] + b[k + 3]) / 2) });
+    });
+    res.meshes.push(...add);
+  }
 
   // Optional: flatten raised CAD markings (e.g. a part code) back into the surface they sit on.
   if (prod.flattenFaces) for (const m of res.meshes) flattenFaces(m, prod.flattenFaces);
@@ -65,6 +77,20 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     const hits = parts.filter((q) => test(q));
     for (const q of hits.slice(0, 80)) console.log((q.name || "-").slice(-50).padEnd(50), Math.round(q.maxDim), q.box.map(Math.round).join(" "), q.mesh.index.array.length / 3);
     console.log("matches", hits.length);
+    process.exit(0);
+  }
+  // CAD_NAMES=1: part-name stems with count, size range and position range (x along the axis).
+  if (process.env.CAD_NAMES) {
+    const m = new Map();
+    for (const q of parts) {
+      const stem = (q.name || "-").replace(/[-_ ]?\d+$/, "").slice(0, 46);
+      const e = m.get(stem) ?? { n: 0, tris: 0, dMin: Infinity, dMax: 0, xMin: Infinity, xMax: -Infinity, rMin: Infinity, rMax: 0 };
+      const r = Math.hypot(q.centre[1] - centre[1], q.centre[2] - centre[2]);
+      e.n++; e.tris += q.mesh.index.array.length / 3; e.dMin = Math.min(e.dMin, q.maxDim); e.dMax = Math.max(e.dMax, q.maxDim);
+      e.xMin = Math.min(e.xMin, q.centre[0]); e.xMax = Math.max(e.xMax, q.centre[0]); e.rMin = Math.min(e.rMin, r); e.rMax = Math.max(e.rMax, r);
+      m.set(stem, e);
+    }
+    for (const [k, e] of [...m].sort((a, b) => b[1].tris - a[1].tris)) console.log(k.padEnd(46), "n", e.n, "tris", e.tris, "size", Math.round(e.dMin), "-", Math.round(e.dMax), "x", Math.round(e.xMin), "..", Math.round(e.xMax), "r", Math.round(e.rMin), "..", Math.round(e.rMax));
     process.exit(0);
   }
   // CAD_SUMMARY=1: parts bucketed by source tag and size (to plan groups for a whole assembly).
@@ -97,6 +123,19 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
 
   // Merge parts per role into one primitive each (few draw calls, one material per role).
   const byRole = new Map();
+  // Take-apart models: each part records the direction it travels when the assembly opens
+  // (unit vector, model axes), stored per vertex as _EXPLODE. "radial" = straight out from the mill
+  // axis (X) through the part's centre; a vector = that direction.
+  const partIndex = new Map(parts.map((q, i) => [q, i]));
+  const explodeDir = (part, role) => {
+    if (!prod.explode) return null;
+    const e = prod.explode(part, role, centre);
+    if (!e) return [0, 0, 0];
+    const raw = e === "radial" ? [0, part.centre[1] - centre[1], part.centre[2] - centre[2]] : e;
+    const r = rot(raw);
+    const l = Math.hypot(r[0], r[1], r[2]) || 1;
+    return [r[0] / l, r[1] / l, r[2] / l];
+  };
   for (const part of parts) {
     const role = prod.roles(part);
     if (!role) continue; // a product may leave parts out (e.g. hidden fasteners in a full mill)
@@ -110,19 +149,22 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
         const nn = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]];
         const l = Math.hypot(...nn) || 1;
         const c = [0, 1, 2].map((k) => (v[0][k] + v[1][k] + v[2][k]) / 3);
-        const r = prod.triRole(c, nn.map((x) => x / l), centre);
-        const g = byRole.get(r) ?? { pos: [], nrm: [], idx: [], base: 0 };
+        const r = prod.triRole(c, nn.map((x) => x / l), centre, part, role) ?? role;
+        const g = byRole.get(r) ?? { pos: [], nrm: [], idx: [], base: 0, dir: [], piece: [] };
+        const d = explodeDir(part, r);
         for (const w of v) {
           const q = rot([0, 1, 2].map((k) => (w[k] - centre[k]) / 1000));
           g.idx.push(g.pos.length / 3); g.pos.push(q[0], q[1], q[2]);
+          if (d) { g.dir.push(d[0], d[1], d[2]); g.piece.push(partIndex.get(part)); }
         }
         byRole.set(r, g);
       }
       continue;
     }
-    const g = byRole.get(role) ?? { pos: [], nrm: [], idx: [], base: 0 };
+    const g = byRole.get(role) ?? { pos: [], nrm: [], idx: [], base: 0, dir: [], piece: [] };
     const p = part.mesh.attributes.position.array;
     const n = part.mesh.attributes.normal?.array;
+    const d = explodeDir(part, role);
     // Decoded 3D PDFs lose sub-assembly placement; a product can move a part back into place (mm).
     const off = prod.offset?.(part) ?? [0, 0, 0];
     for (let i = 0; i < p.length; i += 3) {
@@ -130,6 +172,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
       const v = rot([0, 1, 2].map((k) => (p[i + k] + off[k] - centre[k]) / 1000));
       g.pos.push(v[0], v[1], v[2]);
       if (n) { const m = rot([n[i], n[i + 1], n[i + 2]]); g.nrm.push(m[0], m[1], m[2]); }
+      if (d) { g.dir.push(d[0], d[1], d[2]); g.piece.push(partIndex.get(part)); }
     }
     // Cut-away: a product may drop triangles (by centroid, source mm) to open a closed body.
     const ia = part.mesh.index.array, cut = prod.cutAway?.(part);
@@ -149,11 +192,18 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
   // shade flat: liner faces are planar, so flat normals read correctly.
   if (prod.preSimplify) {
     for (const [role, g] of byRole) {
-      const key = new Map(), P = [], remap = new Uint32Array(g.pos.length / 3);
+      // Take-apart models weld within each piece only (on a 0.5 mm grid), so neighbouring liners
+      // never fuse and each keeps its own travel direction.
+      const pieces = g.piece?.length ? g.piece : null;
+      const grid = pieces ? 2000 : 20;
+      const key = new Map(), P = [], D = [], remap = new Uint32Array(g.pos.length / 3);
       for (let v = 0; v < remap.length; v++) {
-        const k = `${Math.round(g.pos[v * 3] * 20)},${Math.round(g.pos[v * 3 + 1] * 20)},${Math.round(g.pos[v * 3 + 2] * 20)}`;
+        const k = `${pieces ? pieces[v] + "|" : ""}${Math.round(g.pos[v * 3] * grid)},${Math.round(g.pos[v * 3 + 1] * grid)},${Math.round(g.pos[v * 3 + 2] * grid)}`;
         let n = key.get(k);
-        if (n === undefined) { n = P.length / 3; key.set(k, n); P.push(g.pos[v * 3], g.pos[v * 3 + 1], g.pos[v * 3 + 2]); }
+        if (n === undefined) {
+          n = P.length / 3; key.set(k, n); P.push(g.pos[v * 3], g.pos[v * 3 + 1], g.pos[v * 3 + 2]);
+          if (pieces) D.push(g.dir[v * 3], g.dir[v * 3 + 1], g.dir[v * 3 + 2]);
+        }
         remap[v] = n;
       }
       const idx = new Uint32Array(g.idx.length);
@@ -161,8 +211,9 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
       const pos = new Float32Array(P);
       const ratio = typeof prod.preSimplify === "object" ? (prod.preSimplify[role] ?? prod.preSimplify.default) : prod.preSimplify;
       const target = Math.max(300, Math.floor((idx.length * ratio) / 3) * 3);
-      let [out] = MeshoptSimplifier.simplify(idx, pos, 3, target, prod.preSimplifyError ?? 0.01, []);
-      if (out.length > target * 1.5) [out] = [MeshoptSimplifier.simplifySloppy(idx, pos, 3, null, target, prod.preSimplifyError ?? 0.01)[0]];
+      const err = typeof prod.preSimplifyError === "object" ? (prod.preSimplifyError[role] ?? prod.preSimplifyError.default) : (prod.preSimplifyError ?? 0.01);
+      let [out] = MeshoptSimplifier.simplify(idx, pos, 3, target, err, []);
+      if (out.length > target * 1.5) [out] = [MeshoptSimplifier.simplifySloppy(idx, pos, 3, null, target, err)[0]];
       // Crease-aware normals on the reduced mesh: corners average the faces around their vertex
       // that lie within 35 degrees of their own face, so the shell and curved liners shade smoothly
       // while liner edges and lifter bars stay crisp (flat shading looked faceted).
@@ -176,7 +227,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
       }
       const unit = (x, y, z) => { const l = Math.hypot(x, y, z) || 1; return [x / l, y / l, z / l]; };
       const crease = Math.cos((35 * Math.PI) / 180);
-      const fp = [], fn = [], fi = [];
+      const fp = [], fn = [], fi = [], fd = [];
       for (let t = 0; t < nTri; t++) {
         const own = unit(fnrm[t * 3], fnrm[t * 3 + 1], fnrm[t * 3 + 2]);
         for (let k = 0; k < 3; k++) {
@@ -195,9 +246,10 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
             if (Math.abs(r[1] * own[1] + r[2] * own[2]) > 0.75) nv = [0, r[1] * sgn, r[2] * sgn];
           }
           fi.push(fp.length / 3); fp.push(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2]); fn.push(...nv);
+          if (pieces) fd.push(D[v * 3], D[v * 3 + 1], D[v * 3 + 2]);
         }
       }
-      g.pos = fp; g.nrm = fn; g.idx = fi;
+      g.pos = fp; g.nrm = fn; g.idx = fi; g.dir = fd;
     }
   }
 
@@ -231,6 +283,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     const ao = aoByRole.get(role);
     const floor = prod.aoFloor?.[role] ?? base.aoFloor ?? 0.28;
     let pos = g.pos, nrm = g.nrm, idx = g.idx;
+    let dir = g.dir?.length ? g.dir : null;
     let col = new Float32Array(ao.length * 3);
     for (let v = 0; v < ao.length; v++) col.fill(floor + (1 - floor) * Math.pow(ao[v], 1.4), v * 3, v * 3 + 3);
     let uv = null;
@@ -239,7 +292,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
       // it (by its face normal); a vertex shared by triangles facing different ways is split, so the
       // grain is never smeared between two projections inside a triangle (that showed as streaks).
       const tile = f.tile ?? 0.12; // metres per texture repeat
-      const P = [], N = [], C = [], U = [], I = [];
+      const P = [], N = [], C = [], U = [], I = [], Dn = [];
       const seen = new Map();
       for (let t = 0; t < idx.length; t += 3) {
         const [a, b, c] = [idx[t], idx[t + 1], idx[t + 2]];
@@ -254,6 +307,7 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
             n = P.length / 3;
             seen.set(key, n);
             P.push(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2]);
+            if (dir) Dn.push(dir[v * 3], dir[v * 3 + 1], dir[v * 3 + 2]);
             N.push(nrm[v * 3] ?? 0, nrm[v * 3 + 1] ?? 0, nrm[v * 3 + 2] ?? 1);
             C.push(col[v * 3], col[v * 3 + 1], col[v * 3 + 2]);
             const [u0, u1] = axis === 0 ? [pos[v * 3 + 1], pos[v * 3 + 2]] : axis === 1 ? [pos[v * 3], pos[v * 3 + 2]] : [pos[v * 3], pos[v * 3 + 1]];
@@ -263,10 +317,12 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
         }
       }
       pos = P; nrm = N; idx = I; col = new Float32Array(C); uv = new Float32Array(U);
+      if (dir) dir = Dn;
     }
     const prim = doc.createPrimitive()
       .setAttribute("POSITION", doc.createAccessor().setType("VEC3").setArray(new Float32Array(pos)).setBuffer(buf))
       .setAttribute("COLOR_0", doc.createAccessor().setType("VEC3").setArray(col).setBuffer(buf))
+      .setAttribute("_EXPLODE", dir ? doc.createAccessor().setType("VEC3").setArray(new Float32Array(dir)).setBuffer(buf) : null)
       .setIndices(doc.createAccessor().setType("SCALAR").setArray(new Uint32Array(idx)).setBuffer(buf))
       .setMaterial(mat);
     if (nrm.length === pos.length) prim.setAttribute("NORMAL", doc.createAccessor().setType("VEC3").setArray(new Float32Array(nrm)).setBuffer(buf));
@@ -279,7 +335,8 @@ for (const prod of products.filter((p) => !only.length || only.includes(p.id))) 
     weld(),
     // Fine tessellation keeps curved wear faces smooth; simplify then removes triangles only where the
     // surface stays within the error (flat areas), so files stay small.
-    simplify({ simplifier: MeshoptSimplifier, ratio: prod.simplify ?? 0.2, error: prod.simplifyError ?? 0.00035 }),
+    // Take-apart models are reduced per piece above; a second pass here would merge pieces.
+    ...(prod.explode ? [] : [simplify({ simplifier: MeshoptSimplifier, ratio: prod.simplify ?? 0.2, error: prod.simplifyError ?? 0.00035 })]),
     // Keep materials apart: identical finishes on different groups ("metal:shell-liners",
     // "metal:discharge") must stay separate so the site can highlight one group.
     dedup({ propertyTypes: [PropertyType.ACCESSOR, PropertyType.MESH, PropertyType.TEXTURE] }),
@@ -332,9 +389,10 @@ function stlParts(file, place = {}) {
     const y = buf.readFloatLE(o + 4), z = buf.readFloatLE(o + 8);
     if (place.mirrorX !== undefined) x = place.mirrorX - x;
     x += place.dx ?? 0;
-    const k = `${Math.round(x * 20)},${Math.round(y * 20)},${Math.round(z * 20)}`;
+    const yy = y + (place.dy ?? 0), zz = z + (place.dz ?? 0);
+    const k = `${Math.round(x * 20)},${Math.round(yy * 20)},${Math.round(zz * 20)}`;
     let i = key.get(k);
-    if (i === undefined) { i = P.length / 3; key.set(k, i); P.push(x, y, z); }
+    if (i === undefined) { i = P.length / 3; key.set(k, i); P.push(x, yy, zz); }
     tri[t * 3 + v] = i;
   }
   if (place.mirrorX !== undefined) for (let t = 0; t < n; t++) { const a = tri[t * 3 + 1]; tri[t * 3 + 1] = tri[t * 3 + 2]; tri[t * 3 + 2] = a; }

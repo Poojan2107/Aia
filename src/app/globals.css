@@ -7056,3 +7056,23 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
   .msr-hero .hero-headline { max-width: none; font-size: calc(80 * var(--u)) !important; line-height: calc(92 * var(--u)) !important; }
   .msr-hero .hero-rail { width: calc(392 * var(--u)); max-width: none; }
 }
+
+/* Take-apart viewer (MillExplorer). */
+.mexp { position: absolute; inset: 0; opacity: 0; transition: opacity 900ms var(--ease-out); }
+/* The take-apart needs the whole stage (opened parts travel beyond the assembled mill). */
+.msr-model:has(.mexp) { inset: 0; }
+.mexp.is-shown { opacity: 1; }
+
+/* Component list: the active item only gains its background (same box as the others, so nothing
+   jumps under the cursor); its description opens with a height transition. */
+.msr-item { gap: 0; margin-inline: -0.65rem; width: calc(100% + 1.3rem); padding-inline: 0.65rem; border-radius: 2px; }
+.msr-item.is-active { margin-block: 0; padding-block: 1.05rem; padding-inline: 0.65rem; }
+.msr-item-reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 420ms var(--ease-out), opacity 300ms; opacity: 0; }
+.msr-item-reveal > .msr-item-body { overflow: hidden; }
+.msr-item.is-active .msr-item-reveal { grid-template-rows: 1fr; opacity: 1; }
+.msr-item.is-active .msr-item-body { padding-top: 0.5rem; }
+@media (min-width: 1024px) {
+  .msr-item, .msr-item.is-active { padding: calc(22 * var(--u)) calc(10 * var(--u)); margin-inline: calc(-10 * var(--u)); width: calc(100% + 20 * var(--u)); margin-block: 0; }
+  .msr-item.is-active .msr-item-body { padding-top: calc(8 * var(--u)); }
+}
+@media (prefers-reduced-motion: reduce) { .msr-item-reveal { transition: none; } }
