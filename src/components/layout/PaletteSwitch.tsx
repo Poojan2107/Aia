@@ -2,23 +2,23 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Colour palettes AIA is choosing between (globals.css, html[data-palette]). */
+/** Colour palettes AIA is choosing between (globals.css, html[data-palette]). AIA Brand is the
+ * site's default (set on <html> in the layout, so there is no flash before this loads). */
 const PALETTES = [
-  { id: "default", name: "Current", note: "The site's own blues", colors: ["#041d2c", "#006eff", "#d96b27", "#f7f7f7"] },
   { id: "brand", name: "AIA Brand", note: "Brand Blue to Sporty Blue gradient, orange accents", colors: ["#1f2766", "#0061e0", "#efa500", "#ffffff"] },
-  { id: "motion", name: "Motion Gradient", note: "AIA Brand gradient, drifting slowly on the large blue surfaces", colors: ["#1f2766", "#1d4cc0", "#0061e0", "#efa500"] },
   { id: "secondary", name: "AIA Secondary", note: "Solid brand Blue with Light Orange", colors: ["#041d2c", "#2b357e", "#efa500", "#f7f7f7"] },
+  { id: "motion", name: "Motion Gradient", note: "AIA Brand with soft liquid light drifting through the blue surfaces", colors: ["#1f2766", "#1f2766", "#2b357e", "#0061e0"] },
 ] as const;
 
 type PaletteId = (typeof PALETTES)[number]["id"];
 const KEY = "aia-palette";
+const DEFAULT: PaletteId = "brand";
 
 function apply(id: PaletteId) {
   const root = document.documentElement;
-  // Motion Gradient is the AIA Brand palette plus a slow drift (html[data-motion], globals.css).
-  if (id === "default") delete root.dataset.palette;
-  else root.dataset.palette = id === "motion" ? "brand" : id;
-  if (id === "motion") root.dataset.motion = "on";
+  // Motion Gradient is the AIA Brand palette plus the liquid drift (html[data-motion], globals.css).
+  root.dataset.palette = id === "motion" ? "brand" : id;
+  if (id === "motion") root.dataset.motion = "liquid";
   else delete root.dataset.motion;
 }
 
@@ -29,11 +29,11 @@ function apply(id: PaletteId) {
 export function PaletteSwitch() {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
-  const [current, setCurrent] = useState<PaletteId>("default");
+  const [current, setCurrent] = useState<PaletteId>(DEFAULT);
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
-    let saved: PaletteId = "default";
+    let saved: PaletteId = DEFAULT;
     try {
       const v = localStorage.getItem(KEY);
       if (PALETTES.some((p) => p.id === v)) saved = v as PaletteId;

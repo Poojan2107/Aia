@@ -7257,84 +7257,6 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
   .qs-row, .qs-panel, .qs-panel-inner, .qs-panel-inner > * { transition: none !important; }
 }
 
-/* Motion Gradient palette (PaletteSwitch "motion" = AIA Brand + html[data-motion]). The surfaces
-   keep the AIA Brand gradient exactly (Brand Blue into Sporty Blue); only its soft light glow
-   drifts, slowly and within a small range, on the blue surfaces that matter: footer panel, product
-   name bars, CTA panels and solid CTA buttons (homepage too), active tabs. Small icon buttons, dots
-   and text stay still. It is an explicit palette choice, so it also runs with reduced motion on. */
-@keyframes aia-glow-drift {
-  0% { background-position: -50% 30%, 0 0; }
-  100% { background-position: 150% 70%, 0 0; }
-}
-html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent, .site-nav-contact, .vision-shard, :is(a, button).bg-aia-accent:not([class*="size-"])) {
-  /* The AIA Brand gradient stays put; a soft Sporty Blue light (60% of the width) sweeps across
-     nearly the whole surface and back, every 8s, so the motion is clearly visible but calm. */
-  background:
-    radial-gradient(closest-side, rgba(96, 170, 255, 0.6), rgba(96, 170, 255, 0) 100%) no-repeat,
-    linear-gradient(125deg, #1f2766 0%, #2b357e 32%, #1d4cc0 68%, #0061e0 100%);
-  background-size: 60% 180%, 100% 100%;
-  background-position: -50% 30%, 0 0;
-  animation: aia-glow-drift 8s ease-in-out infinite alternate;
-}
-/* Stacked bars drift out of step, so the stack never pulses in unison. */
-html[data-motion] .qs-card:nth-child(2n) .qs-bar { animation-delay: -3s; }
-html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -5.5s; }
-
-
-
-/* Quarry rail, closer to the Figma: bold navy titles, roomier rows, larger light body copy,
-   spaced benefit rows, top-aligned list. One unit (--qs-s) is 1% of the width, capped so the
-   opened rail (about 62 units tall) always fits under the navbar. Opening staggers its lines in. */
-@media (min-width: 1024px) {
-  .qs { --qs-s: min(1vw, calc((100svh - var(--site-header-h)) / 66)); }
-  .qs-rail { justify-content: flex-start; padding-top: calc(var(--qs-s) * 2.2); }
-  .qs-list { border-top: 0; }
-  .qs-row { height: calc(var(--qs-s) * 4.3); padding: 0 calc(var(--qs-s) * 2.4) 0 calc(var(--qs-s) * 4); }
-  .qs-row-title { font-weight: 700; font-size: calc(var(--qs-s) * 2.3); letter-spacing: -0.01em; color: #0d1726; }
-  .qs-row-icon { transition: transform 300ms var(--ease-out); }
-  .qs-row:hover .qs-row-icon { transform: translateY(2px); }
-  .qs-panel-inner { padding: 0 calc(var(--qs-s) * 5) 0 calc(var(--qs-s) * 4); }
-  .qs-item.is-open .qs-panel-inner { padding-top: calc(var(--qs-s) * 1.2); padding-bottom: calc(var(--qs-s) * 2.4); }
-  .qs-rail .qs-eyebrow { font-size: max(11px, calc(var(--qs-s) * 0.82)); letter-spacing: 0.14em; }
-  .qs-rail .qs-name { margin-top: calc(var(--qs-s) * 1.1); font-weight: 700; font-size: calc(var(--qs-s) * 2.8); letter-spacing: -0.01em; color: #0d1726; }
-  .qs-rail .qs-text {
-    margin-top: calc(var(--qs-s) * 1.1);
-    padding-bottom: calc(var(--qs-s) * 1.6);
-    font-weight: 300;
-    font-size: max(13px, calc(var(--qs-s) * 1.12));
-    line-height: 1.6;
-    color: #868c96;
-  }
-  .qs-rail .qs-eyebrow--benefit { margin-top: calc(var(--qs-s) * 1.6); }
-  .qs-rail .qs-benefits { margin-top: calc(var(--qs-s) * 0.5); }
-  .qs-rail .qs-benefits li { font-size: max(13px, calc(var(--qs-s) * 0.92)); padding: calc(var(--qs-s) * 0.75) 0; }
-  .qs-rail .qs-cta { margin-top: calc(var(--qs-s) * 1.8); }
-
-  /* Reveal: the opening product's lines rise in one after another; closing is quick, no delay. */
-  .qs-panel-inner > *, .qs-benefits li { opacity: 0; transform: translateY(16px); transition: opacity 260ms ease, transform 260ms ease; transition-delay: 0ms; }
-  .qs-item.is-open .qs-panel-inner > *, .qs-item.is-open .qs-benefits li {
-    opacity: 1;
-    transform: none;
-    transition: opacity 520ms ease, transform 700ms var(--ease-out);
-  }
-  .qs-item.is-open .qs-panel-inner > :nth-child(1) { transition-delay: 180ms; }
-  .qs-item.is-open .qs-panel-inner > :nth-child(2) { transition-delay: 240ms; }
-  .qs-item.is-open .qs-panel-inner > :nth-child(3) { transition-delay: 300ms; }
-  .qs-item.is-open .qs-panel-inner > :nth-child(4) { transition-delay: 360ms; }
-  .qs-item.is-open .qs-panel-inner > :nth-child(5) { transition-delay: 380ms; }
-  .qs-item.is-open .qs-benefits li:nth-child(1) { transition-delay: 420ms; }
-  .qs-item.is-open .qs-benefits li:nth-child(2) { transition-delay: 480ms; }
-  .qs-item.is-open .qs-benefits li:nth-child(3) { transition-delay: 540ms; }
-  .qs-item.is-open .qs-benefits li:nth-child(4) { transition-delay: 600ms; }
-  .qs-item.is-open .qs-panel-inner > :nth-child(6) { transition-delay: 660ms; }
-  /* The product in view: its name bar deepens slightly, the others rest. */
-  .qs-card .qs-bar { transition: filter 400ms ease; filter: saturate(0.8) brightness(1.04); }
-  .qs-card.is-active .qs-bar { filter: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .qs-panel-inner > *, .qs-benefits li { transition: none !important; }
-}
-
 /* Quarry rail, Figma proportions. --qs-u is 1% of the rail's width (39vw), capped by the screen
    height so the opened rail (~150 units) always fits. The rail sticks at the very top with room
    for the navbar, so its content keeps the same position whether the navbar shows or hides. */
@@ -7359,3 +7281,26 @@ html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -5.5s; }
   .qs-rail .qs-benefits li { font-size: max(12px, calc(var(--qs-u) * 2.25)); padding: calc(var(--qs-u) * 2.1) 0; }
   .qs-rail .qs-cta { margin-top: calc(var(--qs-u) * 4.4); }
 }
+
+/* ── Motion Gradient (PaletteSwitch "motion" = AIA Brand + html[data-motion="liquid"]) ────────────
+   Liquid Drift: Brand Blue #1f2766 carries ~80% of each blue surface; a Sporty Blue and a mid-blue
+   field (~20%) drift slowly past each other. The fields are oversized and fade out fully, so there
+   are no shapes, only light moving like liquid. Footer panel, product name bars, CTA panels and
+   solid CTA buttons, active tabs and the selected navbar chip; small icons, dots and text stay still. */
+html[data-motion="liquid"] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy, .inds-cta, .mats-tab[aria-selected="true"], .mill-callout.is-accent, .site-nav-contact, .vision-shard, .nav-pill-item[aria-expanded="true"], .nav-pill-item.is-current, :is(a, button).bg-aia-accent:not([class*="size-"])) {
+  background:
+    radial-gradient(closest-side, rgba(0, 97, 224, 0.42), rgba(0, 97, 224, 0) 100%) no-repeat,
+    radial-gradient(closest-side, rgba(43, 53, 126, 0.8), rgba(43, 53, 126, 0) 100%) no-repeat,
+    #1f2766;
+  background-size: 85% 230%, 75% 210%, 100% 100%;
+  background-position: -40% 20%, 140% 80%, 0 0;
+  animation: liq-drift 24s ease-in-out infinite alternate;
+}
+@keyframes liq-drift {
+  0% { background-position: -40% 20%, 140% 80%, 0 0; }
+  50% { background-position: 55% 75%, 30% 25%, 0 0; }
+  100% { background-position: 140% 35%, -35% 60%, 0 0; }
+}
+/* Stacked quarry name bars drift out of step. */
+html[data-motion="liquid"] .qs-card:nth-child(2n) .qs-bar { animation-delay: -6s; }
+html[data-motion="liquid"] .qs-card:nth-child(3n) .qs-bar { animation-delay: -12s; }

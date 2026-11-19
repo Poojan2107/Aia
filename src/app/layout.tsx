@@ -114,6 +114,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-palette="brand"
       suppressHydrationWarning
       className={`${display.variable} ${sans.variable} ${serif.variable} ${onest.variable} h-full`}
     >
