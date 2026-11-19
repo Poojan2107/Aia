@@ -77,6 +77,12 @@ qa/
 /public/screenshots (2)/
 /public/videos/20260821-*.mp4
 /public/videos/Screen Recording*.mp4
+/public/videos/Copy of Quarry*.mp4
+/public/videos/quarry.mp4
+/public/videos/Video Project*.mp4
+/docs/*.xlsx
+/docs/archive/
+/docs/d/
 
 # Document generators for client deliverables and the AIA Assistant (separate repo)
 /scripts/generate*.py
@@ -96,3 +102,8 @@ __pycache__/
 # AIA-provided CAD library (confidential, 3.9 GB): never commit
 /models/
 scripts/cad/tex/studio-ldr.jpg
+
+/public/videos/corporate.*
+/public/videos/hero.*
+/public/videos/mill.*
+/scripts/keyword-report-additions/

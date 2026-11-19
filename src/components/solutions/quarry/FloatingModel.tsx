@@ -89,7 +89,8 @@ export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight 
       const pbr = m.pbrMetallicRoughness;
       if (!originals.current.has(m.name)) originals.current.set(m.name, { base: [...pbr.baseColorFactor], glow: [...m.emissiveFactor] });
       const own = originals.current.get(m.name)!;
-      const lit = want.includes(m.name.split(":")[1] ?? "");
+      // A group ("shell-liners") lights every finish in it; a full name ("sinterHicr:liners") just one.
+      const lit = want.includes(m.name.split(":")[1] ?? "") || want.includes(m.name);
       pbr.setBaseColorFactor(!want.length ? own.base : lit ? HIGHLIGHT : recede(own.base));
       m.setEmissiveFactor(want.length && lit ? GLOW : own.glow);
     }

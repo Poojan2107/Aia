@@ -5,7 +5,7 @@
  */
 export const PREVIEWS_LIVE = true;
 
-export const LOCAL_PREVIEW_PATHS = ["/solutions/quarry/products", "/solutions/mining"] as const;
+export const LOCAL_PREVIEW_PATHS = ["/solutions/quarry/products", "/solutions/mining", "/solutions/mining/products"] as const;
 
 export function isLocalHostname(hostname: string | null | undefined): boolean {
   if (!hostname) return false;

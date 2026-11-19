@@ -8,7 +8,11 @@ import { caseStudies } from "@/data/content";
 
 const COPIES = 4;
 
-export function CaseStudies() {
+/** Homepage case studies carousel; other pages reuse it with their own heading (two lines). */
+export function CaseStudies({
+  heading = ["When the challenge is real,", "performance has to be proven."],
+  tone = "bg-white",
+}: { heading?: [string, string]; tone?: string } = {}) {
   const count = caseStudies.length;
   const strip = Array.from({ length: COPIES }, () => [...caseStudies]).flat();
   const [index, setIndex] = useState(count + (count - 1));
@@ -119,7 +123,7 @@ export function CaseStudies() {
 
   return (
     <section
-      className="bg-white py-[var(--section-y)]"
+      className={`${tone} py-[var(--section-y)]`}
       aria-labelledby="cases-heading"
     >
       <div className="page-pad page-max mb-10 flex flex-col gap-6 sm:mb-12 lg:mb-14 lg:flex-row lg:items-start lg:justify-between">
@@ -128,8 +132,8 @@ export function CaseStudies() {
             id="cases-heading"
             className="display ft ft-h62t text-aia-navy"
           >
-            <span className="block lg:whitespace-nowrap">When the challenge is real,</span>
-            <span className="block lg:whitespace-nowrap">performance has to be proven.</span>
+            <span className="block lg:whitespace-nowrap">{heading[0]}</span>
+            <span className="block lg:whitespace-nowrap">{heading[1]}</span>
           </h2>
         </Reveal>
         <div className="flex shrink-0 flex-col items-start gap-3 sm:items-end">

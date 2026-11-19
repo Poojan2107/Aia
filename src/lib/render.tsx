@@ -8,6 +8,7 @@ import { IndustryProducts } from "@/components/templates/industry/IndustryProduc
 import { IndustryServices } from "@/components/templates/industry/IndustryServices";
 import { IndustrySolutions } from "@/components/templates/industry/IndustrySolutions";
 import { QuarryLanding } from "@/components/solutions/quarry/QuarryLanding";
+import { MiningShowroom } from "@/components/solutions/mining/MiningShowroom";
 import { BoardPage, DirectorPage, CommitteesPage, CsrListingPage, CsrDetailPage } from "@/components/templates/company";
 import { InvestorPage, StockTickerPage } from "@/components/templates/investors/InvestorPage";
 import {
@@ -69,7 +70,9 @@ async function body(route: RouteEntry): Promise<React.ReactNode> {
       const content = required(await cms.industryProducts(route.id));
       const products = content.groups.flatMap((group) => group.products);
       const Products =
-        route.id === "quarry-products" ? (
+        route.id === "mining-products" ? (
+          <MiningShowroom />
+        ) : route.id === "quarry-products" ? (
           <QuarryLanding content={content} label={`${label} products`} contactHref={contactHref} back={backLink(route)} />
         ) : (
           <IndustryProducts content={content} label={`${label} products`} contactHref={contactHref} back={backLink(route)} />

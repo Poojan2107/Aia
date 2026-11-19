@@ -11,6 +11,11 @@ import { chromium } from "playwright";
 const views = {
   "mining-sintercast-verti-mill-liners": { orbit: "-20deg 76deg 70%", target: "0m -1.7m 0m" },
   "quarry-sintercast-hammer": { orbit: "35deg 68deg 128%" },
+  "mill-ball-ngds": { orbit: "-30deg 48deg 85%" },
+  "mill-ball-full": { orbit: "-30deg 60deg 85%" },
+  "mill-sag-full": { orbit: "-30deg 64deg 105%" },
+  "mill-sag-cut": { orbit: "-30deg 50deg 95%" },
+  "mill-verti": { orbit: "20deg 62deg 105%" },
   "grinding-media-hicr": { orbit: "0deg 86deg 76%", shadow: "0.35", fov: "10deg" },
 };
 const only = process.argv.slice(2);

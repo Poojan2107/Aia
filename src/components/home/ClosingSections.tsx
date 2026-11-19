@@ -105,14 +105,14 @@ export function Sustainability() {
 }
 
 export function Faq() {
-  const [open, setOpen] = useState(1);
+  const [open, setOpen] = useState(0);
 
   return (
     <section
       className="faq-section bg-[#f7f7f7]"
       aria-labelledby="faq-heading"
     >
-      <div className="faq-grid grid border-y border-[#d6d6d6] lg:h-[550px] lg:grid-cols-2 lg:items-stretch">
+      <div className="faq-grid grid border-y border-[#d6d6d6] lg:min-h-[550px] lg:grid-cols-2 lg:items-stretch">
         <div className="faq-left flex flex-col justify-center py-14 sm:py-16 lg:border-r lg:border-[#d6d6d6] lg:py-0">
           <SectionLabel className="mb-4">
             Frequently Asked Questions

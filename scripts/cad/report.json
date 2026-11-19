@@ -170,5 +170,203 @@
     "kb": 230,
     "seconds": 2.6,
     "aoSeconds": 2.1
+  },
+  "quarry-anvil": {
+    "aiaRef": "Quarry › ANVIL (11549)",
+    "sizeMm": [
+      303,
+      266,
+      360
+    ],
+    "triangles": 1910,
+    "rolesBeforeSimplify": {
+      "metal": 3852
+    },
+    "kb": 85,
+    "seconds": 1,
+    "aoSeconds": 0.7
+  },
+  "quarry-feed-disk": {
+    "aiaRef": "Quarry › FEED DISK (11555)",
+    "sizeMm": [
+      685,
+      117,
+      685
+    ],
+    "triangles": 5466,
+    "rolesBeforeSimplify": {
+      "metal": 11852
+    },
+    "kb": 131,
+    "seconds": 1.5,
+    "aoSeconds": 1.1
+  },
+  "quarry-frame-liner": {
+    "aiaRef": "Quarry › FRAME LINER (12735)",
+    "sizeMm": [
+      377,
+      30,
+      187
+    ],
+    "triangles": 338,
+    "rolesBeforeSimplify": {
+      "metal": 340
+    },
+    "kb": 62,
+    "seconds": 0.2,
+    "aoSeconds": 0.2
+  },
+  "quarry-impeller": {
+    "aiaRef": "Quarry › IMPELLER (11550)",
+    "sizeMm": [
+      281,
+      169,
+      228
+    ],
+    "triangles": 2286,
+    "rolesBeforeSimplify": {
+      "metal": 3996
+    },
+    "kb": 90,
+    "seconds": 0.7,
+    "aoSeconds": 0.6
+  },
+  "quarry-hammer": {
+    "aiaRef": "Quarry › HAMMER (9544)",
+    "sizeMm": [
+      187,
+      385,
+      235
+    ],
+    "triangles": 2118,
+    "rolesBeforeSimplify": {
+      "metal": 2970
+    },
+    "kb": 83,
+    "seconds": 1.1,
+    "aoSeconds": 0.8
+  },
+  "mining-sag-ngds-de": {
+    "aiaRef": "W9_5693_26_J (SAG DE ASM NGDS)",
+    "sizeMm": [
+      6867,
+      6433,
+      2659
+    ],
+    "triangles": 68378,
+    "rolesBeforeSimplify": {
+      "metal": 262938,
+      "bolt": 90128,
+      "rubber": 3840
+    },
+    "kb": 1676,
+    "seconds": 80.1,
+    "aoSeconds": 4.8
+  },
+  "mining-ball-ngds-mill": {
+    "aiaRef": "W9_5756_26_C (BM NGDS FULL ASM RUBBER)",
+    "sizeMm": [
+      7157,
+      2386,
+      3360
+    ],
+    "triangles": 98328,
+    "rolesBeforeSimplify": {
+      "metal": 155006,
+      "rubber": 57334,
+      "bolt": 196888
+    },
+    "kb": 1815,
+    "seconds": 79.2,
+    "aoSeconds": 5.1
+  },
+  "mill-ball-ngds": {
+    "aiaRef": "W9_5678_78_D (BM NGDS FULL ASM COMPOSITE)",
+    "sizeMm": [
+      14819,
+      3759,
+      4877
+    ],
+    "triangles": 60787,
+    "rolesBeforeSimplify": {
+      "millBody:body": 4732,
+      "metal:feed-liners": 4561,
+      "metal:shell-liners": 28150,
+      "metal:discharge": 24504
+    },
+    "kb": 1744,
+    "seconds": 197.5,
+    "aoSeconds": 3.2
+  },
+  "mill-verti": {
+    "aiaRef": "Verty Mill assembly 16461 (open door)",
+    "sizeMm": [
+      11540,
+      22422,
+      11553
+    ],
+    "triangles": 29063,
+    "rolesBeforeSimplify": {
+      "millBody:body": 18301,
+      "sinterCeramic:liners": 3974,
+      "sinterHicr:liners": 8252,
+      "metal:shaft": 10250,
+      "metal:wall-liners": 3223
+    },
+    "kb": 715,
+    "seconds": 16.7,
+    "aoSeconds": 3.6
+  },
+  "mill-ball-full": {
+    "aiaRef": "FULL MILL_ASSLY (ball mill)",
+    "sizeMm": [
+      14492,
+      8485,
+      8485
+    ],
+    "triangles": 39833,
+    "rolesBeforeSimplify": {
+      "millTrunnion:outer": 6811,
+      "millHead:outer": 19906,
+      "millShell:outer": 16757
+    },
+    "kb": 983,
+    "seconds": 22,
+    "aoSeconds": 4.2
+  },
+  "mill-sag-full": {
+    "aiaRef": "SAG mill FE_SHELL_DE_FULL ASSEMBLY",
+    "sizeMm": [
+      9465,
+      10194,
+      10194
+    ],
+    "triangles": 31552,
+    "rolesBeforeSimplify": {
+      "millTrunnion:outer": 3766,
+      "millHead:outer": 25084,
+      "millShell:outer": 3883
+    },
+    "kb": 820,
+    "seconds": 24.1,
+    "aoSeconds": 4
+  },
+  "mill-sag-cut": {
+    "aiaRef": "SAG mill FE_SHELL_DE_FULL ASSEMBLY (cut away)",
+    "sizeMm": [
+      9465,
+      10194,
+      10194
+    ],
+    "triangles": 133480,
+    "rolesBeforeSimplify": {
+      "metal:feed-liners": 26205,
+      "millBody:body": 16070,
+      "metal:shell-liners": 49453,
+      "metal:discharge": 65214
+    },
+    "kb": 3961,
+    "seconds": 35.7,
+    "aoSeconds": 10.4
   }
 }

@@ -174,30 +174,31 @@ export const technologyPillars = [
 
 export const faqs = [
   {
-    question: "Can AIA solutions be used with our existing mill?",
+    question: "What does AIA Engineering do?",
     answer:
-      "Yes. AIA wear solutions are engineered for specific mill types and operating conditions, and can be designed to work with existing equipment.",
+      "AIA Engineering provides engineered grinding solutions for Mining, Cement, Quarry and Thermal industries. Our products include mill liners and Hi-Cr grinding media for these industries. We combine advanced metallurgy, product engineering and manufacturing expertise to improve mill reliability, grinding efficiency and operational performance.",
   },
   {
-    question: "What exactly does AIA Engineering provide?",
+    question: "Does AIA provide any technical services support?",
     answer:
-      "AIA designs, develops, manufactures, installs and services wear-, corrosion- and abrasion-resistant components, along with solutions aimed at improving grinding performance.",
-  },
-  {
-    question: "Which industries does AIA work with?",
-    answer:
-      "We serve mining, cement, quarry and thermal power operations with grinding and crushing wear solutions.",
-  },
-  {
-    question: "Does AIA provide installation and on-site support?",
-    answer:
-      "Yes. From reline supervision to mill operation support, our teams help installation and performance programmes run safely and efficiently.",
+      "Yes, beyond product supply, AIA Engineering supports customers through a range of technical services such as liner wear monitoring, reline supervision, grinding circuit survey, process optimization, mill operation support, ball size optimization, marked ball test (MBT) for alloy selection and laboratory bench test for recovery improvement.",
   },
   {
     question:
-      "What happens if we have a specific wear or performance problem?",
+      "What material of construction does AIA manufacture mill liners in?",
     answer:
-      "Speak with a specialist. We review application conditions, metallurgy and operating data to recommend a solution path.",
+      "AIA manufactures mill liners in a range of MOCs (Materials of Construction) including metal (steel/ Hi-Cr), rubber, composite and Sintercast®. However, MOCs differ from application to application depending on wear conditions and operating procedures.",
+  },
+  {
+    question: "What is NGDS (Next-Gen Discharge System)?",
+    answer:
+      "The NGDS is our patented discharge end system that improves grinding conditions in SAG and Ball mills. It efficiently eliminates slurry pooling, carry over and enables effective evacuation of material resulting in increased throughput, grind size optimization and reduced specific power consumption, thus helping mining operations reduce operating costs and enhanced mill performance.",
+  },
+  {
+    question:
+      "What kind of capabilities does AIA possess to serve customer requirements on a global scale?",
+    answer:
+      "AIA Engineering operates across six manufacturing clusters consisting of modern foundries and state-of-the-art manufacturing facilities with automated heat treatment processes enabling an annual production capacity of over 450,000MT. Vega Industries, AIA’s international marketing arm, provides support through its 10+ global service centers and established network of warehouses to customers in 120+ countries across the globe.",
   },
 ] as const;
 
