@@ -21,7 +21,7 @@ type Film = {
 /** The five gallery films (AIA / Vega YouTube), each with its own designed thumbnail. */
 const films: readonly Film[] = [
   { id: "ball-mill-conversion", title: "Ball Mill Conversion: Overflow to Grate Discharge", poster: "/images/gallery-ball-mill-conversion.webp", youtube: "fJ40WB2JAqc" },
-  { id: "next-gen-pulp-lifter", title: "Next Gen Pulp Lifter", poster: "/images/gallery-next-gen-pulp-lifter.webp", youtube: "Ewxm_uvmJSE" },
+  { id: "next-gen-pulp-lifter", title: "Next Gen Discharge System", poster: "/images/gallery-next-gen-pulp-lifter.webp", youtube: "Ewxm_uvmJSE" },
   { id: "ball-mill-lining", title: "Ball Mill Lining Solutions", poster: "/images/gallery-ball-mill-lining.webp", youtube: "OXEIk649YxQ" },
   { id: "sag-mill-lining", title: "SAG Mill Lining Solutions", poster: "/images/gallery-sag-mill-lining.webp", youtube: "JF9CuGzbreA" },
   { id: "corporate-film", title: "AIA Corporate Film", poster: "/images/gallery-aia-overview.webp", youtube: "9d147D3G4PA" },
