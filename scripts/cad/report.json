@@ -38,13 +38,13 @@
     ],
     "triangles": 69584,
     "rolesBeforeSimplify": {
-      "metal": 171426,
+      "compositeInsert": 171426,
       "bolt": 40632,
       "composite": 135872
     },
-    "kb": 1003,
-    "seconds": 24.9,
-    "aoSeconds": 3.9
+    "kb": 1153,
+    "seconds": 19.4,
+    "aoSeconds": 3.1
   },
   "thermal-metal-tube-mill-oblique-wave-liner": {
     "aiaRef": "AIA_A1_084_OW_2",
@@ -165,11 +165,13 @@
     ],
     "triangles": 14080,
     "rolesBeforeSimplify": {
-      "media": 14080
+      "mediaDark": 3840,
+      "media": 6400,
+      "mediaWarm": 3840
     },
-    "kb": 230,
+    "kb": 234,
     "seconds": 2.6,
-    "aoSeconds": 2.1
+    "aoSeconds": 2.2
   },
   "quarry-anvil": {
     "aiaRef": "Quarry › ANVIL (11549)",

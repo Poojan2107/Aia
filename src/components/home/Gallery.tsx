@@ -13,32 +13,23 @@ type Film = {
   title: string;
   caption?: string;
   poster: string;
+  /** AIA / Vega YouTube video id: played in the card (privacy-enhanced embed) and linked out. */
+  youtube: string;
   branded?: boolean;
 };
 
+/** The five gallery films (AIA / Vega YouTube), each with its own designed thumbnail. */
 const films: readonly Film[] = [
-  {
-    id: "lining",
-    title: "Ball Mill Conversion",
-    caption: "Overflow to Grate Discharge | Next Gen Pulp Lifter",
-    poster: "/images/gallery-ball-mill-conversion.webp",
-    branded: false,
-  },
-  {
-    id: "corporate",
-    title: "Engineering Excellence",
-    caption: "AIA Engineering Limited | Global Wear Solutions",
-    poster: "/images/gallery-engineering-excellence.webp",
-    branded: false,
-  },
-  {
-    id: "components",
-    title: "Overflow vs. Grate Discharge",
-    caption: "Ball Mill Conversion | Next Gen Pulp Lifter",
-    poster: "/images/gallery-overflow-vs-grate.webp",
-    branded: false,
-  },
+  { id: "ball-mill-conversion", title: "Ball Mill Conversion: Overflow to Grate Discharge", poster: "/images/gallery-ball-mill-conversion.webp", youtube: "fJ40WB2JAqc" },
+  { id: "next-gen-pulp-lifter", title: "Next Gen Pulp Lifter", poster: "/images/gallery-next-gen-pulp-lifter.webp", youtube: "Ewxm_uvmJSE" },
+  { id: "ball-mill-lining", title: "Ball Mill Lining Solutions", poster: "/images/gallery-ball-mill-lining.webp", youtube: "OXEIk649YxQ" },
+  { id: "sag-mill-lining", title: "SAG Mill Lining Solutions", poster: "/images/gallery-sag-mill-lining.webp", youtube: "JF9CuGzbreA" },
+  { id: "corporate-film", title: "AIA Corporate Film", poster: "/images/gallery-aia-overview.webp", youtube: "9d147D3G4PA" },
 ];
+
+const ytWatch = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+const ytEmbed = (id: string) =>
+  `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
 
 const COPIES = 5;
 
@@ -242,26 +233,44 @@ export function Gallery() {
                   className={`rounded-[1.25rem] overflow-hidden${!isCenter ? " cursor-pointer" : ""}`}
                   aria-label={!isCenter ? `Show ${card.title}` : undefined}
                 >
-                  <MediaSlot
-                    poster={card.poster}
-                    posterAlt={card.title}
-                    eager
-                    // Films are off for now: every card shows its thumbnail only (no play button).
-                    playback="ambient"
-                    active={playing}
-                    onActiveChange={(next) =>
-                      setPlayingId(next ? card.id : null)
-                    }
-                    className="aspect-[16/10] bg-[#1a1f24] rounded-[1.25rem] overflow-hidden shadow-sm"
-                    sizes={
-                      isCenter ? "(max-width: 768px) 85vw, 48vw" : "37vw"
-                    }
-                  >
-                    {card.branded && !playing ? <BrandMarks /> : null}
-                    {!playing ? (
-                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                    ) : null}
-                  </MediaSlot>
+                  {playing ? (
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem] bg-black shadow-sm">
+                      <iframe
+                        src={ytEmbed(card.youtube)}
+                        title={card.title}
+                        className="absolute inset-0 h-full w-full"
+                        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                        allowFullScreen
+                        referrerPolicy="strict-origin-when-cross-origin"
+                      />
+                    </div>
+                  ) : (
+                    <MediaSlot
+                      poster={card.poster}
+                      posterAlt={card.title}
+                      eager
+                      playback="ambient"
+                      className="aspect-[16/10] bg-[#1a1f24] rounded-[1.25rem] overflow-hidden shadow-sm"
+                      sizes={isCenter ? "(max-width: 768px) 85vw, 48vw" : "37vw"}
+                    >
+                      {card.branded ? <BrandMarks /> : null}
+                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+                      {isCenter ? (
+                        <button
+                          type="button"
+                          className="gallery-play"
+                          aria-label={`Play ${card.title}`}
+                          onClick={() => {
+                            if (!isDraggingRef.current) setPlayingId(card.id);
+                          }}
+                        >
+                          <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden>
+                            <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />
+                          </svg>
+                        </button>
+                      ) : null}
+                    </MediaSlot>
+                  )}
                 </div>
               </figure>
             );
@@ -269,9 +278,18 @@ export function Gallery() {
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-center gap-2.5 text-aia-navy/70">
-        <YouTubeMark />
-        <span className="ft ft-film24">{activeFilm.title}</span>
+      <div className="mt-4 flex justify-center">
+        <a
+          href={ytWatch(activeFilm.youtube)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="gallery-yt group inline-flex items-center gap-2.5 text-aia-navy/75 transition-colors hover:text-aia-navy"
+          aria-label={`Watch ${activeFilm.title} on YouTube (opens in a new tab)`}
+        >
+          <YouTubeMark />
+          <span className="ft ft-film24">{activeFilm.title}</span>
+          <span className="gallery-yt-cta">Watch on YouTube ↗</span>
+        </a>
       </div>
 
       <div className="mt-8 flex items-center justify-center gap-5">

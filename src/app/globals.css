@@ -7386,3 +7386,37 @@ html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -26s; }
 .hero-films:not(.is-ready) .hero-layer { transition-duration: 0.9s; }
 /* The readability scrim always sits above every film layer (layers stack up to z-index 2). */
 .hero-films .hero-scrim { z-index: 3; }
+
+/* Gallery: play button on the centre card (plays the YouTube film in place), and the
+   "Watch on YouTube" link under the carousel. */
+.gallery-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 5vw, 76px);
+  height: clamp(56px, 5vw, 76px);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transform: translate(-50%, -50%);
+  transition: transform 300ms var(--ease-out), background-color 300ms;
+  cursor: pointer;
+}
+.gallery-play svg { margin-left: 3px; }
+.gallery-play:hover { transform: translate(-50%, -50%) scale(1.08); background: rgba(255, 0, 0, 0.85); border-color: transparent; }
+.gallery-yt-cta {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--aia-accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color 200ms;
+}
+.gallery-yt:hover .gallery-yt-cta { border-bottom-color: currentColor; }
