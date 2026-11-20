@@ -1141,7 +1141,9 @@ video.film-cover {
     --cases-side: clamp(6.25rem, 7.2vw, 7.75rem);
     --cases-card: calc((100vw - 2 * var(--cases-side) - 2 * var(--cases-gap)) / 3);
     display: block;
-    overflow: hidden;
+    /* Clip only the sides (the off-screen cards); the hover lift and focus ring stay whole at the top. */
+    overflow-x: clip;
+    overflow-y: visible;
     user-select: none;
     touch-action: pan-y;
     cursor: grab;
