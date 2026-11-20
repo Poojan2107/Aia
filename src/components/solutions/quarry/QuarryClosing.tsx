@@ -45,7 +45,7 @@ export function QuarryClosing() {
 
 /** The other three industries, with the homepage's own lines for each (IndustryPanels). */
 const OTHERS = [
-  { route: "mining", title: "Advanced comminution technologies for critical grinding media.", label: "Explore mining" },
+  { route: "mining", title: "Advanced comminution technologies for critical grinding applications.", label: "Explore mining" },
   { route: "cement", title: "Innovative solutions for cement grinding excellence.", label: "Explore cement" },
   { route: "thermal-power", title: "Wear resistant solutions for demanding coal grinding applications.", label: "Explore thermal" },
 ];
