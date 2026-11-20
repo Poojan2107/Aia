@@ -171,7 +171,7 @@ export const mocCatalog: MocIndustry[] = [
     entries: [
       {
         id: "quarry-metal",
-        moc: "Metal",
+        moc: "Mono Metal",
         product: "Blow Bars",
         specs: ["Impact crushers"],
         body: [

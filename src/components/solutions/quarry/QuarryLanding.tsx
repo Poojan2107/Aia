@@ -14,7 +14,7 @@ type Props = {
 
 /**
  * Local quarry products page, per the Figma: video hero, the scroll-driven product showcase (six
- * crusher wear parts with AIA's 3D models), case studies, FAQ, then the site footer.
+ * crusher wear parts with AIA's 3D models, each with a Mono Metal / Sintercast® switcher), FAQ, then the footer.
  */
 export function QuarryLanding({ content }: Props) {
   // Figma "Quarry - Product Page" (1233:50) copy over our own quarry film (no still image).

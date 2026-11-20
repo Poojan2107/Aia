@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CtaButton } from "@/components/ui/CtaButton";
 import { glideTo } from "@/components/motion/MotionProvider";
-import { FloatingModel } from "@/components/solutions/quarry/FloatingModel";
+import { FloatingModel, type Finish } from "@/components/solutions/quarry/FloatingModel";
 import type { IndustryProductsContent } from "@/content/types";
 
 /** AIA's own Quarry CAD (3D PDFs decoded locally, scripts/cad/manifest.mjs), per product id. */
@@ -15,6 +15,17 @@ const MODELS: Record<string, { src: string; orbit?: string }> = {
   "feed-disk": { src: "/models/catalog/quarry-feed-disk.glb", orbit: "20deg 58deg 105%" },
   "frame-liners": { src: "/models/catalog/quarry-frame-liner.glb", orbit: "30deg 55deg 105%" },
 };
+
+/**
+ * MOC switcher: AIA offers every quarry part except frame liners "with and without ceramic"
+ * (src/content/industries/quarry.ts). Mono Metal shows the model's own Metal finish; Sintercast®
+ * (Hi-Cr with ceramic) blends it into the Sintercast Hi-Cr finish AIA approved for the homepage
+ * Sintercast hammer (scripts/cad/materials.mjs: sinterHicr). Both share the same cast textures.
+ */
+const MOCS = ["Mono Metal", "Sintercast®"] as const;
+type Moc = (typeof MOCS)[number];
+const SINTERCAST: Finish = { color: [0.085, 0.087, 0.092], metallic: 0.85, roughness: 0.8 };
+const MONO_ONLY = new Set(["frame-liners"]);
 
 /**
  * Product benefits, as in the Figma ("Quarry - Product Page"). Blow Bars are the Figma's own lines;
@@ -73,6 +84,7 @@ export function QuarryShowcase({ content }: Props) {
   const group = content.groups[0];
   const products = group.products;
   const [active, setActive] = useState(0);
+  const [moc, setMoc] = useState<Record<string, Moc>>({});
   const stackRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -227,12 +239,33 @@ export function QuarryShowcase({ content }: Props) {
       <div ref={stackRef} className="qs-stack">
         {products.map((p, i) => {
           const model = MODELS[p.id];
+          const offered: readonly Moc[] = MONO_ONLY.has(p.id) ? MOCS.slice(0, 1) : MOCS;
+          const current = moc[p.id] ?? "Mono Metal";
           return (
             <article key={p.id} id={p.id} data-qs-card className={`qs-card ${i === active ? "is-active" : ""}`}>
               <h3 className="qs-bar">{p.title}</h3>
               <div className="qs-media">
+                <div className="qs-moc" role="radiogroup" aria-label={`${p.title} material of construction`}>
+                  {offered.map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      role="radio"
+                      aria-checked={current === m}
+                      className="qs-moc-opt"
+                      onClick={() => setMoc((s) => ({ ...s, [p.id]: m }))}
+                    >
+                      {m}
+                    </button>
+                  ))}
+                </div>
                 {model ? (
-                  <FloatingModel src={model.src} orbit={model.orbit} alt={`${p.title}, 3D model from AIA's CAD`} />
+                  <FloatingModel
+                    src={model.src}
+                    orbit={model.orbit}
+                    finish={current === "Sintercast®" ? SINTERCAST : undefined}
+                    alt={`${p.title} in ${current}, 3D model from AIA's CAD`}
+                  />
                 ) : null}
               </div>
               {/* Phones: the copy sits under its own product. */}

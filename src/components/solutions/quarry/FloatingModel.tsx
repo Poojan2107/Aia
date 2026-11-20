@@ -4,13 +4,23 @@ import { useEffect, useRef, useState } from "react";
 import { loadModelViewer } from "@/components/home/MaterialViewer3D";
 import { useAccentRgb } from "@/lib/use-accent-rgb";
 
-type Props = { src: string; alt: string; orbit?: string; highlight?: string[] };
+/** A finish to blend the whole model into (scripts/cad/materials.mjs values: linear colour). */
+export type Finish = { color: [number, number, number]; metallic: number; roughness: number };
+
+type Props = { src: string; alt: string; orbit?: string; highlight?: string[]; finish?: Finish };
 
 type Mat = {
   name: string;
   emissiveFactor: number[];
   setEmissiveFactor: (c: number[]) => void;
-  pbrMetallicRoughness: { baseColorFactor: number[]; setBaseColorFactor: (c: number[]) => void };
+  pbrMetallicRoughness: {
+    baseColorFactor: number[];
+    metallicFactor: number;
+    roughnessFactor: number;
+    setBaseColorFactor: (c: number[]) => void;
+    setMetallicFactor: (v: number) => void;
+    setRoughnessFactor: (v: number) => void;
+  };
 };
 
 /** A highlighted part group turns AIA blue with a soft glow; the rest keeps its own finish and
@@ -23,7 +33,7 @@ const recede = (c: number[]) => [...c.slice(0, 3).map((v, i) => v * 0.45 + PALE[
  * as 3D when it nears the screen, turns slowly on its own, and can be dragged to rotate (zoom is
  * off so the page keeps scrolling normally).
  */
-export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight }: Props) {
+export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight, finish }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLElement | null>(null);
   const [near, setNear] = useState(false);
@@ -96,6 +106,44 @@ export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- HIGHLIGHT/GLOW derive from accentKey
   }, [shown, groups, orbit, accentKey]);
+
+  // Finish: the whole model blends (about 0.7s) from its current look into the given finish, or
+  // back to its own when none is given. Used by the quarry MOC switcher (Mono Metal / Sintercast).
+  const own = useRef<{ base: number[]; metallic: number; roughness: number }[] | null>(null);
+  const finishKey = finish ? `${finish.color.join(",")}|${finish.metallic}|${finish.roughness}` : "";
+  useEffect(() => {
+    const el = viewerRef.current as unknown as { model?: { materials: Mat[] } } | null;
+    if (!shown || !el?.model) return;
+    const mats = el.model.materials;
+    const read = (m: Mat) => ({
+      base: [...m.pbrMetallicRoughness.baseColorFactor],
+      metallic: m.pbrMetallicRoughness.metallicFactor,
+      roughness: m.pbrMetallicRoughness.roughnessFactor,
+    });
+    if (!own.current) own.current = mats.map(read);
+    const from = mats.map(read);
+    const to = mats.map((_, i) =>
+      finish ? { base: [...finish.color, 1], metallic: finish.metallic, roughness: finish.roughness } : own.current![i],
+    );
+    const dur = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 700;
+    const t0 = performance.now();
+    let raf = 0;
+    const mix = (a: number, b: number, k: number) => a + (b - a) * k;
+    const step = (now: number) => {
+      const p = dur ? Math.min(1, (now - t0) / dur) : 1;
+      const k = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      mats.forEach((m, i) => {
+        const pbr = m.pbrMetallicRoughness;
+        pbr.setBaseColorFactor(from[i].base.map((v, c) => mix(v, to[i].base[c] ?? 1, k)));
+        pbr.setMetallicFactor(mix(from[i].metallic, to[i].metallic, k));
+        pbr.setRoughnessFactor(mix(from[i].roughness, to[i].roughness, k));
+      });
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- finishKey stands for finish
+  }, [shown, finishKey]);
 
   return (
     <div ref={hostRef} className={`qfloat ${shown ? "is-shown" : ""}`}>

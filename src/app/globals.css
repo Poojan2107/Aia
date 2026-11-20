@@ -7330,7 +7330,7 @@ html[data-palette="brand"] .services-tab.is-active::after { background: var(--ai
   }
 }
 
-html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-row.is-blue .qx-copy) {
+html[data-motion] :is(.foot-panel, .site-footer-panel, .qs-bar, .qc-cta-panel.is-blue, .qx-panel::before, .qx-row.is-blue .qx-copy) {
   background:
     radial-gradient(ellipse 60% 60% at center, rgba(82, 172, 255, 0.5) 0%, rgba(0, 97, 224, 0.32) 32%, rgba(0, 97, 224, 0) 68%) repeat,
     radial-gradient(ellipse 65% 65% at center, rgba(37, 99, 235, 0.65) 0%, rgba(31, 39, 102, 0.35) 40%, rgba(31, 39, 102, 0) 72%) repeat,
@@ -7420,3 +7420,86 @@ html[data-motion] .qs-card:nth-child(3n) .qs-bar { animation-delay: -26s; }
   transition: border-color 200ms;
 }
 .gallery-yt:hover .gallery-yt-cta { border-bottom-color: currentColor; }
+
+/* Quarry showcase: MOC switcher over each product model (Mono Metal / Sintercast®). */
+.qs-moc {
+  position: absolute;
+  top: clamp(14px, 1.6vw, 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  border: 1px solid #dfe3ea;
+  box-shadow: 0 6px 20px rgb(16 24 64 / 0.08);
+  backdrop-filter: blur(8px);
+}
+.qs-moc-opt {
+  padding: 9px clamp(14px, 1.1vw, 22px);
+  border-radius: 999px;
+  font-family: var(--font-sinteca);
+  font-weight: 500;
+  font-size: clamp(11px, 0.72vw, 13px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4a5160;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out);
+}
+.qs-moc-opt:hover { color: var(--aia-navy); }
+.qs-moc-opt[aria-checked="true"] { background: var(--aia-fill); color: #fff; cursor: default; }
+.qs-moc-opt:focus-visible { outline: 2px solid var(--aia-accent); outline-offset: 2px; }
+
+/* Quarry page: other industries, in the mining page's CTA panels (.qc-cta). */
+.qx-others { padding-top: clamp(3rem, 6vw, 110px); gap: 1px; }
+.qx-others-head { grid-column: 1 / -1; padding-bottom: clamp(1.5rem, 3vw, 56px); }
+.qx-others-eyebrow {
+  margin: 0;
+  font-family: var(--font-sinteca);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aia-accent);
+}
+.qx-others-heading {
+  margin: 0.6em 0 0;
+  font-family: var(--font-haas);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 2.9vw, 58px);
+  line-height: 1.04;
+  color: var(--aia-navy);
+}
+@media (min-width: 1024px) { .qx-others { grid-template-columns: repeat(3, 1fr); } }
+.qx-others .qc-cta-title { font-size: clamp(1.6rem, 2.2vw, 42px); }
+/* Panels sit on a soft palette tint (the palette's navy at 6%); the lit one fills with the palette's
+   blue. The first is lit by default; hovering (or focusing) another moves the light to it. */
+.qx-others { background: #fff; }
+.qx-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: rgba(var(--aia-navy-rgb), 0.06);
+  color: var(--aia-navy);
+  transition: color 450ms var(--ease-out);
+}
+.qx-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--aia-fill);
+  opacity: 0;
+  transition: opacity 450ms var(--ease-out);
+}
+.qx-panel .qc-cta-arrow { transition: transform 250ms var(--ease-out), background-color 450ms, color 450ms; }
+:is(.qx-panel.is-lit, .qx-panel:hover, .qx-panel:focus-visible) { color: #fff; }
+:is(.qx-panel.is-lit, .qx-panel:hover, .qx-panel:focus-visible)::before { opacity: 1; }
+:is(.qx-panel.is-lit, .qx-panel:hover, .qx-panel:focus-visible) .qc-cta-arrow { background: #fff; color: var(--aia-accent); }
+.qx-others:has(.qx-panel:hover) .qx-panel.is-lit:not(:hover) { color: var(--aia-navy); }
+.qx-others:has(.qx-panel:hover) .qx-panel.is-lit:not(:hover)::before { opacity: 0; }
+.qx-others:has(.qx-panel:hover) .qx-panel.is-lit:not(:hover) .qc-cta-arrow { background: var(--aia-fill); color: #fff; }
