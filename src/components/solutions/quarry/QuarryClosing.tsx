@@ -16,7 +16,7 @@ const FAQS = [
   {
     question: "Why is weight balancing important for impact crusher blow bars?",
     answer:
-      "Each blow bar set is supplied with in-house weight-balanced conditions to take care of rotor vibration, supporting high crushing efficiency and a uniform wear profile.",
+      "Each blow bar set is supplied with in-house weight-balanced conditions to take care of rotor vibration and support high crushing efficiency.",
   },
   {
     question: "How do blow bars help maintain consistent aggregate size?",
@@ -24,14 +24,9 @@ const FAQS = [
       "AIA blow bars are engineered with uniform wear profiles to support consistent end-product sizing throughout their service life.",
   },
   {
-    question: "What materials are used in AIA's impact crusher wear parts?",
+    question: "What materials of construction are used in AIA's crusher wear parts?",
     answer:
-      "Blow bars use an impact-resistant, non-conventional alloy; hammers, impellers, anvils, feed disks and frame liners use superior wear alloys. Most parts are offered with and without ceramic.",
-  },
-  {
-    question: "How do I select the right crusher hammer material?",
-    answer:
-      "AIA hammers use a superior alloy with differential hardening to curb breakage at the shank, with or without ceramic. Share your crusher and operating conditions and our team will recommend the right variant.",
+      "All our crusher products are manufactured using superior wear alloys that are impact resistant and improve crushing efficiency. All parts are offered with and without ceramic variants.",
   },
   {
     question: "What VSI crusher wear parts does AIA offer?",

@@ -41,7 +41,8 @@ const BENEFITS: Record<string, string[]> = {
   hammers: [
     "Superior alloy construction for hammer crushers.",
     "Differential hardening curbs breakage at the shank.",
-    "Uniform end-product size and low cost per ton.",
+    "High crushing efficiency and low cost per ton of crushing.",
+    "Uniform wear profiles for consistent crushing output.",
     "Weight-balanced in-house to manage rotor vibration.",
   ],
   impellers: [
@@ -53,14 +54,13 @@ const BENEFITS: Record<string, string[]> = {
   anvil: [
     "Superior alloys for high wear resistance and long lifespan.",
     "Offered in ceramic and non-ceramic variants.",
-    "Uniform wear profile across the impact surface.",
+    "Uniform wear profiles for consistent crushing output.",
     "Easy installation and maintenance-free operation.",
   ],
   "feed-disk": [
     "Superior alloys for high wear resistance and long lifespan.",
     "Offered with or without ceramic.",
-    "Distributes material into the rotor.",
-    "Resists abrasive wear at the centre of the impeller.",
+    "Enables efficient distribution of material.",
   ],
   "frame-liners": [
     "Protects the crusher housing.",

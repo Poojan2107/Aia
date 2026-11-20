@@ -53,7 +53,7 @@ export const quarryProducts: IndustryProductsContent = {
           title: "Anvil",
           subtitle: "Impact surfaces · long wear life",
           body:
-            "AIA anvils are made with superior alloys for high wear resistance and long lifespan, offered in ceramic and non-ceramic variants. They deliver a uniform wear profile with easy installation and maintenance-free operation.",
+            "Our anvils are made with superior alloys for high wear resistance and long lifespan, offered in ceramic and non-ceramic variants. They deliver a uniform wear profile with easy installation and maintenance-free operation.",
           image: { src: "/images/quarry-mill-plate.png", alt: "VSI crusher anvils" },
           variants: ["With ceramic", "Without ceramic"],
         },
@@ -62,7 +62,7 @@ export const quarryProducts: IndustryProductsContent = {
           title: "Feed Disk",
           subtitle: "Feed distribution into the rotor",
           body:
-            "Feed disks are constructed with superior alloys for high wear resistance and long lifespan, and are offered with or without ceramic. AIA and Vega feed disks distribute material into the rotor while resisting abrasive wear at the centre of the impeller.",
+            "Our feed disks are constructed with superior alloys for high wear resistance and long lifespan, and are offered with or without ceramic.",
           image: { src: "/images/industry/quarry.jpg", alt: "VSI crusher feed disk" },
           variants: ["With ceramic", "Without ceramic"],
         },
