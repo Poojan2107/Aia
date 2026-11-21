@@ -53,13 +53,11 @@ const BENEFITS: Record<string, string[]> = {
   ],
   anvil: [
     "Superior alloys for high wear resistance and long lifespan.",
-    "Offered in ceramic and non-ceramic variants.",
     "Uniform wear profiles for consistent crushing output.",
     "Easy installation and maintenance-free operation.",
   ],
   "feed-disk": [
     "Superior alloys for high wear resistance and long lifespan.",
-    "Offered with or without ceramic.",
     "Enables efficient distribution of material.",
   ],
   "frame-liners": [
