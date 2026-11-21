@@ -7,7 +7,15 @@ import { useAccentRgb } from "@/lib/use-accent-rgb";
 /** A finish to blend the whole model into (scripts/cad/materials.mjs values: linear colour). */
 export type Finish = { color: [number, number, number]; metallic: number; roughness: number };
 
-type Props = { src: string; alt: string; orbit?: string; highlight?: string[]; finish?: Finish };
+type Props = {
+  src: string;
+  alt: string;
+  orbit?: string;
+  highlight?: string[];
+  finish?: Finish;
+  /** Optional still of the model, shown softly while the 3D loads (the mill product pages). */
+  poster?: string;
+};
 
 type Mat = {
   name: string;
@@ -33,7 +41,7 @@ const recede = (c: number[]) => [...c.slice(0, 3).map((v, i) => v * 0.45 + PALE[
  * as 3D when it nears the screen, turns slowly on its own, and can be dragged to rotate (zoom is
  * off so the page keeps scrolling normally).
  */
-export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight, finish }: Props) {
+export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight, finish, poster }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<HTMLElement | null>(null);
   const [near, setNear] = useState(false);
@@ -146,35 +154,41 @@ export function FloatingModel({ src, alt, orbit = "30deg 70deg 105%", highlight,
   }, [shown, finishKey]);
 
   return (
-    <div ref={hostRef} className={`qfloat ${shown ? "is-shown" : ""}`}>
-      {near && ready ? (
-        <model-viewer
-          ref={viewerRef}
-          src={src}
-          alt={alt}
-          bounds="tight"
-          environment-image="/models/env/studio.hdr"
-          camera-orbit={orbit}
-          field-of-view="28deg"
-          camera-controls
-          disable-zoom
-          disable-pan
-          auto-rotate
-          auto-rotate-delay={0}
-          rotation-per-second="14deg"
-          interaction-prompt="none"
-          touch-action="pan-y"
-          shadow-intensity="1.1"
-          shadow-softness="0.9"
-          exposure="0.95"
-          tone-mapping="neutral"
-          loading="eager"
-          className="qfloat-viewer"
-        >
-          {/* No loading bar: the model fades in once loaded instead. */}
-          <div slot="progress-bar" />
-        </model-viewer>
+    <>
+      {poster ? (
+        // eslint-disable-next-line @next/next/no-img-element -- a local still, swapped for the 3D once it loads
+        <img src={poster} alt="" aria-hidden className={`qfloat-poster ${shown ? "is-hidden" : ""}`} decoding="async" loading="lazy" />
       ) : null}
-    </div>
+      <div ref={hostRef} className={`qfloat ${shown ? "is-shown" : ""}`}>
+        {near && ready ? (
+          <model-viewer
+            ref={viewerRef}
+            src={src}
+            alt={alt}
+            bounds="tight"
+            environment-image="/models/env/studio.hdr"
+            camera-orbit={orbit}
+            field-of-view="28deg"
+            camera-controls
+            disable-zoom
+            disable-pan
+            auto-rotate
+            auto-rotate-delay={0}
+            rotation-per-second="14deg"
+            interaction-prompt="none"
+            touch-action="pan-y"
+            shadow-intensity="1.1"
+            shadow-softness="0.9"
+            exposure="0.95"
+            tone-mapping="neutral"
+            loading="eager"
+            className="qfloat-viewer"
+          >
+            {/* No loading bar: the model fades in once loaded instead. */}
+            <div slot="progress-bar" />
+          </model-viewer>
+        ) : null}
+      </div>
+    </>
   );
 }

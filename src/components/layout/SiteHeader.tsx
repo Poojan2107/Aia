@@ -3,6 +3,7 @@
 import { PaletteSwitch } from "@/components/layout/PaletteSwitch";
 import Link from "next/link";
 import { homeOnly } from "@/lib/env";
+import { isLocalHostname } from "@/lib/local-preview";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -109,14 +110,15 @@ function DesktopItem({ item, open, onOpen, onClose, current }: {
 }
 
 /**
- * Navbar navigation lock (presentation mode): links in the navbar and the mobile menu do nothing
- * when clicked (except NAV_OPEN); menus still open so the site structure can be shown. Set to false to unlock.
+ * Navbar navigation lock (presentation mode, live site only): links in the navbar and the mobile
+ * menu do nothing when clicked (except NAV_OPEN); menus still open so the site structure can be
+ * shown. On a local machine (localhost) every link works. Set to false to unlock everywhere.
  */
 const NAV_LOCKED = true;
 /** Pages still reachable while locked: the home logo and the quarry products page. */
 const NAV_OPEN = ["/", "/solutions/quarry"];
 const blockNav = (e: React.MouseEvent) => {
-  if (!NAV_LOCKED) return;
+  if (!NAV_LOCKED || isLocalHostname(window.location.hostname)) return;
   const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
   if (a && !NAV_OPEN.includes(a.getAttribute("href") ?? "")) e.preventDefault();
 };

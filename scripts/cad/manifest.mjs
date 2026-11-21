@@ -294,6 +294,83 @@ export const products = [
     aiaRef: "Quarry › IMPELLER (11550)",
     roles: () => "metal",
   },
+  // SAG mill product page (/solutions/mining/sag-mill): AIA's SAG product STEP set, one model per
+  // product variant shown in the components stack.
+  {
+    id: "sag-feed-end-liner-composite",
+    source: `${LIB}/Mining/SAG mill/Products/STEP/1_SAG_FEED END LINER_COMPOSITE_W9_5693_6_C..STEP`,
+    aiaRef: "W9_5693_6_C",
+    // Rubber composite body, cast wear inserts, bolts (as the composite ball mill end liner).
+    roles: (part) => (part.maxDim > 1000 ? "composite" : part.maxDim > 300 ? "compositeInsert" : "bolt"),
+  },
+  {
+    id: "sag-shell-liner-composite",
+    source: `${LIB}/Mining/SAG mill/Products/STEP/3.SAG_SHELL LINER_COMPOSITE_W9_5769_24_D..STEP`,
+    aiaRef: "W9_5769_24_D",
+    roles: (part) => (part.maxDim > 1000 ? "composite" : part.maxDim > 300 ? "compositeInsert" : "bolt"),
+  },
+  {
+    id: "sag-de-radial-pulp-lifter",
+    source: `${LIB}/Mining/SAG mill/Products/STEP/4.SAG_DE ASM RPL_W9_5670_1_K-RPL.STEP`,
+    aiaRef: "W9_5670_1_K (SAG DE ASM RPL)",
+    // The DE trunnion is mill structure, not the product: left out.
+    roles: (part) => (/TRUNION/i.test(part.name) ? null : /RUBBER/i.test(part.name) ? "rubber" : part.maxDim < 120 ? "bolt" : "metal"),
+    simplify: 0.08,
+    simplifyError: 0.002,
+  },
+  {
+    id: "sag-de-curved-pulp-lifter",
+    source: `${LIB}/Mining/SAG mill/Products/STEP/5.SAG_DE ASM CPL_W9_5769_34_B-CPL.STEP`,
+    aiaRef: "W9_5769_34_B (SAG DE ASM CPL)",
+    roles: (part) => (/RUBBER/i.test(part.name) ? "rubber" : part.maxDim < 120 ? "bolt" : "metal"),
+    simplify: 0.12,
+    simplifyError: 0.002,
+  },
+  {
+    id: "sag-fasteners-through",
+    source: `${LIB}/Mining/SAG mill/Products/STEP/7.SAG_FASTENERS_THROUGH.STEP`,
+    aiaRef: "SAG FASTENERS THROUGH",
+    roles: () => "bolt",
+  },
+  {
+    id: "sag-fasteners-outside",
+    source: `${LIB}/Mining/SAG mill/Products/STEP/8.SAG_FASTENERS_OUTSIDE.STEP`,
+    aiaRef: "SAG FASTENERS OUTSIDE",
+    roles: () => "bolt",
+  },
+  // Ball mill product page (/solutions/mining/ball-mill): AIA's ball mill product STEP set.
+  ...[
+    ["ball-end-liner-steel", "Overflow/STEP/13.BM OVFL_END LINER_STEEL_W9_5498_32..STEP", "W9_5498_32", () => "metal"],
+    ["ball-end-liner-rubber", "Overflow/STEP/10.BM OVFL_END LINER_RUBBER_W9_5724_4..STEP", "W9_5724_4", (part) => (part.maxDim < 150 ? "bolt" : "rubber")],
+    ["ball-shell-liner-steel", "Overflow/STEP/17.BM OVFL_SHELL LINER_STEEL_W9_5498_34..STEP", "W9_5498_34", () => "metal"],
+    ["ball-shell-liner-composite", "Overflow/STEP/15.BM OVFL_SHELL LINER_COMPOSITE_W9_5724_9_B..STEP", "W9_5724_9_B", (part) => (part.maxDim > 1000 ? "composite" : part.maxDim > 300 ? "compositeInsert" : "bolt")],
+    ["ball-fasteners-through", "Overflow/STEP/18.BM OVFL_FASTENERS_THROUGH.STEP", "BM OVFL FASTENERS THROUGH", () => "bolt"],
+    ["ball-fasteners-channel", "Overflow/STEP/19.BM OVFL_FASTENERS_CHANNEL.STEP", "BM OVFL FASTENERS CHANNEL", () => "bolt"],
+    ["ball-fasteners-t-type", "Overflow/STEP/20.BM OVFL_FASTENERS_T-TYPE.STEP", "BM OVFL FASTENERS T-TYPE", () => "bolt"],
+    ["ball-fasteners-outside", "NGDS/STEP/35_BM NGDS_FASTENERS_OUTSIDE.STEP", "BM NGDS FASTENERS OUTSIDE", () => "bolt"],
+    // Integrated composite (AIA: "Integrated Composite, Bolting: Outside").
+    ["ball-end-liner-integrated", "NGDS/STEP/26_BM NGDS_FEED END LINER_INTEGRATED_W9_5396_157_B.STEP", "W9_5396_157_B", (part) => (part.maxDim > 1000 ? "composite" : part.maxDim > 300 ? "compositeInsert" : "bolt")],
+    // Every part runs the full 2.4 m length: the wide backing plate is the rubber composite body,
+    // the long lifter bars are the cast inserts, the small pieces are fittings.
+    ["ball-shell-liner-integrated", "NGDS/STEP/30_BM NGDS_SHELL LINER_INTEGRATED_P01080_6_B SL.STEP", "P01080_6_B", (part) => {
+      const d = [part.box[3] - part.box[0], part.box[4] - part.box[1], part.box[5] - part.box[2]].sort((a, b) => a - b);
+      return d[1] > 1000 ? "composite" : d[2] > 1000 ? "compositeInsert" : "bolt";
+    }],
+  ].map(([id, file, aiaRef, roles]) => ({ id, source: `${LIB}/Mining/Ball mill/Products/${file}`, aiaRef, roles })),
+  // Verti mill product page: the flight and shoe liners of the decoded screw (see
+  // mining-sintercast-verti-mill-liners), each set on its own.
+  {
+    id: "verti-flight-liners",
+    source: "models/_extracted/verti-mill-screw.json",
+    aiaRef: "Verty Mill assembly 16461 › VTM 4500 flight liners",
+    roles: (part) => (/FLIGHT LINER/i.test(part.name) ? "sinterHicr" : null),
+  },
+  {
+    id: "verti-shoe-liners",
+    source: "models/_extracted/verti-mill-screw.json",
+    aiaRef: "Verty Mill assembly 16461 › VTM 4500 shoe liners",
+    roles: (part) => (/SHOE LINER/i.test(part.name) ? "sinterCeramic" : null),
+  },
   {
     id: "mining-sag-ngds-de",
     // Mining solutions orbit: SAG mill Next Gen Discharge System (DE assembly).

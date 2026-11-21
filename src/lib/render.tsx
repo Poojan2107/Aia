@@ -9,6 +9,8 @@ import { IndustryServices } from "@/components/templates/industry/IndustryServic
 import { IndustrySolutions } from "@/components/templates/industry/IndustrySolutions";
 import { QuarryLanding } from "@/components/solutions/quarry/QuarryLanding";
 import { MiningShowroom } from "@/components/solutions/mining/MiningShowroom";
+import { MillProductPage } from "@/components/solutions/mining/mill/MillProductPage";
+import { millById } from "@/components/solutions/mining/mill/mills";
 import { BoardPage, DirectorPage, CommitteesPage, CsrListingPage, CsrDetailPage } from "@/components/templates/company";
 import { InvestorPage, StockTickerPage } from "@/components/templates/investors/InvestorPage";
 import {
@@ -64,6 +66,10 @@ async function body(route: RouteEntry): Promise<React.ReactNode> {
 
     case "mining-landing":
       return <MiningLanding />;
+
+    case "mill-products":
+      // mining-sag-mill, mining-ball-mill, mining-verti-mill
+      return <MillProductPage mill={required(millById(route.id.replace(/^mining-|-mill$/g, "")))} />;
 
     case "industry-products": {
       const { contactHref, label } = industryContext(route);

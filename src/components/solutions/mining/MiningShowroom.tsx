@@ -291,7 +291,8 @@ function MillShowcase({ mill }: { mill: Mill }) {
             </li>
           ))}
         </ul>
-        <CtaButton href="/solutions/mining/products" variant="solid" className="msr-all">
+        {/* Each mill's own product page (/solutions/mining/sag-mill, /ball-mill, /verti-mill). */}
+        <CtaButton href={`/solutions/mining/${mill.id}-mill`} variant="solid" className="msr-all">
           Explore all components
         </CtaButton>
       </div>

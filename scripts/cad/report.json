@@ -431,5 +431,289 @@
     "kb": 21,
     "seconds": 8.3,
     "aoSeconds": 0.2
+  },
+  "sag-feed-end-liner-composite": {
+    "aiaRef": "W9_5693_6_C",
+    "sizeMm": [
+      1222,
+      1438,
+      653
+    ],
+    "triangles": 45809,
+    "rolesBeforeSimplify": {
+      "compositeInsert": 92210,
+      "bolt": 33134,
+      "composite": 103714
+    },
+    "kb": 846,
+    "seconds": 22.4,
+    "aoSeconds": 3.3
+  },
+  "sag-shell-liner-composite": {
+    "aiaRef": "W9_5769_24_D",
+    "sizeMm": [
+      573,
+      435,
+      1625
+    ],
+    "triangles": 128216,
+    "rolesBeforeSimplify": {
+      "bolt": 185012,
+      "compositeInsert": 216518,
+      "composite": 239566
+    },
+    "kb": 1783,
+    "seconds": 48.9,
+    "aoSeconds": 6.1
+  },
+  "sag-de-radial-pulp-lifter": {
+    "aiaRef": "W9_5670_1_K (SAG DE ASM RPL)",
+    "sizeMm": [
+      3062,
+      5421,
+      6552
+    ],
+    "triangles": 150219,
+    "rolesBeforeSimplify": {
+      "metal": 1699034,
+      "bolt": 153216,
+      "rubber": 17356
+    },
+    "kb": 2741,
+    "seconds": 121.3,
+    "aoSeconds": 26
+  },
+  "sag-de-curved-pulp-lifter": {
+    "aiaRef": "W9_5769_34_B (SAG DE ASM CPL)",
+    "sizeMm": [
+      4123,
+      3915,
+      2195
+    ],
+    "triangles": 147667,
+    "rolesBeforeSimplify": {
+      "metal": 1049246,
+      "bolt": 179014,
+      "rubber": 848
+    },
+    "kb": 2248,
+    "seconds": 48.1,
+    "aoSeconds": 12.2
+  },
+  "sag-fasteners-through": {
+    "aiaRef": "SAG FASTENERS THROUGH",
+    "sizeMm": [
+      331,
+      150,
+      100
+    ],
+    "triangles": 5994,
+    "rolesBeforeSimplify": {
+      "bolt": 29978
+    },
+    "kb": 60,
+    "seconds": 2.5,
+    "aoSeconds": 1
+  },
+  "sag-fasteners-outside": {
+    "aiaRef": "SAG FASTENERS OUTSIDE",
+    "sizeMm": [
+      208,
+      100,
+      100
+    ],
+    "triangles": 2138,
+    "rolesBeforeSimplify": {
+      "bolt": 8544
+    },
+    "kb": 23,
+    "seconds": 1.1,
+    "aoSeconds": 0.7
+  },
+  "ball-end-liner-steel": {
+    "aiaRef": "W9_5498_32",
+    "sizeMm": [
+      317,
+      696,
+      813
+    ],
+    "triangles": 19988,
+    "rolesBeforeSimplify": {
+      "metal": 99948
+    },
+    "kb": 352,
+    "seconds": 10.8,
+    "aoSeconds": 2.4
+  },
+  "ball-end-liner-rubber": {
+    "aiaRef": "W9_5724_4",
+    "sizeMm": [
+      546,
+      1201,
+      515
+    ],
+    "triangles": 192,
+    "rolesBeforeSimplify": {
+      "rubber": 960
+    },
+    "kb": 45,
+    "seconds": 0.2,
+    "aoSeconds": 0.1
+  },
+  "ball-shell-liner-steel": {
+    "aiaRef": "W9_5498_34",
+    "sizeMm": [
+      442,
+      221,
+      1614
+    ],
+    "triangles": 12574,
+    "rolesBeforeSimplify": {
+      "metal": 62876
+    },
+    "kb": 240,
+    "seconds": 5.9,
+    "aoSeconds": 1.6
+  },
+  "ball-shell-liner-composite": {
+    "aiaRef": "W9_5724_9_B",
+    "sizeMm": [
+      250,
+      210,
+      2000
+    ],
+    "triangles": 71492,
+    "rolesBeforeSimplify": {
+      "compositeInsert": 174628,
+      "composite": 128846,
+      "bolt": 54000
+    },
+    "kb": 1143,
+    "seconds": 24.9,
+    "aoSeconds": 4.9
+  },
+  "ball-fasteners-through": {
+    "aiaRef": "BM OVFL FASTENERS THROUGH",
+    "sizeMm": [
+      312,
+      148,
+      101
+    ],
+    "triangles": 4434,
+    "rolesBeforeSimplify": {
+      "bolt": 19288
+    },
+    "kb": 47,
+    "seconds": 1.5,
+    "aoSeconds": 0.8
+  },
+  "ball-fasteners-channel": {
+    "aiaRef": "BM OVFL FASTENERS CHANNEL",
+    "sizeMm": [
+      170,
+      61,
+      2000
+    ],
+    "triangles": 344,
+    "rolesBeforeSimplify": {
+      "bolt": 1720
+    },
+    "kb": 5,
+    "seconds": 2.1,
+    "aoSeconds": 1.8
+  },
+  "ball-fasteners-t-type": {
+    "aiaRef": "BM OVFL FASTENERS T-TYPE",
+    "sizeMm": [
+      195,
+      115,
+      101
+    ],
+    "triangles": 14824,
+    "rolesBeforeSimplify": {
+      "bolt": 74122
+    },
+    "kb": 128,
+    "seconds": 4,
+    "aoSeconds": 1.7
+  },
+  "ball-fasteners-outside": {
+    "aiaRef": "BM NGDS FASTENERS OUTSIDE",
+    "sizeMm": [
+      100,
+      309,
+      100
+    ],
+    "triangles": 1680,
+    "rolesBeforeSimplify": {
+      "bolt": 8180
+    },
+    "kb": 19,
+    "seconds": 0.9,
+    "aoSeconds": 0.5
+  },
+  "verti-flight-liners": {
+    "aiaRef": "Verty Mill assembly 16461 › VTM 4500 flight liners",
+    "sizeMm": [
+      4891,
+      9112,
+      4898
+    ],
+    "triangles": 10710,
+    "rolesBeforeSimplify": {
+      "sinterHicr": 31692
+    },
+    "kb": 221,
+    "seconds": 5.7,
+    "aoSeconds": 4.7
+  },
+  "verti-shoe-liners": {
+    "aiaRef": "Verty Mill assembly 16461 › VTM 4500 shoe liners",
+    "sizeMm": [
+      4891,
+      9112,
+      4898
+    ],
+    "triangles": 5450,
+    "rolesBeforeSimplify": {
+      "sinterCeramic": 15840
+    },
+    "kb": 141,
+    "seconds": 3.4,
+    "aoSeconds": 2.6
+  },
+  "ball-end-liner-integrated": {
+    "aiaRef": "W9_5396_157_B",
+    "sizeMm": [
+      996,
+      1423,
+      725
+    ],
+    "triangles": 34342,
+    "rolesBeforeSimplify": {
+      "bolt": 30720,
+      "compositeInsert": 67600,
+      "composite": 73398
+    },
+    "kb": 660,
+    "seconds": 14.9,
+    "aoSeconds": 2.4
+  },
+  "ball-shell-liner-integrated": {
+    "aiaRef": "P01080_6_B",
+    "sizeMm": [
+      1588,
+      299,
+      2417
+    ],
+    "triangles": 1908,
+    "rolesBeforeSimplify": {
+      "bolt": 1248,
+      "compositeInsert": 452,
+      "composite": 5812
+    },
+    "kb": 241,
+    "seconds": 3,
+    "aoSeconds": 1.3
   }
 }

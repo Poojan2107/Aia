@@ -30,6 +30,7 @@ export type Template =
   | "home"
   | "hub"
   | "mining-landing"
+  | "mill-products"
   | "industry-solutions"
   | "industry-products"
   | "industry-services"
@@ -105,6 +106,14 @@ export const staticRoutes: RouteEntry[] = [
     description: "Advanced comminution and electrochemistry technologies enhancing reliability, throughput and recovery across mining grinding circuits." }),
   r({ id: "mining-products", path: "/solutions/mining/products", title: "Mining Products", navLabel: "Products", template: "industry-products", pillar: "solutions", parent: "mining",
     description: "SAG and ball mill lining systems, discharge assemblies, Verti mill liners, high-chrome grinding media and mill fastening systems." }),
+  // One page per mill. The slug is the old aiaengineering.com slug (/sag-mill), so every old mill
+  // URL maps to /solutions/mining/<same slug> (see redirects/legacy.ts).
+  r({ id: "mining-sag-mill", path: "/solutions/mining/sag-mill", title: "SAG Mill Liners & Wear Components", navLabel: "SAG Mill Components", template: "mill-products", pillar: "solutions", parent: "mining-products",
+    description: "SAG mill feed end and shell liners, discharge end assemblies (NGDS, radial and curved pulp lifters) and high-quality fasteners, engineered for demanding SAG grinding conditions." }),
+  r({ id: "mining-ball-mill", path: "/solutions/mining/ball-mill", title: "Ball Mill Liners & Wear Components", navLabel: "Ball Mill Components", template: "mill-products", pillar: "solutions", parent: "mining-products",
+    description: "Ball mill end and shell liners in rubber, composite, integrated composite, steel and white iron, the Next Gen DE System, Hi-Cr grinding media and fasteners." }),
+  r({ id: "mining-verti-mill", path: "/solutions/mining/verti-mill", title: "Verti Mill Flight & Shoe Liners", navLabel: "Verti Mill Components", template: "mill-products", pillar: "solutions", parent: "mining-products",
+    description: "Flight liners in Hi-Cr and shoe liners in Sintercast alloy for Verti Mills up to VTM 4,500: 3X the life of Hi-Cr, fewer replacement cycles and increased mill availability." }),
   r({ id: "mining-services", path: "/solutions/mining/services", title: "Mining Services", navLabel: "Services", template: "industry-services", pillar: "solutions", parent: "mining",
     description: "Design modelling, wear monitoring, reline supervision, circuit surveys, process modelling and grinding media testing for mining operations." }),
   r({ id: "mining-ngds", path: "/solutions/mining/ngds", title: "NGDS (SAG and Ball)", navLabel: "NGDS", template: "content", pillar: "solutions", parent: "mining",

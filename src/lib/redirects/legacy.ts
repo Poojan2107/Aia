@@ -80,10 +80,10 @@ export const explicitLegacyRedirects: RedirectRule[] = [
 
   // Solutions
   { from: "/mining", to: "/solutions/mining", status: 301 },
-  { from: "/sag-mill", to: "/solutions/mining/products#sag", status: 301 },
-  { from: "/ball-mill", to: "/solutions/mining/products#ball", status: 301 },
+  { from: "/sag-mill", to: "/solutions/mining/sag-mill", status: 301 },
+  { from: "/ball-mill", to: "/solutions/mining/ball-mill", status: 301 },
   { from: "/ball-mill-next-gen", to: "/solutions/mining/ngds", status: 301 },
-  { from: "/verti-mill", to: "/solutions/mining/products#verti-media", status: 301 },
+  { from: "/verti-mill", to: "/solutions/mining/verti-mill", status: 301 },
 
   { from: "/cement", to: "/solutions/cement", status: 301 },
   { from: "/tube-mill", to: "/solutions/cement/products#tube-mill", status: 301 },
